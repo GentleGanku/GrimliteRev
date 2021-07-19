@@ -1,5 +1,5 @@
 # GrimliteRev
-A revisioned version of Grimlite, with some refined codes (compiled by me). <br />
+A version of Grimlite, with some refined codes. <br />
 # How to Use:
 (1) Have pre-existing GrimLite folder (SWF, exe, etc) that's from either https://github.com/nicknggt/Pearl-Harbor or https://auqw.tk, <br />
 (2) Download the Grimoire.exe that's on this repository (My github page), <br />
