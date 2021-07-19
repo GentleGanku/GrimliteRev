@@ -8,3 +8,4 @@ A version of Grimlite, with some refined codes. <br />
 # Changelogs:
 ###### 19 July 2021:
 - Removed Infinite Mana (0 mana cost) display.
+- Added Available/Visible Monster Count statement.
