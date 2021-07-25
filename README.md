@@ -15,3 +15,5 @@ Do the steps below. But if you don't have any GrimLite folder, then you have to 
 - Added Variable supports to the following commands: BuyItem, BuyFast, GetDrop, Sell, ToBankFromInv, ToInvFromBank, AddTo/RemoveFromWhitelist, JoinMap, JumpCell, Attack.
 - Skill Command is now integrated with Monster Target function, which is compatible with Variable.
 - Fixed the website links on Bot Portal/Get Bots buttons.
+###### 25 July 2021:
+- Added Bordered version for Grimlite Rev. It has a bordered window (which fixes the grey bars on old grimlites) along with better Dark Mode and cleaner UI.
