@@ -1,4 +1,4 @@
-# GrimliteRev
+# Grimlite Rev
 A revisioned version of Grimlite, with some refined codes. <br />
 # How to Use:
 Do the steps below.
