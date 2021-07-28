@@ -17,7 +17,7 @@ Do the steps below.
 - Fixed the website links on Bot Portal/Get Bots buttons.
 ###### 25 July 2021:
 - Added Bordered version for Grimlite Rev. It has a bordered window (which fixes the grey bars on old grimlites) along with better Dark Mode and cleaner UI.
-###### 28 July 2021:
+###### 28 July 2021 (Bordered only):
 - Added Chat Trigger as fast travel method. Used by typing a chat trigger (.)  on in-game chat (ex: .example). Chat triggers’ list is available at the Fast Travel menu. 
 - Added Get Current Cell button on the main menu, with the button’s label “<“.
 - Added “Set client level to max” button and command, that which sets your character’s level to 100 on client-side.
