@@ -1,0 +1,558 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="statementcmds" xml:space="preserve">
+    <value>{
+  "$type": "System.Collections.Generic.List`1[[Grimoire.Botting.Commands.Misc.Statements.StatementCommand, Grimoire]], mscorlib",
+  "$values": [
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdCellIs, Grimoire",
+      "Tag": "Map",
+      "Text": "Cell is",
+      "Description1": "Cell"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdCellIsNot, Grimoire",
+      "Tag": "Map",
+      "Text": "Cell is not",
+      "Description1": "Cell"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdGoldGreaterThan, Grimoire",
+      "Tag": "This player",
+      "Text": "Gold is greater than",
+      "Description1": "Gold"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdGoldLessThan, Grimoire",
+      "Tag": "This player",
+      "Text": "Gold is less than",
+      "Description1": "Gold"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdHealthGreaterThan, Grimoire",
+      "Tag": "This player",
+      "Text": "Health is greater than",
+      "Description1": "Health"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdHealthLessThan, Grimoire",
+      "Tag": "This player",
+      "Text": "Health is less than",
+      "Description1": "Health"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdInBank, Grimoire",
+      "Tag": "Item",
+      "Text": "Is in bank",
+      "Description1": "Item name",
+      "Description2": "Quantity (* = any)"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdInHouse, Grimoire",
+      "Tag": "Item",
+      "Text": "Is in house",
+      "Description1": "Item name",
+      "Description2": "Quantity (* = any)"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdInCombat, Grimoire",
+      "Tag": "This player",
+      "Text": "Is in combat"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdNotInCombat, Grimoire",
+      "Tag": "This player",
+      "Text": "Not in combat"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdInInventory, Grimoire",
+      "Tag": "Item",
+      "Text": "Is in inventory",
+      "Description1": "Item name",
+      "Description2": "Quantity (* = any)"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdInTemp, Grimoire",
+      "Tag": "Item",
+      "Text": "Is in temp inventory",
+      "Description1": "Item name",
+      "Description2": "Quantity (* = any)"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdEquipped, Grimoire",
+      "Tag": "Item",
+      "Text": "Is equipped",
+      "Description1": "Item name"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdItemNotPickupable, Grimoire",
+      "Tag": "Item",
+      "Text": "Has not dropped",
+      "Description1": "Item name"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdItemPickupable, Grimoire",
+      "Tag": "Item",
+      "Text": "Has dropped",
+      "Description1": "Item name"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdIsMember, Grimoire",
+      "Tag": "This player",
+      "Text": "Is Member"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdIsNotMember, Grimoire",
+      "Tag": "This player",
+      "Text": "Is Not Member"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdLevelGreaterThan, Grimoire",
+      "Tag": "This player",
+      "Text": "Level is greater than",
+      "Description1": "Level"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdLevelIs, Grimoire",
+      "Tag": "This player",
+      "Text": "Level is",
+      "Description1": "Level"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdLevelLessThan, Grimoire",
+      "Tag": "This player",
+      "Text": "Level is less than",
+      "Description1": "Level"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdManaGreaterThan, Grimoire",
+      "Tag": "This player",
+      "Text": "Mana is greater than",
+      "Description1": "Mana"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdManaLessThan, Grimoire",
+      "Tag": "This player",
+      "Text": "Mana is less than",
+      "Description1": "Mana"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdFactionRankGreaterThan, Grimoire",
+      "Tag": "This player",
+      "Text": "Faction Rank is greater than",
+      "Description1": "Faction",
+      "Description2": "Rank"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdFactionRankLessThan, Grimoire",
+      "Tag": "This player",
+      "Text": "Faction Rank is less than",
+      "Description1": "Faction",
+      "Description2": "Rank"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdMapIs, Grimoire",
+      "Tag": "Map",
+      "Text": "Map is",
+      "Description1": "Map name"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdMapIsNot, Grimoire",
+      "Tag": "Map",
+      "Text": "Map is not",
+      "Description1": "Map name"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdMonsterInRoom, Grimoire",
+      "Tag": "Monster",
+      "Text": "Is in room",
+      "Description1": "Monster name"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdMonsterNotInRoom, Grimoire",
+      "Tag": "Monster",
+      "Text": "Is not in room",
+      "Description1": "Monster name"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdAvailableMonstersGreaterThan, Grimoire",
+      "Tag": "Monster",
+      "Text": "Available count is greater than",
+      "Description1": "Monster count"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdAvailableMonstersLessThan, Grimoire",
+      "Tag": "Monster",
+      "Text": "Available count is less than",
+      "Description1": "Monster count"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdVisibleMonstersGreaterThan, Grimoire",
+      "Tag": "Monster",
+      "Text": "Visible count is greater than",
+      "Description1": "Monster count"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdVisibleMonstersLessThan, Grimoire",
+      "Tag": "Monster",
+      "Text": "Visible count is less than",
+      "Description1": "Monster count"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdNotInBank, Grimoire",
+      "Tag": "Item",
+      "Text": "Is not in bank",
+      "Description1": "Item name",
+      "Description2": "Quantity (* = any)"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdNotInHouse, Grimoire",
+      "Tag": "Item",
+      "Text": "Is not in house",
+      "Description1": "Item name",
+      "Description2": "Quantity (* = any)"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdNotInInventory, Grimoire",
+      "Tag": "Item",
+      "Text": "Is not in inventory",
+      "Description1": "Item name",
+      "Description2": "Quantity (* = any)"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdNotInTemp, Grimoire",
+      "Tag": "Item",
+      "Text": "Is not in temp",
+      "Description1": "Item name",
+      "Description2": "Quantity (* = any)"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdNotEquipped, Grimoire",
+      "Tag": "Item",
+      "Text": "Is not equipped",
+      "Description1": "Item name"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdListInInv, Grimoire",
+      "Tag": "Item",
+      "Text": "All in List is in inventory"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdPlayerInRoom, Grimoire",
+      "Tag": "Player",
+      "Text": "Player is in room",
+      "Description1": "Player name"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdPlayerNotInRoom, Grimoire",
+      "Tag": "Player",
+      "Text": "Player is not in room",
+      "Description1": "Player name"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdPlayerIsInCell, Grimoire",
+      "Tag": "Player",
+      "Text": "Player is in cell",
+      "Description1": "Player name",
+      "Description2": "Cell name"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdPlayerIsNotInCell, Grimoire",
+      "Tag": "Player",
+      "Text": "Player is not in cell",
+      "Description1": "Player name",
+      "Description2": "Cell name"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdPlayerIsNotInMyCell, Grimoire",
+      "Tag": "Player",
+      "Text": "Player is not in my cell",
+      "Description1": "Player name"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdPlayerIsInMyCell, Grimoire",
+      "Tag": "Player",
+      "Text": "Player is in my cell",
+      "Description1": "Player name"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdPlayersGreaterThan, Grimoire",
+      "Tag": "Player",
+      "Text": "Count is greater than",
+      "Description1": "Player count"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdPlayersLessThan, Grimoire",
+      "Tag": "Player",
+      "Text": "Count is less than",
+      "Description1": "Player count"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdQuestCompleted, Grimoire",
+      "Tag": "Quest",
+      "Text": "Quest can be turned in",
+      "Description1": "Quest ID"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdQuestNotCompleted, Grimoire",
+      "Tag": "Quest",
+      "Text": "Quest can not be turned in",
+      "Description1": "Quest ID"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdQuestAvailable, Grimoire",
+      "Tag": "Quest",
+      "Text": "Quest is available",
+      "Description1": "Quest ID"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdQuestNotAvailable, Grimoire",
+      "Tag": "Quest",
+      "Text": "Quest is not available",
+      "Description1": "Quest ID"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdQuestInProgress, Grimoire",
+      "Tag": "Quest",
+      "Text": "Quest is in progress",
+      "Description1": "Quest ID"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdQuestNotInProgress, Grimoire",
+      "Tag": "Quest",
+      "Text": "Quest is not in progress",
+      "Description1": "Quest ID"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdIntGreaterThan, Grimoire",
+      "Tag": "Misc",
+      "Text": "Int greater than",
+      "Description1": "Int",
+      "Description2": "Value"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdIntLessThan, Grimoire",
+      "Tag": "Misc",
+      "Text": "Int less than",
+      "Description1": "Int",
+      "Description2": "Value"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdIntIs, Grimoire",
+      "Tag": "Misc",
+      "Text": "Int is",
+      "Description1": "Int",
+      "Description2": "Value"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdIntIsNot, Grimoire",
+      "Tag": "Misc",
+      "Text": "Int is not",
+      "Description1": "Int",
+      "Description2": "Value"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdIntEqualInt, Grimoire",
+      "Tag": "Misc",
+      "Text": "Int is equal to Int",
+      "Description1": "Int1",
+      "Description2": "Int2"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdIntNotEqualInt, Grimoire",
+      "Tag": "Misc",
+      "Text": "Int is not equal to Int",
+      "Description1": "Int1",
+      "Description2": "Int2"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdIsMaxStack, Grimoire",
+      "Tag": "Item",
+      "Text": "Item is max in inventory",
+      "Description1": "Item name"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdIsNotMaxStack, Grimoire",
+      "Tag": "Item",
+      "Text": "Item is not max in inventory",
+      "Description1": "Item name"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdSetVar, Grimoire",
+      "Tag": "Misc",
+      "Text": "Set Temporary Variable",
+      "Description1": "Variable Name",
+      "Description2": "Value"
+    },
+    {
+      "$type": "Grimoire.Botting.Commands.Misc.Statements.CmdUpdateVar, Grimoire",
+      "Tag": "Misc",
+      "Text": "Update Temporary Variable",
+      "Description1": "Variable Name",
+      "Description2": "Value"
+    }
+  ]
+}</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="GrimoireIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\big.Ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="defaulttext" xml:space="preserve">
+    <value>{
+  "txtMonster": "Monster (*  = random)",
+  "txtKillFMon": "Monster (* = random)",
+  "txtKillFItem": "Item name",
+  "txtKillFQ": "Quantity (* = any)",
+  "txtPacket": "%xt%zm%.........",
+  "txtPlayer": "Player name",
+  "txtAuthor": "Author",
+  "txtDescription": "Description",
+  "txtJoin": "battleon-1e99",
+  "txtJoinCell": "Enter",
+  "txtJoinPad": "Spawn",
+  "txtCell": "Cell",
+  "txtPad": "Pad",
+  "txtItem": "Item name",
+  "txtSwapBank": "Bank item name",
+  "txtSwapInv": "Inventory item name",
+  "txtWhitelist": "Item name",
+  "txtLabel": "Label name",
+  "txtSkillSet": "Skill Set Name",
+  "txtUsername": "Username",
+  "txtGuild":"Guild"
+}</value>
+  </data>
+  <data name="GrimoireIconBig1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GrimoireIconBig.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MPGHfavicon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MPGHfavicon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GrimoireIconBig" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GrimoireIconBig.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GitHub" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GitHub.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MPGHfavicon16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MPGHfavicon16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+</root>
