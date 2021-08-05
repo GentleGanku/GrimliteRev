@@ -1,0 +1,117 @@
+D:\Bot Files\Grimoire Test\meow-main\bin\Release\EasyHook32.dll
+D:\Bot Files\Grimoire Test\meow-main\bin\Release\EasyHook32Svc.exe
+D:\Bot Files\Grimoire Test\meow-main\bin\Release\EasyHook64.dll
+D:\Bot Files\Grimoire Test\meow-main\bin\Release\EasyHook64Svc.exe
+D:\Bot Files\Grimoire Test\meow-main\bin\Release\EasyLoad32.dll
+D:\Bot Files\Grimoire Test\meow-main\bin\Release\EasyLoad64.dll
+D:\Bot Files\Grimoire Test\meow-main\bin\Release\Grimoire.exe.config
+D:\Bot Files\Grimoire Test\meow-main\bin\Release\Grimoire.exe
+D:\Bot Files\Grimoire Test\meow-main\bin\Release\Grimoire.pdb
+D:\Bot Files\Grimoire Test\meow-main\bin\Release\AxInterop.ShockwaveFlashObjects.dll
+D:\Bot Files\Grimoire Test\meow-main\bin\Release\DarkUI.dll
+D:\Bot Files\Grimoire Test\meow-main\bin\Release\EasyHook.dll
+D:\Bot Files\Grimoire Test\meow-main\bin\Release\FlatTabControl.dll
+D:\Bot Files\Grimoire Test\meow-main\bin\Release\HtmlAgilityPack.dll
+D:\Bot Files\Grimoire Test\meow-main\bin\Release\Newtonsoft.Json.dll
+D:\Bot Files\Grimoire Test\meow-main\bin\Release\System.Drawing.dll
+D:\Bot Files\Grimoire Test\meow-main\bin\Release\System.Net.Http.dll
+D:\Bot Files\Grimoire Test\meow-main\bin\Release\System.Web.dll
+D:\Bot Files\Grimoire Test\meow-main\bin\Release\System.Windows.Forms.dll
+D:\Bot Files\Grimoire Test\meow-main\bin\Release\System.Xml.dll
+D:\Bot Files\Grimoire Test\meow-main\bin\Release\System.Xml.Linq.dll
+D:\Bot Files\Grimoire Test\meow-main\bin\Release\Unity3.Eyedropper.dll
+D:\Bot Files\Grimoire Test\meow-main\bin\Release\Interop.ShockwaveFlashObjects.dll
+D:\Bot Files\Grimoire Test\meow-main\bin\Release\stdole.dll
+D:\Bot Files\Grimoire Test\meow-main\bin\Release\EasyHook.xml
+D:\Bot Files\Grimoire Test\meow-main\bin\Release\HtmlAgilityPack.pdb
+D:\Bot Files\Grimoire Test\meow-main\bin\Release\HtmlAgilityPack.xml
+D:\Bot Files\Grimoire Test\meow-main\bin\Release\Newtonsoft.Json.xml
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.csproj.AssemblyReference.cache
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.csproj.ResolveComReference.cache
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.UI.CommandNode.resources
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.UI.DPSForm.resources
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.UI.NodeEditor.resources
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Properties.Resources.resources
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.UI.AboutForm.resources
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.UI.BankForm.resources
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.UI.BotManager.resources
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.UI.CommandColorForm.resources
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.UI.CosmeticForm.resources
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.UI.EyeDropper.resources
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.UI.Hotkeys.resources
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.UI.Loaders.resources
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.UI.LogForm.resources
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.UI.Notepad.resources
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.UI.PacketLogger.resources
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.UI.PacketSpammer.resources
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.UI.PacketTamperer.resources
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.UI.PluginManager.resources
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.UI.RawCommandEditor.resources
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.UI.Root.resources
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.UI.Set.resources
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.UI.Travel.resources
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.UI.UserFriendlyCommandEditor.resources
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.csproj.GenerateResource.cache
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.csproj.CoreCompileInputs.cache
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.csproj.CopyComplete
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.exe
+D:\Bot Files\Grimoire Test\meow-main\obj\Release\Grimoire.pdb
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\EasyHook32.dll
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\EasyHook32Svc.exe
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\EasyHook64.dll
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\EasyHook64Svc.exe
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\EasyLoad32.dll
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\EasyLoad64.dll
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\Grimoire.exe.config
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\Grimoire.exe
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\Grimoire.pdb
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\AxInterop.ShockwaveFlashObjects.dll
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\DarkUI.dll
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\EasyHook.dll
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\FlatTabControl.dll
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\HtmlAgilityPack.dll
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\Newtonsoft.Json.dll
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\System.Drawing.dll
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\System.Net.Http.dll
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\System.Web.dll
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\System.Windows.Forms.dll
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\System.Xml.dll
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\System.Xml.Linq.dll
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\Unity3.Eyedropper.dll
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\Interop.ShockwaveFlashObjects.dll
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\stdole.dll
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\DarkUI.pdb
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\EasyHook.xml
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\HtmlAgilityPack.pdb
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\HtmlAgilityPack.xml
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\bin\Release\Newtonsoft.Json.xml
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.csproj.AssemblyReference.cache
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.csproj.ResolveComReference.cache
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.UI.CommandNode.resources
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.UI.DPSForm.resources
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.UI.NodeEditor.resources
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Properties.Resources.resources
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.UI.AboutForm.resources
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.UI.BankForm.resources
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.UI.BotManager.resources
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.UI.CommandColorForm.resources
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.UI.CosmeticForm.resources
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.UI.EyeDropper.resources
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.UI.Hotkeys.resources
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.UI.Loaders.resources
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.UI.LogForm.resources
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.UI.Notepad.resources
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.UI.PacketLogger.resources
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.UI.PacketSpammer.resources
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.UI.PacketTamperer.resources
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.UI.PluginManager.resources
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.UI.RawCommandEditor.resources
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.UI.Root.resources
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.UI.Set.resources
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.UI.Travel.resources
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.UI.UserFriendlyCommandEditor.resources
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.csproj.GenerateResource.cache
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.csproj.CoreCompileInputs.cache
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.csproj.CopyComplete
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.exe
+D:\Bot Files\Grimoire Test\Base Grimlite Rev\meow-main\obj\Release\Grimoire.pdb
