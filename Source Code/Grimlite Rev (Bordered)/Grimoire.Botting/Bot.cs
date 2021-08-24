@@ -17,7 +17,8 @@ namespace Grimoire.Botting
     {
         public bool IsVar(string value)
         {
-            return Regex.IsMatch(value, @"\[([^\)]*)\]");
+            //return Regex.IsMatch(value, @"\[([^\)]*)\]"); // original one.
+            return Regex.IsMatch(value, @"\[(?!Class Item)([^\)]*)\]"); // filtering [Class Item] for TCM/OCM consumables. | added by Maark
         }
 
         public string GetVar(string value)
@@ -409,6 +410,11 @@ namespace Grimoire.Botting
         private void OnQuestCompleted(CompletedQuest quest)
         {
             Configuration.Quests.FirstOrDefault((Quest q) => q.Id == quest.Id)?.Accept();
+        }
+
+        public void SetIndex(int _index_)
+        {
+            Index = _index_;
         }
     }
 }

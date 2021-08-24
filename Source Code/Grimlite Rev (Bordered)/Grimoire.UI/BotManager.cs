@@ -160,7 +160,7 @@ namespace Grimoire.UI
         private DarkTextBox txtPacket;
         private DarkButton btnPacket;
         private TabPage tabOptions;
-        private DarkCheckBox chkEnableSettings;
+        public DarkCheckBox chkEnableSettings;
         public DarkCheckBox chkDisableAnims;
         private DarkTextBox txtSoundItem;
         private DarkButton btnSoundAdd;
@@ -494,8 +494,11 @@ namespace Grimoire.UI
         {
             if (servers != null && servers.Length != 0 && cbServers.Items.Count <= 1)
             {
+                AutoRelogin.ListServers(servers);
                 cbServers.Items.AddRange(servers);
                 cbServers.SelectedIndex = 0;
+                Root.Instance.cbServerList.Items.AddRange(servers);
+                Root.Instance.cbServerList.SelectedIndex = 0;
             }
         }
 
@@ -1697,9 +1700,15 @@ namespace Grimoire.UI
         private void chkEnableSettings_Click(object sender, EventArgs e)
         {
             if (chkEnableSettings.Checked)
+            {
+                Root.Instance.chkEnableSettingsToolStripMenuItem.Checked = true;
                 OptionsManager.Start();
+            }
             else
+            {
+                Root.Instance.chkEnableSettingsToolStripMenuItem.Checked = false;
                 OptionsManager.Stop();
+            }
         }
         
         private void lstBoxs_KeyPress(object sender, KeyEventArgs e)
@@ -2616,7 +2625,7 @@ namespace Grimoire.UI
             this.tabCombat.Margin = new System.Windows.Forms.Padding(0);
             this.tabCombat.Name = "tabCombat";
             this.tabCombat.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCombat.Size = new System.Drawing.Size(192, 73);
+            this.tabCombat.Size = new System.Drawing.Size(509, 317);
             this.tabCombat.TabIndex = 0;
             this.tabCombat.Text = "Combat";
             // 
@@ -2656,7 +2665,7 @@ namespace Grimoire.UI
             this.chkSafeMp.AutoSize = true;
             this.chkSafeMp.Location = new System.Drawing.Point(286, 9);
             this.chkSafeMp.Name = "chkSafeMp";
-            this.chkSafeMp.Size = new System.Drawing.Size(41, 17);
+            this.chkSafeMp.Size = new System.Drawing.Size(42, 17);
             this.chkSafeMp.TabIndex = 58;
             this.chkSafeMp.Text = "MP";
             // 
@@ -2706,7 +2715,7 @@ namespace Grimoire.UI
             this.chkSkillCD.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
             this.chkSkillCD.Location = new System.Drawing.Point(3, 227);
             this.chkSkillCD.Name = "chkSkillCD";
-            this.chkSkillCD.Size = new System.Drawing.Size(143, 17);
+            this.chkSkillCD.Size = new System.Drawing.Size(144, 17);
             this.chkSkillCD.TabIndex = 60;
             this.chkSkillCD.Text = "Wait for skill to cooldown";
             // 
@@ -2776,7 +2785,7 @@ namespace Grimoire.UI
             this.chkExistQuest.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
             this.chkExistQuest.Location = new System.Drawing.Point(3, 273);
             this.chkExistQuest.Name = "chkExistQuest";
-            this.chkExistQuest.Size = new System.Drawing.Size(196, 17);
+            this.chkExistQuest.Size = new System.Drawing.Size(197, 17);
             this.chkExistQuest.TabIndex = 51;
             this.chkExistQuest.Text = "Exit combat before completing quest";
             // 
@@ -2803,7 +2812,7 @@ namespace Grimoire.UI
             this.chkMP.AutoSize = true;
             this.chkMP.Location = new System.Drawing.Point(250, 128);
             this.chkMP.Name = "chkMP";
-            this.chkMP.Size = new System.Drawing.Size(56, 17);
+            this.chkMP.Size = new System.Drawing.Size(57, 17);
             this.chkMP.TabIndex = 49;
             this.chkMP.Text = "MP <=";
             // 
@@ -2830,7 +2839,7 @@ namespace Grimoire.UI
             this.chkHP.AutoSize = true;
             this.chkHP.Location = new System.Drawing.Point(250, 108);
             this.chkHP.Name = "chkHP";
-            this.chkHP.Size = new System.Drawing.Size(55, 17);
+            this.chkHP.Size = new System.Drawing.Size(56, 17);
             this.chkHP.TabIndex = 47;
             this.chkHP.Text = "HP <=";
             // 
@@ -2839,7 +2848,7 @@ namespace Grimoire.UI
             this.chkPacket.AutoSize = true;
             this.chkPacket.Location = new System.Drawing.Point(250, 72);
             this.chkPacket.Name = "chkPacket";
-            this.chkPacket.Size = new System.Drawing.Size(108, 17);
+            this.chkPacket.Size = new System.Drawing.Size(109, 17);
             this.chkPacket.TabIndex = 47;
             this.chkPacket.Text = "Use Skill Packets";
             this.chkPacket.Visible = false;
@@ -2966,7 +2975,7 @@ namespace Grimoire.UI
             this.chkExitRest.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
             this.chkExitRest.Location = new System.Drawing.Point(3, 250);
             this.chkExitRest.Name = "chkExitRest";
-            this.chkExitRest.Size = new System.Drawing.Size(147, 17);
+            this.chkExitRest.Size = new System.Drawing.Size(148, 17);
             this.chkExitRest.TabIndex = 36;
             this.chkExitRest.Text = "Exit combat before resting";
             // 
@@ -2976,7 +2985,7 @@ namespace Grimoire.UI
             this.chkAllSkillsCD.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
             this.chkAllSkillsCD.Location = new System.Drawing.Point(3, 198);
             this.chkAllSkillsCD.Name = "chkAllSkillsCD";
-            this.chkAllSkillsCD.Size = new System.Drawing.Size(164, 30);
+            this.chkAllSkillsCD.Size = new System.Drawing.Size(165, 30);
             this.chkAllSkillsCD.TabIndex = 35;
             this.chkAllSkillsCD.Text = "Wait for all skills to cool down\r\nbefore attacking";
             // 
@@ -3158,7 +3167,7 @@ namespace Grimoire.UI
             this.chkPickupAll.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.chkPickupAll.Location = new System.Drawing.Point(11, 19);
             this.chkPickupAll.Name = "chkPickupAll";
-            this.chkPickupAll.Size = new System.Drawing.Size(101, 17);
+            this.chkPickupAll.Size = new System.Drawing.Size(102, 17);
             this.chkPickupAll.TabIndex = 149;
             this.chkPickupAll.Text = "Pick up all items";
             // 
@@ -3169,7 +3178,7 @@ namespace Grimoire.UI
             this.chkPickup.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkPickup.Location = new System.Drawing.Point(11, 40);
             this.chkPickup.Name = "chkPickup";
-            this.chkPickup.Size = new System.Drawing.Size(113, 17);
+            this.chkPickup.Size = new System.Drawing.Size(114, 17);
             this.chkPickup.TabIndex = 24;
             this.chkPickup.Text = "Pick up whitelisted";
             // 
@@ -3178,7 +3187,7 @@ namespace Grimoire.UI
             this.chkReject.AutoSize = true;
             this.chkReject.Location = new System.Drawing.Point(11, 82);
             this.chkReject.Name = "chkReject";
-            this.chkReject.Size = new System.Drawing.Size(129, 17);
+            this.chkReject.Size = new System.Drawing.Size(130, 17);
             this.chkReject.TabIndex = 25;
             this.chkReject.Text = "Reject non-whitelisted";
             // 
@@ -3187,7 +3196,7 @@ namespace Grimoire.UI
             this.chkPickupAcTag.AutoSize = true;
             this.chkPickupAcTag.Location = new System.Drawing.Point(11, 61);
             this.chkPickupAcTag.Name = "chkPickupAcTag";
-            this.chkPickupAcTag.Size = new System.Drawing.Size(134, 17);
+            this.chkPickupAcTag.Size = new System.Drawing.Size(135, 17);
             this.chkPickupAcTag.TabIndex = 157;
             this.chkPickupAcTag.Text = "Pick up ac-tagged only";
             // 
@@ -3206,7 +3215,7 @@ namespace Grimoire.UI
             this.chkBankOnStop.AutoSize = true;
             this.chkBankOnStop.Location = new System.Drawing.Point(11, 103);
             this.chkBankOnStop.Name = "chkBankOnStop";
-            this.chkBankOnStop.Size = new System.Drawing.Size(93, 17);
+            this.chkBankOnStop.Size = new System.Drawing.Size(94, 17);
             this.chkBankOnStop.TabIndex = 148;
             this.chkBankOnStop.Text = "Bank on Stop ";
             this.chkBankOnStop.CheckedChanged += new System.EventHandler(this.chkBankOnStop_CheckedChanged);
@@ -3251,7 +3260,7 @@ namespace Grimoire.UI
             this.chkRejectAll.Enabled = false;
             this.chkRejectAll.Location = new System.Drawing.Point(11, 124);
             this.chkRejectAll.Name = "chkRejectAll";
-            this.chkRejectAll.Size = new System.Drawing.Size(96, 17);
+            this.chkRejectAll.Size = new System.Drawing.Size(97, 17);
             this.chkRejectAll.TabIndex = 150;
             this.chkRejectAll.Text = "Reject all items";
             this.chkRejectAll.Visible = false;
@@ -3555,7 +3564,7 @@ namespace Grimoire.UI
             this.tabMap.Margin = new System.Windows.Forms.Padding(0);
             this.tabMap.Name = "tabMap";
             this.tabMap.Padding = new System.Windows.Forms.Padding(3);
-            this.tabMap.Size = new System.Drawing.Size(192, 73);
+            this.tabMap.Size = new System.Drawing.Size(509, 317);
             this.tabMap.TabIndex = 2;
             this.tabMap.Text = "Map";
             // 
@@ -3849,7 +3858,7 @@ namespace Grimoire.UI
             this.chkEnsureComplete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
             this.chkEnsureComplete.Location = new System.Drawing.Point(144, 72);
             this.chkEnsureComplete.Name = "chkEnsureComplete";
-            this.chkEnsureComplete.Size = new System.Drawing.Size(58, 17);
+            this.chkEnsureComplete.Size = new System.Drawing.Size(59, 17);
             this.chkEnsureComplete.TabIndex = 14;
             this.chkEnsureComplete.Text = "Ensure";
             this.chkEnsureComplete.Visible = false;
@@ -3926,7 +3935,7 @@ namespace Grimoire.UI
             this.chkQuestItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
             this.chkQuestItem.Location = new System.Drawing.Point(144, 19);
             this.chkQuestItem.Name = "chkQuestItem";
-            this.chkQuestItem.Size = new System.Drawing.Size(59, 17);
+            this.chkQuestItem.Size = new System.Drawing.Size(60, 17);
             this.chkQuestItem.TabIndex = 9;
             this.chkQuestItem.Text = "Item ID";
             this.chkQuestItem.CheckedChanged += new System.EventHandler(this.chkQuestItem_CheckedChanged);
@@ -4000,7 +4009,7 @@ namespace Grimoire.UI
             this.tabMisc.Margin = new System.Windows.Forms.Padding(0);
             this.tabMisc.Name = "tabMisc";
             this.tabMisc.Padding = new System.Windows.Forms.Padding(3);
-            this.tabMisc.Size = new System.Drawing.Size(192, 73);
+            this.tabMisc.Size = new System.Drawing.Size(509, 317);
             this.tabMisc.TabIndex = 4;
             this.tabMisc.Text = "Misc";
             // 
@@ -4585,7 +4594,7 @@ namespace Grimoire.UI
             this.tabMisc2.Margin = new System.Windows.Forms.Padding(0);
             this.tabMisc2.Name = "tabMisc2";
             this.tabMisc2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabMisc2.Size = new System.Drawing.Size(192, 73);
+            this.tabMisc2.Size = new System.Drawing.Size(509, 317);
             this.tabMisc2.TabIndex = 8;
             this.tabMisc2.Text = "Misc 2";
             // 
@@ -4622,7 +4631,7 @@ namespace Grimoire.UI
             this.chkSkip.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkSkip.Location = new System.Drawing.Point(6, 52);
             this.chkSkip.Name = "chkSkip";
-            this.chkSkip.Size = new System.Drawing.Size(145, 17);
+            this.chkSkip.Size = new System.Drawing.Size(146, 17);
             this.chkSkip.TabIndex = 62;
             this.chkSkip.Text = "Skip bot delay for index/if";
             this.chkSkip.CheckedChanged += new System.EventHandler(this.chkSkip_CheckedChanged);
@@ -4675,7 +4684,7 @@ namespace Grimoire.UI
             this.chkRestartDeath.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkRestartDeath.Location = new System.Drawing.Point(6, 70);
             this.chkRestartDeath.Name = "chkRestartDeath";
-            this.chkRestartDeath.Size = new System.Drawing.Size(132, 17);
+            this.chkRestartDeath.Size = new System.Drawing.Size(133, 17);
             this.chkRestartDeath.TabIndex = 116;
             this.chkRestartDeath.Text = "Restart bot upon dying";
             // 
@@ -4809,9 +4818,9 @@ namespace Grimoire.UI
             // 
             this.chkMerge.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkMerge.AutoSize = true;
-            this.chkMerge.Location = new System.Drawing.Point(384, 56);
+            this.chkMerge.Location = new System.Drawing.Point(700, 56);
             this.chkMerge.Name = "chkMerge";
-            this.chkMerge.Size = new System.Drawing.Size(55, 17);
+            this.chkMerge.Size = new System.Drawing.Size(56, 17);
             this.chkMerge.TabIndex = 115;
             this.chkMerge.Text = "Merge";
             // 
@@ -5258,7 +5267,7 @@ namespace Grimoire.UI
             this.chkUntarget.AutoSize = true;
             this.chkUntarget.Location = new System.Drawing.Point(162, 172);
             this.chkUntarget.Name = "chkUntarget";
-            this.chkUntarget.Size = new System.Drawing.Size(85, 17);
+            this.chkUntarget.Size = new System.Drawing.Size(86, 17);
             this.chkUntarget.TabIndex = 154;
             this.chkUntarget.Text = "Untarget self";
             this.chkUntarget.CheckedChanged += new System.EventHandler(this.chkUntarget_CheckedChanged);
@@ -5268,7 +5277,7 @@ namespace Grimoire.UI
             this.chkEnableSettings.AutoSize = true;
             this.chkEnableSettings.Location = new System.Drawing.Point(162, 223);
             this.chkEnableSettings.Name = "chkEnableSettings";
-            this.chkEnableSettings.Size = new System.Drawing.Size(96, 30);
+            this.chkEnableSettings.Size = new System.Drawing.Size(97, 30);
             this.chkEnableSettings.TabIndex = 132;
             this.chkEnableSettings.Text = "Enable options\r\nwithout starting";
             this.chkEnableSettings.Click += new System.EventHandler(this.chkEnableSettings_Click);
@@ -5278,7 +5287,7 @@ namespace Grimoire.UI
             this.chkDisableAnims.AutoSize = true;
             this.chkDisableAnims.Location = new System.Drawing.Point(162, 134);
             this.chkDisableAnims.Name = "chkDisableAnims";
-            this.chkDisableAnims.Size = new System.Drawing.Size(121, 17);
+            this.chkDisableAnims.Size = new System.Drawing.Size(122, 17);
             this.chkDisableAnims.TabIndex = 131;
             this.chkDisableAnims.Text = "Disable player anims";
             this.chkDisableAnims.CheckedChanged += new System.EventHandler(this.chkDisableAnims_CheckedChanged);
@@ -5393,7 +5402,7 @@ namespace Grimoire.UI
             this.chkSkipCutscenes.AutoSize = true;
             this.chkSkipCutscenes.Location = new System.Drawing.Point(162, 115);
             this.chkSkipCutscenes.Name = "chkSkipCutscenes";
-            this.chkSkipCutscenes.Size = new System.Drawing.Size(98, 17);
+            this.chkSkipCutscenes.Size = new System.Drawing.Size(99, 17);
             this.chkSkipCutscenes.TabIndex = 121;
             this.chkSkipCutscenes.Text = "Skip cutscenes";
             this.chkSkipCutscenes.CheckedChanged += new System.EventHandler(this.chkSkipCutscenes_CheckedChanged);
@@ -5403,7 +5412,7 @@ namespace Grimoire.UI
             this.chkHidePlayers.AutoSize = true;
             this.chkHidePlayers.Location = new System.Drawing.Point(162, 95);
             this.chkHidePlayers.Name = "chkHidePlayers";
-            this.chkHidePlayers.Size = new System.Drawing.Size(83, 17);
+            this.chkHidePlayers.Size = new System.Drawing.Size(84, 17);
             this.chkHidePlayers.TabIndex = 120;
             this.chkHidePlayers.Text = "Hide players";
             this.chkHidePlayers.CheckedChanged += new System.EventHandler(this.chkHidePlayers_CheckedChanged);
@@ -5413,7 +5422,7 @@ namespace Grimoire.UI
             this.chkLag.AutoSize = true;
             this.chkLag.Location = new System.Drawing.Point(162, 75);
             this.chkLag.Name = "chkLag";
-            this.chkLag.Size = new System.Drawing.Size(67, 17);
+            this.chkLag.Size = new System.Drawing.Size(68, 17);
             this.chkLag.TabIndex = 119;
             this.chkLag.Text = "Lag killer";
             this.chkLag.CheckedChanged += new System.EventHandler(this.chkLag_CheckedChanged);
@@ -5423,7 +5432,7 @@ namespace Grimoire.UI
             this.chkMagnet.AutoSize = true;
             this.chkMagnet.Location = new System.Drawing.Point(162, 54);
             this.chkMagnet.Name = "chkMagnet";
-            this.chkMagnet.Size = new System.Drawing.Size(95, 17);
+            this.chkMagnet.Size = new System.Drawing.Size(96, 17);
             this.chkMagnet.TabIndex = 118;
             this.chkMagnet.Text = "Enemy magnet";
             this.chkMagnet.CheckedChanged += new System.EventHandler(this.chkMagnet_CheckedChanged);
@@ -5433,7 +5442,7 @@ namespace Grimoire.UI
             this.chkProvoke.AutoSize = true;
             this.chkProvoke.Location = new System.Drawing.Point(162, 34);
             this.chkProvoke.Name = "chkProvoke";
-            this.chkProvoke.Size = new System.Drawing.Size(110, 17);
+            this.chkProvoke.Size = new System.Drawing.Size(111, 17);
             this.chkProvoke.TabIndex = 117;
             this.chkProvoke.Text = "Provoke monsters";
             this.chkProvoke.CheckedChanged += new System.EventHandler(this.chkProvoke_CheckedChanged);
@@ -5443,7 +5452,7 @@ namespace Grimoire.UI
             this.chkInfiniteRange.AutoSize = true;
             this.chkInfiniteRange.Location = new System.Drawing.Point(162, 15);
             this.chkInfiniteRange.Name = "chkInfiniteRange";
-            this.chkInfiniteRange.Size = new System.Drawing.Size(119, 17);
+            this.chkInfiniteRange.Size = new System.Drawing.Size(120, 17);
             this.chkInfiniteRange.TabIndex = 116;
             this.chkInfiniteRange.Text = "Infinite attack range";
             this.chkInfiniteRange.CheckedChanged += new System.EventHandler(this.chkInfiniteRange_CheckedChanged);
@@ -5469,7 +5478,7 @@ namespace Grimoire.UI
             this.chkAFK.Enabled = false;
             this.chkAFK.Location = new System.Drawing.Point(3, 62);
             this.chkAFK.Name = "chkAFK";
-            this.chkAFK.Size = new System.Drawing.Size(99, 17);
+            this.chkAFK.Size = new System.Drawing.Size(100, 17);
             this.chkAFK.TabIndex = 159;
             this.chkAFK.Text = "Relogin on AFK";
             this.chkAFK.CheckedChanged += new System.EventHandler(this.chkAFK_CheckedChanged);
@@ -5490,7 +5499,7 @@ namespace Grimoire.UI
             this.chkRelogRetry.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
             this.chkRelogRetry.Location = new System.Drawing.Point(3, 118);
             this.chkRelogRetry.Name = "chkRelogRetry";
-            this.chkRelogRetry.Size = new System.Drawing.Size(142, 17);
+            this.chkRelogRetry.Size = new System.Drawing.Size(143, 17);
             this.chkRelogRetry.TabIndex = 88;
             this.chkRelogRetry.Text = "Relog again if in battleon";
             // 
@@ -5499,7 +5508,7 @@ namespace Grimoire.UI
             this.chkRelog.AutoSize = true;
             this.chkRelog.Location = new System.Drawing.Point(3, 43);
             this.chkRelog.Name = "chkRelog";
-            this.chkRelog.Size = new System.Drawing.Size(81, 17);
+            this.chkRelog.Size = new System.Drawing.Size(82, 17);
             this.chkRelog.TabIndex = 1;
             this.chkRelog.Text = "Auto relogin";
             this.chkRelog.CheckedChanged += new System.EventHandler(this.chkRelog_CheckedChanged);
@@ -5553,7 +5562,7 @@ namespace Grimoire.UI
             this.chkGender.AutoSize = true;
             this.chkGender.Location = new System.Drawing.Point(162, 153);
             this.chkGender.Name = "chkGender";
-            this.chkGender.Size = new System.Drawing.Size(88, 17);
+            this.chkGender.Size = new System.Drawing.Size(89, 17);
             this.chkGender.TabIndex = 137;
             this.chkGender.Text = "Gender swap";
             this.chkGender.CheckedChanged += new System.EventHandler(this.changeGenderAsync);
@@ -5579,7 +5588,7 @@ namespace Grimoire.UI
             this.tabOptions2.Margin = new System.Windows.Forms.Padding(0);
             this.tabOptions2.Name = "tabOptions2";
             this.tabOptions2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabOptions2.Size = new System.Drawing.Size(509, 317);
+            this.tabOptions2.Size = new System.Drawing.Size(192, 73);
             this.tabOptions2.TabIndex = 7;
             this.tabOptions2.Text = "Client";
             this.tabOptions2.Click += new System.EventHandler(this.tabOptions2_Click);
@@ -5720,7 +5729,7 @@ namespace Grimoire.UI
             this.chkToggleMute.AutoSize = true;
             this.chkToggleMute.Location = new System.Drawing.Point(168, 289);
             this.chkToggleMute.Name = "chkToggleMute";
-            this.chkToggleMute.Size = new System.Drawing.Size(85, 17);
+            this.chkToggleMute.Size = new System.Drawing.Size(86, 17);
             this.chkToggleMute.TabIndex = 6;
             this.chkToggleMute.Text = "Toggle Mute";
             this.chkToggleMute.CheckedChanged += new System.EventHandler(this.chkToggleMute_CheckedChanged);
@@ -5813,7 +5822,7 @@ namespace Grimoire.UI
             this.chkChangeRoomTag.AutoSize = true;
             this.chkChangeRoomTag.Location = new System.Drawing.Point(168, 238);
             this.chkChangeRoomTag.Name = "chkChangeRoomTag";
-            this.chkChangeRoomTag.Size = new System.Drawing.Size(106, 17);
+            this.chkChangeRoomTag.Size = new System.Drawing.Size(107, 17);
             this.chkChangeRoomTag.TabIndex = 144;
             this.chkChangeRoomTag.Text = "Anonymous room";
             this.chkChangeRoomTag.CheckedChanged += new System.EventHandler(this.chkChangeRoomTag_CheckedChanged);
@@ -5823,7 +5832,7 @@ namespace Grimoire.UI
             this.chkChangeChat.AutoSize = true;
             this.chkChangeChat.Location = new System.Drawing.Point(168, 261);
             this.chkChangeChat.Name = "chkChangeChat";
-            this.chkChangeChat.Size = new System.Drawing.Size(104, 17);
+            this.chkChangeChat.Size = new System.Drawing.Size(105, 17);
             this.chkChangeChat.TabIndex = 144;
             this.chkChangeChat.Text = "Anonymous chat";
             this.chkChangeChat.CheckedChanged += new System.EventHandler(this.chkChangeChat_CheckedChanged);
@@ -5833,7 +5842,7 @@ namespace Grimoire.UI
             this.chkHideYulgarPlayers.AutoSize = true;
             this.chkHideYulgarPlayers.Location = new System.Drawing.Point(6, 238);
             this.chkHideYulgarPlayers.Name = "chkHideYulgarPlayers";
-            this.chkHideYulgarPlayers.Size = new System.Drawing.Size(125, 17);
+            this.chkHideYulgarPlayers.Size = new System.Drawing.Size(126, 17);
             this.chkHideYulgarPlayers.TabIndex = 144;
             this.chkHideYulgarPlayers.Text = "Hide Players Upstairs";
             this.chkHideYulgarPlayers.CheckedChanged += new System.EventHandler(this.chkHideYulgarPlayers_CheckedChanged);
@@ -5843,7 +5852,7 @@ namespace Grimoire.UI
             this.chkAntiAfk.AutoSize = true;
             this.chkAntiAfk.Location = new System.Drawing.Point(6, 261);
             this.chkAntiAfk.Name = "chkAntiAfk";
-            this.chkAntiAfk.Size = new System.Drawing.Size(66, 17);
+            this.chkAntiAfk.Size = new System.Drawing.Size(67, 17);
             this.chkAntiAfk.TabIndex = 144;
             this.chkAntiAfk.Text = "Anti-AFK";
             this.chkAntiAfk.CheckedChanged += new System.EventHandler(this.chkAntiAfk_CheckedChanged);
@@ -6194,7 +6203,7 @@ namespace Grimoire.UI
             this.chkAll.Location = new System.Drawing.Point(76, 50);
             this.chkAll.Name = "chkAll";
             this.chkAll.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.chkAll.Size = new System.Drawing.Size(36, 17);
+            this.chkAll.Size = new System.Drawing.Size(37, 17);
             this.chkAll.TabIndex = 168;
             this.chkAll.Text = "All";
             // 
