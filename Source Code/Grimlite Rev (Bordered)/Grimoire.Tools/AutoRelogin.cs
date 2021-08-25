@@ -105,5 +105,16 @@ namespace Grimoire.Tools
                 Player.Logout();
             }
         }
+
+        public static Server[] ServersList;
+        public static void ListServers(Server[] servers)
+        {
+            ServersList = servers;
+        }
+
+        public static Server[] getServerList()
+        {
+            return ServersList;
+        }
     }
 }
