@@ -58,5 +58,8 @@ Changes:
 - Logs panel can now register texts without it being opened.
 - Stop button on the strip menu is now properly synchronized to the commands in the Bot Manager.
 - Information box in the bot manager window does no longer disappear upon starting the bot.
+- Load Bank function now closes the Bank after opening it.
+- Return command does no longer load the Bank.
+- Load Bot command does no longer load the Bank.
 - Removed “Whitelist Toggle” command.
 - Removed “Aggromon Toggle” command.
