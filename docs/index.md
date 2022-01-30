@@ -24,7 +24,7 @@ This version offers a huge variance of changes that affects both the bot client 
 - Fixed the Hide Players feature for not hiding players whenever the player moves to another cell.
 - Fixed the Disable Player Animation feature for not disabling the player's skill animation properly.
 - Changes to backend for less CPU/Memory usage.
-- Changes to UI.
+- Changes to UI. <br />
 #### **Skyguard Build - 13 January 2022**
 Starting from this version, the client does no longer utilize proxy. Also the client now has a build tag with its own login background for each of their version.
 - Packets and bot handlers now utilize the game's SFS functions.
