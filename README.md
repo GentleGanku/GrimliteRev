@@ -2,7 +2,8 @@
 A revisioned version of Grimlite, an AQW Bot Client. <br /> <br />
 Support the project by donating here: https://paypal.me/GentleGanku
 # Latest Version
-The latest version as of now is the Grimlite Rev v1.3 - Skyguard Build. See the rest of the versions here: https://github.com/GentleGanku/GrimliteRev/releases
+The latest version as of now is the Grimlite Rev v1.3 - Skywalker Build (30012022): https://github.com/GentleGanku/GrimliteRev/releases/latest <br /> <br />
+See the rest of the versions here: https://github.com/GentleGanku/GrimliteRev/releases
 # Updates
 Occasionally the updates gets to be done whenever I have the ideas along with the motivation and time to do them. Currently there are some being worked on, and some being considered to be built in.
 # How to Use:
