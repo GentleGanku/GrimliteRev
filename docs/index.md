@@ -1,10 +1,10 @@
 # Grimlite Rev v1.3
 This version offers a huge variance of changes that affects both the bot client and the botting game, from performance to functionality. 
-## Changelog
-#### **Skywalker Build**
+## Changelog <br />
+  #### **Skywalker Build** <br />
 ###### 1 February 2022:
 - Application does no longer stay (always) on top of the currently occupied windows. Instead, it opens on top of them upon launch and can be side-tabbed after.
-- Small changes to backend.
+- Small changes to backend. <br />
 ###### 30 January 2022:
 - Application now opens on top of the currently opened windows upon launch.
 - Application now does a version check, and sends a message for whether you want to download the latest version or not if the build is outdated. Executed only when you open the client or the About panel.
