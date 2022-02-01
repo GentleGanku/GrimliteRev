@@ -1,7 +1,7 @@
 # Grimlite Rev v1.3
 This version offers a huge variance of changes that affects both the bot client and the botting game, from performance to functionality. 
 ## Changelog <br />
-  #### **Skywalker Build** <br />
+#### **Skywalker Build**
 ###### 1 February 2022:
 - Application does no longer stay (always) on top of the currently occupied windows. Instead, it opens on top of them upon launch and can be side-tabbed after.
 - Small changes to backend. <br />
@@ -30,7 +30,7 @@ This version offers a huge variance of changes that affects both the bot client 
 - Changes to backend for less CPU/Memory usage.
 - Changes to UI. <br /> <br />
 #### **Skyguard Build**
-###### 13 January 2022
+###### 13 January 2022:
 Starting from this version, the client does no longer utilize proxy. Also the client now has a build tag with its own login background for each of their version.
 - Packets and bot handlers now utilize the game's SFS functions.
 - Whitelist's Drop Rejection feature now utilize the game's drop interface system. If enabled, the custom drop interface will be automatically opened when the bot starts.
