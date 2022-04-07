@@ -2,6 +2,15 @@
 This version offers a huge variance of changes that affects both the bot client and the botting game, from performance to functionality. 
 ## Changelog <br />
 #### **Skymeister Build**
+###### 7 April 2022:
+- All panels beside the main one is now always on-top.
+- Application's main panel now opens on top of windows with a different behaviour.
+- Fixed a backend property for not working properly.
+- Fixed the Pads' dropdown list returning an error when you're in the loading screen.
+- Fixed the Bot Manager panel not hiding itself properly when you start the bot without opening the panel first.
+- Fixed the Provoke in Map command not utilizing the custom aggromon packet.
+- Fixed the Ping Monitor function executing even when the Ping box is not visible.
+- Ping Monitor's timer is now on 10 seconds, instead of 6 seconds. <br />
 ###### 6 April 2022:
 - Application now does a Flash plugin check, and sends a message if the plugin has not been installed. Executed only when you open the client.
 - Application's panels do no longer stay (always) on top of the currently occupied windows. Instead, it opens on top of them upon launch and can be side-tabbed after. This excludes the Bot Manager.
