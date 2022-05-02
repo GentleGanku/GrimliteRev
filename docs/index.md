@@ -2,6 +2,16 @@
 This version offers a huge variance of changes that affects both the bot client and the botting game, from performance to functionality. 
 ## Changelog <br />
 #### **Skymeister Build**
+###### 2 May 2022:
+- Fixed the Buy Item commands not executing properly for unstackable items.
+- Fixed the Skill Set system using randomized skills when there's a custom Skill Set being used.
+- Fixed the Manual Buy Item functions for not executing properly.
+- Fixed the Quest List/Drop List commands for not executing properly.
+- Fixed the Anti-Counter Attack function for not executing on some cases.
+- Improved the Quest List system.
+- Improved backend code.
+- Reworked the Move to Cell function. Now moves to an empty cell (a cell without any monster) if the targeted cell is either Wait or Blank. If such empty cell doesn't exist, it will instead move to Enter cell.
+- Auto Relogin and Immediate Login will now connect you to the server with the highest player count (next to the potentially full servers). This only applies if the targeted server is a potentially full one. 
 ###### 7 April 2022:
 - All panels beside the main one is now always on-top.
 - Application's main panel now opens on top of windows with a different behaviour.
