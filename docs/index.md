@@ -2,6 +2,19 @@
 This version offers a huge variance of changes that affects both the bot client and the botting game, from performance to functionality. 
 ## Changelog <br />
 #### **Skymeister Build**
+###### 5 May 2022:
+- Fixed and improved the Bank Items system (however it will still require you to relog if you wish to put the recently-unbanked items back to the bank, as those items' coin tag isn't registered).
+- Fixed the Quest List system.
+- Fixed the Kill For Item/TempItem bot command.
+- Fixed the Kill bot commands not using skills properly on some cases.
+- Fixed the Chat Command for Combat not executing properly on some cases.
+- Fixed the Anti-Counter Attack function not executing properly on some cases.
+- Fixed the Anti-AFK function not cancelling AFK state on some cases.
+- Fixed the bot commands with the Cell prompt for registering the incorrect Cell value.
+- Fixed the bot commands with the Quest prompt for not loading the targeted quest if it hasn't been pre-loaded.
+- Improved backend code.
+- Quest Preload function will no longer scan a Quest-related bot command if it has a Variable value.
+- Ping Monitor will no longer send a ping scan (as it cancels AFK state) whenever the player goes AFK. <br />
 ###### 2 May 2022:
 - Fixed the Buy Item commands not executing properly for unstackable items.
 - Fixed the Skill Set system using randomized skills when there's a custom Skill Set being used.
@@ -11,7 +24,7 @@ This version offers a huge variance of changes that affects both the bot client 
 - Improved the Quest List system.
 - Improved backend code.
 - Reworked the Move to Cell function. Now moves to an empty cell (a cell without any monster) if the targeted cell is either Wait or Blank. If such empty cell doesn't exist, it will instead move to Enter cell.
-- Auto Relogin and Immediate Login will now connect you to the server with the highest player count (next to the potentially full servers). This only applies if the targeted server is a potentially full one. 
+- Auto Relogin and Immediate Login will now connect you to the server with the highest player count (next to the potentially full servers). This only applies if the targeted server is a potentially full one. <br />
 ###### 7 April 2022:
 - All panels beside the main one is now always on-top.
 - Application's main panel now opens on top of windows with a different behaviour.
