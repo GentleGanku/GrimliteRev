@@ -2,6 +2,8 @@
 This version offers a huge variance of changes that affects both the bot client and the botting game, from performance to functionality. 
 ## Changelog <br />
 #### **Skymeister Build**
+###### 8 May 2022:
+- Bug fixes and updates to backend code <br />
 ###### 5 May 2022:
 - Fixed and improved the Bank Items system (however it will still require you to relog if you wish to put the recently-unbanked items back to the bank, as those items' coin tag isn't registered).
 - Fixed the Quest List system.
