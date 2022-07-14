@@ -1,6 +1,13 @@
 # Grimlite Rev v1.3
 This version offers a huge variance of changes that affects both the bot client and the botting game, from performance to functionality. 
 ## Changelog <br />
+#### **1.3.4**
+###### 14 July 2022
+- Changes to how the game client interacts with the external links. Improves performance in general.
+- Bot commands/statements that are based on movement no longer relies on Safe/Wait/Blank cells. Replaced with Enter cell. This change is due to some users who experiences the client crashes.
+- Loading the Awe Shops through the Fast Travels will no longer require you to join the Museum beforehand.
+- Removed Flash's EoL bypass due to it being redundant and no longer needed.
+- Fixed the Custom Travels not registering the targeted Room Number properly. <br />
 #### **Skymeister Build**
 ###### 8 May 2022:
 - Bug fixes and updates to backend code <br />
