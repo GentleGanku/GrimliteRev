@@ -1,0 +1,11 @@
+# Store text files with LF line endings in the repository.
+* text=auto
+
+# Mark binaries so git never diffs or converts them.
+*.dll binary
+*.exe binary
+*.swf binary
+*.fla binary
+*.rar binary
+*.ico binary
+*.png binary
