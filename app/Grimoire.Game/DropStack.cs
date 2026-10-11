@@ -1,0 +1,150 @@
+using Grimoire.Botting;
+using Grimoire.Game.Data;
+using Grimoire.Tools;
+using Grimoire.UI;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Grimoire.Game
+{
+    public class DropStack : IReadOnlyList<InventoryItem>, IReadOnlyCollection<InventoryItem>, IEnumerable<InventoryItem>, IEnumerable
+    {
+        private readonly List<InventoryItem> _drops = new List<InventoryItem>();
+
+        private readonly List<KeyValuePair<int, Stopwatch>> _cooldown = new List<KeyValuePair<int, Stopwatch>>();
+
+        public List<string> MarkedDrops { get; set; } = new List<string>();
+
+        public bool InProcess { get; set; } = false;
+
+        public int Count => _drops.Count;
+
+        public InventoryItem this[int index]
+        {
+            get
+            {
+                if (index >= _drops.Count)
+                {
+                    return null;
+                }
+                return _drops[index];
+            }
+        }
+
+        public DropStack()
+        {
+            World.ItemDropped += OnItemDropped;
+        }
+
+        public IEnumerator<InventoryItem> GetEnumerator()
+        {
+            return _drops.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        private void OnItemDropped(InventoryItem item)
+        {
+            if (_drops.All((InventoryItem d) => d.Id != item.Id))
+            {
+                _drops.Add(item);
+            }
+        }
+
+        public async Task<bool> GetDrop(string itemName)
+        {
+            InventoryItem inventoryItem = _drops.FirstOrDefault((InventoryItem d) => d.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
+            bool flag = inventoryItem != null;
+            if (flag)
+            {
+                flag = await GetDrop(inventoryItem.Id);
+            }
+            return flag;
+        }
+
+        public async Task<bool> RemoveAll(int itemId)
+        {
+            if (Contains(itemId))
+            {
+                _drops.RemoveAll((InventoryItem d) => d.Id == itemId);
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> GetDrop(int itemId)
+        {
+            if (Contains(itemId))
+            {
+                InventoryItem drop = _drops.FirstOrDefault((InventoryItem d) => d.Id == itemId);
+                InProcess = true;
+                Player.AcceptDrop(itemId);
+                await BotManager.Instance.ActiveBotEngine.WaitUntil(() => !World.DropStack.Contains(drop.Name), null, 6, 500);
+                InProcess = false;
+                return true;
+            }
+            return false;
+        }
+
+        public bool Contains(int itemId)
+        {
+            return _drops.FirstOrDefault((InventoryItem d) => d.Id == itemId) != null;
+        }
+
+        public bool Contains(string itemName)
+        {
+            return ((_drops.FirstOrDefault((InventoryItem d) => d.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase)) != null) || (Bot.Instance.HasDropInInventory(itemName)));
+        }
+
+        //public async Task AcceptMarkedDrops()
+        //{
+        //    while (BotManager.Instance.ActiveBotEngine.IsRunning)
+        //    {
+        //        Configuration configuration = BotManager.Instance.ActiveBotEngine.Configuration;
+        //        if (configuration.Drops.Count > 0)
+        //        {
+        //            foreach (string item in MarkedDrops)
+        //            {
+        //                string itemName = item.Split(',')[0];
+        //                int itemID = int.Parse(item.Split(',')[1]);
+        //                bool configDrop = configuration.Drops.Any((string d) => d.Equals(itemName, StringComparison.OrdinalIgnoreCase));
+        //                bool configPickupCheck = (configuration.EnablePickupAll || (configuration.EnablePickup && configDrop) || configuration.EnablePickupAcTagged) ? true : false;
+        //                if (configPickupCheck && Contains(itemID))
+        //                {
+        //                    await BotManager.Instance.ActiveBotEngine.WaitUntil(() => !InProcess, null, 360, 500);
+        //                    Player.AcceptDrop(itemID);
+        //                    await Task.Delay(360);
+        //                }
+        //            }
+        //        }
+        //        await Task.Delay(100);
+        //    }
+        //}
+
+        public async Task RejectDrops()
+        {
+            while (BotManager.Instance.ActiveBotEngine.IsRunning && BotManager.Instance.ActiveBotEngine.Configuration.EnableRejection)
+            {
+                Configuration configuration = BotManager.Instance.ActiveBotEngine.Configuration;
+                string wlArray;
+                if (configuration.Drops.Count > 0)
+                {
+                    string[] whitelisted = configuration.Drops.ToArray();
+                    wlArray = string.Join(",", whitelisted).ToLower();
+                }
+                else
+                    wlArray = "";
+                Flash.Call("RejectDrop", wlArray);
+                await Task.Delay(100);
+            }
+        }
+
+    }
+}

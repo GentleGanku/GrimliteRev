@@ -1,0 +1,88 @@
+using Grimoire.Botting;
+using Grimoire.Tools;
+using Grimoire.UI;
+using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace Grimoire.Game.Data
+{
+    public class Bank
+    {
+        public List<InventoryItem> Items => Flash.Call<List<InventoryItem>>("GetBankItems", new string[0]);
+        //public List<InventoryItem> Items => Player.Self.Extended.Bank;
+
+        public List<InventoryItem> SavedItems;
+
+        public int AvailableSlots => TotalSlots - UsedSlots;
+
+        public int UsedSlots => Flash.Call<int>("UsedBankSlots", new string[0]);
+
+        public int TotalSlots => Flash.Call<int>("BankSlots", new string[0]);
+
+        public async Task TransferToBank(string itemName)
+        {
+            if (!Player.Bank.ContainsItem(itemName))
+            {
+                await BotUtilities.MoveOutOfCombat();
+                Flash.Call("Transfer", "Bank", itemName);
+                await BotManager.Instance.ActiveBotEngine.WaitUntil(() => Player.Bank.ContainsItem(itemName), null, 6, 500);
+            }
+        }
+
+        public async Task TransferFromBank(string itemName)
+        {
+            if (Player.Bank.ContainsItem(itemName))
+            {
+                await BotUtilities.MoveOutOfCombat();
+                Flash.Call("Transfer", "Inventory", itemName);
+                await BotManager.Instance.ActiveBotEngine.WaitUntil(() => !Player.Bank.ContainsItem(itemName), null, 6, 500);
+            }
+        }
+
+        public async Task Swap(string invItemName, string bankItemName)
+        {
+            if (ContainsItem(bankItemName) && Player.Inventory.ContainsItem(invItemName, "*"))
+            {
+                await BotUtilities.MoveOutOfCombat();
+                Flash.Call("BankSwap", invItemName, bankItemName);
+                await BotManager.Instance.ActiveBotEngine.WaitUntil(() => !ContainsItem(bankItemName) && !Player.Inventory.ContainsItem(invItemName, "*"), null, 6, 500);
+            }
+        }
+
+        public bool ContainsItem(string itemName, string quantity = "*")
+        {
+            InventoryItem inventoryItem = Items.FirstOrDefault((InventoryItem i) => i.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
+            if (inventoryItem != null)
+            {
+                if (!(quantity == "*"))
+                {
+                    return inventoryItem.Quantity >= int.Parse(quantity);
+                }
+                return true;
+            }
+            return false;
+        }
+
+        public void Show()
+        {
+            Flash.Call("ShowBank", new string[0]);
+        }
+
+        public void Load()
+        {
+            Flash.Call("LoadBank", new string[0]);
+        }
+
+        public void LoadItems()
+        {
+            Flash.Call("LoadBankItems", new string[0]);
+        }
+
+        public bool HasBankOpen => Flash.Call<bool>("HasBankOpen", new bool[0]);
+
+        public bool IsBankLoaded => Flash.Call<bool>("IsBankLoaded", new string[0]);
+
+    }
+}
