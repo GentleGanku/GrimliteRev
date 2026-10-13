@@ -42,8 +42,16 @@ namespace Grimoire.Game.Data
 
         public static bool IsShopLoaded => Flash.Call<bool>("IsShopLoaded", new string[0]);
 
+        public static bool CanBuyItem(string name) => Flash.Call<bool>("CanBuyItem", name);
+
+        public static bool CanBuyItemById(int ItemID, int ShopItemID) => Flash.Call<bool>("CanBuyItemById", ItemID.ToString(), ShopItemID.ToString());
+
         public async static Task BuyItem(string name, bool manual = false)
         {
+            if (!CanBuyItem(name))
+            {
+                return;
+            }
             await BotManager.Instance.ActiveBotEngine.WaitUntil(() => World.IsActionAvailable(LockActions.BuyItem), null, 10, 500);
             await BotUtilities.MoveOutOfCombat();
             InventoryItem i = Player.Inventory.Items.FirstOrDefault((InventoryItem it) => it.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
@@ -61,6 +69,10 @@ namespace Grimoire.Game.Data
 
         public async static Task BuyItemById(int ItemID, int ShopID, int ShopItemID, bool manual = false)
         {
+            if (manual && !CanBuyItemById(ItemID, ShopItemID))
+            {
+                return;
+            }
             await BotManager.Instance.ActiveBotEngine.WaitUntil(() => World.IsActionAvailable(LockActions.BuyItem), null, 10, 500);
             await BotUtilities.MoveOutOfCombat();
             InventoryItem i = Player.Inventory.Items.FirstOrDefault((InventoryItem it) => it.Id == ItemID);

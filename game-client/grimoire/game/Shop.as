@@ -1,7 +1,5 @@
-﻿//grimoire.game.Shops
-package grimoire.game
+﻿package grimoire.game
 {
-	import flash.events.MouseEvent;
     import flash.display.MovieClip;
 	import flash.display.DisplayObject;
     import grimoire.Root;
@@ -46,60 +44,18 @@ package grimoire.game
 		// This function executes by buying the corresponding item from the shop.
         public static function buyItem(itemName:String, byEvent:Boolean=false):void
         {
-			if (!byEvent)
+			var item:Object = getShopItem(itemName.toLowerCase());
+			if (item != null)
 			{
-				var item:Object = getShopItem(itemName.toLowerCase());
-				if (item != null)
+				if (!byEvent)
 				{
 					game.world.sendBuyItemRequest(item);
-				};
-			}
-			else
-			{
-				//openShop();
-				var frames:Array = new Array();
-				var child:MovieClip = (game.ui.mcPopup.getChildByName("mcShop") as MovieClip);
-				var isMergeShop:Boolean = (game.ui.mcPopup.currentLabel == "MergeShop");
-				var childFrame:* = isMergeShop ? child.getChildAt(0) : child.getChildAt(2);
-				var childList:MovieClip = isMergeShop ? childFrame.frames[8].mc.iList : childFrame.frames[5].mc.iList;
-				var childItem:Object;
-				var childItemName:String;
-				var index:int;
-				var i:int = 0;
-				while (i < childList.numChildren)
-				{
-					var childListFrame:* = childList.getChildAt(i);
-					childItem = childListFrame.fData;
-					childItemName = childItem.sName;
-					if (childItemName.indexOf(itemName) > -1)
-                    {
-						if (childItem.iStk > 1)
-						{
-							index = (childItemName.indexOf(" x" + childItem.iQty)) + 100;
-							childItemName = childItemName.slice(0, index);
-						}
-						else if ((childItem.sES == "ar") && (childItem.EnhID > 0))
-						{
-							index = (childItemName.indexOf(", Rank " + childItem.iQty)) + 100;
-							childItemName = childItemName.slice(0, index);
-						}
-						if ((childItemName.toLowerCase() == itemName.toLowerCase()))
-						{
-							childList.getChildAt(i).dispatchEvent(new MouseEvent(MouseEvent.CLICK));
-							if (!isMergeShop)
-							{
-								child.previewPanel.frames[6].mc.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
-							}
-							else
-							{
-								childFrame.frames[12].mc.btn2.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
-							}
-							break;
-						}
-					}
-					i++;
 				}
-			}
+				else
+				{
+					buyByEvent(item);
+				};
+			};
         }
 
 		// This function executes by buying the corresponding item from the shop (by using IDs).
@@ -111,36 +67,49 @@ package grimoire.game
 			}
 			else
 			{
-				//openShop();
-				var frames:Array = new Array();
-				var child:MovieClip = (game.ui.mcPopup.getChildByName("mcShop") as MovieClip);
-				var isMergeShop:Boolean = (game.ui.mcPopup.currentLabel == "MergeShop");
-				var childFrame:* = isMergeShop ? child.getChildAt(0) : child.getChildAt(2);
-				var childList:MovieClip = isMergeShop ? childFrame.frames[8].mc.iList : childFrame.frames[5].mc.iList;
-				var childItem:Object;
-				var i:int = 0;
-				while (i < childList.numChildren)
+				var item:Object = getShopItemByID(itemID, shopItemID);
+				if (item != null)
 				{
-					var childListFrame:* = childList.getChildAt(i);
-					childItem = childListFrame.fData;
-					if ((childItem.ItemID == itemID) && (childItem.ShopItemID == shopItemID))
-					{
-						childList.getChildAt(i).dispatchEvent(new MouseEvent(MouseEvent.CLICK));
-						if (!isMergeShop)
-						{
-							child.previewPanel.frames[6].mc.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
-						}
-						else
-						{
-							childFrame.frames[12].mc.btn2.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
-						}
-						break;
-					}
-					i++;
-				}
+					buyByEvent(item);
+				};
 			}
 		}
-		
+
+		// This function executes by selecting the corresponding item in the shop and buying it without the confirmation prompt.
+		private static function buyByEvent(item:Object):void
+		{
+			var layout:MovieClip = (game.ui.mcPopup.getChildByName("mcShop") as MovieClip);
+			if (layout != null)
+			{
+				layout.update({"eventType":"listItemASel", "fData":item});
+				game.world.sendBuyItemRequestWithQuantity({"accept":true, "iSel":item, "iQty":1});
+			};
+		}
+
+		// This function returns a boolean for whether the corresponding item passes the game client's purchase checks or not.
+		public static function canBuyItem(itemName:String):String
+		{
+			return (isBuyable(getShopItem(itemName.toLowerCase())));
+		}
+
+		// This function returns a boolean for whether the corresponding item passes the game client's purchase checks or not (by using IDs).
+		public static function canBuyItemByID(itemID:int, shopItemID:int):String
+		{
+			return (isBuyable(getShopItemByID(itemID, shopItemID)));
+		}
+
+		// This function returns a boolean for whether the item passes the quest lock and token checks of v4000 or not.
+		private static function isBuyable(item:Object):String
+		{
+			var invCat:* = Root.gameDomain.getDefinition("InvCat");
+			if ((item == null) || invCat.isQuestLocked(item, game.world)
+				|| (invCat.isToken(item) && (invCat.tokenHave(item, game.world) < invCat.tokenNeed(item, ((Number(item.iQty)) || (1))))))
+			{
+				return (Root.falseString);
+			};
+			return (Root.trueString);
+		}
+			
 		// This function returns the item object of the corresponding item name.
         public static function getShopItem(itemName:String):Object
         {
@@ -154,6 +123,20 @@ package grimoire.game
                     return (item);
                 };
                 i++;
+            };
+            return (null);
+        }
+
+		// This function returns the item object of the corresponding item ID and shop item ID.
+        public static function getShopItemByID(itemID:int, shopItemID:int):Object
+        {
+            var item:Object;
+            for each (item in game.world.shopinfo.items)
+            {
+                if ((item.ItemID == itemID) && (item.ShopItemID == shopItemID))
+                {
+                    return (item);
+                };
             };
             return (null);
         }
@@ -192,20 +175,13 @@ package grimoire.game
 		// This function executes by opening the loaded shop.
 		public static function openShop():void
 		{
-			if (game.world.shopinfo.bHouse == 1)
+			if (game.isMergeShop(game.world.shopinfo))
 			{
-				game.ui.mcPopup.fOpen("HouseShop");
+				game.ui.mcPopup.fOpen("MergeShop");
 			}
 			else
 			{
-				if (game.isMergeShop(game.world.shopinfo))
-				{
-					game.ui.mcPopup.fOpen("MergeShop");
-				}
-				else
-				{
-					game.ui.mcPopup.fOpen("Shop");
-				};
+				game.ui.mcPopup.fOpen("Shop");
 			};
 		}
 		

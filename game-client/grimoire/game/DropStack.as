@@ -1,5 +1,4 @@
-﻿//grimoire.game.DropStack
-package grimoire.game
+﻿package grimoire.game
 {
 	import flash.events.MouseEvent;
 	import grimoire.Root;
@@ -59,6 +58,28 @@ package grimoire.game
 		public static function acceptDrop(itemID:int):void
 		{
 			game.sfc.sendXtMessage("zm", "getDrop", [itemID], "str", game.world.curRoom)
+		}
+
+		// This function returns a boolean for whether the game client allows the acceptance of the corresponding drop or not.
+		public static function canAcceptDrop(itemID:int):String
+		{
+			var invCat:* = Root.gameDomain.getDefinition("InvCat");
+			var avatar:* = game.world.myAvatar;
+			var item:Object = game.world.invTree[itemID];
+			var allowed:Boolean;
+			if (item == null)
+			{
+				return (Root.trueString);
+			};
+			if (game.isHouseItem(item))
+			{
+				allowed = (avatar.houseitems.length < avatar.objData.iHouseSlots);
+			}
+			else
+			{
+				allowed = !invCat.isFullFor(avatar.items, item, avatar.objData.iBagSlots);
+			};
+			return (allowed ? Root.trueString : Root.falseString);
 		}
 		
 		// This function executes by rejecting a drop based on the corresponding list.

@@ -174,11 +174,14 @@
             this.addCallback("SellItem", Shop.sellItem);
             this.addCallback("GetShops", Shop.getShops);
             this.addCallback("BuyItem", Shop.buyItem);
+			this.addCallback("CanBuyItem", Shop.canBuyItem);
+			this.addCallback("CanBuyItemById", Shop.canBuyItemByID);
             this.addCallback("LoadShop", Shop.load);
 			///
 			/// DropStack
 			///
 			this.addCallback("AcceptDrop", DropStack.acceptDrop);
+			this.addCallback("CanAcceptDrop", DropStack.canAcceptDrop);
 			this.addCallback("RejectDrop", DropStack.rejectDrop);
 			this.addCallback("HasDrop", DropStack.hasDrop);
 			///
@@ -220,12 +223,15 @@
             this.addCallback("BankSwap", Bank.bankSwap);
 			this.addCallback("LoadBank", Bank.loadBank);
 			this.addCallback("Transfer", Bank.transfer);
+			this.addCallback("CanTransfer", Bank.canTransfer);
+			this.addCallback("CanBankSwap", Bank.canBankSwap);
 			///
 			/// Inventory
 			///
             this.addCallback("UsedInventorySlots", Inventory.usedInventorySlots);
             this.addCallback("GetInventoryItems", Inventory.inventoryItems);
             this.addCallback("InventorySlots", Inventory.inventorySlots);
+			this.addCallback("UsedMiscSlots", Inventory.usedMiscSlots);
 			///
 			/// TempInventory
 			///

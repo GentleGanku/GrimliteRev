@@ -321,6 +321,8 @@ namespace Grimoire.Game
 
         public static void AcceptDrop(int itemID) => Flash.Call("AcceptDrop", itemID);
 
+        public static bool CanAcceptDrop(int itemID) => Flash.Call<bool>("CanAcceptDrop", itemID.ToString());
+
         public static bool HasLoadedAvatar() => Flash.Call<bool>("HasLoadedAvatar", new string[0]);
 
         [ObjectBinding("world.myAvatar.objData.intActivationFlag")]

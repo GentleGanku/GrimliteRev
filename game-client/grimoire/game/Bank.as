@@ -1,9 +1,4 @@
-﻿// Decompiled by AS3 Sorcerer 6.30
-// www.as3sorcerer.com
-
-//grimoire.game.Bank
-
-package grimoire.game
+﻿package grimoire.game
 {
 	import flash.events.Event;
     import grimoire.Root;
@@ -49,6 +44,33 @@ package grimoire.game
             };
         }
 
+		// This function returns a boolean for whether the game client allows the transfer of an item to the bank/inventory or not.
+        public static function canTransfer(target:String, itemName:String):String
+        {
+			var invCat:* = Root.gameDomain.getDefinition("InvCat");
+			var avatar:* = game.world.myAvatar;
+			var label:String = game.ui.mcPopup.currentLabel;
+            var item:Object = (target == "Bank") ? Inventory.getItem(itemName) : getItem(itemName);
+			var allowed:Boolean;
+            if (item == null)
+            {
+				return (Root.falseString);
+            };
+			if (target == "Bank")
+			{
+				allowed = !(invCat.isClass(item) || item.bEquip || ((item.bCoins == 0) && (avatar.iBankCount >= avatar.objData.iBankSlots)));
+			}
+			else if (invCat.isHouse(item))
+			{
+				allowed = (avatar.houseitems.length < avatar.objData.iHouseSlots);
+			}
+			else
+			{
+				allowed = !(((label == "Bank") && invCat.isFullFor(avatar.items, item, avatar.objData.iBagSlots)) || ((label == "HouseBank") && (avatar.houseitems.length >= avatar.objData.iHouseSlots)));
+			};
+            return (allowed ? Root.trueString : Root.falseString);
+        }
+
 		// This function executes by swapping an item with another between the bank and the inventory.
         public static function bankSwap(itemName:String, bItemName:String):void
         {
@@ -58,6 +80,27 @@ package grimoire.game
             {
 				game.world.sendBankSwapInvRequest(bankItem, inventoryItem);
             };
+        }
+
+		// This function returns a boolean for whether the game client allows the swap of an item with another between the bank and the inventory or not.
+        public static function canBankSwap(itemName:String, bItemName:String):String
+        {
+			var invCat:* = Root.gameDomain.getDefinition("InvCat");
+			var avatar:* = game.world.myAvatar;
+            var inventoryItem:Object = Inventory.getItem(itemName);
+			var bankItem:Object = getItem(bItemName);
+            if ((inventoryItem == null) || (bankItem == null))
+            {
+				return (Root.falseString);
+            };
+			if (invCat.isClass(inventoryItem) || inventoryItem.bEquip
+				|| ((inventoryItem.bCoins == 0) && (bankItem.bCoins == 1) && (avatar.iBankCount >= avatar.objData.iBankSlots))
+				|| (invCat.isMisc(bankItem) && !invCat.isMisc(inventoryItem) && invCat.isFullFor(avatar.items, bankItem, avatar.objData.iBagSlots))
+				|| (invCat.isBag(bankItem) && !invCat.isBag(inventoryItem) && (invCat.countBag(avatar.items) >= avatar.objData.iBagSlots)))
+			{
+				return (Root.falseString);
+			};
+            return (Root.trueString);
         }
 
 		// This function returns the item object of the corresponding item name.
@@ -92,7 +135,7 @@ package grimoire.game
 		
 		public static function onBankComplete(e:Event):void
         {
-            game.world.addItemsToBank(JSON.parse(e.target.data));
+            game.onBankComplete(e);
 			loaded = true;
         }
 		/// This function executes by loading the character's bank information. (above)

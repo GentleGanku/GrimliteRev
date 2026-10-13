@@ -23,7 +23,7 @@ namespace Grimoire.Game.Data
 
         public async Task TransferToBank(string itemName)
         {
-            if (!Player.Bank.ContainsItem(itemName))
+            if (!Player.Bank.ContainsItem(itemName) && CanTransfer("Bank", itemName))
             {
                 await BotUtilities.MoveOutOfCombat();
                 Flash.Call("Transfer", "Bank", itemName);
@@ -33,7 +33,7 @@ namespace Grimoire.Game.Data
 
         public async Task TransferFromBank(string itemName)
         {
-            if (Player.Bank.ContainsItem(itemName))
+            if (Player.Bank.ContainsItem(itemName) && CanTransfer("Inventory", itemName))
             {
                 await BotUtilities.MoveOutOfCombat();
                 Flash.Call("Transfer", "Inventory", itemName);
@@ -43,7 +43,7 @@ namespace Grimoire.Game.Data
 
         public async Task Swap(string invItemName, string bankItemName)
         {
-            if (ContainsItem(bankItemName) && Player.Inventory.ContainsItem(invItemName, "*"))
+            if (ContainsItem(bankItemName) && Player.Inventory.ContainsItem(invItemName, "*") && CanBankSwap(invItemName, bankItemName))
             {
                 await BotUtilities.MoveOutOfCombat();
                 Flash.Call("BankSwap", invItemName, bankItemName);
@@ -79,6 +79,10 @@ namespace Grimoire.Game.Data
         {
             Flash.Call("LoadBankItems", new string[0]);
         }
+
+        public bool CanTransfer(string target, string itemName) => Flash.Call<bool>("CanTransfer", target, itemName);
+
+        public bool CanBankSwap(string invItemName, string bankItemName) => Flash.Call<bool>("CanBankSwap", invItemName, bankItemName);
 
         public bool HasBankOpen => Flash.Call<bool>("HasBankOpen", new bool[0]);
 

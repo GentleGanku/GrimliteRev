@@ -81,7 +81,7 @@ namespace Grimoire.Game
 
         public async Task<bool> GetDrop(int itemId)
         {
-            if (Contains(itemId))
+            if (Contains(itemId) && Player.CanAcceptDrop(itemId))
             {
                 InventoryItem drop = _drops.FirstOrDefault((InventoryItem d) => d.Id == itemId);
                 InProcess = true;
