@@ -177,9 +177,8 @@
     <Reference Include="Unity3.Eyedropper">
       <HintPath>Dependency\Unity3.Eyedropper.dll</HintPath>
     </Reference>
-    <Reference Include="VisualStudioTabControl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Controls\VisualStudioTabControl\VisualStudioTabControl\bin\Release\VisualStudioTabControl.dll</HintPath>
+    <Reference Include="VisualStudioTabControl">
+      <HintPath>Dependency\VisualStudioTabControl.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,4 @@
-﻿//grimoire.game.TempInventory
-package grimoire.game
+﻿package grimoire.game
 {
     import grimoire.Root;
 

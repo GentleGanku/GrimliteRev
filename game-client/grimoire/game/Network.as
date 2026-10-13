@@ -1,5 +1,4 @@
-﻿//grimoire.game.Network
-package grimoire.game
+﻿package grimoire.game
 {
 	import flash.events.MouseEvent;
     import grimoire.Root;

@@ -1,9 +1,4 @@
-﻿// Decompiled by AS3 Sorcerer 6.30
-// www.as3sorcerer.com
-
-//grimoire.game.Quests
-
-package grimoire.game
+﻿package grimoire.game
 {
     import flash.utils.ByteArray;
     import grimoire.Root;

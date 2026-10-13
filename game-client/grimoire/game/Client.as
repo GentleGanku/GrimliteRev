@@ -1,5 +1,4 @@
-﻿//grimoire.game.Client
-package grimoire.game
+﻿package grimoire.game
 {
 	import flash.ui.Keyboard;
 	import flash.sampler.Sample;
@@ -259,8 +258,8 @@ package grimoire.game
 						if ((text.indexOf("/combat") == 0) || (text.indexOf("/fps") == 0))
 						{
 							closeChat();
-							return;
 						}
+						return;
 					}
 					game.chatF.submitMsg(text, game.chatF.chn.cur.typ, game.chatF.pmNm);
 				};

@@ -17,7 +17,7 @@ namespace Grimoire.Tools
 
         private static Dictionary<string, string> ChatCommands = new Dictionary<string, string>
         {
-                //{ "Help"             , "/help|Brings up information about all chat commands into the chat."},
+                { "Help"             , "/help|Brings up information about all chat commands into the chat."},
                 { "Combat"           , "/combat NAME|Finds and continuously attacks the monster with the NAME (* = any) on randomized skills. Using this without the NAME will stop the combat."},
                 { "Provoke"          , "/provoke ID|Provokes the monster with the monster map ID (up to 100 monsters: \"/provoke 1,2,3\"). Using this without the ID will stop the provoke."},
                 { "LoadQuest"        , "/loadquest ID|Opens the quest with the ID on the Quest menu (up to 30 quests: \"/loadquest 1,2,3\"). Using this without the ID will instead open loaded quests."},

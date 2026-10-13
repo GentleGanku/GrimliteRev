@@ -1,5 +1,4 @@
-﻿//grimoire.game.Player
-package grimoire.game
+﻿package grimoire.game
 {
 	import flash.events.MouseEvent;
     import flash.filters.GlowFilter;
@@ -223,7 +222,7 @@ package grimoire.game
 		// This function executes the game's GoTo function.
         public static function goTo(playerName:String):void
         {
-            game.world.goto(playerName);
+            game.world["goto"](playerName);
         }
 
 		// This function executes by using the corresponding item boost.

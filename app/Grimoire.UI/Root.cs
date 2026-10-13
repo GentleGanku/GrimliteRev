@@ -19,6 +19,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text;
+using Properties;
 
 namespace Grimoire.UI
 {
@@ -1624,9 +1625,8 @@ namespace Grimoire.UI
         {
             if (BotClientConfig.Instance.GetValue<bool>("clientHeaderToggle"))
             {
-                System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Root));
                 this.Text = "";
-                this.Icon = ((System.Drawing.Icon)(resources.GetObject("aeIcon")));
+                this.Icon = ((System.Drawing.Icon)(Resources.aeIcon));
             }
         }
 

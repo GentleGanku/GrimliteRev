@@ -1,5 +1,4 @@
-﻿//grimoire.game.Aura
-package grimoire.game
+﻿package grimoire.game
 {
 	import grimoire.Root;
 	

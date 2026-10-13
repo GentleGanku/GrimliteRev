@@ -23,16 +23,6 @@ namespace Grimoire.Networking.Handlers
 
         private static CancellationTokenSource _cts = new CancellationTokenSource();
 
-        private List<string> eventModifiers = new List<string>
-        {
-            "ModifyBtnSend",
-            "OnShopEvents",
-            "OnInventoryEvents",
-            "OnHouseInventoryEvents",
-            "OnPortraitTargetEvents",
-            "OnMenuBtnItemEvents"
-        };
-
         public async void Handle(XtMessage message)
         {
             if (message.Command == "loginResponse")
@@ -55,10 +45,8 @@ namespace Grimoire.Networking.Handlers
 
         public void InstallSettings()
         {
-            foreach (string modifier in eventModifiers)
-            {
-                Flash.Call(modifier, new string[0]);
-            }
+            Flash.Call("ModifyBtnSend", new string[0]);
+            
             if (Root.Instance.rtbPing.Visible)
             {
                 Flash.Call("StartLatencyTimer", new string[0]);

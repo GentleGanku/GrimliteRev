@@ -1,5 +1,4 @@
-﻿//grimoire.game.World
-package grimoire.game
+﻿package grimoire.game
 {
     import flash.events.Event;
     import flash.utils.Timer;
