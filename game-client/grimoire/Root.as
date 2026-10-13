@@ -1,8 +1,6 @@
-﻿//grimoire.Root
-package grimoire
+﻿package grimoire
 {
 	import flash.display.MovieClip;
-    import fl.controls.Button;
     import flash.display.Loader;
     import flash.system.LoaderContext;
     import flash.display.LoaderInfo;
@@ -126,7 +124,7 @@ package grimoire
             };
 			Game.params.vars = this.loaderVars;
             Game.params.sURL = this.sURL;
-            Game.params.sTitle = '<font color="#e02045">Grimlite Rev v1.3</font>';
+            Game.params.sTitle = this.loaderVars.sTitle;
             Game.params.sBG = "Skyguard.swf";
             Game.params.isWeb = this.isWeb;
             Game.params.isEU = this.isEU;
@@ -135,6 +133,7 @@ package grimoire
 			Game.addEventListener(MouseEvent.CLICK, this.onGameClick);
 			Game.addEventListener(KeyboardEvent.KEY_DOWN, this.onGameKeyboard);
 			Game.loginLoader.addEventListener(Event.COMPLETE, this.onLoginComplete);
+            Game.sfc.debug = true;
             Game.sfc.addEventListener(SFSEvent.onConnectionLost, this.onDisconnect);
 			Game.sfc.addEventListener(SFSEvent.onExtensionResponse, this.onExtensionResponse);
 			Game.sfc.addEventListener(SFSEvent.onDebugMessage, this.onXtPacketResponse);

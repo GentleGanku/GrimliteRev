@@ -1,0 +1,16 @@
+{
+	"config": "flex",
+	"compilerOptions": {
+		"source-path": ["."],
+		"output": "grimlite-rev.swf",
+		"target-player": "32.0",
+		"swf-version": 43,
+		"default-size": { "width": 960, "height": 550 },
+		"default-frame-rate": 30,
+		"default-background-color": "#000000",
+		"use-network": false,
+		"strict": true
+	},
+	"additionalOptions": "-default-script-limits 256 30",
+	"mainClass": "grimoire.Root"
+}
