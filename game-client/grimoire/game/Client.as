@@ -296,6 +296,178 @@
 		///
 		/// Function events.
 		///
+
+		// This function shifts the backgrounds to the corresponding target in the Backgrounds array.
+		public static function shiftBackgrounds(main:int = 0, standby:int = 0, loader:int = 0):void
+		{
+			Root.BackgroundIndex = main;
+
+			Root.MainBackground = new Root.Backgrounds[main]("MainBackground");
+			Root.StandbyBackground = new Root.Backgrounds[standby]("StandbyBackground");
+			Root.LoaderBackground = new Root.Backgrounds[loader]("LoaderBackground");
+			
+			if (game.mcLogin)
+            {
+				game.mcLogin.mcTitle.removeChildAt(0);
+				game.mcLogin.mcTitle.addChild(Root.MainBackground);
+				game.mcLogin.mcTitle.visible = true;
+			}
+			
+			game.mcConnDetail.removeChildAt(0);
+			game.mcConnDetail.addChildAt(Root.StandbyBackground, 0);
+			
+			game.ldrMC.removeChildAt(0);
+			game.ldrMC.addChildAt(Root.LoaderBackground, 0);	
+		}
+
+		// This function veils the player's profile and modifies the corresponding UI elements to reflect the anonymous status.	
+		public static function setAnonymousMode(enable:Boolean = true):void
+		{
+			Root.ShouldBeAnonymous = enable ? Root.trueString : Root.falseString;
+
+			var myAvt:* = game.world.myAvatar;
+			var mcP:* = game.ui.mcPortrait;
+			var mcPT:* = game.ui.mcPortraitTarget;
+			var uoTree:* = game.world.uoTree;
+			var oHData:* = game.world.objHouseData;
+			var wMap:* = game.world.map;
+			var oFr:* = game.ui.mcOFrame;
+			
+			switch (enable)
+			{
+				case true:
+					if (myAvt)
+					{
+						if (!myAvt.dataLeaf.anonymous && myAvt.objData)
+						{
+							myAvt.dataLeaf.ogName = myAvt.objData.strUsername;
+							myAvt.dataLeaf.anonymous = true;
+							
+							myAvt.pMC.mcChar.visible = false;
+							myAvt.pMC.pname.ti.text = myAvt.pMC.pname.ti.text.indexOf("<AFK>") > -1 ? ("<AFK> " + "Anonymous") : "Anonymous";
+							
+							mcP.mcHead.visible = false;
+						}
+					
+						if (mcP.strName.text != "ANONYMOUS")
+						{
+							mcP.strName.text = "ANONYMOUS";
+						}
+					
+						if (uoTree[myAvt.pnm])
+						{
+							if (uoTree[myAvt.pnm].strUsername != "Anonymous")
+							{
+								uoTree[myAvt.pnm].strUsername = "Anonymous";
+							}
+						}
+					
+						if (myAvt.objData)
+						{
+							if (myAvt.objData.strUsername != "Anonymous")
+							{
+								myAvt.objData.strUsername = "Anonymous";
+							}
+						
+							if (myAvt.pMC.pname.tg.text != "< Anonymous >")
+							{
+								myAvt.pMC.pname.tg.text = "< Anonymous >";
+							}
+						
+							if (mcPT.strName.text == myAvt.dataLeaf.ogName.toUpperCase())
+							{
+								mcPT.mcHead.visible = false;
+								mcPT.strName.text = "ANONYMOUS";
+							}
+							else
+							{
+								mcPT.mcHead.visible = true;
+							}
+						}
+					
+						if (oHData)
+						{
+							if (oHData.unm == myAvt.dataLeaf.ogName.toLowerCase())
+							{
+								oHData.unm = "anonymous";
+								
+								if (wMap && wMap.txtHouse)
+								{
+									wMap.txtHouse.text = "Anonymous's House";
+								}
+							}
+						}
+					}
+				
+					var arTxt:* = game.ui.mcInterface.areaList.title.t1;
+					if (arTxt.htmlText.indexOf("-?") == -1) 
+					{
+						arTxt.htmlText = arTxt.htmlText.replace(arTxt.text.split(game.world.strMapName)[1], "-?");
+					}
+				
+					if (oFr && oFr.fData && oFr.fData.ul)
+					{
+						if (oFr.fData.ul[game.sfc.myUserId.toString()])
+						{
+							oFr.fData.ul[game.sfc.myUserId.toString()].sName = "Anonymous";
+						}
+					}
+					break;
+				
+				case false:
+					if (myAvt)
+					{
+						myAvt.dataLeaf.anonymous = false;
+						
+						myAvt.pMC.mcChar.visible = true;
+						myAvt.pMC.pname.ti.text = myAvt.pMC.pname.ti.text.indexOf("<AFK>") > -1 ? ("<AFK> " + myAvt.dataLeaf.ogName) : myAvt.dataLeaf.ogName;
+						
+						mcP.mcHead.visible = true;
+						mcP.strName.text = myAvt.dataLeaf.ogName.toUpperCase();
+												
+						if (uoTree[myAvt.pnm])
+						{
+							uoTree[myAvt.pnm].strUsername = myAvt.dataLeaf.ogName;
+						}
+						
+						if (myAvt.objData)
+						{
+							myAvt.objData.strUsername = myAvt.dataLeaf.ogName;
+							myAvt.pMC.pname.tg.text = "< " + (myAvt.objData.guild ? myAvt.objData.guild.Name : "") + " >";
+						
+							if (mcPT.strName.text == "ANONYMOUS")
+							{
+								mcPT.mcHead.visible = true;
+								mcPT.strName.text = myAvt.dataLeaf.ogName.toUpperCase();
+							}
+						}
+					
+						if (oHData)
+						{
+							if (oHData.unm == "anonymous")
+							{
+								oHData.unm = myAvt.dataLeaf.ogName.toLowerCase();
+								
+								if (wMap && wMap.txtHouse)
+								{
+									wMap.txtHouse.text = game.strToProperCase(oHData.unm) + "'s House";
+								}
+							}
+						}
+					
+						game.updateAreaName();
+					
+						if (oFr && oFr.fData && oFr.fData.ul)
+						{
+							if (oFr.fData.ul[game.sfc.myUserId.toString()])
+							{
+								oFr.fData.ul[game.sfc.myUserId.toString()].sName = myAvt.dataLeaf.ogName;
+							}
+						}
+					}
+					break;
+			}
+		}
 		
 	}
 }

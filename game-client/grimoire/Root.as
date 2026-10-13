@@ -1,45 +1,17 @@
 ﻿package grimoire
 {
-	import flash.display.MovieClip;
-    import flash.display.Loader;
-    import flash.system.LoaderContext;
-    import flash.display.LoaderInfo;
-    import flash.display.Stage;
-    import flash.display.StageAlign;
-    import flash.display.StageScaleMode;
-    import flash.events.Event;
-    import flash.events.MouseEvent;
-    import flash.events.KeyboardEvent;
-    import flash.events.ProgressEvent;
-	import flash.events.IOErrorEvent;
-	import flash.events.TimerEvent;
-    import flash.external.ExternalInterface;
-	import flash.net.SharedObject;
-    import flash.net.URLLoader;
-    import flash.net.URLRequest;
-    import flash.net.URLVariables;
-    import flash.system.ApplicationDomain;
-    import flash.system.Security;
-    import flash.utils.getQualifiedClassName;
-	import flash.utils.getDefinitionByName;
-	import flash.utils.Timer;
-    import flash.ui.Keyboard;
-    import grimoire.Externalizer;
-    import grimoire.game.Aura;
-    import grimoire.game.Bank;
-	import grimoire.game.Client;
-	import grimoire.game.DropStack;
-    import grimoire.game.House;
-    import grimoire.game.Inventory;
-    import grimoire.game.Network;
-    import grimoire.game.Player;
-    import grimoire.game.Quest;
-    import grimoire.game.Setting;
-    import grimoire.game.Shop;
-	import grimoire.game.Skill;
-    import grimoire.game.TempInventory;
-    import grimoire.game.World;
-    import grimoire.tools.SFSEvent;
+    import grimoire.*;
+    import grimoire.backgrounds.*;
+    import grimoire.game.*;
+    import grimoire.tools.*;
+
+	import flash.display.*;
+    import flash.events.*;
+    import flash.external.*;
+    import flash.net.*;
+    import flash.system.*;
+    import flash.utils.*;
+    import flash.ui.*;
 	  
     public class Root extends MovieClip 
     {
@@ -57,24 +29,53 @@
         private var loaderVars:Object;
         private var sBG:String;
         private var sFile:*;
-        private var stg:*;
 		
 		public static const trueString:String = '"True"';
         public static const falseString:String = '"False"';
 		public static var username:String;
         public static var password:String;
-        public static var Game:Object;
+        public static var Game:MovieClip;
         public static var instance:Root;
+        public static var GameStage:Stage;
 		public static var isLoggedIn:Boolean = false;
 		public static var gameDomain:ApplicationDomain;
+        public static var DebugMode:Boolean;
+        public static var ShouldBeAnonymous:String;
+        
+        public static var Backgrounds:Array;
+		public static var BackgroundIndex:Number;
+		public static var MainBackground:MovieClip;
+		public static var StandbyBackground:MovieClip;
+		public static var LoaderBackground:MovieClip;
 		
 		/// This function creates the instance and the loader.
         public function Root()
         {
 			Root.instance = this;
+            Root.GameStage = this.stage;
+
+            InitSuperObjects();
+
             addEventListener(Event.ADDED_TO_STAGE, this.onAddedToStage);
         }
 		
+        /// This function initializes the super objects.
+        private function InitSuperObjects():void
+        {
+            DebugMode = Capabilities.isDebugger;
+
+            ShouldBeAnonymous = DebugMode ? falseString : String(ExternalInterface.call("getAnonymousMode"));
+
+            BackgroundIndex = DebugMode ? 0 : Number(ExternalInterface.call("getBackgroundIndex"));
+			Backgrounds = 
+			[
+				FableForest
+            ];
+			MainBackground = new Backgrounds[BackgroundIndex]("MainBackground");
+			StandbyBackground = new Backgrounds[BackgroundIndex]("StandbyBackground");
+			LoaderBackground = new Backgrounds[BackgroundIndex]("LoaderBackground");
+        }
+
 		///
 		/// Functions below are the whole process of managing the loader.
 		///
@@ -82,6 +83,9 @@
         {
             removeEventListener(Event.ADDED_TO_STAGE, this.onAddedToStage);
             Security.allowDomain("*");
+            
+            GameStage.addChild(MainBackground);
+
             this.urlLoader = new URLLoader();
             this.urlLoader.addEventListener(Event.COMPLETE, this.onDataComplete);
             this.urlLoader.load(new URLRequest(this.versionURL));
@@ -107,7 +111,10 @@
 
         private function onProgress(e:ProgressEvent):void
         {
-            ExternalInterface.call("progress", Math.round((Number((e.currentTarget.bytesLoaded / e.currentTarget.bytesTotal)) * 100)));
+            if (!DebugMode)
+			{
+                ExternalInterface.call("progress", Math.round((Number((e.currentTarget.bytesLoaded / e.currentTarget.bytesTotal)) * 100)));
+            }
         }
 
         private function onComplete(e:Event):void
@@ -115,9 +122,8 @@
             var info:*;
             this.loader.contentLoaderInfo.removeEventListener(ProgressEvent.PROGRESS, this.onProgress);
             this.loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, this.onComplete);
-            this.stg = stage;
-            this.stg.removeChildAt(0);
-			Game = this.stg.addChildAt(e.currentTarget.content, 0);
+
+            Game = MovieClip(e.currentTarget.content);
             for (info in root.loaderInfo.parameters)
             {
                 Game.params[info] = root.loaderInfo.parameters[info];
@@ -125,13 +131,15 @@
 			Game.params.vars = this.loaderVars;
             Game.params.sURL = this.sURL;
             Game.params.sTitle = this.loaderVars.sTitle;
-            Game.params.sBG = "Skyguard.swf";
+            Game.params.sBG = "";
             Game.params.isWeb = this.isWeb;
             Game.params.isEU = this.isEU;
             Game.params.doSignup = this.doSignup;
 			Game.params.loginURL = this.loginURL;
 			Game.addEventListener(MouseEvent.CLICK, this.onGameClick);
 			Game.addEventListener(KeyboardEvent.KEY_DOWN, this.onGameKeyboard);
+            Game.addEventListener(Event.ENTER_FRAME, this.onGameEnter);
+            Game.addEventListener(Event.ADDED, this.onGameAdded);
 			Game.loginLoader.addEventListener(Event.COMPLETE, this.onLoginComplete);
             Game.sfc.debug = true;
             Game.sfc.addEventListener(SFSEvent.onConnectionLost, this.onDisconnect);
@@ -141,6 +149,9 @@
 			gameDomain = LoaderInfo(e.target).applicationDomain;
 			this.external = new Externalizer();
             this.external.init(this);
+
+			GameStage.removeChild(MainBackground);
+			GameStage.addChildAt(Game, 0);
         }
 		
         private function onDisconnect(e:*):void
@@ -150,9 +161,8 @@
 
         private function onLoginComplete(e:Event):void
         {
-            trace("Login Complete");
             objLogin = JSON.parse(e.target.data);
-            e.target.data = String(ExternalInterface.call("modifyServers", e.target.data));
+            e.target.data = DebugMode ? e.target.data : String(ExternalInterface.call("modifyServers", e.target.data));
 			if (Game.mcCharSelect)
             {
                 Game.mcCharSelect.Game.objLogin = objLogin;
@@ -239,6 +249,32 @@
 			}
 		}
 		
+		private function onGameEnter(e:Event):void
+		{
+			if (e.target.world && ShouldBeAnonymous == Root.trueString)
+			{
+				Client.setAnonymousMode(true);
+			}
+		}
+
+		private function onGameAdded(e:Event):void
+		{
+			switch (e.target.name)
+			{
+				case "mcLogin":
+					e.target.mcTitle.removeChildAt(0);
+                    e.target.mcTitle.addChild(MainBackground);
+					return;
+			}
+			
+			switch (getQualifiedClassName(e.target))
+			{
+				case "ConnDetailMC":
+					Client.shiftBackgrounds(BackgroundIndex, BackgroundIndex, BackgroundIndex);
+					return;
+			}
+		}
+
 		private function onCharBtnClick(btn:String):void
 		{
 			if (btn == "Login")
@@ -295,9 +331,16 @@
 		
         public function onXtPacketResponse(e:*):void
         {
-            if ((e.params.message.indexOf("%xt%zm%") > -1) && (e.params.message.indexOf("%hi%") < 0))
+            if ( (e.params.message.indexOf("%xt%zm%") > -1) && (e.params.message.indexOf("%hi%") < 0))
             {
-				ExternalInterface.call("xtPacket", this.filter(e.params.message));
+                if (DebugMode)
+                {
+                    trace("DEBUG: " + this.filter(e.params.message));
+                }
+                else
+                {
+                    ExternalInterface.call("xtPacket", this.filter(e.params.message));
+                }
             };
         }
 		
@@ -326,7 +369,15 @@
 				isLoggedIn = false;
 				grimoire.game.Client.shouldPing = false;
 			}
-			ExternalInterface.call("packet", this.filter(e.params.message));
+
+            if (DebugMode)
+            {
+                trace("DEBUG: " + this.filter(e.params.message));
+            }
+            else
+            {
+                ExternalInterface.call("packet", this.filter(e.params.message));
+            }
         }
 		
 		public function onExtensionResponse(packet:*):void
@@ -337,7 +388,16 @@
                 {
 					Client.latency = Client.latency - new Date().getTime();
                     Client.latency = Math.abs(Client.latency);
-					ExternalInterface.call("ping", Client.latency);
+
+                    if (DebugMode)
+                    {
+                        trace("DEBUG: " + Client.latency + " ms");
+                    }
+                    else
+                    {
+					    ExternalInterface.call("ping", Client.latency);
+                    }
+
 					if (Game.ui.mcPopup.getChildByName("mcO") != null)
 					{
 						Game.ui.mcPopup.getChildByName("mcO").latency = Client.latency;
@@ -345,7 +405,15 @@
 					}
                 }
             }
-            ExternalInterface.call("pext", JSON.stringify(packet));
+
+            if (DebugMode)
+            {
+                trace("DEBUG: " + JSON.stringify(packet));
+            }
+            else
+            {
+                ExternalInterface.call("pext", JSON.stringify(packet));
+            }
         }
 		///
 		/// Functions above are the whole process of managing the loader.
@@ -383,8 +451,8 @@
 		// This function sets the game's FPS to a corresponding number.
         public static function setFPS(rate:int):void
         {
-			Game.addUpdate("Frames Per Second (FPS) cap has been changed from " + instance.stg.frameRate + " FPS to " + rate + " FPS.");
-            instance.stg.frameRate = rate;
+            GameStage.frameRate = rate;
+			Game.addUpdate("Frames Per Second (FPS) cap has been changed from " + GameStage.frameRate + " FPS to " + rate + " FPS.");
         }
 
 		// This function sets the login screen's title to a corresponding string.

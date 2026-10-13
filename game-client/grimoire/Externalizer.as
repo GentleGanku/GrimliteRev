@@ -210,6 +210,8 @@
 			this.addCallback("LoginLabel", Client.loginLabel);
 			this.addCallback("GameLabel", Client.gameLabel);
 			this.addCallback("InGame", Client.inGame);
+			this.addCallback("shiftBackgrounds", Client.shiftBackgrounds);
+			this.addCallback("setAnonymousMode", Client.setAnonymousMode);
 			///
 			/// Bank
 			///
