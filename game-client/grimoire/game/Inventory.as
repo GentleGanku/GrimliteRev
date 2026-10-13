@@ -1,5 +1,4 @@
-﻿//grimoire.game.Inventory
-package grimoire.game
+﻿package grimoire.game
 {
     import grimoire.Root;
 
@@ -48,10 +47,16 @@ package grimoire.game
             return (game.world.myAvatar.objData.iBagSlots);
         }
 
-		// This function returns the assigned value of the used inventory slots.
+		// This function returns the assigned value of the used inventory slots (bag items only).
         public static function usedInventorySlots():int
         {
-            return (game.world.myAvatar.items.length);
+            return (Root.gameDomain.getDefinition("InvCat").countBag(game.world.myAvatar.items));
+        }
+
+		// This function returns the assigned value of the used misc inventory slots.
+        public static function usedMiscSlots():int
+        {
+            return (Root.gameDomain.getDefinition("InvCat").countMisc(game.world.myAvatar.items));
         }
 
 

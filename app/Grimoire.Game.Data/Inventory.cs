@@ -17,6 +17,10 @@ namespace Grimoire.Game.Data
 
         public int AvailableSlots => MaxSlots - UsedSlots;
 
+        public int UsedMiscSlots => Flash.Call<int>("UsedMiscSlots", new string[0]);
+
+        public int AvailableMiscSlots => MaxSlots - UsedMiscSlots;
+
         public bool ContainsItem(string name, string quantity = "*")
         {
             InventoryItem inventoryItem = Items.FirstOrDefault((InventoryItem i) => i.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
