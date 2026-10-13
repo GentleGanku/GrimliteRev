@@ -11,10 +11,7 @@ namespace Grimoire.UI
         public AboutForm()
         {
             InitializeComponent();
-            if (!Program.access)
-                darkLabel7.Text = "(OUTDATED)";
-            else
-                darkLabel7.Text = $"({Program.versionDate})";
+            darkLabel7.Text = $"{Program.version} ({Program.releaseDate})";
         }
 
         private void AboutForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -50,12 +47,6 @@ namespace Grimoire.UI
 
         private void AboutForm_Load(object sender, EventArgs e)
         {
-        }
-
-        private void AboutForm_Shown(object sender, EventArgs e)
-        {
-            Program.CheckVersion();
-            Root.SetDRM(Instance, !Root.Instance.enableCapture);
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

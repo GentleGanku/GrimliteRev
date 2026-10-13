@@ -185,7 +185,6 @@ namespace Grimoire.UI
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CommandColorForm_FormClosing);
             this.Load += new System.EventHandler(this.CommandColorForm_Load);
-            this.Shown += new System.EventHandler(this.CommandColorForm_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

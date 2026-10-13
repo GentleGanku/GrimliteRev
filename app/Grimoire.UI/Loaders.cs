@@ -239,11 +239,6 @@ namespace Grimoire.UI
             }
         }
 
-        private void Loaders_Shown(object sender, EventArgs e)
-        {
-            Root.SetDRM(Instance, !Root.Instance.enableCapture);
-        }
-
         private void Loaders_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing || e.CloseReason == CloseReason.MdiFormClosing || e.CloseReason == CloseReason.FormOwnerClosing)
@@ -490,7 +485,6 @@ namespace Grimoire.UI
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Loaders_FormClosing);
             this.Load += new System.EventHandler(this.Loaders_Load);
-            this.Shown += new System.EventHandler(this.Loaders_Shown);
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);

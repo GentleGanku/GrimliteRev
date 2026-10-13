@@ -27,11 +27,6 @@ namespace Grimoire.UI
             }
         }
 
-        private void EyeDropper_Shown(object sender, EventArgs e)
-        {
-            Root.SetDRM(Instance, !Root.Instance.enableCapture);
-        }
-
         private void eyeDropper1_ScreenCaptured(Bitmap capturedPixels, Color capturedColor)
         {
             string color = string.Format(Environment.NewLine + "#{0} / {1}, {2}, {3} / #{4}",

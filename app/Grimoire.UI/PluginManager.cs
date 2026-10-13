@@ -216,11 +216,6 @@ namespace Grimoire.UI
             }
         }
 
-        private void PluginManager_Shown(object sender, EventArgs e)
-        {
-            Root.SetDRM(Instance, !Root.Instance.enableCapture);
-        }
-
         private void PluginManager_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing)
@@ -387,7 +382,6 @@ namespace Grimoire.UI
             this.Text = "Plugin Manager";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PluginManager_FormClosing);
-            this.Shown += new EventHandler(this.PluginManager_Shown);
             this.Load += new System.EventHandler(this.PluginManager_Load);
             this.gbLoaded.ResumeLayout(false);
             this.gbLoaded.PerformLayout();

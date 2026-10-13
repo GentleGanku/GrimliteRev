@@ -78,7 +78,6 @@ namespace Grimoire.UI
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Notepad_FormClosing);
             this.Load += new System.EventHandler(this.Notepad_Load);
-            this.Shown += new EventHandler(this.Notepad_Shown);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Notepad_DragDrop);
             this.DragOver += new System.Windows.Forms.DragEventHandler(this.Notepad_DragOver);
             this.panel1.ResumeLayout(false);

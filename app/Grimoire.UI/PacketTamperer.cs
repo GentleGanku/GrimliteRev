@@ -35,11 +35,6 @@ namespace Grimoire.UI
             InitializeComponent();
         }
 
-        private void PacketTamperer_Shown(object sender, EventArgs e)
-        {
-            Root.SetDRM(Instance, !Root.Instance.enableCapture);
-        }
-
         private void PacketTamperer_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing || e.CloseReason == CloseReason.MdiFormClosing || e.CloseReason == CloseReason.FormOwnerClosing)
@@ -260,7 +255,6 @@ namespace Grimoire.UI
             this.Text = "Packet Tamperer";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PacketTamperer_FormClosing);
-            this.Shown += new EventHandler(this.PacketTamperer_Shown);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();

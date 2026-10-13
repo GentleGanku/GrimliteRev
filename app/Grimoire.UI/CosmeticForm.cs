@@ -24,11 +24,6 @@ namespace Grimoire.UI
             lbItems.SelectionMode = SelectionMode.MultiExtended;
         }
 
-        private void CosmeticForm_Shown(object sender, EventArgs e)
-        {
-            Root.SetDRM(Instance, !Root.Instance.enableCapture);
-        }
-
         private void lnkRefresh_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             if (!Player.IsLoggedIn)

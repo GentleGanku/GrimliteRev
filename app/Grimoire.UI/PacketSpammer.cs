@@ -114,11 +114,6 @@ namespace Grimoire.UI
             }
         }
 
-        private void PacketSpammer_Shown(object sender, EventArgs e)
-        {
-            Root.SetDRM(Instance, !Root.Instance.enableCapture);
-        }
-
         private void PacketSpammer_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing || e.CloseReason == CloseReason.MdiFormClosing || e.CloseReason == CloseReason.FormOwnerClosing)
@@ -417,7 +412,6 @@ namespace Grimoire.UI
             this.Text = "Packet Spammer";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PacketSpammer_FormClosing);
-            this.Shown += new System.EventHandler(this.PacketSpammer_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.numDelay)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);

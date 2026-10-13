@@ -76,11 +76,6 @@ namespace Grimoire.UI
             InitializeComponent();
         }
 
-        private void Travel_Shown(object sender, EventArgs e)
-        {
-            Root.SetDRM(Instance, !Root.Instance.enableCapture);
-        }
-
         private void Travel_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing)
@@ -914,7 +909,6 @@ namespace Grimoire.UI
             this.Text = "Fast Travels";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Travel_FormClosing);
-            this.Shown += new EventHandler(this.Travel_Shown);
             this.grpTravel.ResumeLayout(false);
             this.grpTravel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPriv)).EndInit();

@@ -121,7 +121,7 @@ namespace Grimoire.UI
             this.darkLabel7.Name = "darkLabel7";
             this.darkLabel7.Size = new System.Drawing.Size(90, 16);
             this.darkLabel7.TabIndex = 23;
-            this.darkLabel7.Text = "(VersionDate)";
+            this.darkLabel7.Text = "1.0.0";
             // 
             // linkLabel1
             // 
@@ -199,7 +199,7 @@ namespace Grimoire.UI
             this.lblUpdate.Name = "lblUpdate";
             this.lblUpdate.Size = new System.Drawing.Size(183, 16);
             this.lblUpdate.TabIndex = 15;
-            this.lblUpdate.Text = "Version 1.3 - Skymeister Build";
+            this.lblUpdate.Text = "v";
             // 
             // rtbCredits
             // 
@@ -392,7 +392,6 @@ namespace Grimoire.UI
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AboutForm_FormClosing);
             this.Load += new System.EventHandler(this.AboutForm_Load);
-            this.Shown += new System.EventHandler(this.AboutForm_Shown);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

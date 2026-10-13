@@ -532,11 +532,6 @@ namespace Grimoire.UI
             }
         }
 
-        private void BotManager_Shown(object sender, EventArgs e)
-        {
-            Root.SetDRM(Instance, !Root.Instance.enableCapture);
-        }
-
         private void TextboxEnter(object sender, EventArgs e)
         {
             DarkTextBox textBox = (DarkTextBox)sender;
@@ -7388,7 +7383,6 @@ namespace Grimoire.UI
             this.TransparencyKey = System.Drawing.Color.Transparent;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BotManager_FormClosing);
             this.Load += new System.EventHandler(this.BotManager_Load);
-            this.Shown += new System.EventHandler(this.BotManager_Shown);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnSearchCmd_KeyDown);
             this.mainTabControl.ResumeLayout(false);
             this.tabInfo.ResumeLayout(false);

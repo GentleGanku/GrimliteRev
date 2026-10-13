@@ -66,11 +66,6 @@ namespace Grimoire.UI
             statementCommands = JsonConvert.DeserializeObject<List<StatementCommand>>(Resources.statementcmds, _serializerSettings);
         }
 
-        private void UserFriendlyCommandEditor_Shown(object sender, EventArgs e)
-        {
-            Root.SetDRM(Instance, !Root.Instance.enableCapture);
-        }
-
         private void UserFriendlyCommandEditor_FormClosing(object sender, FormClosingEventArgs e)
         {
             //if (e.CloseReason == CloseReason.UserClosing || e.CloseReason == CloseReason.MdiFormClosing || e.CloseReason == CloseReason.FormOwnerClosing)
@@ -277,7 +272,6 @@ namespace Grimoire.UI
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.UserFriendlyCommandEditor_FormClosing);
             this.Load += new System.EventHandler(this.RawCommandEditor_Load);
-            this.Shown += new System.EventHandler(this.UserFriendlyCommandEditor_Shown);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.UserFriendlyCommandEditor_KeyDown);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);

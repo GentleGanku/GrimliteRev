@@ -37,11 +37,6 @@ namespace Grimoire.UI
             this.richTextBox1.ContextMenuStrip = Context();
         }
 
-        private void Notepad_Shown(object sender, EventArgs e)
-        {
-            Root.SetDRM(Instance, !Root.Instance.enableCapture);
-        }
-
         private ContextMenuStrip Context()
         {
             ContextMenuStrip contextMenuStrip = new ContextMenuStrip();

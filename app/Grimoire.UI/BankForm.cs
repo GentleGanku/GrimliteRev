@@ -17,11 +17,6 @@ namespace Grimoire.UI
             InitializeComponent();
         }
 
-        private void BankForm_Shown(object sender, EventArgs e)
-        {
-            Root.SetDRM(Instance, !Root.Instance.enableCapture);
-        }
-
         private string categoryName(string category)
         {
             string categoryName = "";

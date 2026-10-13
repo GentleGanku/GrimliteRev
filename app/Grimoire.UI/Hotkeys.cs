@@ -290,11 +290,6 @@ namespace Grimoire.UI
             }
         }
 
-        private void Hotkeys_Shown(object sender, EventArgs e)
-        {
-            Root.SetDRM(Instance, !Root.Instance.enableCapture);
-        }
-
         private static CmdJoin2 CreateJoinCommand(string map, string room = "1e99", string cell = "Enter", string pad = "Spawn")
         {
             return new CmdJoin2
@@ -662,7 +657,6 @@ namespace Grimoire.UI
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Hotkeys_FormClosing);
             this.Load += new System.EventHandler(this.Hotkeys_Load);
-            this.Shown += new System.EventHandler(this.Hotkeys_Shown);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();

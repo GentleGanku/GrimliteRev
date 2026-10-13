@@ -134,46 +134,30 @@ namespace Grimoire.UI
             Task.Factory.StartNew(Proxy.Instance.ClientExecute, TaskCreationOptions.LongRunning);
         }
 
-        private void Root_Shown(object sender, EventArgs e)
-        {
-            Program.CheckVersion();
-            SetDRM(Root.Instance, !enableCapture);
-        }
-
         private void InitializeGame()
         {
-            try
+            Flash.flash?.Dispose();
+            Game = new AxShockwaveFlash();
+            Game.BeginInit();
+            Game.Name = "Flash";
+            Game.Dock = DockStyle.Fill;
+            Game.TabIndex = 0;
+            Game.FlashCall += Flash.ProcessFlashCall;
+            Flash.SwfLoadProgress += OnLoadProgress;
+            GamePanel.Controls.Add(Game);
+            Game.Visible = false;
+            Game.EndInit();
+            Flash.flash = Game;
+            byte[] swf = File.ReadAllBytes(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "grimlite-rev.swf"));
+            using (MemoryStream stream = new MemoryStream())
+            using (BinaryWriter writer = new BinaryWriter(stream))
             {
-                Flash.flash?.Dispose();
-                Game = new AxShockwaveFlash();
-                Game.BeginInit();
-                Game.Name = "Flash";
-                Game.Dock = DockStyle.Fill;
-                Game.TabIndex = 0;
-                Game.FlashCall += Flash.ProcessFlashCall;
-                Flash.SwfLoadProgress += OnLoadProgress;
-                GamePanel.Controls.Add(Game);
-                Game.Visible = false;
-                Game.EndInit();
-                Flash.flash = Game;
-                byte[] swf = File.ReadAllBytes(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "grimlite-rev.swf"));
-                using (MemoryStream stream = new MemoryStream())
-                using (BinaryWriter writer = new BinaryWriter(stream))
-                {
-                    writer.Write(8 + swf.Length);
-                    writer.Write(1432769894);
-                    writer.Write(swf.Length);
-                    writer.Write(swf);
-                    writer.Seek(0, SeekOrigin.Begin);
-                    Game.OcxState = new AxHost.State(stream, 1, false, null);
-                }
-            }
-            catch(Exception ex)
-            {
-                if (!Program.CheckFlashVersion())
-                {
-                    DarkMessageBox.Show(new Form { TopMost = true, StartPosition = FormStartPosition.CenterScreen }, ex.Message, $"Error in Loading the Game!", MessageBoxIcon.Error);
-                }
+                writer.Write(8 + swf.Length);
+                writer.Write(1432769894);
+                writer.Write(swf.Length);
+                writer.Write(swf);
+                writer.Seek(0, SeekOrigin.Begin);
+                Game.OcxState = new AxHost.State(stream, 1, false, null);
             }
         }
 
@@ -1087,16 +1071,6 @@ namespace Grimoire.UI
             this.googleDocsToolStripMenuItem.Text = "Google Docs";
             this.googleDocsToolStripMenuItem.Click += new System.EventHandler(this.googleDocsToolStripMenuItem_Click);
             // 
-            // enableCaptureToolStripMenuItem
-            // 
-            this.enableCaptureToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
-            this.enableCaptureToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
-            this.enableCaptureToolStripMenuItem.Name = "enableCaptureToolStripMenuItem";
-            this.enableCaptureToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
-            this.enableCaptureToolStripMenuItem.Text = "Enable Capture on Client";
-            this.enableCaptureToolStripMenuItem.Visible = false;
-            this.enableCaptureToolStripMenuItem.Click += new System.EventHandler(this.enableCaptureToolStripMenuItem_Click);
-            // 
             // getBotsToolStripMenuItem
             // 
             this.getBotsToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
@@ -1137,7 +1111,6 @@ namespace Grimoire.UI
             this.Text = "Grimlite Rev";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Root_FormClosing);
             this.Load += new System.EventHandler(this.Root_Load);
-            this.Shown += new System.EventHandler(this.Root_Shown);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.customTravel_KeyPress);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -1700,9 +1673,6 @@ namespace Grimoire.UI
 
         public void triggerToggle()
         {
-            //enableCapture = Config.Instance.GetValue<bool>("ReloadMap");
-            //enableCaptureToolStripMenuItem.Visible = !enableCapture ? true : false;
-            enableCapture = true;
             BotManager.Instance.chkHideYulgarPlayers.Checked = BotClientConfig.Instance.GetValue<bool>("hideYulgarPlayers");
             BotManager.Instance.chkAntiAfk.Checked = BotClientConfig.Instance.GetValue<bool>("antiAFK");
             BotManager.Instance.chkChangeRoomTag.Checked = BotClientConfig.Instance.GetValue<bool>("anonymousRoom");
@@ -1715,28 +1685,6 @@ namespace Grimoire.UI
             {
                 Travel.Instance.cbCustomTravels.SelectedIndex = 0;
             }
-        }
-
-        public bool enableCapture { get; set; } = false;
-        private const uint WDA_NONE = 0x0;
-        private const uint WDA_MONITOR = 0x1;
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern bool SetWindowDisplayAffinity(IntPtr hWnd, uint dwAffinity);
-
-        public static bool SetDRM(Form winForm, bool Protect)
-        {
-            bool result = false;
-            if (winForm != null)
-            {
-                if (Protect)
-                    result = SetWindowDisplayAffinity(winForm.Handle, WDA_MONITOR);
-                else if (winForm.ActiveControl != null)
-                {
-                    result = SetWindowDisplayAffinity(winForm.Handle, WDA_NONE);
-                }
-            }
-            return result;
         }
 
         public static List<Form> MainForms = new List<Form>()
@@ -1760,30 +1708,6 @@ namespace Grimoire.UI
             Travel.Instance,
             UserFriendlyCommandEditor.Instance
         };
-
-        private void ControlDRMs(bool protect)
-        {
-            foreach (Form form in MainForms)
-            {
-                SetDRM(form, protect);
-            }
-        }
-
-        private void enableCaptureToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            string input = "";
-            DialogResult result = InputBox.InputDialog(ref input,
-                "By typing \"I agree\" in the text box below, you agree to the following:\r\n\r\n" +
-                "This bot client is protected by copyrights, excluding the plugins. Any video/GIF recording and screenshot capture of this bot client are only allowed for PERSONAL USE. Doing so for COMMERCIAL MEANS will not be tolerated. You are responsible for any of it and will NOT do so to gain profit in any way, shape, or form. However, it will be allowed IF you put credits that references my Github website and the AUQW portal site into the video/GIF/screenshot. Otherwise, breaking this Agreement will result in CONSEQUENCES.", 
-                "Personal Use Agreement", 375, 200, 140, 140);
-            if (result == DialogResult.OK && input == "I agree")
-            {
-                Config.Instance.SetValue("ReloadMap", true.ToString());
-                enableCaptureToolStripMenuItem.Visible = false;
-                enableCapture = true;
-                ControlDRMs(false);
-            }
-        }
 
     }
 }

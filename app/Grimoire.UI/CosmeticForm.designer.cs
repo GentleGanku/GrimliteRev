@@ -792,7 +792,6 @@ namespace Grimoire.UI
             this.Text = "SWF Cosmetics";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CosmeticForm_FormClosing);
-            this.Shown += new System.EventHandler(this.CosmeticForm_Shown);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();

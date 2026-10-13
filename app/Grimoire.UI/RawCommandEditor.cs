@@ -46,11 +46,6 @@ namespace Grimoire.UI
             txtCmd.Select();
         }
 
-        private void RawCommandEditor_Shown(object sender, EventArgs e)
-        {
-            Root.SetDRM(Instance, !Root.Instance.enableCapture);
-        }
-
         private void txtCmd_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
@@ -155,7 +150,6 @@ namespace Grimoire.UI
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RawCommandEditor_FormClosing);
             this.Load += new System.EventHandler(this.RawCommandEditor_Load);
-            this.Shown += new System.EventHandler(this.RawCommandEditor_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -55,11 +55,6 @@ namespace Grimoire.UI
 
         }
 
-        private void CommandColorForm_Shown(object sender, EventArgs e)
-        {
-            Root.SetDRM(Instance, !Root.Instance.enableCapture);
-        }
-
         private int GetColor(Control ctr)
         {
             string ctrName = ctr.Name.ToString().Remove(0, 3);

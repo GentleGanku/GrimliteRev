@@ -94,7 +94,6 @@ namespace Grimoire.UI
             this.Text = " Eye Dropper";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.EyeDropper_FormClosing);
-            this.Shown += new System.EventHandler(this.EyeDropper_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

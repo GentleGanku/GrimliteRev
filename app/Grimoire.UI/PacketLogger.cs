@@ -56,11 +56,6 @@ namespace Grimoire.UI
             btnStart.Enabled = false;
         }
 
-        private void PacketLogger_Shown(object sender, EventArgs e)
-        {
-            Root.SetDRM(Instance, !Root.Instance.enableCapture);
-        }
-
         private void PacketLogger_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing || e.CloseReason == CloseReason.MdiFormClosing || e.CloseReason == CloseReason.FormOwnerClosing)
@@ -193,7 +188,6 @@ namespace Grimoire.UI
             this.Text = "Packet Sniffer";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PacketLogger_FormClosing);
-            this.Shown += new System.EventHandler(this.PacketLogger_Shown);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();

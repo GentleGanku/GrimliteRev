@@ -109,11 +109,6 @@ namespace Grimoire.UI
             }
         }
 
-        private void LogForm_Shown(object sender, EventArgs e)
-        {
-            Root.SetDRM(Instance, !Root.Instance.enableCapture);
-        }
-
         private void LogForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing || e.CloseReason == CloseReason.MdiFormClosing || e.CloseReason == CloseReason.FormOwnerClosing)
@@ -515,7 +510,6 @@ namespace Grimoire.UI
             this.Text = "Logs";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.LogForm_Load);
-            this.Shown += new System.EventHandler(this.LogForm_Shown);
             this.tabLogs.ResumeLayout(false);
             this.contextMenuStrip1.ResumeLayout(false);
             this.tabLogDebug.ResumeLayout(false);

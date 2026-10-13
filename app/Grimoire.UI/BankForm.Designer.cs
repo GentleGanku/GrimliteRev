@@ -162,7 +162,6 @@ namespace Grimoire.UI
             this.TopMost = true;
             this.TransparencyKey = System.Drawing.Color.Transparent;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BankForm_FormClosing);
-            this.Shown += new System.EventHandler(this.BankForm_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
