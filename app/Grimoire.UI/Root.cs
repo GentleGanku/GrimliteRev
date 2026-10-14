@@ -79,8 +79,9 @@ namespace Grimoire.UI
         private ToolStripMenuItem reloadToolStripMenuItem;
         public ToolStripMenuItem pluginsStrip;
         public ToolStripMenuItem settingsToolStripMenuItem;
-        private ToolStripMenuItem noSettingsToolStripMenuItem;
+        public ToolStripMenuItem camouflageToolStripMenuItem;
         private ToolStripMenuItem discordToolStripMenuItem;
+        private ToolStripMenuItem supportMeToolStripMenuItem;
         public ToolStripMenuItem untargetSelfToolStripMenuItem;
         private ToolStripMenuItem walkSpeedToolStripMenuItem;
         private System.Threading.CancellationTokenSource _cts;
@@ -110,8 +111,13 @@ namespace Grimoire.UI
             PreloadedPlugins = new PluginManager();
             Instance = this;
             pingMonitorToggle();
-            clientHeaderToggle();
+            defaultIcon = Icon;
+            defaultTrayIcon = nTray.Icon;
+            camouflageToolStripMenuItem.Checked = BotClientConfig.Instance.GetValue<bool>("clientHeaderToggle");
+            ApplyCamouflage(camouflageToolStripMenuItem.Checked);
             triggerToggle();
+            // Items that changed in this version; replace the list on every release.
+            NewBadge.Attach(grimliteToolStripMenuItem, botToolStripMenuItem, managerToolStripMenuItem, settingsToolStripMenuItem, camouflageToolStripMenuItem, discordToolStripMenuItem, supportMeToolStripMenuItem);
         }
 
         private void Root_Load(object sender, EventArgs e)
@@ -387,8 +393,9 @@ namespace Grimoire.UI
             this.reloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pluginsStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.noSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.camouflageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.discordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.supportMeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.GamePanel = new DarkUI.Controls.DarkPanel();
             this.panel1.SuspendLayout();
             this.MenuStrip1.SuspendLayout();
@@ -532,7 +539,8 @@ namespace Grimoire.UI
             this.bankToolStripMenuItem1,
             this.pluginsStrip,
             this.settingsToolStripMenuItem,
-            this.discordToolStripMenuItem});
+            this.discordToolStripMenuItem,
+            this.supportMeToolStripMenuItem});
             this.MenuStrip1.Location = new System.Drawing.Point(0, 0);
             this.MenuStrip1.Name = "MenuStrip1";
             this.MenuStrip1.Padding = new System.Windows.Forms.Padding(2, 2, 0, 2);
@@ -973,21 +981,21 @@ namespace Grimoire.UI
             //
             this.settingsToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.noSettingsToolStripMenuItem});
+            this.camouflageToolStripMenuItem});
             this.settingsToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.settingsToolStripMenuItem.Text = "Settings";
             //
-            // noSettingsToolStripMenuItem
+            // camouflageToolStripMenuItem
             //
-            // TODO: remove this placeholder once the first setting is added to settingsToolStripMenuItem.
-            this.noSettingsToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
-            this.noSettingsToolStripMenuItem.Enabled = false;
-            this.noSettingsToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(81)))), ((int)(((byte)(81)))), ((int)(((byte)(81)))));
-            this.noSettingsToolStripMenuItem.Name = "noSettingsToolStripMenuItem";
-            this.noSettingsToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
-            this.noSettingsToolStripMenuItem.Text = "No settings yet";
+            this.camouflageToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
+            this.camouflageToolStripMenuItem.CheckOnClick = true;
+            this.camouflageToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
+            this.camouflageToolStripMenuItem.Name = "camouflageToolStripMenuItem";
+            this.camouflageToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.camouflageToolStripMenuItem.Text = "Camouflage";
+            this.camouflageToolStripMenuItem.Click += new System.EventHandler(this.camouflageToolStripMenuItem_Click);
             //
             // discordToolStripMenuItem
             //
@@ -997,6 +1005,15 @@ namespace Grimoire.UI
             this.discordToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
             this.discordToolStripMenuItem.Text = "Discord";
             this.discordToolStripMenuItem.Click += new System.EventHandler(this.discordToolStripMenuItem_Click);
+            //
+            // supportMeToolStripMenuItem
+            //
+            this.supportMeToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
+            this.supportMeToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
+            this.supportMeToolStripMenuItem.Name = "supportMeToolStripMenuItem";
+            this.supportMeToolStripMenuItem.Size = new System.Drawing.Size(80, 20);
+            this.supportMeToolStripMenuItem.Text = "Support Me!";
+            this.supportMeToolStripMenuItem.Click += new System.EventHandler(this.supportMeToolStripMenuItem_Click);
             // 
             // GamePanel
             // 
@@ -1079,6 +1096,15 @@ namespace Grimoire.UI
             if (result == DialogResult.Yes)
             {
                 Process.Start("https://discord.gg/NZ6vmDTu44");
+            }
+        }
+
+        private void supportMeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult result = DarkMessageBox.Show(new Form { TopMost = true, StartPosition = FormStartPosition.CenterScreen }, "This opens a new tab on your default browser. Proceed?", "Support Me!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                Process.Start("https://ko-fi.com/gentleganku");
             }
         }
 
@@ -1447,13 +1473,24 @@ namespace Grimoire.UI
             }
         }
 
-        public void clientHeaderToggle()
+        private Icon defaultIcon;
+        private Icon defaultTrayIcon;
+
+        // Camouflage makes the client look like the official Artix Games Launcher: no title, the launcher icon on the window
+        // and tray, and the game's own backgrounds (-1 in the bridge's getBackgroundIndex and setBackgroundIndex).
+        public void ApplyCamouflage(bool enabled)
         {
-            if (BotClientConfig.Instance.GetValue<bool>("clientHeaderToggle"))
-            {
-                this.Text = "";
-                this.Icon = ((System.Drawing.Icon)(Resources.aeIcon));
-            }
+            this.Text = enabled ? "" : "Grimlite Rev";
+            this.Icon = enabled ? Resources.aeIcon : defaultIcon;
+            nTray.Icon = enabled ? Resources.aeIcon : defaultTrayIcon;
+            nTray.Text = enabled ? "" : "Grimlite Rev";
+            Flash.Call("setBackgroundIndex", enabled ? -1 : 0);
+        }
+
+        private void camouflageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            BotClientConfig.Instance.SetValue("clientHeaderToggle", camouflageToolStripMenuItem.Checked.ToString());
+            ApplyCamouflage(camouflageToolStripMenuItem.Checked);
         }
 
         private bool customTravel { get; set; } = true;

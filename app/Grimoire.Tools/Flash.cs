@@ -50,6 +50,11 @@ namespace Grimoire.Tools
                 {
                     Root.Instance.Client.SetReturnValue("<string>" + ModifyServerList(text2.Trim()) + "</string>");
                 }
+                // -1 keeps the game's own backgrounds (Camouflage), 0 is the first custom background.
+                if (text == "getBackgroundIndex")
+                {
+                    Root.Instance.Client.SetReturnValue(Root.Instance.camouflageToolStripMenuItem.Checked ? "<number>-1</number>" : "<number>0</number>");
+                }
                 Proxy.Instance.LogPackets(text, text2);
             }
             else

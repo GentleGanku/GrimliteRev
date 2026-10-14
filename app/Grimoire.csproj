@@ -405,6 +405,7 @@
     <Compile Include="Grimoire.UI\LogForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Grimoire.UI\NewBadge.cs" />
     <Compile Include="Grimoire.UI\Notepad.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -437,6 +438,12 @@
     </Compile>
     <Compile Include="Grimoire.UI\Set.Designer.cs">
       <DependentUpon>Set.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Grimoire.UI\ShortcutsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Grimoire.UI\ShortcutsForm.Designer.cs">
+      <DependentUpon>ShortcutsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Grimoire.UI\Travel.cs">
       <SubType>Form</SubType>

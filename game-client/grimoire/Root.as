@@ -71,9 +71,13 @@
 			[
 				FableForest
             ];
-			MainBackground = new Backgrounds[BackgroundIndex]("MainBackground");
-			StandbyBackground = new Backgrounds[BackgroundIndex]("StandbyBackground");
-			LoaderBackground = new Backgrounds[BackgroundIndex]("LoaderBackground");
+
+            if (BackgroundIndex >= 0)
+            {
+                MainBackground = new Backgrounds[BackgroundIndex]("MainBackground");
+                StandbyBackground = new Backgrounds[BackgroundIndex]("StandbyBackground");
+                LoaderBackground = new Backgrounds[BackgroundIndex]("LoaderBackground");
+            }
         }
 
 		///
@@ -84,7 +88,10 @@
             removeEventListener(Event.ADDED_TO_STAGE, this.onAddedToStage);
             Security.allowDomain("*");
             
-            GameStage.addChild(MainBackground);
+            if (BackgroundIndex >= 0)
+            {
+                GameStage.addChild(MainBackground);
+            }
 
             this.urlLoader = new URLLoader();
             this.urlLoader.addEventListener(Event.COMPLETE, this.onDataComplete);
@@ -131,7 +138,7 @@
 			Game.params.vars = this.loaderVars;
             Game.params.sURL = this.sURL;
             Game.params.sTitle = this.loaderVars.sTitle;
-            Game.params.sBG = "";
+            Game.params.sBG = BackgroundIndex < 0 ? this.sBG : "";
             Game.params.isWeb = this.isWeb;
             Game.params.isEU = this.isEU;
             Game.params.doSignup = this.doSignup;
@@ -150,7 +157,10 @@
 			this.external = new Externalizer();
             this.external.init(this);
 
-			GameStage.removeChild(MainBackground);
+			if (BackgroundIndex >= 0)
+			{
+				GameStage.removeChild(MainBackground);
+			}
 			GameStage.addChildAt(Game, 0);
         }
 		
@@ -262,6 +272,11 @@
 			switch (e.target.name)
 			{
 				case "mcLogin":
+                    if (BackgroundIndex < 0)
+                    {
+                        return;
+                    }
+
 					e.target.mcTitle.removeChildAt(0);
                     e.target.mcTitle.addChild(MainBackground);
 					return;
@@ -270,6 +285,11 @@
 			switch (getQualifiedClassName(e.target))
 			{
 				case "ConnDetailMC":
+                    if (BackgroundIndex < 0)
+                    {
+                        return;
+                    }
+
 					Client.shiftBackgrounds(BackgroundIndex, BackgroundIndex, BackgroundIndex);
 					return;
 			}

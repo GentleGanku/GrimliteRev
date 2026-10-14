@@ -23,6 +23,8 @@
 		public static var funcYes:Function;
 		public static var funcNo:Function;
 		public static var latency:Number;
+		private static var officialStandby:DisplayObject;
+		private static var officialLoader:DisplayObject;
 		
 		// This function returns a boolean for whether the client is loading on the corresponding type.
 		public static function isClientLoading(type:String):String
@@ -300,6 +302,11 @@
 		// This function shifts the backgrounds to the corresponding target in the Backgrounds array.
 		public static function shiftBackgrounds(main:int = 0, standby:int = 0, loader:int = 0):void
 		{
+			if (Root.BackgroundIndex < 0)
+			{
+				Root.BackgroundIndex = Root.DebugMode ? 0 : Number(ExternalInterface.call("getBackgroundIndex"));
+			}
+			
 			if (Root.BackgroundIndex != main)
 			{
 				Root.BackgroundIndex = main;
@@ -316,11 +323,57 @@
 				game.mcLogin.mcTitle.visible = true;
 			}
 			
+			// The game's own art is kept so setBackgroundIndex can put it back.
+			if (!isCustomBackground(game.mcConnDetail.getChildAt(0)))
+			{
+				officialStandby = game.mcConnDetail.getChildAt(0);
+			}
 			game.mcConnDetail.removeChildAt(0);
 			game.mcConnDetail.addChildAt(Root.StandbyBackground, 0);
 			
+			if (!isCustomBackground(game.ldrMC.getChildAt(0)))
+			{
+				officialLoader = game.ldrMC.getChildAt(0);
+			}
 			game.ldrMC.removeChildAt(0);
 			game.ldrMC.addChildAt(Root.LoaderBackground, 0);	
+		}
+
+		// This function switches between a custom background (index 0 and up) and the game's own backgrounds (below 0) without a restart.
+		public static function setBackgroundIndex(index:Number):void
+		{
+			if (index >= 0)
+			{
+				game.params.sBG = "";
+				Root.BackgroundIndex = index;
+				Root.MainBackground = new Root.Backgrounds[index]("MainBackground");
+				Root.StandbyBackground = new Root.Backgrounds[index]("StandbyBackground");
+				Root.LoaderBackground = new Root.Backgrounds[index]("LoaderBackground");
+				shiftBackgrounds(index, index, index);
+				return;
+			}
+
+			Root.BackgroundIndex = index;
+			game.params.sBG = game.params.vars.sBG;
+			if (officialStandby && isCustomBackground(game.mcConnDetail.getChildAt(0)))
+			{
+				game.mcConnDetail.removeChildAt(0);
+				game.mcConnDetail.addChildAt(officialStandby, 0);
+			}
+			if (officialLoader && isCustomBackground(game.ldrMC.getChildAt(0)))
+			{
+				game.ldrMC.removeChildAt(0);
+				game.ldrMC.addChildAt(officialLoader, 0);
+			}
+			if (game.mcLogin)
+			{
+				game.loadTitle();
+			}
+		}
+
+		private static function isCustomBackground(child:DisplayObject):Boolean
+		{
+			return getQualifiedClassName(child).indexOf("grimoire.backgrounds::") == 0;
 		}
 
 		// This function veils the player's profile and modifies the corresponding UI elements to reflect the anonymous status.	
