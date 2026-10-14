@@ -130,8 +130,7 @@ namespace Grimoire.Game
 
         public static List<Monster> MonstersInMap => Flash.Call<List<Monster>>("MonstersInMap", new string[0]);
 
-        [ObjectBinding("world.monsters", Select = "objData")]
-        public static List<Monster> Monsters { get; }
+        public static List<Monster> Monsters { get => GameObject.Select<List<Monster>>("world.monsters", "objData"); set => GameObject.Set("world.monsters", value); }
 
         //public static List<Monster> MonstersInCell(string cell) => Monsters.FindAll(m => m.Cell == cell);
         public static List<Monster> MonstersInCell(string cell) => Monsters.FindAll(mon => mon.Cell == cell);
@@ -141,19 +140,15 @@ namespace Grimoire.Game
 
         public static bool IsGameLoaded() => Flash.Call<bool>("InGame", new string[0]);
 
-        [ObjectBinding("cDropsUI.inner_menu.isMenuOpen()")]
-        public static bool VisibleDropUI;
+        public static bool VisibleDropUI { get => GameObject.Get<bool>("cDropsUI.inner_menu.isMenuOpen()"); set => GameObject.Set("cDropsUI.inner_menu.isMenuOpen()", value); }
 
         public static bool VisibleConnScreen => Flash.Call<bool>("InConnStage", new string[0]);
 
-        [ObjectBinding("world.uiLock")]
-        public static bool uiLock;
+        public static bool uiLock { get => GameObject.Get<bool>("world.uiLock"); set => GameObject.Set("world.uiLock", value); }
 
-        [ObjectBinding("world.visible")]
-        public static bool VisibleWorld;
+        public static bool VisibleWorld { get => GameObject.Get<bool>("world.visible"); set => GameObject.Set("world.visible", value); }
 
-        [ObjectBinding("mcExtSWF.numChildren")]
-        public static int ActiveCutscene;
+        public static int ActiveCutscene { get => GameObject.Get<int>("mcExtSWF.numChildren"); set => GameObject.Set("mcExtSWF.numChildren", value); }
 
         public static void GamePopup(string text, bool red = false) => Flash.Call("GamePopup", text, red);
 
@@ -163,13 +158,11 @@ namespace Grimoire.Game
 
         public static event Action<Aura> auraCountdown;
 
-        [ObjectBinding("ui.mcFPS.visible")]
-        public static bool FPSBox;
+        public static bool FPSBox { get => GameObject.Get<bool>("ui.mcFPS.visible"); set => GameObject.Set("ui.mcFPS.visible", value); }
 
         public static List<Cell> GetMapCells => Flash.Call<List<Cell>>("GetMapCells", new string[0]);
 
-        [ObjectBinding("world.mapLoadInProgress")]
-        public static bool mapLoadInProgress;
+        public static bool mapLoadInProgress { get => GameObject.Get<bool>("world.mapLoadInProgress"); set => GameObject.Set("world.mapLoadInProgress", value); }
 
         public static Cell CellInfo(string cell) => Flash.Call<Cell>("GetCellInfo", cell);
 

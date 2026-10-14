@@ -360,6 +360,7 @@ Each item is scored with the standard framework: **Impact** (how much it slows w
 - `LangVersion` is `8.0` globally (`:9`) but `7.3` per configuration (`:50, 58, 81`).
 - **Why it matters:** No one, including future you, can verify any fix in this report without first rebuilding the toolchain by hand.
 - **Fix:** Vendor or replace the tab control (DarkUI already provides tabs). Switch to plain framework references. Replace `ObjectBinding` with explicit properties that call `Flash.Call`, which also makes the hidden round-trips visible (TD-12). Pin one `LangVersion`. **Effort: ~1–2 days.**
+- **Status (2026-10-14): fixed.** `VisualStudioTabControl.dll` is vendored in `app/Dependency/`. The framework references have no `HintPath`. PostSharp is removed: the 12 `[ObjectBinding]` members are properties that call `Grimoire.Utils/GameObject.cs`. `LangVersion` is 8.0 in all configurations, and the configurations are `Debug`/`Release` × `x86`/`x64`. A clean restore and all four configurations build with MSBuild 18 (VS 2026).
 
 #### TD-02 · No error-handling strategy (Priority 27)
 - There are about 70 blanket or empty `catch` blocks and 66 `async void` methods. Exceptions are converted to `default` inside `Flash.Call`/`ObjectBinding`, and nothing is logged even though `LogForm` exists. There are no global exception handlers.
@@ -380,6 +381,7 @@ Each item is scored with the standard framework: **Impact** (how much it slows w
 - `app/Dependency/*.dll` (DarkUI, FlatTabControl, Unity3.Eyedropper, Flash interop) are vendored without version or license notes; `FlatTabControl` is referenced by neither the csproj nor the code.
 - **Why it matters:** Committed native hooking binaries that nothing uses raise antivirus false positives and user-trust questions. Unused packages add attack surface and restore time.
 - **Fix:** Remove the unused ones. Record source, version and license for the rest in `app/Dependency/README.md`. **Effort: < 1 day.**
+- **Status (2026-10-14): partly fixed.** The unused packages (including the `System.Buffers`/`Memory`/`Numerics.Vectors`/`CompilerServices.Unsafe`/`RuntimeInformation`/`Threading.Tasks.Extensions` set), the EasyHook/EasyLoad binaries and `FlatTabControl.dll` are removed. `Microsoft.Office.Interop.Word` stays. `app/Dependency/README.md` is still to do.
 
 #### TD-05 · Bot engine coupled to WinForms controls (Priority 24)
 - `Bot.cs`, `OptionsManager.cs`, `AutoRelogin.cs`, `HandlerDropItem.cs`, `HandlerLoadShop.cs` and others read `BotManager.Instance.chk*.Checked`, `lstItems.Items` and `lstCommands.SelectedIndex` directly, often from worker threads.

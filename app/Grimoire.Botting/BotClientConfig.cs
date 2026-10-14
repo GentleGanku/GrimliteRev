@@ -40,8 +40,7 @@ namespace Grimoire.Botting
         {
             if (!File.Exists(path))
             {
-                File.Create(path);
-                Task.Delay(100);
+                File.Create(path).Dispose();
             }
             return new BotClientConfig()
             {

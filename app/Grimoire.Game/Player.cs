@@ -325,11 +325,9 @@ namespace Grimoire.Game
 
         public static bool HasLoadedAvatar() => Flash.Call<bool>("HasLoadedAvatar", new string[0]);
 
-        [ObjectBinding("world.myAvatar.objData.intActivationFlag")]
-        public static int ActivationFlag;
+        public static int ActivationFlag { get => GameObject.Get<int>("world.myAvatar.objData.intActivationFlag"); set => GameObject.Set("world.myAvatar.objData.intActivationFlag", value); }
 
-        [ObjectBinding("userPreference.data.bDeathAd")]
-        public static bool HasDeathAd;
+        public static bool HasDeathAd { get => GameObject.Get<bool>("userPreference.data.bDeathAd"); set => GameObject.Set("userPreference.data.bDeathAd", value); }
 
         public static bool isAuraActive(string target, string aura) => Flash.Call<bool>("isAuraActive", target, aura);
 
@@ -339,18 +337,15 @@ namespace Grimoire.Game
 
         public static void cancelAfk() => Flash.Call("cancelAfk", new string[0]);
 
-        [ObjectBinding("world.myAvatar.target.isMyAvatar")]
-        public static bool targetOnSelf;
+        public static bool targetOnSelf { get => GameObject.Get<bool>("world.myAvatar.target.isMyAvatar"); set => GameObject.Set("world.myAvatar.target.isMyAvatar", value); }
 
-        [ObjectBinding("world.WALKSPEED")]
-        public static int walkSpeed;
+        public static int walkSpeed { get => GameObject.Get<int>("world.WALKSPEED"); set => GameObject.Set("world.WALKSPEED", value); }
 
         public static void Unequip(string itemID) => Flash.Call("Unequip", itemID);
 
         public static void UnequipPotion(string itemName) => Flash.Call("UnequipPotion", itemName);
 
-        [ObjectBinding("intLevelCap")]
-        public static int levelCap;
+        public static int levelCap { get => GameObject.Get<int>("intLevelCap"); set => GameObject.Set("intLevelCap", value); }
 
         static Player()
         {

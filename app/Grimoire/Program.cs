@@ -3,6 +3,7 @@ using Grimoire.UI;
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using Microsoft.Win32;
@@ -17,26 +18,25 @@ namespace Grimoire
         [STAThread]
         private static void Main()
         {
-            CheckForLatestBuild();
-            CheckForFlashPlayer();
-            
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(defaultValue: false);
             Application.Run(new Root());
         }
 
-        public static void CheckForLatestBuild()
+        public static async Task CheckForLatestBuild()
         {
-            HttpClient client = new HttpClient();
             ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
             bool isOutdated = false;
-            
+
             try
             {
-                client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 (Windows; U; MSIE 9.0; Windows NT 9.0; en-US)");
-                
-                var result = client.GetStringAsync("https://github.com/GentleGanku/GrimliteRev/releases/latest").Result;
-                isOutdated = !result.Contains($"v{version}");
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 (Windows; U; MSIE 9.0; Windows NT 9.0; en-US)");
+
+                    var result = await client.GetStringAsync("https://github.com/GentleGanku/GrimliteRev/releases/latest");
+                    isOutdated = !result.Contains($"v{version}");
+                }
             }
             catch
             {
