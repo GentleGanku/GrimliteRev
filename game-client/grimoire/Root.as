@@ -451,8 +451,8 @@
 		// This function sets the game's FPS to a corresponding number.
         public static function setFPS(rate:int):void
         {
-            GameStage.frameRate = rate;
 			Game.addUpdate("Frames Per Second (FPS) cap has been changed from " + GameStage.frameRate + " FPS to " + rate + " FPS.");
+            GameStage.frameRate = rate;
         }
 
 		// This function sets the login screen's title to a corresponding string.

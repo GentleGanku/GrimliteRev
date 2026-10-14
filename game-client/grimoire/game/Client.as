@@ -300,11 +300,14 @@
 		// This function shifts the backgrounds to the corresponding target in the Backgrounds array.
 		public static function shiftBackgrounds(main:int = 0, standby:int = 0, loader:int = 0):void
 		{
-			Root.BackgroundIndex = main;
+			if (Root.BackgroundIndex != main)
+			{
+				Root.BackgroundIndex = main;
 
-			Root.MainBackground = new Root.Backgrounds[main]("MainBackground");
-			Root.StandbyBackground = new Root.Backgrounds[standby]("StandbyBackground");
-			Root.LoaderBackground = new Root.Backgrounds[loader]("LoaderBackground");
+				Root.MainBackground = new Root.Backgrounds[main]("MainBackground");
+				Root.StandbyBackground = new Root.Backgrounds[standby]("StandbyBackground");
+				Root.LoaderBackground = new Root.Backgrounds[loader]("LoaderBackground");
+			}
 			
 			if (game.mcLogin)
             {
