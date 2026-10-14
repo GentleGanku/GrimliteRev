@@ -334,16 +334,10 @@ namespace Grimoire.UI
         private DarkTextBox txtClassName;
         private DarkButton btnSetCustomClassName;
         private DarkGroupBox darkGroupBox19;
-        public DarkCheckBox chkProvokeAllMon;
         private SplitContainer splitContainer4;
         public DarkButton btnGotoLabel;
         public DarkButton btnAddLabel;
         public DarkTextBox txtLabel;
-        internal DarkTextBox txtCustomAggromon;
-        public DarkCheckBox chkInMapCustom;
-        private DarkLabel txtInMap;
-        private DarkButton btnProvokeInMapOff;
-        private DarkButton btnProvokeInMapOn;
         private DarkLabel txtInRoom;
         private DarkLabel darkLabel2;
         private DarkCheckBox chkSafeGreaterThan;
@@ -421,7 +415,6 @@ namespace Grimoire.UI
         private DarkCheckBox chkBuyManual;
         public DarkCheckBox chkRelogUponFailBuy;
         private DarkLabel darkLabel11;
-        public DarkCheckBox chkSaveState;
 
         public static BotManager Instance
         {
@@ -588,14 +581,12 @@ namespace Grimoire.UI
                 SkipDelayIndexIf = chkSkip.Checked,
                 InfiniteAttackRange = chkInfiniteRange.Checked,
                 ProvokeMonsters = chkProvoke.Checked,
-                ProvokeAllMonster = chkProvokeAllMon.Checked,
                 EnemyMagnet = chkMagnet.Checked,
                 LagKiller = chkLag.Checked,
                 HidePlayers = chkHidePlayers.Checked,
                 SkipCutscenes = chkSkipCutscenes.Checked,
                 DisableAnimations = chkDisableAnims.Checked,
                 Untarget = chkUntarget.Checked,
-                AutoSaveState = chkSaveState.Checked,
                 WalkSpeed = (int)numWalkSpeed.Value,
                 NotifyUponDrop = lstSoundItems.Items.Cast<string>().ToList(),
                 RestIfMp = chkMP.Checked,
@@ -644,14 +635,12 @@ namespace Grimoire.UI
                 SkipDelayIndexIf = chkSkip.Checked,
                 InfiniteAttackRange = chkInfiniteRange.Checked,
                 ProvokeMonsters = chkProvoke.Checked,
-                ProvokeAllMonster = chkProvokeAllMon.Checked,
                 EnemyMagnet = chkMagnet.Checked,
                 LagKiller = chkLag.Checked,
                 HidePlayers = chkHidePlayers.Checked,
                 SkipCutscenes = chkSkipCutscenes.Checked,
                 DisableAnimations = chkDisableAnims.Checked,
                 Untarget = chkUntarget.Checked,
-                AutoSaveState = chkSaveState.Checked,
                 WalkSpeed = (int)numWalkSpeed.Value,
                 NotifyUponDrop = lstSoundItems.Items.Cast<string>().ToList(),
                 RestIfMp = chkMP.Checked,
@@ -751,7 +740,6 @@ namespace Grimoire.UI
                 chkSkipCutscenes.Checked = config.SkipCutscenes;
                 chkDisableAnims.Checked = config.DisableAnimations;
                 chkUntarget.Checked = config.Untarget;
-                chkSaveState.Checked = config.AutoSaveState;
                 numWalkSpeed.Value = (config.WalkSpeed <= 0) ? 8 : config.WalkSpeed;
                 List<string> notifyUponDrop = config.NotifyUponDrop;
                 if (notifyUponDrop != null && notifyUponDrop.Count > 0)
@@ -1742,16 +1730,6 @@ namespace Grimoire.UI
             Root.Instance.provokeToolStripMenuItem1.Checked = chkProvoke.Checked;
         }
 
-        private void chkProvokeAllMon_CheckedChanged(object sender, EventArgs e)
-        {
-            OptionsManager.ProvokeAllMonster = chkProvokeAllMon.Checked;
-            Root.Instance.provokeAllMonsterInMapToolStripMenuItem.Checked = chkProvokeAllMon.Checked;
-            if (!chkProvokeAllMon.Checked && (Player.CurrentState == Player.State.InCombat))
-            {
-                BotUtilities.MoveToSelfCell();
-            }
-        }
-
         private void chkMagnet_CheckedChanged(object sender, EventArgs e)
         {
             OptionsManager.EnemyMagnet = chkMagnet.Checked;
@@ -2328,11 +2306,6 @@ namespace Grimoire.UI
             this.btnGoUpIndex = new DarkUI.Controls.DarkButton();
             this.btnGoDownIndex = new DarkUI.Controls.DarkButton();
             this.darkGroupBox7 = new DarkUI.Controls.DarkGroupBox();
-            this.txtCustomAggromon = new DarkUI.Controls.DarkTextBox();
-            this.chkInMapCustom = new DarkUI.Controls.DarkCheckBox();
-            this.txtInMap = new DarkUI.Controls.DarkLabel();
-            this.btnProvokeInMapOff = new DarkUI.Controls.DarkButton();
-            this.btnProvokeInMapOn = new DarkUI.Controls.DarkButton();
             this.txtInRoom = new DarkUI.Controls.DarkLabel();
             this.btnProvokeOff = new DarkUI.Controls.DarkButton();
             this.btnProvokeOn = new DarkUI.Controls.DarkButton();
@@ -2357,8 +2330,6 @@ namespace Grimoire.UI
             this.chkMerge = new DarkUI.Controls.DarkCheckBox();
             this.tabOptions = new System.Windows.Forms.TabPage();
             this.darkGroupBox19 = new DarkUI.Controls.DarkGroupBox();
-            this.chkSaveState = new DarkUI.Controls.DarkCheckBox();
-            this.chkProvokeAllMon = new DarkUI.Controls.DarkCheckBox();
             this.chkProvoke = new DarkUI.Controls.DarkCheckBox();
             this.chkGender = new DarkUI.Controls.DarkCheckBox();
             this.label6 = new DarkUI.Controls.DarkLabel();
@@ -5321,74 +5292,16 @@ namespace Grimoire.UI
             // 
             // darkGroupBox7
             // 
-            this.darkGroupBox7.Controls.Add(this.txtCustomAggromon);
-            this.darkGroupBox7.Controls.Add(this.chkInMapCustom);
-            this.darkGroupBox7.Controls.Add(this.txtInMap);
-            this.darkGroupBox7.Controls.Add(this.btnProvokeInMapOff);
-            this.darkGroupBox7.Controls.Add(this.btnProvokeInMapOn);
             this.darkGroupBox7.Controls.Add(this.txtInRoom);
             this.darkGroupBox7.Controls.Add(this.btnProvokeOff);
             this.darkGroupBox7.Controls.Add(this.btnProvokeOn);
             this.darkGroupBox7.Location = new System.Drawing.Point(178, 182);
             this.darkGroupBox7.Name = "darkGroupBox7";
-            this.darkGroupBox7.Size = new System.Drawing.Size(324, 58);
+            this.darkGroupBox7.Size = new System.Drawing.Size(116, 58);
             this.darkGroupBox7.TabIndex = 161;
             this.darkGroupBox7.TabStop = false;
             this.darkGroupBox7.Text = "Provoke Monster";
-            // 
-            // txtCustomAggromon
-            // 
-            this.txtCustomAggromon.Enabled = false;
-            this.txtCustomAggromon.Location = new System.Drawing.Point(133, 32);
-            this.txtCustomAggromon.Name = "txtCustomAggromon";
-            this.txtCustomAggromon.Size = new System.Drawing.Size(185, 23);
-            this.txtCustomAggromon.TabIndex = 160;
-            this.txtCustomAggromon.Text = "%xt%zm%aggroMon%1%MonMapID%";
-            // 
-            // chkInMapCustom
-            // 
-            this.chkInMapCustom.AutoSize = true;
-            this.chkInMapCustom.Location = new System.Drawing.Point(133, 15);
-            this.chkInMapCustom.Name = "chkInMapCustom";
-            this.chkInMapCustom.Size = new System.Drawing.Size(77, 21);
-            this.chkInMapCustom.TabIndex = 159;
-            this.chkInMapCustom.Text = "Custom";
-            this.chkInMapCustom.CheckedChanged += new System.EventHandler(this.chkInMapCustom_CheckedChanged);
-            // 
-            // txtInMap
-            // 
-            this.txtInMap.AutoSize = true;
-            this.txtInMap.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.txtInMap.Location = new System.Drawing.Point(72, 16);
-            this.txtInMap.Name = "txtInMap";
-            this.txtInMap.Size = new System.Drawing.Size(54, 17);
-            this.txtInMap.TabIndex = 154;
-            this.txtInMap.Text = "In map:";
-            // 
-            // btnProvokeInMapOff
-            // 
-            this.btnProvokeInMapOff.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.btnProvokeInMapOff.BackColorUseGeneric = false;
-            this.btnProvokeInMapOff.Checked = false;
-            this.btnProvokeInMapOff.Location = new System.Drawing.Point(104, 32);
-            this.btnProvokeInMapOff.Name = "btnProvokeInMapOff";
-            this.btnProvokeInMapOff.Size = new System.Drawing.Size(30, 20);
-            this.btnProvokeInMapOff.TabIndex = 153;
-            this.btnProvokeInMapOff.Text = "Off";
-            this.btnProvokeInMapOff.Click += new System.EventHandler(this.btnProvokeInMapOff_Click);
-            // 
-            // btnProvokeInMapOn
-            // 
-            this.btnProvokeInMapOn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.btnProvokeInMapOn.BackColorUseGeneric = false;
-            this.btnProvokeInMapOn.Checked = false;
-            this.btnProvokeInMapOn.Location = new System.Drawing.Point(75, 32);
-            this.btnProvokeInMapOn.Name = "btnProvokeInMapOn";
-            this.btnProvokeInMapOn.Size = new System.Drawing.Size(30, 20);
-            this.btnProvokeInMapOn.TabIndex = 152;
-            this.btnProvokeInMapOn.Text = "On";
-            this.btnProvokeInMapOn.Click += new System.EventHandler(this.btnProvokeInMapOn_Click);
-            // 
+            //
             // txtInRoom
             // 
             this.txtInRoom.AutoSize = true;
@@ -5711,8 +5624,6 @@ namespace Grimoire.UI
             // 
             // darkGroupBox19
             // 
-            this.darkGroupBox19.Controls.Add(this.chkSaveState);
-            this.darkGroupBox19.Controls.Add(this.chkProvokeAllMon);
             this.darkGroupBox19.Controls.Add(this.chkProvoke);
             this.darkGroupBox19.Controls.Add(this.chkGender);
             this.darkGroupBox19.Controls.Add(this.label6);
@@ -5734,26 +5645,6 @@ namespace Grimoire.UI
             this.darkGroupBox19.TabStop = false;
             this.darkGroupBox19.Text = "Bot Options";
             // 
-            // chkSaveState
-            // 
-            this.chkSaveState.AutoSize = true;
-            this.chkSaveState.Location = new System.Drawing.Point(5, 186);
-            this.chkSaveState.Name = "chkSaveState";
-            this.chkSaveState.Size = new System.Drawing.Size(129, 21);
-            this.chkSaveState.TabIndex = 159;
-            this.chkSaveState.Text = "Auto-save state";
-            this.chkSaveState.CheckedChanged += new System.EventHandler(this.chkSaveState_CheckedChanged);
-            // 
-            // chkProvokeAllMon
-            // 
-            this.chkProvokeAllMon.AutoSize = true;
-            this.chkProvokeAllMon.Location = new System.Drawing.Point(5, 50);
-            this.chkProvokeAllMon.Name = "chkProvokeAllMon";
-            this.chkProvokeAllMon.Size = new System.Drawing.Size(190, 21);
-            this.chkProvokeAllMon.TabIndex = 158;
-            this.chkProvokeAllMon.Text = "Provoke monsters in map";
-            this.chkProvokeAllMon.CheckedChanged += new System.EventHandler(this.chkProvokeAllMon_CheckedChanged);
-            // 
             // chkProvoke
             // 
             this.chkProvoke.AutoSize = true;
@@ -5768,7 +5659,7 @@ namespace Grimoire.UI
             // chkGender
             // 
             this.chkGender.AutoSize = true;
-            this.chkGender.Location = new System.Drawing.Point(5, 152);
+            this.chkGender.Location = new System.Drawing.Point(5, 135);
             this.chkGender.Name = "chkGender";
             this.chkGender.Size = new System.Drawing.Size(114, 21);
             this.chkGender.TabIndex = 137;
@@ -5779,7 +5670,7 @@ namespace Grimoire.UI
             // 
             this.label6.AutoSize = true;
             this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.label6.Location = new System.Drawing.Point(64, 263);
+            this.label6.Location = new System.Drawing.Point(64, 229);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(97, 17);
             this.label6.TabIndex = 157;
@@ -5802,7 +5693,7 @@ namespace Grimoire.UI
             0,
             0,
             65536});
-            this.numOptionsTimer.Location = new System.Drawing.Point(5, 260);
+            this.numOptionsTimer.Location = new System.Drawing.Point(5, 226);
             this.numOptionsTimer.LoopValues = false;
             this.numOptionsTimer.Maximum = new decimal(new int[] {
             10000,
@@ -5827,7 +5718,7 @@ namespace Grimoire.UI
             // chkMagnet
             // 
             this.chkMagnet.AutoSize = true;
-            this.chkMagnet.Location = new System.Drawing.Point(5, 67);
+            this.chkMagnet.Location = new System.Drawing.Point(5, 50);
             this.chkMagnet.Name = "chkMagnet";
             this.chkMagnet.Size = new System.Drawing.Size(123, 21);
             this.chkMagnet.TabIndex = 118;
@@ -5837,7 +5728,7 @@ namespace Grimoire.UI
             // chkUntarget
             // 
             this.chkUntarget.AutoSize = true;
-            this.chkUntarget.Location = new System.Drawing.Point(5, 169);
+            this.chkUntarget.Location = new System.Drawing.Point(5, 152);
             this.chkUntarget.Name = "chkUntarget";
             this.chkUntarget.Size = new System.Drawing.Size(111, 21);
             this.chkUntarget.TabIndex = 154;
@@ -5847,7 +5738,7 @@ namespace Grimoire.UI
             // chkLag
             // 
             this.chkLag.AutoSize = true;
-            this.chkLag.Location = new System.Drawing.Point(5, 84);
+            this.chkLag.Location = new System.Drawing.Point(5, 67);
             this.chkLag.Name = "chkLag";
             this.chkLag.Size = new System.Drawing.Size(87, 21);
             this.chkLag.TabIndex = 119;
@@ -5856,7 +5747,7 @@ namespace Grimoire.UI
             // 
             // chkEnableSettings
             // 
-            this.chkEnableSettings.Location = new System.Drawing.Point(5, 216);
+            this.chkEnableSettings.Location = new System.Drawing.Point(5, 182);
             this.chkEnableSettings.Name = "chkEnableSettings";
             this.chkEnableSettings.Size = new System.Drawing.Size(173, 17);
             this.chkEnableSettings.TabIndex = 132;
@@ -5866,7 +5757,7 @@ namespace Grimoire.UI
             // chkHidePlayers
             // 
             this.chkHidePlayers.AutoSize = true;
-            this.chkHidePlayers.Location = new System.Drawing.Point(5, 101);
+            this.chkHidePlayers.Location = new System.Drawing.Point(5, 84);
             this.chkHidePlayers.Name = "chkHidePlayers";
             this.chkHidePlayers.Size = new System.Drawing.Size(109, 21);
             this.chkHidePlayers.TabIndex = 120;
@@ -5875,7 +5766,7 @@ namespace Grimoire.UI
             // 
             // chkDisableAnims
             // 
-            this.chkDisableAnims.Location = new System.Drawing.Point(5, 135);
+            this.chkDisableAnims.Location = new System.Drawing.Point(5, 118);
             this.chkDisableAnims.Name = "chkDisableAnims";
             this.chkDisableAnims.Size = new System.Drawing.Size(151, 17);
             this.chkDisableAnims.TabIndex = 131;
@@ -5885,7 +5776,7 @@ namespace Grimoire.UI
             // chkSkipCutscenes
             // 
             this.chkSkipCutscenes.AutoSize = true;
-            this.chkSkipCutscenes.Location = new System.Drawing.Point(5, 118);
+            this.chkSkipCutscenes.Location = new System.Drawing.Point(5, 101);
             this.chkSkipCutscenes.Name = "chkSkipCutscenes";
             this.chkSkipCutscenes.Size = new System.Drawing.Size(125, 21);
             this.chkSkipCutscenes.TabIndex = 121;
@@ -5896,7 +5787,7 @@ namespace Grimoire.UI
             // 
             this.label8.AutoSize = true;
             this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.label8.Location = new System.Drawing.Point(64, 242);
+            this.label8.Location = new System.Drawing.Point(64, 208);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(82, 17);
             this.label8.TabIndex = 122;
@@ -5909,7 +5800,7 @@ namespace Grimoire.UI
             0,
             0,
             65536});
-            this.numWalkSpeed.Location = new System.Drawing.Point(5, 238);
+            this.numWalkSpeed.Location = new System.Drawing.Point(5, 204);
             this.numWalkSpeed.LoopValues = false;
             this.numWalkSpeed.Maximum = new decimal(new int[] {
             99,
@@ -8474,35 +8365,6 @@ namespace Grimoire.UI
             CustomClassName = txtClassName.Text;
         }
 
-        private void btnProvokeInMapOn_Click(object sender, EventArgs e)
-        {
-            string txtProvokePacket;
-            if (chkInMapCustom.Checked == true || !txtCustomAggromon.Text.Contains("MonMapID"))
-                txtProvokePacket = txtCustomAggromon.Text;
-            else
-                txtProvokePacket = "%xt%zm%aggroMon%1%1%2%3%4%5%6%7%8%9%10%11%12%13%14%15%16%17%18%19%20%21%22%23%24%25%26%27%28%29%30%" +
-                    "31%32%33%34%35%36%37%38%39%40%41%42%43%44%45%46%47%48%49%50%51%52%53%54%55%56%57%58%59%60%61%62%63%64%65%66%67%68%69%70%";
-            AddCommand(new CmdToggleProvokeInMap
-            {
-                Type = 1,
-                ProvokePacket = txtProvokePacket
-            }, (ModifierKeys & Keys.Control) == Keys.Control); ;
-        }
-
-        private void btnProvokeInMapOff_Click(object sender, EventArgs e)
-        {
-            AddCommand(new CmdToggleProvokeInMap
-            {
-                Type = 0,
-                ProvokePacket = ""
-            }, (ModifierKeys & Keys.Control) == Keys.Control);
-        }
-
-        private void chkInMapCustom_CheckedChanged(object sender, EventArgs e)
-        {
-            txtCustomAggromon.Enabled = chkInMapCustom.Checked;
-        }
-
         private void chkSafeHP_CheckedChanged(object sender, EventArgs e)
         {
             if (chkSafeMP.Checked)
@@ -8745,12 +8607,6 @@ namespace Grimoire.UI
         public void btnSaveDirectory_Click(object sender, EventArgs e)
         {
             Config.Instance.SetValue("botsDirectory", txtSaved.Text.ToString());
-        }
-
-        public void chkSaveState_CheckedChanged(object sender, EventArgs e)
-        {
-            OptionsManager._saveState = chkSaveState.Checked;
-            Root.Instance.autosaveStateToolStripMenuItem.Checked = chkSaveState.Checked;
         }
 
         private void lblGuideDescription_Click(object sender, EventArgs e)

@@ -78,19 +78,11 @@ namespace Grimoire.UI
         private ToolStripMenuItem bankToolStripMenuItem1;
         private ToolStripMenuItem reloadToolStripMenuItem;
         public ToolStripMenuItem pluginsStrip;
-        private ToolStripMenuItem helpToolStripMenuItem;
+        public ToolStripMenuItem settingsToolStripMenuItem;
+        private ToolStripMenuItem noSettingsToolStripMenuItem;
         private ToolStripMenuItem discordToolStripMenuItem;
-        private ToolStripMenuItem toolStripMenuItem1;
-        private ToolStripMenuItem botRequestToolStripMenuItem;
-        private ToolStripMenuItem grimoireSuggestionsToolStripMenuItem;
-        private ToolStripMenuItem googleFormToolStripMenuItem;
-        private ToolStripMenuItem googleDocsToolStripMenuItem;
-        private ToolStripMenuItem getBotsToolStripMenuItem;
-        public ToolStripMenuItem provokeAllMonsterInMapToolStripMenuItem;
         public ToolStripMenuItem untargetSelfToolStripMenuItem;
-        public ToolStripMenuItem autosaveStateToolStripMenuItem;
         private ToolStripMenuItem walkSpeedToolStripMenuItem;
-        private ToolStripMenuItem enableCaptureToolStripMenuItem;
         private System.Threading.CancellationTokenSource _cts;
         private DarkPanel GamePanel;
 
@@ -378,27 +370,19 @@ namespace Grimoire.UI
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.infRangeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.provokeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.provokeAllMonsterInMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.enemyMagnetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lagKillerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hidePlayersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.skipCutscenesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.disableAnimationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.untargetSelfToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.autosaveStateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.walkSpeedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bankToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.reloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pluginsStrip = new System.Windows.Forms.ToolStripMenuItem();
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.noSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.discordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.botRequestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.grimoireSuggestionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.googleFormToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.googleDocsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.enableCaptureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.getBotsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.GamePanel = new DarkUI.Controls.DarkPanel();
             this.panel1.SuspendLayout();
             this.MenuStrip1.SuspendLayout();
@@ -541,8 +525,8 @@ namespace Grimoire.UI
             this.optionsToolStripMenuItem,
             this.bankToolStripMenuItem1,
             this.pluginsStrip,
-            this.helpToolStripMenuItem,
-            this.getBotsToolStripMenuItem});
+            this.settingsToolStripMenuItem,
+            this.discordToolStripMenuItem});
             this.MenuStrip1.Location = new System.Drawing.Point(0, 0);
             this.MenuStrip1.Name = "MenuStrip1";
             this.MenuStrip1.Padding = new System.Windows.Forms.Padding(2, 2, 0, 2);
@@ -847,14 +831,12 @@ namespace Grimoire.UI
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.infRangeToolStripMenuItem,
             this.provokeToolStripMenuItem1,
-            this.provokeAllMonsterInMapToolStripMenuItem,
             this.enemyMagnetToolStripMenuItem,
             this.lagKillerToolStripMenuItem,
             this.hidePlayersToolStripMenuItem,
             this.skipCutscenesToolStripMenuItem,
             this.disableAnimationsToolStripMenuItem,
             this.untargetSelfToolStripMenuItem,
-            this.autosaveStateToolStripMenuItem,
             this.walkSpeedToolStripMenuItem});
             this.optionsToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
@@ -881,16 +863,6 @@ namespace Grimoire.UI
             this.provokeToolStripMenuItem1.Text = "Provoke Monsters in Cell";
             this.provokeToolStripMenuItem1.CheckedChanged += new System.EventHandler(this.provokeToolStripMenuItem1_Click);
             this.provokeToolStripMenuItem1.Click += new System.EventHandler(this.provokeToolStripMenuItem1_Clicked);
-            // 
-            // provokeAllMonsterInMapToolStripMenuItem
-            // 
-            this.provokeAllMonsterInMapToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
-            this.provokeAllMonsterInMapToolStripMenuItem.CheckOnClick = true;
-            this.provokeAllMonsterInMapToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
-            this.provokeAllMonsterInMapToolStripMenuItem.Name = "provokeAllMonsterInMapToolStripMenuItem";
-            this.provokeAllMonsterInMapToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
-            this.provokeAllMonsterInMapToolStripMenuItem.Text = "Provoke Monsters in Map";
-            this.provokeAllMonsterInMapToolStripMenuItem.CheckedChanged += new System.EventHandler(this.provokeAllMonsterInMapToolStripMenuItem_Click);
             // 
             // enemyMagnetToolStripMenuItem
             // 
@@ -952,16 +924,6 @@ namespace Grimoire.UI
             this.untargetSelfToolStripMenuItem.Text = "Untarget Self";
             this.untargetSelfToolStripMenuItem.CheckedChanged += new System.EventHandler(this.untargetSelfToolStripMenuItem_Click);
             // 
-            // autosaveStateToolStripMenuItem
-            // 
-            this.autosaveStateToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
-            this.autosaveStateToolStripMenuItem.CheckOnClick = true;
-            this.autosaveStateToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
-            this.autosaveStateToolStripMenuItem.Name = "autosaveStateToolStripMenuItem";
-            this.autosaveStateToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
-            this.autosaveStateToolStripMenuItem.Text = "Auto-save State";
-            this.autosaveStateToolStripMenuItem.CheckedChanged += new System.EventHandler(this.autosaveStateToolStripMenuItem_Click);
-            // 
             // walkSpeedToolStripMenuItem
             // 
             this.walkSpeedToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
@@ -1000,86 +962,35 @@ namespace Grimoire.UI
             this.pluginsStrip.Size = new System.Drawing.Size(58, 20);
             this.pluginsStrip.Text = "Plugins";
             this.pluginsStrip.Click += new System.EventHandler(this.pluginsStrip_Click);
-            // 
-            // helpToolStripMenuItem
-            // 
-            this.helpToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
-            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.discordToolStripMenuItem,
-            this.toolStripMenuItem1,
-            this.botRequestToolStripMenuItem,
-            this.grimoireSuggestionsToolStripMenuItem,
-            this.enableCaptureToolStripMenuItem});
-            this.helpToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
-            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
-            this.helpToolStripMenuItem.Text = "More";
-            // 
+            //
+            // settingsToolStripMenuItem
+            //
+            this.settingsToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
+            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.noSettingsToolStripMenuItem});
+            this.settingsToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            //
+            // noSettingsToolStripMenuItem
+            //
+            // TODO: remove this placeholder once the first setting is added to settingsToolStripMenuItem.
+            this.noSettingsToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
+            this.noSettingsToolStripMenuItem.Enabled = false;
+            this.noSettingsToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(81)))), ((int)(((byte)(81)))), ((int)(((byte)(81)))));
+            this.noSettingsToolStripMenuItem.Name = "noSettingsToolStripMenuItem";
+            this.noSettingsToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.noSettingsToolStripMenuItem.Text = "No settings yet";
+            //
             // discordToolStripMenuItem
-            // 
+            //
             this.discordToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.discordToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
             this.discordToolStripMenuItem.Name = "discordToolStripMenuItem";
-            this.discordToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
-            this.discordToolStripMenuItem.Text = "Discord Server";
+            this.discordToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
+            this.discordToolStripMenuItem.Text = "Discord";
             this.discordToolStripMenuItem.Click += new System.EventHandler(this.discordToolStripMenuItem_Click);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
-            this.toolStripMenuItem1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(205, 22);
-            this.toolStripMenuItem1.Text = "Bot Portal";
-            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
-            // 
-            // botRequestToolStripMenuItem
-            // 
-            this.botRequestToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
-            this.botRequestToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
-            this.botRequestToolStripMenuItem.Name = "botRequestToolStripMenuItem";
-            this.botRequestToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
-            this.botRequestToolStripMenuItem.Text = "Bot Request";
-            this.botRequestToolStripMenuItem.Click += new System.EventHandler(this.botRequestToolStripMenuItem_Click);
-            // 
-            // grimoireSuggestionsToolStripMenuItem
-            // 
-            this.grimoireSuggestionsToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
-            this.grimoireSuggestionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.googleFormToolStripMenuItem,
-            this.googleDocsToolStripMenuItem});
-            this.grimoireSuggestionsToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
-            this.grimoireSuggestionsToolStripMenuItem.Name = "grimoireSuggestionsToolStripMenuItem";
-            this.grimoireSuggestionsToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
-            this.grimoireSuggestionsToolStripMenuItem.Text = "Grimoire Suggestions";
-            // 
-            // googleFormToolStripMenuItem
-            // 
-            this.googleFormToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
-            this.googleFormToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.googleFormToolStripMenuItem.Name = "googleFormToolStripMenuItem";
-            this.googleFormToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
-            this.googleFormToolStripMenuItem.Text = "Google Form";
-            this.googleFormToolStripMenuItem.Click += new System.EventHandler(this.googleFormToolStripMenuItem_Click);
-            // 
-            // googleDocsToolStripMenuItem
-            // 
-            this.googleDocsToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
-            this.googleDocsToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.googleDocsToolStripMenuItem.Name = "googleDocsToolStripMenuItem";
-            this.googleDocsToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
-            this.googleDocsToolStripMenuItem.Text = "Google Docs";
-            this.googleDocsToolStripMenuItem.Click += new System.EventHandler(this.googleDocsToolStripMenuItem_Click);
-            // 
-            // getBotsToolStripMenuItem
-            // 
-            this.getBotsToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
-            this.getBotsToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.getBotsToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
-            this.getBotsToolStripMenuItem.Name = "getBotsToolStripMenuItem";
-            this.getBotsToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
-            this.getBotsToolStripMenuItem.Text = "Get Bots";
-            this.getBotsToolStripMenuItem.Click += new System.EventHandler(this.getBotsToolStripMenuItem_Click);
             // 
             // GamePanel
             // 
@@ -1157,19 +1068,10 @@ namespace Grimoire.UI
 
         private void discordToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DialogResult result = DarkMessageBox.Show(new Form { TopMost = true, StartPosition = FormStartPosition.CenterScreen }, "This opens a new tab on your default browser. Proceed?", "Join Discord Server (AQWBots)", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = DarkMessageBox.Show(new Form { TopMost = true, StartPosition = FormStartPosition.CenterScreen }, "This opens a new tab on your default browser. Proceed?", "Discord Server", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
-                Process.Start("https://discord.io/AQWBots");
-            }
-        }
-
-        private void botRequestToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DialogResult result = DarkMessageBox.Show(new Form { TopMost = true, StartPosition = FormStartPosition.CenterScreen }, "This opens a new tab on your default browser. Proceed?", "Bot Request", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result == DialogResult.Yes)
-            {
-                Process.Start("https://docs.google.com/forms/d/e/1FAIpQLSd2NSx1ezF-6bc2jRBuTniIka5z6kA2NbmC8CRCOFtpVxcRCA/viewform");
+                Process.Start("https://discord.gg/NZ6vmDTu44");
             }
         }
 
@@ -1238,20 +1140,6 @@ namespace Grimoire.UI
             }
         }
 
-        private void provokeAllMonsterInMapToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OptionsManager.ProvokeAllMonster = provokeAllMonsterInMapToolStripMenuItem.Checked;
-            BotManager.Instance.chkProvokeAllMon.Checked = provokeAllMonsterInMapToolStripMenuItem.Checked;
-            if (!provokeAllMonsterInMapToolStripMenuItem.Checked && (Player.CurrentState == Player.State.InCombat))
-            {
-                BotUtilities.MoveToSelfCell();
-            }
-            if (provokeAllMonsterInMapToolStripMenuItem.Checked && !OptionsManager.IsRunning)
-            {
-                OptionsManager.ApplySettings();
-            }
-        }
-
         private async void enemyMagnetToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OptionsManager.EnemyMagnet = enemyMagnetToolStripMenuItem.Checked;
@@ -1298,12 +1186,6 @@ namespace Grimoire.UI
             {
                 OptionsManager.ApplySettings();
             }
-        }
-
-        private void autosaveStateToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OptionsManager._saveState = autosaveStateToolStripMenuItem.Checked;
-            BotManager.Instance.chkSaveState.Checked = autosaveStateToolStripMenuItem.Checked;
         }
 
         private void walkSpeedToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1402,15 +1284,6 @@ namespace Grimoire.UI
             ShowForm(AboutForm.Instance);
         }
 
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            DialogResult result = DarkMessageBox.Show(new Form { TopMost = true, StartPosition = FormStartPosition.CenterScreen }, "This opens a new tab on your default browser. Proceed?", "Get Bots (auqw.tk)", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result == DialogResult.Yes)
-            {
-                Process.Start("https://auqw.tk/");
-            }
-        }
-
         private void FPSToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (FPSToolStripMenuItem.Checked)
@@ -1420,15 +1293,6 @@ namespace Grimoire.UI
             else
             {
                 Flash.Call("SetFPS", 24);
-            }
-        }
-
-        private void getBotsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DialogResult result = DarkMessageBox.Show(new Form { TopMost = true, StartPosition = FormStartPosition.CenterScreen }, "This opens a new tab on your default browser. Proceed?", "Get Bots (auqw.tk)", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result == DialogResult.Yes)
-            {
-                Process.Start("https://auqw.tk/");
             }
         }
 
@@ -1445,24 +1309,6 @@ namespace Grimoire.UI
         private void managerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowForm(BotManager.Instance);
-        }
-
-        private void googleDocsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DialogResult result = DarkMessageBox.Show(new Form { TopMost = true, StartPosition = FormStartPosition.CenterScreen }, "This opens a new tab on your default browser. Proceed?", "Grimoire Suggestion", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result == DialogResult.Yes)
-            {
-                Process.Start("https://docs.google.com/document/d/1sUcCRi-GhKPdJXqt3EmU4PeNuG2LFA3ipmr3QDa2oxU/edit#");
-            }
-        }
-
-        private void googleFormToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DialogResult result = DarkMessageBox.Show(new Form { TopMost = true, StartPosition = FormStartPosition.CenterScreen }, "This opens a new tab on your default browser. Proceed?", "Grimoire Suggestion", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result == DialogResult.Yes)
-            {
-                Process.Start("https://docs.google.com/forms/d/e/1FAIpQLSetfV9zl18G9s7w_XReJ1yJNT9aZwxB1FLzU0l1UhdmXv5rIw/viewform?usp=sf_link");
-            }
         }
 
         private void dPSMeterToolStripMenuItem_Click(object sender, EventArgs e)

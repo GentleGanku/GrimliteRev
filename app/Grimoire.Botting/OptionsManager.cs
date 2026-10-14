@@ -30,8 +30,6 @@ namespace Grimoire.Botting
 
         private static bool _afk2;
 
-        private static bool saveState;
-
         public static bool IsRunning
         {
             get
@@ -51,23 +49,11 @@ namespace Grimoire.Botting
             set;
         }
 
-        public static bool ProvokeAllMonster
-        {
-            get;
-            set;
-        }
-
         public static bool PacketSpam
         {
             get;
             set;
         }
-
-        public static string ProvokePacket
-        {
-            get;
-            set;
-        } = "%xt%zm%aggroMon%1%MonMapID%";
 
         public static string SpamPacket
         {
@@ -195,17 +181,6 @@ namespace Grimoire.Botting
             set;
         }
 
-        public static bool _saveState
-        {
-            get => saveState;
-            set
-            {
-                saveState = value;
-                if (value)
-                    SaveState();
-            }
-        }
-
         public static bool _antiAfk
         {
             get;
@@ -260,14 +235,6 @@ namespace Grimoire.Botting
             {
                 ProvokeMonsters = true;
             }
-            if (BotManager.Instance.chkProvokeAllMon.Checked)
-            {
-                ProvokeAllMonster = true;
-            }
-            if (BotManager.Instance.chkSaveState.Checked)
-            {
-                _saveState = true;
-            }
         }
 
         public static void Stop()
@@ -282,17 +249,9 @@ namespace Grimoire.Botting
             {
                 ProvokeMonsters = false;
             }
-            if (BotManager.Instance.chkProvokeAllMon.Checked)
-            {
-                ProvokeAllMonster = false;
-            }
-            if (BotManager.Instance.chkProvoke.Checked || BotManager.Instance.chkProvokeAllMon.Checked || Configuration.Instance.ProvokeMonsters || Configuration.Instance.ProvokeAllMonster || ProvokeMonsters || ProvokeAllMonster)
+            if (BotManager.Instance.chkProvoke.Checked || Configuration.Instance.ProvokeMonsters || ProvokeMonsters)
             {
                 BotUtilities.MoveToSelfCell();
-            }
-            if (BotManager.Instance.chkSaveState.Checked)
-            {
-                _saveState = false;
             }
         }
 
@@ -301,32 +260,10 @@ namespace Grimoire.Botting
             Proxy.Instance.SendToClient("{\"t\":\"xt\",\"b\":{\"r\":-1,\"o\":{\"cmd\":\"levelUp\",\"intExpToLevel\":\"0\",\"intLevel\":" + Player.levelCap + "}}}");
         }
 
-        public static void SetProvokeAllMonster()
-        {
-            if (!ProvokePacket.Contains("MonMapID"))
-            {
-                Proxy.Instance.SendToServer($"{ProvokePacket}");
-            }
-            else
-            {
-                Proxy.Instance.SendToServer($"%xt%zm%aggroMon%{World.RoomId}%{string.Join("%", World.Monsters.ConvertAll<int>((Monster m) => m.MonMapID))}%");
-            }
-        }
-
         public static async void SetPacketSpam()
         {
             Proxy.Instance.SendToServer($"{SpamPacket}");
             await Task.Delay(PacketDelay);
-        }
-
-        public static async void SaveState()
-        {
-            while (Player.IsLoggedIn && _saveState)
-            {
-                Proxy.Instance.SendToServer($"%xt%zm%whisper%1%Save State: Ensures any gold, experience, reputation, and class points gained are saved. Triggers after every 5 minutes passed.%{Player.Username}%");
-                LogForm.Instance.AppendDebug($"[{DateTime.Now:hh:mm:ss tt}] Save state has been triggered.");
-                await Task.Delay(300000);
-            }
         }
 
         public static async void AntiAfk()
@@ -347,10 +284,6 @@ namespace Grimoire.Botting
             if (ProvokeMonsters)
             {
                 World.SendPacket($"%xt%zm%aggroMon%{World.RoomId}%{string.Join("%", World.MonstersInCell(Player.Cell)?.ConvertAll<int>(m => m.MonMapID))}%");
-            }
-            if (ProvokeAllMonster)
-            {
-                World.SendPacket(!ProvokePacket.Contains("MonMapID") ? $"{ProvokePacket}" : $"%xt%zm%aggroMon%{World.RoomId}%{string.Join("%", World.Monsters?.ConvertAll<int>(m => m.MonMapID))}%");
             }
         }
 

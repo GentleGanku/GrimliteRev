@@ -1,6 +1,4 @@
-﻿using Grimoire.Game;
-using Grimoire.UI;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Grimoire.Botting.Commands.Misc
 {
@@ -20,24 +18,6 @@ namespace Grimoire.Botting.Commands.Misc
 
         public async Task Execute(IBotEngine instance)
         {
-            switch (Type)
-            {
-                case 0:
-                    OptionsManager.ProvokeAllMonster = false;
-                    Root.Instance.provokeAllMonsterInMapToolStripMenuItem.Checked = false;
-                    BotManager.Instance.chkProvokeAllMon.Checked = false;
-                    await BotUtilities.MoveOutOfCombat();
-                    break;
-                case 1:
-                    OptionsManager.ProvokeAllMonster = true;
-                    Root.Instance.provokeAllMonsterInMapToolStripMenuItem.Checked = true;
-                    BotManager.Instance.chkProvokeAllMon.Checked = true;
-                    break;
-                default:
-                    OptionsManager.ProvokeAllMonster = !OptionsManager.ProvokeAllMonster;
-                    break;
-            }
-            OptionsManager.ProvokePacket = ProvokePacket;
         }
 
         public override string ToString()
