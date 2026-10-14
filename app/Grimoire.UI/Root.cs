@@ -1446,38 +1446,41 @@ namespace Grimoire.UI
 
         public void Root_MenuChanged()
         {
-            if (this.ClientSize.Width > 960 || this.ClientSize.Height > 575)
+            SetMenuVisible(!menuVisible);
+        }
+
+        // Tracked separately because panel1.Visible reads false until the window is shown, and the constructor applies Camouflage before that.
+        private bool menuVisible = true;
+
+        public void SetMenuVisible(bool visible)
+        {
+            if (menuVisible == visible)
             {
                 return;
             }
-            if (this.panel1.Visible)
+            menuVisible = visible;
+            int menuHeight = panel1.Height;
+            panel1.Visible = visible;
+            GamePanel.Dock = visible ? DockStyle.None : DockStyle.Fill;
+            // A normal window grows or shrinks by the menu's height so the game keeps its size; a maximized one keeps its size.
+            if (WindowState == FormWindowState.Normal)
             {
-                this.panel1.Visible = false;
-                this.panel1.Size = new System.Drawing.Size(0, 0);
-                this.panel1.Anchor = this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
-                this.GamePanel.Dock = DockStyle.Fill;
-                this.ClientSize = new System.Drawing.Size(960, 551);
-                this.prgLoader.Location = new System.Drawing.Point(12, 252);
+                ClientSize = new Size(ClientSize.Width, ClientSize.Height + (visible ? menuHeight : -menuHeight));
             }
-            else
+            if (visible)
             {
-                this.panel1.Visible = true;
-                this.panel1.Size = new System.Drawing.Size(960, 24);
-                this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
-                this.GamePanel.Dock = DockStyle.None;
-                this.GamePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
-                this.GamePanel.Location = new System.Drawing.Point(0, 24);
-                this.ClientSize = new System.Drawing.Size(960, 575);
-                this.GamePanel.Size = new System.Drawing.Size(960, 551);
-                this.prgLoader.Location = new System.Drawing.Point(12, 276);
+                GamePanel.SetBounds(0, menuHeight, ClientSize.Width, ClientSize.Height - menuHeight);
+                GamePanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             }
+            prgLoader.Top += visible ? menuHeight : -menuHeight;
         }
 
         private Icon defaultIcon;
         private Icon defaultTrayIcon;
 
         // Camouflage makes the client look like the official Artix Games Launcher: no title, the launcher icon on the window
-        // and tray, and the game's own backgrounds (-1 in the bridge's getBackgroundIndex and setBackgroundIndex).
+        // and tray, the game's own backgrounds (-1 in the bridge's getBackgroundIndex and setBackgroundIndex), and no main menu.
+        // The menu holds Camouflage's own toggle, so Ctrl+Shift+M (ProcessCmdKey) shows and hides it while Camouflage is on.
         public void ApplyCamouflage(bool enabled)
         {
             this.Text = enabled ? "" : "Grimlite Rev";
@@ -1485,12 +1488,27 @@ namespace Grimoire.UI
             nTray.Icon = enabled ? Resources.aeIcon : defaultTrayIcon;
             nTray.Text = enabled ? "" : "Grimlite Rev";
             Flash.Call("setBackgroundIndex", enabled ? -1 : 0);
+            SetMenuVisible(!enabled);
         }
 
         private void camouflageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             BotClientConfig.Instance.SetValue("clientHeaderToggle", camouflageToolStripMenuItem.Checked.ToString());
             ApplyCamouflage(camouflageToolStripMenuItem.Checked);
+            if (camouflageToolStripMenuItem.Checked)
+            {
+                DarkMessageBox.Show(new Form { TopMost = true, StartPosition = FormStartPosition.CenterScreen }, "The main menu is now hidden. Press Ctrl+Shift+M to show or hide it while Camouflage is on. To turn Camouflage off, show the menu and uncheck Settings > Camouflage.", "Camouflage", MessageBoxIcon.Information);
+            }
+        }
+
+        protected override bool ProcessCmdKey(ref System.Windows.Forms.Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Control | Keys.Shift | Keys.M) && camouflageToolStripMenuItem.Checked)
+            {
+                SetMenuVisible(!menuVisible);
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
         private bool customTravel { get; set; } = true;
