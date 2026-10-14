@@ -1,0 +1,27 @@
+/* Celestia's ThemeSelect script sets an inline `visibility: visible` on every theme
+   toggle. That overrides the hidden mobile sidebar, so its toggle shows (and takes
+   focus) over the page while the menu is closed. Let each toggle follow its container. */
+starlight-theme-select button {
+	visibility: inherit !important;
+}
+
+/* Celestia's mobile controls are 28px squares and its sidebar rows are 28px tall.
+   Raise every touch target in the mobile layout to 44px. */
+@media (width < 50rem) {
+	header button[data-open-modal],
+	celestia-mobile-menu-toggle,
+	#starlight__sidebar a:has(> .sr-only),
+	#starlight__sidebar starlight-theme-select button {
+		width: 44px;
+		height: 44px;
+		align-items: center;
+		justify-content: center;
+	}
+
+	#starlight__sidebar summary,
+	#starlight__sidebar li > a {
+		min-height: 44px;
+		display: flex;
+		align-items: center;
+	}
+}

@@ -1,0 +1,179 @@
+---
+// Replaces Starlight's PageTitle. Pages that set `titleVideo` in their frontmatter get the
+// title inside a looping video banner; every other page gets Starlight's plain <h1>.
+// Starlight's page-title id: the table of contents' "Overview" link and the skip link target it.
+const PAGE_TITLE_ID = '_top';
+
+const { title, titleVideo } = Astro.locals.starlightRoute.entry.data;
+const withBase = (path: string) => import.meta.env.BASE_URL.replace(/\/$/, '') + path;
+---
+
+{
+  titleVideo ? (
+    <div class="title-video" data-title-video>
+      <video
+        src={withBase(titleVideo.src)}
+        poster={withBase(titleVideo.poster)}
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        aria-hidden="true"
+      />
+      <h1 id={PAGE_TITLE_ID}>{title}</h1>
+      <button type="button" aria-label="Play video" data-state="paused" hidden>
+        <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" />
+        </svg>
+        <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </button>
+    </div>
+  ) : (
+    <h1 id={PAGE_TITLE_ID}>{title}</h1>
+  )
+}
+
+<script>
+  // Started here rather than with `autoplay`, so visitors who ask for reduced motion
+  // get the poster frame and a Play button instead of a moving banner.
+  for (const banner of document.querySelectorAll<HTMLElement>('[data-title-video]')) {
+    const video = banner.querySelector('video')!;
+    const button = banner.querySelector('button')!;
+    const sync = () => {
+      button.dataset.state = video.paused ? 'paused' : 'playing';
+      button.setAttribute('aria-label', video.paused ? 'Play video' : 'Pause video');
+    };
+    video.addEventListener('play', sync);
+    video.addEventListener('pause', sync);
+    button.addEventListener('click', () => (video.paused ? video.play() : video.pause()));
+    button.hidden = false;
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) video.play().catch(sync);
+  }
+</script>
+
+<style>
+  h1 {
+    margin-top: 1rem;
+    font-size: var(--sl-text-h1);
+    line-height: var(--sl-line-height-headings);
+    font-weight: 600;
+    color: var(--sl-color-white);
+  }
+
+  .title-video {
+    position: relative;
+    margin-top: 1rem;
+    aspect-ratio: 21 / 9;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    background: #030712;
+  }
+
+  video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 35%;
+  }
+
+  /* Dark fade under the title, so white text stays readable over the bright art. */
+  .title-video::after {
+    content: '';
+    position: absolute;
+    inset: 40% 0 0 0;
+    background: linear-gradient(to bottom, rgb(3 7 18 / 0), rgb(3 7 18 / 0.88) 70%);
+    pointer-events: none;
+  }
+
+  .title-video h1 {
+    position: absolute;
+    left: 1.25rem;
+    right: 4.5rem;
+    bottom: 1rem;
+    z-index: 1;
+    margin: 0;
+    font-size: clamp(1.45rem, 3vw, 2rem);
+    /* The banner is the top of the page, so jumping to #_top ("Overview", skip link)
+       scrolls all the way up instead of hiding the video above the title. */
+    scroll-margin-top: 100vh;
+    color: #fff;
+  }
+
+  button {
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 0.375rem;
+    background: rgb(3 7 18 / 0.6);
+    color: #fff;
+    cursor: pointer;
+  }
+
+  button[hidden] {
+    display: none;
+  }
+
+  /* Hidden until the banner is hovered. It stays visible while paused (so resuming is
+     obvious), on keyboard focus, and on touch screens, which can't hover. Opacity, not
+     visibility, so it stays reachable with Tab. */
+  @media (hover: hover) {
+    button[data-state='playing'] {
+      opacity: 0;
+      transition: opacity 150ms ease;
+    }
+
+    .title-video:hover button,
+    button:focus-visible {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    button {
+      transition: none;
+    }
+  }
+
+  button:hover {
+    background: rgb(3 7 18 / 0.85);
+  }
+
+  button:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+  }
+
+  button svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+  }
+
+  button[data-state='playing'] .icon-play,
+  button[data-state='paused'] .icon-pause {
+    display: none;
+  }
+
+  @media (width < 50rem) {
+    .title-video {
+      aspect-ratio: 16 / 9;
+    }
+
+    .title-video h1 {
+      left: 1rem;
+      bottom: 0.75rem;
+    }
+  }
+</style>

@@ -1,0 +1,13 @@
+/* App red instead of Celestia's orange. Both shades pass WCAG AA on the
+   theme's backgrounds: #F64061 is 5.58:1 on #030712, #D6143A is 5.22:1 on white. */
+:root {
+	--sl-color-accent-low: color-mix(in oklch, #f64061 15%, #030712);
+	--sl-color-accent: #f64061;
+	--sl-color-accent-high: #f64061;
+}
+
+:root[data-theme='light'] {
+	--sl-color-accent-low: color-mix(in oklch, #d6143a 10%, #f3f4f6);
+	--sl-color-accent: #d6143a;
+	--sl-color-accent-high: #d6143a;
+}

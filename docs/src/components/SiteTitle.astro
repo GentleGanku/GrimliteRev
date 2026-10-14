@@ -1,0 +1,47 @@
+---
+// Replaces Celestia's SiteTitle, which writes the logo path without the site base
+// (/GrimliteRev), so the logo 404s on GitHub Pages. Importing the image lets Astro
+// emit a base-aware URL. Markup and styles match Celestia's component.
+import logo from '../assets/grimlite-rev.png';
+
+const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
+---
+
+<div class="site-title-wrapper">
+  <a href={siteTitleHref} class="site-title sl-flex">
+    <img alt="" src={logo.src} width={logo.width} height={logo.height} class="logo" />
+    <span translate="no">{siteTitle}</span>
+  </a>
+</div>
+
+<style>
+  .site-title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .site-title {
+    align-items: center;
+    gap: var(--sl-nav-gap);
+    font-size: var(--sl-text-h4);
+    font-weight: 600;
+    color: var(--sl-color-text-accent);
+    text-decoration: none;
+    white-space: nowrap;
+    min-width: 0;
+    min-height: 44px;
+  }
+
+  .logo {
+    height: calc(var(--sl-nav-height) - 2 * var(--sl-nav-pad-y));
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    object-position: 0 50%;
+  }
+
+  span {
+    overflow: hidden;
+  }
+</style>
