@@ -125,6 +125,12 @@ namespace Grimoire.UI
             Proxy.InitializeProxyHandlers();
             Task.Factory.StartNew(Proxy.Instance.ClientExecute, TaskCreationOptions.LongRunning);
         }
+        
+        private async void Root_Shown(object sender, EventArgs e)
+        {
+            Program.CheckForFlashPlayer();
+            await Program.CheckForLatestBuild();
+        }
 
         private void InitializeGame()
         {
@@ -1022,6 +1028,7 @@ namespace Grimoire.UI
             this.Text = "Grimlite Rev";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Root_FormClosing);
             this.Load += new System.EventHandler(this.Root_Load);
+            this.Shown += new System.EventHandler(this.Root_Shown);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.customTravel_KeyPress);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
