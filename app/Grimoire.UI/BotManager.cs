@@ -338,6 +338,8 @@ namespace Grimoire.UI
         public DarkButton btnGotoLabel;
         public DarkButton btnAddLabel;
         public DarkTextBox txtLabel;
+        internal DarkTextBox txtCustomAggromon;
+        public DarkCheckBox chkInMapCustom;
         private DarkLabel txtInRoom;
         private DarkLabel darkLabel2;
         private DarkCheckBox chkSafeGreaterThan;
@@ -2306,6 +2308,8 @@ namespace Grimoire.UI
             this.btnGoUpIndex = new DarkUI.Controls.DarkButton();
             this.btnGoDownIndex = new DarkUI.Controls.DarkButton();
             this.darkGroupBox7 = new DarkUI.Controls.DarkGroupBox();
+            this.txtCustomAggromon = new DarkUI.Controls.DarkTextBox();
+            this.chkInMapCustom = new DarkUI.Controls.DarkCheckBox();
             this.txtInRoom = new DarkUI.Controls.DarkLabel();
             this.btnProvokeOff = new DarkUI.Controls.DarkButton();
             this.btnProvokeOn = new DarkUI.Controls.DarkButton();
@@ -5292,15 +5296,36 @@ namespace Grimoire.UI
             // 
             // darkGroupBox7
             // 
+            this.darkGroupBox7.Controls.Add(this.txtCustomAggromon);
+            this.darkGroupBox7.Controls.Add(this.chkInMapCustom);
             this.darkGroupBox7.Controls.Add(this.txtInRoom);
             this.darkGroupBox7.Controls.Add(this.btnProvokeOff);
             this.darkGroupBox7.Controls.Add(this.btnProvokeOn);
             this.darkGroupBox7.Location = new System.Drawing.Point(178, 182);
             this.darkGroupBox7.Name = "darkGroupBox7";
-            this.darkGroupBox7.Size = new System.Drawing.Size(116, 58);
+            this.darkGroupBox7.Size = new System.Drawing.Size(324, 58);
             this.darkGroupBox7.TabIndex = 161;
             this.darkGroupBox7.TabStop = false;
             this.darkGroupBox7.Text = "Provoke Monster";
+            //
+            // txtCustomAggromon
+            //
+            this.txtCustomAggromon.Enabled = false;
+            this.txtCustomAggromon.Location = new System.Drawing.Point(72, 32);
+            this.txtCustomAggromon.Name = "txtCustomAggromon";
+            this.txtCustomAggromon.Size = new System.Drawing.Size(246, 23);
+            this.txtCustomAggromon.TabIndex = 160;
+            this.txtCustomAggromon.Text = "%xt%zm%aggroMon%1%MonMapID%";
+            //
+            // chkInMapCustom
+            //
+            this.chkInMapCustom.AutoSize = true;
+            this.chkInMapCustom.Location = new System.Drawing.Point(72, 15);
+            this.chkInMapCustom.Name = "chkInMapCustom";
+            this.chkInMapCustom.Size = new System.Drawing.Size(77, 21);
+            this.chkInMapCustom.TabIndex = 159;
+            this.chkInMapCustom.Text = "Custom";
+            this.chkInMapCustom.CheckedChanged += new System.EventHandler(this.chkInMapCustom_CheckedChanged);
             //
             // txtInRoom
             // 
@@ -7485,7 +7510,8 @@ namespace Grimoire.UI
         {
             AddCommand(new CmdToggleProvoke
             {
-                Type = 1
+                Type = 1,
+                ProvokePacket = chkInMapCustom.Checked ? txtCustomAggromon.Text : null
             }, (ModifierKeys & Keys.Control) == Keys.Control);
         }
 
@@ -8363,6 +8389,11 @@ namespace Grimoire.UI
         private void btnSetCustomClassName_Click(object sender, EventArgs e)
         {
             CustomClassName = txtClassName.Text;
+        }
+
+        private void chkInMapCustom_CheckedChanged(object sender, EventArgs e)
+        {
+            txtCustomAggromon.Enabled = chkInMapCustom.Checked;
         }
 
         private void chkSafeHP_CheckedChanged(object sender, EventArgs e)

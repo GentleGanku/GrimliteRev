@@ -55,6 +55,12 @@ namespace Grimoire.Botting
             set;
         }
 
+        public static string ProvokePacket
+        {
+            get;
+            set;
+        }
+
         public static string SpamPacket
         {
             get;
@@ -283,7 +289,7 @@ namespace Grimoire.Botting
         {
             if (ProvokeMonsters)
             {
-                World.SendPacket($"%xt%zm%aggroMon%{World.RoomId}%{string.Join("%", World.MonstersInCell(Player.Cell)?.ConvertAll<int>(m => m.MonMapID))}%");
+                World.SendPacket(!string.IsNullOrEmpty(ProvokePacket) && !ProvokePacket.Contains("MonMapID") ? $"{ProvokePacket}" : $"%xt%zm%aggroMon%{World.RoomId}%{string.Join("%", World.MonstersInCell(Player.Cell)?.ConvertAll<int>(m => m.MonMapID))}%");
             }
         }
 
