@@ -310,7 +310,8 @@ namespace Grimoire.UI
         private DarkButton btnAttack;
         #endregion
         private SplitContainer splitContainer5;
-        public DarkCheckBox colorfulCommands;
+        private LinkLabel lnkCustomCommands;
+        private LinkLabel lnkShortcuts;
         private DarkGroupBox darkGroupBox9;
         private DarkGroupBox darkGroupBox15;
         private DarkButton cmdSetClientLevel;
@@ -2427,7 +2428,8 @@ namespace Grimoire.UI
             this.txtSaved = new DarkUI.Controls.DarkTextBox();
             this.btnSearchCmd = new DarkUI.Controls.DarkButton();
             this.txtSearchCmd = new DarkUI.Controls.DarkTextBox();
-            this.colorfulCommands = new DarkUI.Controls.DarkCheckBox();
+            this.lnkCustomCommands = new System.Windows.Forms.LinkLabel();
+            this.lnkShortcuts = new System.Windows.Forms.LinkLabel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -2580,7 +2582,7 @@ namespace Grimoire.UI
             this.lstCommands.Name = "lstCommands";
             this.lstCommands.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.lstCommands.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lstCommands.Size = new System.Drawing.Size(260, 271);
+            this.lstCommands.Size = new System.Drawing.Size(301, 271);
             this.lstCommands.TabIndex = 1;
             this.lstCommands.Click += new System.EventHandler(this.lstCommands_Click);
             this.lstCommands.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lstCommands_DrawItem);
@@ -2609,7 +2611,7 @@ namespace Grimoire.UI
             this.lstBoosts.Name = "lstBoosts";
             this.lstBoosts.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.lstBoosts.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lstBoosts.Size = new System.Drawing.Size(260, 271);
+            this.lstBoosts.Size = new System.Drawing.Size(301, 271);
             this.lstBoosts.TabIndex = 25;
             this.lstBoosts.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lstBoxs_KeyPress);
             // 
@@ -2630,7 +2632,7 @@ namespace Grimoire.UI
             this.lstDrops.Name = "lstDrops";
             this.lstDrops.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.lstDrops.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lstDrops.Size = new System.Drawing.Size(260, 271);
+            this.lstDrops.Size = new System.Drawing.Size(301, 271);
             this.lstDrops.TabIndex = 26;
             this.lstDrops.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lstBoxs_KeyPress);
             // 
@@ -2650,7 +2652,7 @@ namespace Grimoire.UI
             this.lstItems.Margin = new System.Windows.Forms.Padding(0);
             this.lstItems.Name = "lstItems";
             this.lstItems.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lstItems.Size = new System.Drawing.Size(260, 271);
+            this.lstItems.Size = new System.Drawing.Size(301, 271);
             this.lstItems.TabIndex = 145;
             this.lstItems.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lstBoxs_KeyPress);
             // 
@@ -2671,7 +2673,7 @@ namespace Grimoire.UI
             this.lstQuests.Name = "lstQuests";
             this.lstQuests.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.lstQuests.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lstQuests.Size = new System.Drawing.Size(260, 271);
+            this.lstQuests.Size = new System.Drawing.Size(301, 271);
             this.lstQuests.TabIndex = 27;
             this.lstQuests.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lstBoxs_KeyPress);
             // 
@@ -2692,7 +2694,7 @@ namespace Grimoire.UI
             this.lstSkills.Name = "lstSkills";
             this.lstSkills.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.lstSkills.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lstSkills.Size = new System.Drawing.Size(260, 271);
+            this.lstSkills.Size = new System.Drawing.Size(301, 271);
             this.lstSkills.TabIndex = 28;
             this.lstSkills.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lstBoxs_KeyPress);
             // 
@@ -6854,18 +6856,31 @@ namespace Grimoire.UI
             this.txtSearchCmd.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnSearchCmd_KeyPress);
             this.txtSearchCmd.Leave += new System.EventHandler(this.TextboxLeave);
             // 
-            // colorfulCommands
+            // lnkCustomCommands
             // 
-            this.colorfulCommands.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.colorfulCommands.Checked = true;
-            this.colorfulCommands.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.colorfulCommands.Location = new System.Drawing.Point(3, 46);
-            this.colorfulCommands.Name = "colorfulCommands";
-            this.colorfulCommands.Size = new System.Drawing.Size(127, 21);
-            this.colorfulCommands.TabIndex = 149;
-            this.colorfulCommands.Text = "Custom Commands";
-            this.colorfulCommands.CheckedChanged += new System.EventHandler(this.chkColorfulCommands_Click);
+            this.lnkCustomCommands.ActiveLinkColor = System.Drawing.Color.LimeGreen;
+            this.lnkCustomCommands.AutoSize = true;
+            this.lnkCustomCommands.LinkColor = System.Drawing.Color.LimeGreen;
+            this.lnkCustomCommands.Location = new System.Drawing.Point(3, 50);
+            this.lnkCustomCommands.Name = "lnkCustomCommands";
+            this.lnkCustomCommands.TabIndex = 149;
+            this.lnkCustomCommands.TabStop = true;
+            this.lnkCustomCommands.Text = "Custom Commands";
+            this.lnkCustomCommands.VisitedLinkColor = System.Drawing.Color.LimeGreen;
+            this.lnkCustomCommands.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkCustomCommands_LinkClicked);
+            // 
+            // lnkShortcuts
+            // 
+            this.lnkShortcuts.ActiveLinkColor = System.Drawing.Color.Gainsboro;
+            this.lnkShortcuts.AutoSize = true;
+            this.lnkShortcuts.LinkColor = System.Drawing.Color.Gainsboro;
+            this.lnkShortcuts.Location = new System.Drawing.Point(113, 50);
+            this.lnkShortcuts.Name = "lnkShortcuts";
+            this.lnkShortcuts.TabIndex = 150;
+            this.lnkShortcuts.TabStop = true;
+            this.lnkShortcuts.Text = "Shortcuts";
+            this.lnkShortcuts.VisitedLinkColor = System.Drawing.Color.Gainsboro;
+            this.lnkShortcuts.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkShortcuts_LinkClicked);
             // 
             // splitContainer1
             // 
@@ -6878,7 +6893,8 @@ namespace Grimoire.UI
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
-            this.splitContainer1.Panel1.Controls.Add(this.colorfulCommands);
+            this.splitContainer1.Panel1.Controls.Add(this.lnkCustomCommands);
+            this.splitContainer1.Panel1.Controls.Add(this.lnkShortcuts);
             this.splitContainer1.Panel1.Controls.Add(this.splitContainer6);
             // 
             // splitContainer1.Panel2
@@ -6887,8 +6903,8 @@ namespace Grimoire.UI
             this.splitContainer1.Panel2.Controls.Add(this.panel13);
             this.splitContainer1.Panel2.Controls.Add(this.panel7);
             this.splitContainer1.Panel2MinSize = 0;
-            this.splitContainer1.Size = new System.Drawing.Size(266, 75);
-            this.splitContainer1.SplitterDistance = 127;
+            this.splitContainer1.Size = new System.Drawing.Size(307, 75);
+            this.splitContainer1.SplitterDistance = 168;
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 149;
             // 
@@ -6911,8 +6927,8 @@ namespace Grimoire.UI
             // 
             this.splitContainer6.Panel2.Controls.Add(this.panel9);
             this.splitContainer6.Panel2.Controls.Add(this.panel10);
-            this.splitContainer6.Size = new System.Drawing.Size(128, 44);
-            this.splitContainer6.SplitterDistance = 59;
+            this.splitContainer6.Size = new System.Drawing.Size(169, 44);
+            this.splitContainer6.SplitterDistance = 79;
             this.splitContainer6.SplitterWidth = 1;
             this.splitContainer6.TabIndex = 0;
             // 
@@ -6924,7 +6940,7 @@ namespace Grimoire.UI
             this.panel2.Controls.Add(this.btnDown);
             this.panel2.Location = new System.Drawing.Point(0, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(60, 20);
+            this.panel2.Size = new System.Drawing.Size(80, 20);
             this.panel2.TabIndex = 175;
             // 
             // btnDown
@@ -6937,7 +6953,7 @@ namespace Grimoire.UI
             this.btnDown.Checked = false;
             this.btnDown.Location = new System.Drawing.Point(0, 0);
             this.btnDown.Name = "btnDown";
-            this.btnDown.Size = new System.Drawing.Size(59, 20);
+            this.btnDown.Size = new System.Drawing.Size(79, 20);
             this.btnDown.TabIndex = 166;
             this.btnDown.Text = "▼";
             this.btnDown.Click += new System.EventHandler(this.btnDown_Click);
@@ -6950,7 +6966,7 @@ namespace Grimoire.UI
             this.panel8.Controls.Add(this.btnClear);
             this.panel8.Location = new System.Drawing.Point(0, 23);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(60, 21);
+            this.panel8.Size = new System.Drawing.Size(80, 21);
             this.panel8.TabIndex = 176;
             // 
             // btnClear
@@ -6964,7 +6980,7 @@ namespace Grimoire.UI
             this.btnClear.ForeColor = System.Drawing.Color.Gainsboro;
             this.btnClear.Location = new System.Drawing.Point(0, 0);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(59, 21);
+            this.btnClear.Size = new System.Drawing.Size(79, 21);
             this.btnClear.TabIndex = 167;
             this.btnClear.Text = "Clear";
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
@@ -6978,7 +6994,7 @@ namespace Grimoire.UI
             this.panel9.Location = new System.Drawing.Point(0, 23);
             this.panel9.Margin = new System.Windows.Forms.Padding(0);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(67, 21);
+            this.panel9.Size = new System.Drawing.Size(88, 21);
             this.panel9.TabIndex = 177;
             // 
             // btnRemove
@@ -6992,7 +7008,7 @@ namespace Grimoire.UI
             this.btnRemove.ForeColor = System.Drawing.Color.Gainsboro;
             this.btnRemove.Location = new System.Drawing.Point(0, 0);
             this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(67, 21);
+            this.btnRemove.Size = new System.Drawing.Size(88, 21);
             this.btnRemove.TabIndex = 166;
             this.btnRemove.Text = "Remove";
             this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
@@ -7006,7 +7022,7 @@ namespace Grimoire.UI
             this.panel10.Location = new System.Drawing.Point(0, 2);
             this.panel10.Margin = new System.Windows.Forms.Padding(0);
             this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(67, 20);
+            this.panel10.Size = new System.Drawing.Size(88, 20);
             this.panel10.TabIndex = 178;
             // 
             // btnUp
@@ -7020,7 +7036,7 @@ namespace Grimoire.UI
             this.btnUp.Location = new System.Drawing.Point(0, 0);
             this.btnUp.Margin = new System.Windows.Forms.Padding(0);
             this.btnUp.Name = "btnUp";
-            this.btnUp.Size = new System.Drawing.Size(67, 20);
+            this.btnUp.Size = new System.Drawing.Size(88, 20);
             this.btnUp.TabIndex = 165;
             this.btnUp.Text = "▲";
             this.btnUp.Click += new System.EventHandler(this.btnUp_Click);
@@ -7165,7 +7181,7 @@ namespace Grimoire.UI
             this.panel1.ForeColor = System.Drawing.Color.Gainsboro;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(267, 342);
+            this.panel1.Size = new System.Drawing.Size(308, 342);
             this.panel1.TabIndex = 150;
             // 
             // splitContainer2
@@ -7185,8 +7201,8 @@ namespace Grimoire.UI
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.mainTabControl);
-            this.splitContainer2.Size = new System.Drawing.Size(798, 344);
-            this.splitContainer2.SplitterDistance = 270;
+            this.splitContainer2.Size = new System.Drawing.Size(839, 344);
+            this.splitContainer2.SplitterDistance = 311;
             this.splitContainer2.SplitterWidth = 6;
             this.splitContainer2.TabIndex = 150;
             // 
@@ -7282,7 +7298,7 @@ namespace Grimoire.UI
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
-            this.ClientSize = new System.Drawing.Size(795, 342);
+            this.ClientSize = new System.Drawing.Size(836, 342);
             this.ContextMenuStrip = this.BotManagerMenuStrip;
             this.Controls.Add(this.splitContainer2);
             this.FlatBorder = true;
@@ -7854,7 +7870,7 @@ namespace Grimoire.UI
             if (!(e.Index > -1))
                 return;
             e.DrawBackground();
-            if (!colorfulCommands.Checked)
+            if (!CustomCommandsEnabled)
             {
                 // Define the default color of the brush as black.
                 Brush myBrush = Brushes.Gainsboro;
@@ -8616,18 +8632,42 @@ namespace Grimoire.UI
             }
         }
 
+        private bool customCommandsEnabled = true;
+
+        // Draws the command list with the custom command colors when enabled; the link is green when on, grey when off.
+        public bool CustomCommandsEnabled
+        {
+            get => customCommandsEnabled;
+            set
+            {
+                customCommandsEnabled = value;
+                ControlInvoke(lnkCustomCommands, () =>
+                {
+                    Color color = value ? Color.LimeGreen : Color.DarkGray;
+                    lnkCustomCommands.LinkColor = color;
+                    lnkCustomCommands.ActiveLinkColor = color;
+                    lnkCustomCommands.VisitedLinkColor = color;
+                    lstCommands.Invalidate();
+                });
+            }
+        }
+
         public async void CustomCommandToggle(bool Type)
         {
             if (BotClientConfig.Instance.GetValue<bool>("customCommandToggle"))
             {
-                colorfulCommands.Checked = Type;
-                lstCommands.Invalidate();
+                CustomCommandsEnabled = Type;
             }
         }
 
-        public void chkColorfulCommands_Click(object sender, EventArgs e)
+        private void lnkCustomCommands_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            lstCommands.Invalidate();
+            CustomCommandsEnabled = !CustomCommandsEnabled;
+        }
+
+        private void lnkShortcuts_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Root.Instance.ShowForm(ShortcutsForm.Instance);
         }
 
         public void chkExitCombatUponStop_Click(object sender, EventArgs e)
