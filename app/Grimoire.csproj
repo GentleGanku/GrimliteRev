@@ -512,6 +512,8 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Defaults\BotClientConfig.cfg" />
+    <None Include="Defaults\config.cfg" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -529,7 +531,7 @@
     <None Include="Resources\big.Ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- Output layout: Grimoire.exe, its config, the SWF and the .cfg files at the top; every referenced DLL in Libs\ (found through <probing> in app.config). -->
+  <!-- Output layout: Grimoire.exe, its config, the SWF and the .cfg files (copied from Defaults only when missing, so user settings survive rebuilds) at the top; every referenced DLL in Libs\ (found through <probing> in app.config). -->
   <Target Name="PlaceReferencesInLibs" AfterTargets="ResolveAssemblyReferences">
     <ItemGroup>
       <ReferenceCopyLocalPaths>
@@ -539,8 +541,8 @@
   </Target>
   <Target Name="CreateRuntimeLayout" AfterTargets="Build">
     <MakeDir Directories="$(OutDir)Bots;$(OutDir)Plugins" />
-    <Touch Files="$(OutDir)config.cfg" AlwaysCreate="true" Condition="!Exists('$(OutDir)config.cfg')" />
-    <Touch Files="$(OutDir)BotClientConfig.cfg" AlwaysCreate="true" Condition="!Exists('$(OutDir)BotClientConfig.cfg')" />
+    <Copy SourceFiles="Defaults\config.cfg" DestinationFolder="$(OutDir)" Condition="!Exists('$(OutDir)config.cfg')" />
+    <Copy SourceFiles="Defaults\BotClientConfig.cfg" DestinationFolder="$(OutDir)" Condition="!Exists('$(OutDir)BotClientConfig.cfg')" />
   </Target>
   <PropertyGroup>
     <PostBuildEvent>

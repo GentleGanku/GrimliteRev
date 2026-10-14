@@ -112,17 +112,6 @@ namespace Grimoire.UI
             this.richTextBox2.TabIndex = 24;
             this.richTextBox2.Text = "Website:\nProject:\nChangelog:\nDiscord:";
             // 
-            // darkLabel7
-            // 
-            this.darkLabel7.AutoSize = true;
-            this.darkLabel7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.darkLabel7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
-            this.darkLabel7.Location = new System.Drawing.Point(194, 34);
-            this.darkLabel7.Name = "darkLabel7";
-            this.darkLabel7.Size = new System.Drawing.Size(90, 16);
-            this.darkLabel7.TabIndex = 23;
-            this.darkLabel7.Text = "1.0.0";
-            // 
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
@@ -254,8 +243,8 @@ namespace Grimoire.UI
             this.richTextBox1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
             this.richTextBox1.Size = new System.Drawing.Size(218, 56);
             this.richTextBox1.TabIndex = 10;
-            this.richTextBox1.Text = "https://auqw.tk/\nhttps://github.com/GentleGanku/GrimliteRev\nhttps://gentleganku.g" +
-    "ithub.io/GrimliteRev\nhttps://discord.io/AQWBots";
+            this.richTextBox1.Text = "https://auqw.github.io/\nhttps://github.com/GentleGanku/GrimliteRev\nhttps://gentleganku.g" +
+    "ithub.io/GrimliteRev\nhttps://discord.gg/NZ6vmDTu44";
             this.richTextBox1.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.richTextBox1_LinkClicked);
             // 
             // darkLabel4
@@ -392,6 +381,7 @@ namespace Grimoire.UI
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AboutForm_FormClosing);
             this.Load += new System.EventHandler(this.AboutForm_Load);
+            this.Shown += new System.EventHandler(this.AboutForm_Shown);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
