@@ -1205,7 +1205,7 @@ namespace Grimoire.UI
         }
 
         [DllImportAttribute("user32.dll")]
-        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        public static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
 
@@ -1217,7 +1217,7 @@ namespace Grimoire.UI
             if (e.Button == MouseButtons.Left)
             {
                 ReleaseCapture();
-                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+                SendMessage(Handle, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, IntPtr.Zero);
             }
         }
 

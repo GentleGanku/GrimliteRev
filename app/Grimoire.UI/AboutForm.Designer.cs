@@ -184,7 +184,7 @@ namespace Grimoire.UI
             this.lblUpdate.AutoSize = true;
             this.lblUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblUpdate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
-            this.lblUpdate.Location = new System.Drawing.Point(14, 34);
+            this.lblUpdate.Location = new System.Drawing.Point(14, 39);
             this.lblUpdate.Name = "lblUpdate";
             this.lblUpdate.Size = new System.Drawing.Size(183, 16);
             this.lblUpdate.TabIndex = 15;

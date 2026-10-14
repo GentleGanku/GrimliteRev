@@ -7,7 +7,7 @@ namespace Grimoire.Tools
 {
     public class KeyboardHook : IDisposable
     {
-        public delegate int CallbackDelegate(int code, int wParam, int lParam);
+        public delegate IntPtr CallbackDelegate(int code, IntPtr wParam, IntPtr lParam);
 
         private const int WH_KEYBOARD_LL = 13;
 
@@ -19,7 +19,7 @@ namespace Grimoire.Tools
 
         public readonly List<Keys> TargetedKeys;
 
-        private readonly int _hookId;
+        private readonly IntPtr _hookId;
 
         public static KeyboardHook Instance
         {
@@ -29,30 +29,30 @@ namespace Grimoire.Tools
         public event Action<Keys> KeyDown;
 
         [DllImport("user32", CallingConvention = CallingConvention.StdCall)]
-        private static extern int SetWindowsHookEx(int idHook, CallbackDelegate lpfn, int hInstance, int threadId);
+        private static extern IntPtr SetWindowsHookEx(int idHook, CallbackDelegate lpfn, IntPtr hInstance, int threadId);
 
         [DllImport("user32", CallingConvention = CallingConvention.StdCall)]
-        private static extern bool UnhookWindowsHookEx(int idHook);
+        private static extern bool UnhookWindowsHookEx(IntPtr idHook);
 
         [DllImport("user32", CallingConvention = CallingConvention.StdCall)]
-        private static extern int CallNextHookEx(int idHook, int nCode, int wParam, int lParam);
+        private static extern IntPtr CallNextHookEx(IntPtr idHook, int nCode, IntPtr wParam, IntPtr lParam);
 
         private KeyboardHook()
         {
             hookCallback = HookProc;
-            _hookId = SetWindowsHookEx(13, hookCallback, 0, 0);
+            _hookId = SetWindowsHookEx(13, hookCallback, IntPtr.Zero, 0);
             TargetedKeys = new List<Keys>();
         }
 
-        private int HookProc(int code, int wParam, int lParam)
+        private IntPtr HookProc(int code, IntPtr wParam, IntPtr lParam)
         {
             if (code < 0)
             {
                 return CallNextHookEx(_hookId, code, wParam, lParam);
             }
-            if (wParam == 256 || wParam == 260)
+            if (wParam.ToInt32() == 256 || wParam.ToInt32() == 260)
             {
-                Keys keys = (Keys)Marshal.ReadInt32((IntPtr)lParam);
+                Keys keys = (Keys)Marshal.ReadInt32(lParam);
                 if (TargetedKeys.Contains(keys))
                 {
                     this.KeyDown?.Invoke(keys);
