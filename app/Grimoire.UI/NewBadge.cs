@@ -27,7 +27,7 @@ namespace Grimoire.UI
                 {
                     // Left-aligned text keeps the reserved space on the right free for the badge.
                     Padding padding = item.Padding;
-                    item.Padding = new Padding(padding.Left, padding.Top, padding.Right + BadgeSize.Width - 6, padding.Bottom);
+                    item.Padding = new Padding(padding.Left, padding.Top, padding.Right + BadgeSize.Width - 9, padding.Bottom);
                     item.TextAlign = ContentAlignment.MiddleLeft;
                 }
                 item.Paint += OnItemPaint;

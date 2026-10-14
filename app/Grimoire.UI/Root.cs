@@ -457,7 +457,7 @@ namespace Grimoire.UI
             this.rtbPing.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.rtbPing.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtbPing.ForeColor = System.Drawing.Color.Gainsboro;
-            this.rtbPing.Location = new System.Drawing.Point(656, 4);
+            this.rtbPing.Location = new System.Drawing.Point(662, 4);
             this.rtbPing.Margin = new System.Windows.Forms.Padding(0);
             this.rtbPing.Multiline = false;
             this.rtbPing.Name = "rtbPing";

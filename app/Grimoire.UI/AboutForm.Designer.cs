@@ -33,7 +33,6 @@ namespace Grimoire.UI
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutForm));
             this.panel1 = new System.Windows.Forms.Panel();
             this.richTextBox2 = new System.Windows.Forms.RichTextBox();
-            this.darkLabel7 = new DarkUI.Controls.DarkLabel();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.darkLabel6 = new DarkUI.Controls.DarkLabel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -70,7 +69,6 @@ namespace Grimoire.UI
             // panel1
             // 
             this.panel1.Controls.Add(this.richTextBox2);
-            this.panel1.Controls.Add(this.darkLabel7);
             this.panel1.Controls.Add(this.linkLabel1);
             this.panel1.Controls.Add(this.darkLabel6);
             this.panel1.Controls.Add(this.pictureBox1);
@@ -420,7 +418,6 @@ namespace Grimoire.UI
         private System.Windows.Forms.Label label2;
         private DarkUI.Controls.DarkLabel darkLabel6;
         private System.Windows.Forms.LinkLabel linkLabel1;
-        private DarkUI.Controls.DarkLabel darkLabel7;
         private System.Windows.Forms.RichTextBox richTextBox2;
     }
 }
