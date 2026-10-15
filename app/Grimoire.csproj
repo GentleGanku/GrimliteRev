@@ -551,6 +551,30 @@
     <Copy SourceFiles="Defaults\config.cfg" DestinationFolder="$(OutDir)" Condition="!Exists('$(OutDir)config.cfg')" />
     <Copy SourceFiles="Defaults\BotClientConfig.cfg" DestinationFolder="$(OutDir)" Condition="!Exists('$(OutDir)BotClientConfig.cfg')" />
   </Target>
+  <!-- Release builds produce bin\Packages\Grimlite.Rev-v<version>-<platform>.zip. It is staged from an explicit file list, with the .cfg presets from Defaults\, so settings, bots and plugins from local testing never ship. -->
+  <Target Name="PackageRelease" AfterTargets="CreateRuntimeLayout" Condition="'$(Configuration)' == 'Release'">
+    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+      <Output TaskParameter="Assemblies" ItemName="_GrimoireIdentity" />
+    </GetAssemblyIdentity>
+    <PropertyGroup>
+      <_GrimoireVersion>%(_GrimoireIdentity.Version)</_GrimoireVersion>
+      <_PackageVersion>$([System.Version]::Parse('$(_GrimoireVersion)').ToString(3))</_PackageVersion>
+      <_PackageStage>$(MSBuildProjectDirectory)\$(IntermediateOutputPath)package\</_PackageStage>
+      <_PackageRoot>$(_PackageStage)Grimlite Rev\</_PackageRoot>
+      <_PackageDir>$(MSBuildProjectDirectory)\bin\Packages\</_PackageDir>
+      <_PackageFile>$(_PackageDir)Grimlite.Rev-v$(_PackageVersion)-$(Platform).zip</_PackageFile>
+    </PropertyGroup>
+    <ItemGroup>
+      <_PackageFiles Include="$(OutDir)Grimoire.exe;$(OutDir)Grimoire.exe.config;$(OutDir)grimlite-rev.swf;Defaults\config.cfg;Defaults\BotClientConfig.cfg" />
+      <_PackageLibs Include="$(OutDir)Libs\*.dll" />
+    </ItemGroup>
+    <RemoveDir Directories="$(_PackageStage)" />
+    <Copy SourceFiles="@(_PackageFiles)" DestinationFolder="$(_PackageRoot)" />
+    <Copy SourceFiles="@(_PackageLibs)" DestinationFolder="$(_PackageRoot)Libs" />
+    <MakeDir Directories="$(_PackageRoot)Bots;$(_PackageRoot)Plugins;$(_PackageDir)" />
+    <ZipDirectory SourceDirectory="$(_PackageStage)" DestinationFile="$(_PackageFile)" Overwrite="true" />
+    <Message Importance="high" Text="Grimoire -> $(_PackageFile)" />
+  </Target>
   <PropertyGroup>
     <PostBuildEvent>
     </PostBuildEvent>
