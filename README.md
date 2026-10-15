@@ -29,7 +29,7 @@ The changelog for every version is on the [project site](https://gentleganku.git
 
 The Bot Manager opens and saves `.gbot` files in the `Bots` folder by default. Plugin DLLs go in the `Plugins` folder.
 
-If you're not sure of which one to download, try x64 first, and then switch to x86 if Grimlite Rev reports that Flash is missing.
+If you're not sure of which one to download, try x64 first, and then switch to x86 if Grimlite Rev is having an error.
 
 ## **Build**
 
