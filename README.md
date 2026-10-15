@@ -8,7 +8,7 @@ Bug reports can go either to the [Discord server](https://discord.gg/NZ6vmDTu44)
 
 ## **Status**
 
-**Grimlite Rev** returns with a new update to address several issues arose after the recent **Game Release (9 Oct 2026)**. This update, Version 1.4.0, introduces visual features, bug patches, and adjustments while retiring a couple of old disfunctional features.
+**Grimlite Rev** returns with a new update to address several issues arose after the recent **Game Release (9 October 2026)**. This update, Version 1.4.0, introduces visual features, bug patches, and adjustments while retiring a couple of old disfunctional features.
 
 Current plan is to have several updates up for release to keep **Grimlite Rev** up with the current trend. No promises, but expect more visual features, new bot commands, and experiments.
 
