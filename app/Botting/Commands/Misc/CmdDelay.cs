@@ -4,11 +4,7 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdDelay : IBotCommand
     {
-        public int Delay
-        {
-            get;
-            set;
-        }
+        public int Delay { get; set; }
 
         public async Task Execute(IBotEngine instance)
         {

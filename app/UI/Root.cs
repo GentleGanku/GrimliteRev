@@ -6,7 +6,6 @@ using Grimoire.Game;
 using Grimoire.Game.Data;
 using Grimoire.Networking;
 using Grimoire.Tools;
-using Grimoire.Utils;
 using System;
 using System.Drawing;
 using System.Reflection;
@@ -18,7 +17,6 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Text;
 using Properties;
 
 namespace Grimoire.UI
@@ -87,11 +85,7 @@ namespace Grimoire.UI
         private System.Threading.CancellationTokenSource _cts;
         private DarkPanel GamePanel;
 
-        public static Root Instance
-        {
-            get;
-            private set;
-        }
+        public static Root Instance { get; private set; }
 
         public AxShockwaveFlash Client => Game;
 

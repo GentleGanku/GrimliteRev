@@ -1,7 +1,5 @@
 ﻿using Grimoire.Game;
-using Grimoire.Botting;
 using Grimoire.UI;
-using System.Threading.Tasks;
 
 namespace Grimoire.Networking.Handlers
 {
@@ -24,11 +22,6 @@ namespace Grimoire.Networking.Handlers
                     {
                         Player.Logout();
                     }
-                    //if (OptionsManager._antiAfk)
-                    //{
-                    //    await Task.Delay(750);
-                    //    Proxy.Instance.SendToServer("%xt%zm%afk%1%false%");
-                    //}
                     break;
             }
         }

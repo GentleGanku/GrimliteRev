@@ -6,17 +6,9 @@ namespace Grimoire.Botting.Commands.Item
 {
     public class CmdBuyFast : IBotCommand
     {
-        public string ItemName
-        {
-            get;
-            set;
-        }
+        public string ItemName { get; set; }
 
-        public bool Manual
-        {
-            get;
-            set;
-        } = false;
+        public bool Manual { get; set; } = false;
 
         public async Task Execute(IBotEngine instance)
         {

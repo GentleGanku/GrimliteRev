@@ -5,17 +5,9 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdClientMessage : IBotCommand
     {
-        public string Messages
-        {
-            get;
-            set;
-        }
+        public string Messages { get; set; }
 
-        public bool IsWarning
-        {
-            get;
-            set;
-        }
+        public bool IsWarning { get; set; }
 
         public async Task Execute(IBotEngine instance)
         {

@@ -55,16 +55,9 @@ namespace Grimoire.UI
 
         private TreeView treeGrabbed;
 
-        public static Loaders Instance
-        {
-            get;
-        } = new Loaders();
+        public static Loaders Instance { get; } = new Loaders();
 
-        public static Type TreeType
-        {
-            get;
-            set;
-        }
+        public static Type TreeType { get; set; }
 
         private Loaders()
         {
@@ -136,23 +129,13 @@ namespace Grimoire.UI
             };
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                //using (Stream file = File.Open(openFileDialog.FileName, FileMode.Create))
-                //{
-                //    BinaryFormatter bf = new BinaryFormatter();
-                //    bf.Serialize(file, treeGrabbed.Nodes.Cast<TreeNode>().ToList());
-                //}
                 XmlTextWriter textWriter = new XmlTextWriter(openFileDialog.FileName, System.Text.Encoding.ASCII)
                 {
-                    // set formatting style to indented
                     Formatting = Formatting.Indented
                 };
-                // writing the xml declaration tag
                 textWriter.WriteStartDocument();
-                // format it with new lines
                 textWriter.WriteRaw("\r\n");
-                // writing the main tag that encloses all node tags
                 textWriter.WriteStartElement("TreeView");
-                // save the nodes, recursive method
                 SaveNodes(treeGrabbed.Nodes, textWriter);
 
                 textWriter.WriteEndElement();
@@ -181,16 +164,10 @@ namespace Grimoire.UI
                 }
                 catch
                 {
-                    //string toadd = "";
-                    //for (int times = node.Text.Split(':')[0].Length; 15 > times; times++)
-                    //    toadd += "-";
                     textWriter.WriteAttributeString(XmlNodeTextAtt, $"{node.Text}");
                 }
-                //textWriter.WriteAttributeString(node.Text.Split(':')[0], node.Text.Split(':')[1]);
-                //textWriter.WriteAttributeString(XmlNodeImageIndexAtt, node.ImageIndex.ToString());
                 if (node.Tag != null)
                     textWriter.WriteAttributeString(XmlNodeTagAtt, node.Tag.ToString());
-                // add other node properties to serialize here  
                 if (node.Nodes.Count > 0)
                 {
                     SaveNodes(node.Nodes, textWriter);

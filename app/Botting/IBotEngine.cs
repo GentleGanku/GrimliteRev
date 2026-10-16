@@ -4,17 +4,9 @@ namespace Grimoire.Botting
 {
     public interface IBotEngine
     {
-        bool IsRunning
-        {
-            get;
-            set;
-        }
+        bool IsRunning { get; set; }
 
-        int Index
-        {
-            get;
-            set;
-        }
+        int Index { get; set; }
 
         bool IsVar(string value);
 
@@ -22,11 +14,7 @@ namespace Grimoire.Botting
 
         string Value(string var);
 
-        Configuration Configuration
-        {
-            get;
-            set;
-        }
+        Configuration Configuration { get; set; }
 
         int CurrentConfiguration { get; set; }
 

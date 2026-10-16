@@ -1,4 +1,3 @@
-using Grimoire.UI;
 using Grimoire.Game;
 using Grimoire.Networking;
 using System;
@@ -9,46 +8,38 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdPacket : RegularExpression, IBotCommand
     {
-        public string Packet
-        {
-            get;
-            set;
-        }
+        public string Packet { get; set; }
 
-        public bool Client
-        {
-            get;
-            set;
-        } = false;
+        public bool Client { get; set; } = false;
 
         public async Task Execute(IBotEngine instance)
         {
-            string text;
+            string packet;
 
             if (IsVar(Packet))
             {
-                text = Configuration.Tempvariable[GetVar(Packet)];
+                packet = Configuration.Tempvariable[GetVar(Packet)];
             }
             else
             {
-                text = Packet;
+                packet = Packet;
             }
-            text = text.Replace("{ROOM_ID}", World.RoomId.ToString()).Replace("{ROOM_NUMBER}", World.RoomNumber.ToString()).Replace("PLAYERNAME", Player.Username);
-            text = text.Replace("{GETMAP}", Player.Map);
-            while (text.Contains("--"))
+            packet = packet.Replace("{ROOM_ID}", World.RoomId.ToString()).Replace("{ROOM_NUMBER}", World.RoomNumber.ToString()).Replace("PLAYERNAME", Player.Username);
+            packet = packet.Replace("{GETMAP}", Player.Map);
+            while (packet.Contains("--"))
             {
-                text = new Regex("-{1,}", RegexOptions.IgnoreCase).Replace(text, (Match m) => "-");
+                packet = new Regex("-{1,}", RegexOptions.IgnoreCase).Replace(packet, (Match m) => "-");
             }
-            text = new Regex("(1e)[0-9]{1,}", RegexOptions.IgnoreCase).Replace(text, (Match m) => new Random().Next(1001, 99999).ToString());
+            packet = new Regex("(1e)[0-9]{1,}", RegexOptions.IgnoreCase).Replace(packet, (Match m) => new Random().Next(1001, 99999).ToString());
             if (Client)
             {
-                await Proxy.Instance.SendToClient(text);
+                await Proxy.Instance.SendToClient(packet);
             }
             else
             {
-                await Proxy.Instance.SendToServer(text);
+                await Proxy.Instance.SendToServer(packet);
             }
-            if (text.Contains("%xt%zm%gar%"))
+            if (packet.Contains("%xt%zm%gar%"))
             {
                 await Task.Delay(700);
             }
@@ -66,23 +57,11 @@ namespace Grimoire.Botting.Commands.Misc
 
     public class CmdPacket2 : RegularExpression, IBotCommand
     {
-        public string Packet
-        {
-            get;
-            set;
-        }
+        public string Packet { get; set; }
 
-        public int Delay
-        {
-            get;
-            set;
-        }
+        public int Delay { get; set; }
 
-        public bool Client
-        {
-            get;
-            set;
-        }
+        public bool Client { get; set; }
 
         private string _packet;
 

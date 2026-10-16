@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 
 namespace Grimoire.Botting.Commands.Combat
 {
-    // Token: 0x02000002 RID: 2
     public class CmdUseSkill : IBotCommand
     {
         public string Skill { get; set; }

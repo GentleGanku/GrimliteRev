@@ -55,15 +55,15 @@ namespace Grimoire.Tools.Buyback
             {
                 BuyBackPage buyBackPage = new BuyBackPage(lastRequestedPage);
                 string postData = string.Format("__EVENTTARGET={0}&__EVENTARGUMENT=Page%24{1}&", "GridBuyBack", i) + "__VIEWSTATE=" + buyBackPage.ViewState + "&__VIEWSTATEGENERATOR=" + buyBackPage.ViewStateGenerator + "&__VIEWSTATEENCRYPTED=&__EVENTVALIDATION=" + buyBackPage.EventValidation;
-                string text = await SendPost("inventory.aspx?tab=buyback", postData);
-                lastRequestedPage = text;
-                string[] array = text.Split('\n');
-                foreach (string text2 in array)
+                string page = await SendPost("inventory.aspx?tab=buyback", postData);
+                lastRequestedPage = page;
+                string[] lines = page.Split('\n');
+                foreach (string line in lines)
                 {
-                    if (text2.IndexOf(item, StringComparison.OrdinalIgnoreCase) > -1)
+                    if (line.IndexOf(item, StringComparison.OrdinalIgnoreCase) > -1)
                     {
-                        ret[0] = text2;
-                        ret[1] = text;
+                        ret[0] = line;
+                        ret[1] = page;
                         return ret;
                     }
                 }

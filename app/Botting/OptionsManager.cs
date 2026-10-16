@@ -1,12 +1,10 @@
 using Grimoire.Game;
-using Grimoire.Game.Data;
 using Grimoire.Networking;
 using Grimoire.Networking.Handlers;
 using Grimoire.Tools;
 using Grimoire.UI;
 using System;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Grimoire.Botting
 {
@@ -43,35 +41,15 @@ namespace Grimoire.Botting
             }
         }
 
-        public static bool ProvokeMonsters
-        {
-            get;
-            set;
-        }
+        public static bool ProvokeMonsters { get; set; }
 
-        public static bool PacketSpam
-        {
-            get;
-            set;
-        }
+        public static bool PacketSpam { get; set; }
 
-        public static string ProvokePacket
-        {
-            get;
-            set;
-        }
+        public static string ProvokePacket { get; set; }
 
-        public static string SpamPacket
-        {
-            get;
-            set;
-        }
+        public static string SpamPacket { get; set; }
 
-        public static bool EnemyMagnet
-        {
-            get;
-            set;
-        }
+        public static bool EnemyMagnet { get; set; }
 
         public static bool LagKiller
         {
@@ -83,11 +61,7 @@ namespace Grimoire.Botting
             }
         }
 
-        public static bool SkipCutscenes
-        {
-            get;
-            set;
-        }
+        public static bool SkipCutscenes { get; set; }
 
         public static bool DisableAnimations
         {
@@ -119,35 +93,15 @@ namespace Grimoire.Botting
             }
         }
 
-        public static int WalkSpeed
-        {
-            get;
-            set;
-        }
+        public static int WalkSpeed { get; set; }
 
-        public static int Timer
-        {
-            get;
-            set;
-        } = 250;
+        public static int Timer { get; set; } = 250;
 
-        public static int PacketDelay
-        {
-            get;
-            set;
-        }
+        public static int PacketDelay { get; set; }
 
-        public static int RoomNumber
-        {
-            get;
-            set;
-        }
+        public static int RoomNumber { get; set; }
 
-        public static bool Untarget
-        {
-            get;
-            set;
-        }
+        public static bool Untarget { get; set; }
 
         public static bool AFK
         {
@@ -175,23 +129,11 @@ namespace Grimoire.Botting
             }
         }
 
-        public static bool ChangeChat
-        {
-            get;
-            set;
-        }
+        public static bool ChangeChat { get; set; }
 
-        public static bool WarningMsgFilter
-        {
-            get;
-            set;
-        }
+        public static bool WarningMsgFilter { get; set; }
 
-        public static bool _antiAfk
-        {
-            get;
-            set;
-        } = false;
+        public static bool _antiAfk { get; set; } = false;
 
         public static bool HideYulgar
         {
@@ -315,15 +257,9 @@ namespace Grimoire.Botting
             }
         }
 
-        private static IJsonMessageHandler HandlerHideRoom
-        {
-            get;
-        }
+        private static IJsonMessageHandler HandlerHideRoom { get; }
 
-        private static IXtMessageHandler HandlerAFK1
-        {
-            get;
-        }
+        private static IXtMessageHandler HandlerAFK1 { get; }
 
         static OptionsManager()
         {

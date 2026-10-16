@@ -13,7 +13,6 @@ using System.Linq;
 using System.Security;
 using System.Text;
 using System.Web;
-using System.Xml;
 using System.Xml.Linq;
 
 namespace Grimoire.Tools
@@ -38,28 +37,28 @@ namespace Grimoire.Tools
         public static void ProcessFlashCall(object sender, _IShockwaveFlashEvents_FlashCallEvent e)
         {
             XElement xElement = XElement.Parse(e.request);
-            string text = xElement.Attribute("name")?.Value;
-            string text2 = xElement.Element("arguments")?.Value;
-            if (text == null)
+            string callName = xElement.Attribute("name")?.Value;
+            string callArgs = xElement.Element("arguments")?.Value;
+            if (callName == null)
             {
                 return;
             }
-            if (!(text == "progress"))
+            if (!(callName == "progress"))
             {
-                if (text == "modifyServers")
+                if (callName == "modifyServers")
                 {
-                    Root.Instance.Client.SetReturnValue("<string>" + ModifyServerList(text2.Trim()) + "</string>");
+                    Root.Instance.Client.SetReturnValue("<string>" + ModifyServerList(callArgs.Trim()) + "</string>");
                 }
                 // -1 keeps the game's own backgrounds (Camouflage), 0 is the first custom background.
-                if (text == "getBackgroundIndex")
+                if (callName == "getBackgroundIndex")
                 {
                     Root.Instance.Client.SetReturnValue(Root.Instance.camouflageToolStripMenuItem.Checked ? "<number>-1</number>" : "<number>0</number>");
                 }
-                Proxy.Instance.LogPackets(text, text2);
+                Proxy.Instance.LogPackets(callName, callArgs);
             }
             else
             {
-                SwfLoadProgress?.Invoke(int.Parse(text2));
+                SwfLoadProgress?.Invoke(int.Parse(callArgs));
             }
         }
 
@@ -240,14 +239,14 @@ namespace Grimoire.Tools
             JObject packet = (JObject)JObject.Parse(json);
             JObject login = (JObject)packet["login"];
             JArray servers = (JArray)packet["servers"];
-            Server[] array = new Server[servers.Count];
+            Server[] parsedServers = new Server[servers.Count];
 
             login["iAge"] = 99;
 
             for (int i = 0; i < servers.Count; i++)
             {
                 JObject server = (JObject)servers[i];
-                array[i] = new Server
+                parsedServers[i] = new Server
                 {
                     IsChatRestricted = server.GetValue("iChat")?.ToString() == "0",
                     PlayerCount = int.Parse(server.GetValue("iCount")?.ToString()),
@@ -260,7 +259,7 @@ namespace Grimoire.Tools
                     Ip = server.GetValue("sIP")?.ToString()
                 };
             }
-            BotManager.Instance.OnServersLoaded(array);
+            BotManager.Instance.OnServersLoaded(parsedServers);
             ParseAvatarDatas(login);
             return packet.ToString(Newtonsoft.Json.Formatting.None);
         }

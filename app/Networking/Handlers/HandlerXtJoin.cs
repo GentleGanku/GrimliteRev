@@ -45,8 +45,6 @@ namespace Grimoire.Networking.Handlers
                 OptionsManager.DestroyPlayers(OptionsManager.HideYulgar);
             if (OptionsManager.HidePlayers)
                 OptionsManager.DestroyPlayers(true);
-            //Player.Cell = message.Arguments[4];
-            //Player.Pad = message.Arguments[5];
         }
     }
 }

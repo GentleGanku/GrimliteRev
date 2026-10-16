@@ -11,11 +11,7 @@ namespace Grimoire.Game.Data
         /// The race of the monster.
         /// </summary>
         [JsonProperty("sRace")]
-        public string Race
-        {
-            get;
-            set;
-        }
+        public string Race { get; set; }
 
         /// <summary>
         /// The name of the monster.
@@ -37,71 +33,43 @@ namespace Grimoire.Game.Data
         /// The ID of the monster.
         /// </summary>
         [JsonProperty("MonID")]
-        public int Id
-        {
-            get;
-            set;
-        }
+        public int Id { get; set; }
 
         /// <summary>
         /// The monster's level.
         /// </summary>
         [JsonProperty("iLvl")]
-        public int Level
-        {
-            get;
-            set;
-        }
+        public int Level { get; set; }
 
         /// <summary>
         /// The monster's state.
         /// </summary>
         [JsonProperty("intState")]
-        public int CurrentState
-        {
-            get;
-            set;
-        }
+        public int CurrentState { get; set; }
 
         /// <summary>
         /// The monster's current health.
         /// </summary>
         [JsonProperty("intHP")]
-        public int Health
-        {
-            get;
-            set;
-        }
+        public int Health { get; set; }
 
         /// <summary>
         /// The monster's maximum health.
         /// </summary>
         [JsonProperty("intHPMax")]
-        public int MaxHealth
-        {
-            get;
-            set;
-        }
+        public int MaxHealth { get; set; }
 
         /// <summary>
         /// The monster's current mana.
         /// </summary>
         [JsonProperty("intMP")]
-        public int Mana
-        {
-            get;
-            set;
-        }
+        public int Mana { get; set; }
 
         /// <summary>
         /// The monster's maximum mana.
         /// </summary>
         [JsonProperty("intMPMax")]
-        public int MaxMana
-        {
-            get;
-            set;
-        }
+        public int MaxMana { get; set; }
 
         /// <summary>
         /// The cell the monster is in.
@@ -123,11 +91,7 @@ namespace Grimoire.Game.Data
         /// <summary>
         /// The list of auras the monster has.
         /// </summary>
-        public List<Aura> Auras
-        {
-            get;
-            set;
-        }
+        public List<Aura> Auras { get; set; }
 
         public enum State
         {

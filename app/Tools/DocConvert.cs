@@ -47,7 +47,6 @@ namespace Grimoire.Tools
             {
                 using (var gs = new GZipStream(mso, CompressionMode.Compress))
                 {
-                    //msi.CopyTo(gs);
                     CopyTo(msi, gs);
                 }
 
@@ -64,7 +63,6 @@ namespace Grimoire.Tools
             {
                 using (var gs = new GZipStream(mso, compressionLevel: CompressionLevel.Optimal))
                 {
-                    //msi.CopyTo(gs);
                     CopyTo(msi, gs);
                 }
 
@@ -79,7 +77,6 @@ namespace Grimoire.Tools
             {
                 using (var gs = new GZipStream(msi, CompressionMode.Decompress))
                 {
-                    //gs.CopyTo(mso);
                     CopyTo(gs, mso);
                 }
 
@@ -95,7 +92,6 @@ namespace Grimoire.Tools
             {
                 using (var gs = new GZipStream(msi, CompressionMode.Decompress))
                 {
-                    //gs.CopyTo(mso);
                     CopyTo(gs, mso);
                 }
 
@@ -105,30 +101,21 @@ namespace Grimoire.Tools
 
         public static Task toRtf(string source, string target, out string output)
         {
-            //Creating the instance of Word Application
             Microsoft.Office.Interop.Word.Application newApp = new Microsoft.Office.Interop.Word.Application();
 
-            // specifying the Source & Target file names
             object Source = source;
             object Target = target;
 
-            // Use for the parameter whose type are not known or  
-            // say Missing
             object Unknown = Type.Missing;
 
-            // Source document open here
-            // Additional Parameters are not known so that are  
-            // set as a missing type
             newApp.Documents.Open(ref Source, ref Unknown,
                  ref Unknown, ref Unknown, ref Unknown,
                  ref Unknown, ref Unknown, ref Unknown,
                  ref Unknown, ref Unknown, ref Unknown,
                  ref Unknown, ref Unknown, ref Unknown, ref Unknown);
 
-            // Specifying the format in which you want the output file 
             object format = Microsoft.Office.Interop.Word.WdSaveFormat.wdFormatRTF;
 
-            //Changing the format of the document
             newApp.ActiveDocument.SaveAs(ref Target, ref format,
                     ref Unknown, ref Unknown, ref Unknown,
                     ref Unknown, ref Unknown, ref Unknown,
@@ -136,7 +123,6 @@ namespace Grimoire.Tools
                     ref Unknown, ref Unknown, ref Unknown,
                     ref Unknown, ref Unknown);
 
-            // for closing the application
             newApp.Quit(ref Unknown, ref Unknown, ref Unknown);
             output = $"{target}.rtf";
             return Task.FromResult(0);

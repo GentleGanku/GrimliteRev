@@ -1,29 +1,14 @@
-﻿using Grimoire.Game;
-using Grimoire.UI;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Grimoire.Botting.Commands.Item
 {
     public class CmdPacketlist2 : IBotCommand
     {
-        public int Type
-        {
-            get;
-            set;
-        }
+        public int Type { get; set; }
 
-        public string Packet
-        {
-            get;
-            set;
-        }
+        public string Packet { get; set; }
 
-        public int Delay
-        {
-            get;
-            set;
-        }
+        public int Delay { get; set; }
 
         public async Task Execute(IBotEngine instance)
         {

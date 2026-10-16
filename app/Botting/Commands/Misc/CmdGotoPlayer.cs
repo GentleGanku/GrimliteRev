@@ -9,11 +9,7 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdGotoPlayer : RegularExpression, IBotCommand
     {
-        public string PlayerName
-        {
-            get;
-            set;
-        }
+        public string PlayerName { get; set; }
 
         private string _playerName => BotManager.Instance.ActiveBotEngine.Value(PlayerName);
 

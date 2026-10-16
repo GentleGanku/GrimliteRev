@@ -61,12 +61,12 @@ namespace Grimoire.Game
         public async Task<bool> GetDrop(string itemName)
         {
             InventoryItem inventoryItem = _drops.FirstOrDefault((InventoryItem d) => d.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
-            bool flag = inventoryItem != null;
-            if (flag)
+            bool success = inventoryItem != null;
+            if (success)
             {
-                flag = await GetDrop(inventoryItem.Id);
+                success = await GetDrop(inventoryItem.Id);
             }
-            return flag;
+            return success;
         }
 
         public async Task<bool> RemoveAll(int itemId)
@@ -102,31 +102,6 @@ namespace Grimoire.Game
         {
             return ((_drops.FirstOrDefault((InventoryItem d) => d.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase)) != null) || (Bot.Instance.HasDropInInventory(itemName)));
         }
-
-        //public async Task AcceptMarkedDrops()
-        //{
-        //    while (BotManager.Instance.ActiveBotEngine.IsRunning)
-        //    {
-        //        Configuration configuration = BotManager.Instance.ActiveBotEngine.Configuration;
-        //        if (configuration.Drops.Count > 0)
-        //        {
-        //            foreach (string item in MarkedDrops)
-        //            {
-        //                string itemName = item.Split(',')[0];
-        //                int itemID = int.Parse(item.Split(',')[1]);
-        //                bool configDrop = configuration.Drops.Any((string d) => d.Equals(itemName, StringComparison.OrdinalIgnoreCase));
-        //                bool configPickupCheck = (configuration.EnablePickupAll || (configuration.EnablePickup && configDrop) || configuration.EnablePickupAcTagged) ? true : false;
-        //                if (configPickupCheck && Contains(itemID))
-        //                {
-        //                    await BotManager.Instance.ActiveBotEngine.WaitUntil(() => !InProcess, null, 360, 500);
-        //                    Player.AcceptDrop(itemID);
-        //                    await Task.Delay(360);
-        //                }
-        //            }
-        //        }
-        //        await Task.Delay(100);
-        //    }
-        //}
 
         public async Task RejectDrops()
         {

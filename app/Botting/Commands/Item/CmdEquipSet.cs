@@ -11,11 +11,7 @@ namespace Grimoire.Botting.Commands.Item
 {
     public class CmdEquipSet : IBotCommand
     {
-        public string ItemName
-        {
-            get;
-            set;
-        }
+        public string ItemName { get; set; }
 
         private readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
         {

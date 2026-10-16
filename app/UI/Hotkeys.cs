@@ -259,10 +259,7 @@ namespace Grimoire.UI
         private static System.Threading.CancellationTokenSource login_cts;
         private static System.Threading.CancellationTokenSource _cts;
 
-        public static Hotkeys Instance
-        {
-            get;
-        } = new Hotkeys();
+        public static Hotkeys Instance { get; } = new Hotkeys();
 
         private string configPath => Path.Combine(Application.StartupPath, "hotkeys.json");
 

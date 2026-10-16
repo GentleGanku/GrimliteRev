@@ -5,11 +5,7 @@ namespace Grimoire.Botting.Commands.Item
 {
     public class CmdGetDrop : IBotCommand
     {
-        public string ItemName
-        {
-            get;
-            set;
-        }
+        public string ItemName { get; set; }
 
         public async Task Execute(IBotEngine instance)
         {

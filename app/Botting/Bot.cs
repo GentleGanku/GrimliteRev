@@ -77,7 +77,6 @@ namespace Grimoire.Botting
         {
                 { "Escherion"     , "Staff of Inversion"},
                 { "Vath"          , "Stalagbite"},
-                //{ "Ultra Engineer", "Attack Drone,Defense Drone"},
         };
 
         public int CurrentConfiguration { get; set; } = 0;
@@ -150,13 +149,9 @@ namespace Grimoire.Botting
             BotUtilities.HasLoadedQuests = false;
             Configuration = config;
             _ctsBot = new CancellationTokenSource();
-            //_questDelayCounter = new Stopwatch();
-            //_boostDelayCounter = new Stopwatch();
             World.ItemDropped += OnItemDropped;
             Player.Quests.QuestsLoaded += OnQuestsLoaded;
             Player.Quests.QuestCompleted += OnQuestCompleted;
-            //_questDelayCounter.Start();
-            //_boostDelayCounter.Start();
             BotData.BotState = BotData.State.Others;
             BotData.SkillSet.Clear();
             BotUtilities.AddConfigSkills(config);
@@ -179,7 +174,6 @@ namespace Grimoire.Botting
             await this.LoadBotQuests();
             CheckQuests();
             World.DropStack.RejectDrops();
-            //World.DropStack.AcceptMarkedDrops();
             OptionsManager.Start();
             Task.Factory.StartNew(Activate, _ctsBot.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
         }
@@ -197,8 +191,6 @@ namespace Grimoire.Botting
             World.ItemDropped -= OnItemDropped;
             Player.Quests.QuestsLoaded -= OnQuestsLoaded;
             Player.Quests.QuestCompleted -= OnQuestCompleted;
-            //_questDelayCounter.Stop();
-            //_boostDelayCounter.Stop();
             OptionsManager.Stop();
             BotData.BotState = BotData.State.Others;
             if (BotManager.Instance.lstItems.Items.Count > 0 && BotManager.Instance.chkBankOnStop.Checked)

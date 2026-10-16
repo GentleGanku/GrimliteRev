@@ -1,5 +1,4 @@
 ﻿using Grimoire.Game;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Grimoire.Botting.Commands.Misc.Statements

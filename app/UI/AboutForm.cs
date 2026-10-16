@@ -2,7 +2,6 @@ using DarkUI.Forms;
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
-using System.Threading.Tasks;
 
 namespace Grimoire.UI
 {

@@ -7,23 +7,11 @@ namespace Grimoire.Botting.Commands.Map
 {
     public class CmdWalk : IBotCommand
     {
-        public string X
-        {
-            get;
-            set;
-        }
+        public string X { get; set; }
 
-        public string Y
-        {
-            get;
-            set;
-        }
+        public string Y { get; set; }
 
-        public string Type
-        {
-            get;
-            set;
-        }
+        public string Type { get; set; }
 
         private string _x => (Type == "Random") ? new Random().Next(150, 700).ToString() : BotManager.Instance.ActiveBotEngine.Value(X);
 

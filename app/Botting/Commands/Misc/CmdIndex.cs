@@ -11,17 +11,9 @@ namespace Grimoire.Botting.Commands.Misc
             Goto
         }
 
-        public IndexCommand Type
-        {
-            get;
-            set;
-        }
+        public IndexCommand Type { get; set; }
 
-        public int Index
-        {
-            get;
-            set;
-        }
+        public int Index { get; set; }
 
         public Task Execute(IBotEngine instance)
         {
@@ -29,35 +21,35 @@ namespace Grimoire.Botting.Commands.Misc
             {
                 case IndexCommand.Down:
                     {
-                        int num3 = Index - 1;
-                        if (num3 > 0)
+                        int offset = Index - 1;
+                        if (offset > 0)
                         {
-                            int num4 = instance.Index += num3;
-                            if (num4 < instance.Configuration.Commands.Count)
+                            int newIndex = instance.Index += offset;
+                            if (newIndex < instance.Configuration.Commands.Count)
                             {
-                                instance.Index = num4;
+                                instance.Index = newIndex;
                             }
                         }
                         break;
                     }
                 case IndexCommand.Up:
                     {
-                        int num = Index + 1;
-                        if (num > 0)
+                        int offset = Index + 1;
+                        if (offset > 0)
                         {
-                            int num2 = instance.Index -= num;
-                            if (num2 > -1)
+                            int newIndex = instance.Index -= offset;
+                            if (newIndex > -1)
                             {
-                                instance.Index = num2;
+                                instance.Index = newIndex;
                             }
                         }
                         break;
                     }
                 case IndexCommand.Goto:
                     {
-                        int num = Index - 1;
-                        if (num > 0)
-                            instance.Index = num;
+                        int target = Index - 1;
+                        if (target > 0)
+                            instance.Index = target;
                         break;
                     }
             }

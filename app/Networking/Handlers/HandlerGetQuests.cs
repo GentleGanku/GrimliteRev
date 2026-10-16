@@ -17,11 +17,11 @@ namespace Grimoire.Networking.Handlers
 
         public void Handle(JsonMessage message)
         {
-            Dictionary<int, Quest> dictionary = message.DataObject?["quests"]?.ToObject<Dictionary<int, Quest>>();
-            if (dictionary != null && dictionary.Count > 0)
+            Dictionary<int, Quest> quests = message.DataObject?["quests"]?.ToObject<Dictionary<int, Quest>>();
+            if (quests != null && quests.Count > 0)
             {
-                Player.Quests.OnQuestsLoaded(dictionary.Select((KeyValuePair<int, Quest> q) => q.Value).ToList());
-                Player.Quests.LoadedQuests.AddRange(dictionary.Select((KeyValuePair<int, Quest> q) => q.Value).ToList());
+                Player.Quests.OnQuestsLoaded(quests.Select((KeyValuePair<int, Quest> q) => q.Value).ToList());
+                Player.Quests.LoadedQuests.AddRange(quests.Select((KeyValuePair<int, Quest> q) => q.Value).ToList());
             }
         }
     }

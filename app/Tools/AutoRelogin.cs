@@ -14,10 +14,6 @@ namespace Grimoire.Tools
         public static bool IsTemporarilyKicked => Flash.Call<bool>("IsTemporarilyKicked", new string[0]);
 
         public static bool AreServersLoaded => Flash.Call<bool>("AreServersLoaded", new string[0]);
-        //public static bool AreServersLoaded()
-        //{
-        //    return Server.List.Count > 0;
-        //}
 
         public static bool IsClientLoading(string Type) => Flash.Call<bool>("IsClientLoading", Type);
 
@@ -26,7 +22,6 @@ namespace Grimoire.Tools
         public static bool ServerLabel => Flash.Call<bool>("ServerLabel", new string[0]);
 
         public static string ServerIP => Flash.Call<string>("ServerIP", new string[0]);
-        //public static string ServerIP => World.CurrentServer.Ip;
 
         public static bool GameLabel => Flash.Call<bool>("GameLabel", new string[0]);
 

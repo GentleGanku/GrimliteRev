@@ -11,23 +11,11 @@ namespace Grimoire.Botting.Commands.Misc
             Lower
         }
 
-        public Types type
-        {
-            get;
-            set;
-        }
+        public Types type { get; set; }
 
-        public string Int
-        {
-            get;
-            set;
-        }
+        public string Int { get; set; }
 
-        public int Value
-        {
-            get;
-            set;
-        }
+        public int Value { get; set; }
 
         public Task Execute(IBotEngine instance)
         {

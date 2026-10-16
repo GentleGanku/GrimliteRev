@@ -5,10 +5,7 @@ namespace Grimoire.Networking
 {
     public class JsonMessage : Message
     {
-        public JToken Object
-        {
-            get;
-        }
+        public JToken Object { get; }
 
         public JToken DataObject => Object?["b"]?["o"];
 

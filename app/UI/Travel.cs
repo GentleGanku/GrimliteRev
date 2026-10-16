@@ -66,10 +66,7 @@ namespace Grimoire.UI
         public DarkCheckBox chkCustomChatTrigger;
         private DarkButton btnBinky;
 
-        public static Travel Instance
-        {
-            get;
-        }
+        public static Travel Instance { get; }
 
         private Travel()
         {
@@ -1167,7 +1164,6 @@ namespace Grimoire.UI
                 txtCustomMap.Text = targetedTravel[1];
                 txtCustomCell.Text = targetedTravel[2];
                 txtCustomPad.Text = targetedTravel[3];
-                //executeCustomTravel();
             }
         }
 

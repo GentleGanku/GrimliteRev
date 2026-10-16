@@ -6,17 +6,9 @@ namespace Grimoire.Botting.Commands.Item
 {
     public class CmdBuyBack : IBotCommand
     {
-        public string ItemName
-        {
-            get;
-            set;
-        }
+        public string ItemName { get; set; }
 
-        public int PageNumberCap
-        {
-            get;
-            set;
-        }
+        public int PageNumberCap { get; set; }
 
         public async Task Execute(IBotEngine instance)
         {

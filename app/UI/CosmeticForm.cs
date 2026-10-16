@@ -13,10 +13,7 @@ namespace Grimoire.UI
 {
     public partial class CosmeticForm : DarkForm
     {
-        public static CosmeticForm Instance
-        {
-            get;
-        } = new CosmeticForm();
+        public static CosmeticForm Instance { get; } = new CosmeticForm();
 
         public CosmeticForm()
         {
@@ -304,7 +301,6 @@ namespace Grimoire.UI
             equip.sFile = file;
             equip.sLink = link.ReplaceLink();
             equip.sType = txt;
-            //equip.sMeta = Meta;
             Flash.Call("SetEquip", new object[2] { txt, equip });
         }
 

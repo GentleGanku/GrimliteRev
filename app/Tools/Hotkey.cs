@@ -4,23 +4,11 @@ namespace Grimoire.Tools
 {
     public class Hotkey
     {
-        public string Text
-        {
-            get;
-            set;
-        }
+        public string Text { get; set; }
 
-        public Keys Key
-        {
-            get;
-            set;
-        }
+        public Keys Key { get; set; }
 
-        public int ActionIndex
-        {
-            get;
-            set;
-        }
+        public int ActionIndex { get; set; }
 
         public void Install()
         {

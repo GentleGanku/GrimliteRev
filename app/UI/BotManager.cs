@@ -419,10 +419,7 @@ namespace Grimoire.UI
         public DarkCheckBox chkRelogUponFailBuy;
         private DarkLabel darkLabel11;
 
-        public static BotManager Instance
-        {
-            get;
-        }
+        public static BotManager Instance { get; }
 
         public IBotEngine ActiveBotEngine
         {
@@ -851,22 +848,22 @@ namespace Grimoire.UI
             else if (lstCommands.SelectedIndex > -1)
             {
                 int selectedIndex = lstCommands.SelectedIndex;
-                object obj = lstCommands.Items[selectedIndex];
-                string text;
+                object command = lstCommands.Items[selectedIndex];
+                string editedJson;
                 try
                 {
-                    text = UserFriendlyCommandEditor.Show(obj);
+                    editedJson = UserFriendlyCommandEditor.Show(command);
                 }
                 catch 
                 {
-                    text = RawCommandEditor.Show(JsonConvert.SerializeObject(obj, Formatting.Indented, _serializerSettings)); 
+                    editedJson = RawCommandEditor.Show(JsonConvert.SerializeObject(command, Formatting.Indented, _serializerSettings)); 
                 }
-                if (text != null)
+                if (editedJson != null)
                 {
                     try
                     {
-                        IBotCommand item = (IBotCommand)JsonConvert.DeserializeObject(text, obj.GetType());
-                        lstCommands.Items.Remove(obj);
+                        IBotCommand item = (IBotCommand)JsonConvert.DeserializeObject(editedJson, command.GetType());
+                        lstCommands.Items.Remove(command);
                         lstCommands.Items.Insert(selectedIndex, item);
                     }
                     catch {}
@@ -910,21 +907,15 @@ namespace Grimoire.UI
 
         private void _MoveListBoxUp()
         {
-            //MoveListItem(-1);
             SelectedList.BeginUpdate();
             int numberOfSelectedItems = SelectedList.SelectedItems.Count;
             for (int i = 0; i < numberOfSelectedItems; i++)
             {
-                // only if it's not the first item
                 if (SelectedList.SelectedIndices[i] > 0)
                 {
-                    // the index of the item above the item that we wanna move up
                     int indexToInsertIn = SelectedList.SelectedIndices[i] - 1;
-                    // insert UP the item that we want to move up
                     SelectedList.Items.Insert(indexToInsertIn, SelectedList.SelectedItems[i]);
-                    // removing it from its old place
                     SelectedList.Items.RemoveAt(indexToInsertIn + 2);
-                    // highlighting it in its new place
                     SelectedList.SelectedItem = SelectedList.Items[indexToInsertIn];
                 }
             }
@@ -933,23 +924,17 @@ namespace Grimoire.UI
 
         private void _MoveListBoxDown()
         {
-            //MoveListItem(1);
             SelectedList.BeginUpdate();
             int numberOfSelectedItems = SelectedList.SelectedItems.Count;
             // when going down, instead of moving through the selected items from top to bottom
             // we'll go from bottom to top, it's easier to handle this way.
             for (int i = numberOfSelectedItems - 1; i >= 0; i--)
             {
-                // only if it's not the last item
                 if (SelectedList.SelectedIndices[i] < SelectedList.Items.Count - 1)
                 {
-                    // the index of the item that is currently below the selected item
                     int indexToInsertIn = SelectedList.SelectedIndices[i] + 2;
-                    // insert DOWN the item that we want to move down
                     SelectedList.Items.Insert(indexToInsertIn, SelectedList.SelectedItems[i]);
-                    // removing it from its old place
                     SelectedList.Items.RemoveAt(indexToInsertIn - 2);
-                    // highlighting it in its new place
                     SelectedList.SelectedItem = SelectedList.Items[indexToInsertIn - 1];
                 }
             }
@@ -1037,11 +1022,11 @@ namespace Grimoire.UI
                 DarkMessageBox.Show(new Form { TopMost = true, StartPosition = FormStartPosition.CenterScreen }, "Please add a Skill Set label on top of the skills in the list.", "Add Skill", MessageBoxIcon.Error);
                 return;
             }
-            string text = numSkill.Text;
+            string skillIndex = numSkill.Text;
             AddSkill(new Skill
             {
-                Text = text + ": " + Skill.GetSkillName(text),
-                Index = text,
+                Text = skillIndex + ": " + Skill.GetSkillName(skillIndex),
+                Index = skillIndex,
                 Type = Skill.SkillType.Normal
             }, (ModifierKeys & Keys.Control) == Keys.Control);
         }
@@ -1053,11 +1038,11 @@ namespace Grimoire.UI
                 DarkMessageBox.Show(new Form { TopMost = true, StartPosition = FormStartPosition.CenterScreen }, "Please add a Skill Set label on top of the skills in the list.", "Add Safe Skill", MessageBoxIcon.Error);
                 return;
             }
-            string text = numSkill.Text;
+            string skillIndex = numSkill.Text;
             AddSkill(new Skill
             {
-                Text = "[Safe] " + text + ": " + Skill.GetSkillName(text),
-                Index = text,
+                Text = "[Safe] " + skillIndex + ": " + Skill.GetSkillName(skillIndex),
+                Index = skillIndex,
                 Type = Skill.SkillType.Safe,
                 ComparisonType = chkSafeGreaterThan.Checked,
                 SafePercentage = (int)numSafe.Value,
@@ -1081,15 +1066,15 @@ namespace Grimoire.UI
 
         private void btnJoin_Click(object sender, EventArgs e)
         {
-            string text = string.IsNullOrEmpty(txtJoin.Text) ? "-" : txtJoin.Text;
-            string[] split = text.Split('-');
-            if (!text.Contains('-'))
+            string mapName = string.IsNullOrEmpty(txtJoin.Text) ? "-" : txtJoin.Text;
+            string[] split = mapName.Split('-');
+            if (!mapName.Contains('-'))
             {
                 DarkMessageBox.Show(new Form { TopMost = true, StartPosition = FormStartPosition.CenterScreen },
                     "Failed to add the Join Map command. You have to insert the map name AND the room number (ex. \"battleon-1e99\") in order to add the command.", "Join Map Command", MessageBoxIcon.Error);
                 return;
             }
-            if (text.Length > 0)
+            if (mapName.Length > 0)
             {
                 AddCommand(new CmdJoin2
                 {
@@ -1169,8 +1154,8 @@ namespace Grimoire.UI
 
         private void btnItem_Click(object sender, EventArgs e)
         {
-            string text = txtItem.Text;
-            if (text.Length > 0 && cbItemCmds.SelectedIndex > -1)
+            string itemName = txtItem.Text;
+            if (itemName.Length > 0 && cbItemCmds.SelectedIndex > -1)
             {
                 IBotCommand cmd;
                 switch (cbItemCmds.SelectedIndex)
@@ -1178,28 +1163,28 @@ namespace Grimoire.UI
                     case 0:
                         cmd = new CmdGetDrop
                         {
-                            ItemName = text
+                            ItemName = itemName
                         };
                         break;
 
                     case 1:
                         cmd = new CmdSell
                         {
-                            ItemName = text
+                            ItemName = itemName
                         };
                         break;
 
                     case 2:
                         cmd = new CmdUseBoost
                         {
-                            ItemName = text,
+                            ItemName = itemName,
                         };
                         break;
 
                     case 3:
                         cmd = new CmdEquip
                         {
-                            ItemName = text,
+                            ItemName = itemName,
                             Safe = true
                         };
                         break;
@@ -1207,7 +1192,7 @@ namespace Grimoire.UI
                     case 4:
                         cmd = new CmdEquip
                         {
-                            ItemName = text,
+                            ItemName = itemName,
                             Safe = false
                         };
                         break;
@@ -1215,7 +1200,7 @@ namespace Grimoire.UI
                     case 5:
                         cmd = new CmdBankTransfer
                         {
-                            ItemName = text,
+                            ItemName = itemName,
                             TransferFromBank = false
                         };
                         break;
@@ -1223,22 +1208,15 @@ namespace Grimoire.UI
                     case 6:
                         cmd = new CmdBankTransfer
                         {
-                            ItemName = text,
+                            ItemName = itemName,
                             TransferFromBank = true
                         };
                         break;
 
-                    //case 7:
-                    //    cmd = new CmdEquipSet
-                    //    {
-                    //        ItemName = text
-                    //    };
-                    //    break;
-
                     case 7:
                         cmd = new CmdWhitelist
                         {
-                            Item = text,
+                            Item = itemName,
                             State = state.Add
                         };
                         break;
@@ -1246,7 +1224,7 @@ namespace Grimoire.UI
                     case 8:
                         cmd = new CmdWhitelist
                         {
-                            Item = text,
+                            Item = itemName,
                             State = state.Remove
                         };
                         break;
@@ -1254,7 +1232,7 @@ namespace Grimoire.UI
                     default:
                         cmd = new CmdGetDrop
                         {
-                            ItemName = text
+                            ItemName = itemName
                         };
                         break;
                 }
@@ -1272,33 +1250,33 @@ namespace Grimoire.UI
 
         private void btnBoth_Click(object sender, EventArgs e)
         {
-            string text = txtWhitelist.Text;
-            if (text.Length > 0)
+            string itemName = txtWhitelist.Text;
+            if (itemName.Length > 0)
             {
-                AddDrop(text);
-                AddItem(text);
+                AddDrop(itemName);
+                AddItem(itemName);
             }
         }
 
         private void btnWhitelist_Click(object sender, EventArgs e)
         {
-            string text = txtWhitelist.Text;
-            if (text.Length > 0)
+            string itemName = txtWhitelist.Text;
+            if (itemName.Length > 0)
             {
-                AddDrop(text);
+                AddDrop(itemName);
             }
         }
 
         private void btnSwap_Click(object sender, EventArgs e)
         {
-            string text = txtSwapBank.Text;
-            string text2 = txtSwapInv.Text;
-            if (text.Length > 0 && text2.Length > 0)
+            string bankItem = txtSwapBank.Text;
+            string inventoryItem = txtSwapInv.Text;
+            if (bankItem.Length > 0 && inventoryItem.Length > 0)
             {
                 AddCommand(new CmdBankSwap
                 {
-                    InventoryItemName = text2,
-                    BankItemName = text
+                    InventoryItemName = inventoryItem,
+                    BankItemName = bankItem
                 }, (ModifierKeys & Keys.Control) == Keys.Control);
             }
         }
@@ -1388,12 +1366,12 @@ namespace Grimoire.UI
 
         private void btnGoto_Click(object sender, EventArgs e)
         {
-            string text = txtPlayer.Text;
-            if (text.Length > 0)
+            string playerName = txtPlayer.Text;
+            if (playerName.Length > 0)
             {
                 AddCommand(new CmdGotoPlayer
                 {
-                    PlayerName = text
+                    PlayerName = playerName
                 }, (ModifierKeys & Keys.Control) == Keys.Control);
             }
         }
@@ -1475,10 +1453,10 @@ namespace Grimoire.UI
                 saveFileDialog.CheckFileExists = false;
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    Configuration value = SaveConfiguration();
+                    Configuration configuration = SaveConfiguration();
                     try
                     {
-                        File.WriteAllText(saveFileDialog.FileName, JsonConvert.SerializeObject(value, Formatting.Indented, _saveSerializerSettings));
+                        File.WriteAllText(saveFileDialog.FileName, JsonConvert.SerializeObject(configuration, Formatting.Indented, _saveSerializerSettings));
                     }
                     catch (Exception ex)
                     {
@@ -1895,10 +1873,10 @@ namespace Grimoire.UI
                     saveFileDialog.CheckFileExists = false;
                     if (saveFileDialog.ShowDialog() == DialogResult.OK)
                     {
-                        Configuration value = SaveConfiguration();
+                        Configuration configuration = SaveConfiguration();
                         try
                         {
-                            File.WriteAllText(saveFileDialog.FileName, JsonConvert.SerializeObject(value, Formatting.Indented, _saveSerializerSettings));
+                            File.WriteAllText(saveFileDialog.FileName, JsonConvert.SerializeObject(configuration, Formatting.Indented, _saveSerializerSettings));
                         }
                         catch (Exception ex)
                         {
@@ -1947,14 +1925,14 @@ namespace Grimoire.UI
 
         public void AddQuest(int QuestID, string ItemID = null, bool toConfig = false)
         {
-            string text = (ItemID != null) ? $"{QuestID}:{ItemID}" : QuestID.ToString();
-            if (lstQuests.Items.Cast<Quest>().ToList().Find(q => q.Text == text) == null)
+            string questText = (ItemID != null) ? $"{QuestID}:{ItemID}" : QuestID.ToString();
+            if (lstQuests.Items.Cast<Quest>().ToList().Find(q => q.Text == questText) == null)
             {
                 Quest quest = new Quest
                 {
                     Id = QuestID,
                     ItemId = ItemID,
-                    Text = text
+                    Text = questText
                 };
                 lstQuests.Items.Add(quest);
                 if (toConfig)
@@ -7489,9 +7467,9 @@ namespace Grimoire.UI
             {
                 return;
             }
-            string text = Flash.Call<string>("Gender", new string[0]);
-            text = (!text.Contains("M")) ? "M" : "F";
-            string data = $"{{\"t\":\"xt\",\"b\":{{\"r\":-1,\"o\":{{\"cmd\":\"genderSwap\",\"bitSuccess\":1,\"gender\":\"{text}\",\"intCoins\":0,\"uid\":\"{Flash.Call<int>("UserID", new string[0])}\",\"strHairFileName\":\"\",\"HairID\":\"\",\"strHairName\":\"\"}}}}}}";
+            string gender = Flash.Call<string>("Gender", new string[0]);
+            gender = (!gender.Contains("M")) ? "M" : "F";
+            string data = $"{{\"t\":\"xt\",\"b\":{{\"r\":-1,\"o\":{{\"cmd\":\"genderSwap\",\"bitSuccess\":1,\"gender\":\"{gender}\",\"intCoins\":0,\"uid\":\"{Flash.Call<int>("UserID", new string[0])}\",\"strHairFileName\":\"\",\"HairID\":\"\",\"strHairName\":\"\"}}}}}}";
             Proxy.Instance.SendToClient(data);
         }
 
@@ -7549,10 +7527,10 @@ namespace Grimoire.UI
 
         private void btnUnbanklst_Click(object sender, EventArgs e)
         {
-            string text = txtWhitelist.Text;
-            if (text.Length > 0)
+            string itemName = txtWhitelist.Text;
+            if (itemName.Length > 0)
             {
-                AddItem(text);
+                AddItem(itemName);
             }
         }
 
@@ -7704,15 +7682,15 @@ namespace Grimoire.UI
             {
                 monster = "*";
             }
-            string text = numSkillCmd.Text;
+            string skillIndex = numSkillCmd.Text;
             AddCommand(new CmdUseSkill2
             {
                 Monster = chkSkillCmdTargetSelf.Checked ? "Self-targeted" : monster,
-                Index = text,
+                Index = skillIndex,
                 SafeHp = (int)numSkillCmdHPMP.Value,
                 SafeMp = (int)numSkillCmdHPMP.Value,
                 Wait = chkSkillCmdWait.Checked,
-                Skill = text + ": " + Skill.GetSkillName(text)
+                Skill = skillIndex + ": " + Skill.GetSkillName(skillIndex)
             }, (ModifierKeys & Keys.Control) == Keys.Control);
         }
 
@@ -7872,13 +7850,9 @@ namespace Grimoire.UI
             e.DrawBackground();
             if (!CustomCommandsEnabled)
             {
-                // Define the default color of the brush as black.
                 Brush myBrush = Brushes.Gainsboro;
-                // Draw the current item text based on the current Font 
-                // and the custom brush settings.
                 e.Graphics.DrawString(lstCommands.Items[e.Index].ToString(),
                     e.Font, myBrush, e.Bounds, StringFormat.GenericDefault);
-                // If the ListBox has focus, draw a focus rectangle around the selected item.
                 e.DrawFocusRectangle();
                 return;
             }
@@ -7887,7 +7861,6 @@ namespace Grimoire.UI
             IBotCommand cmd = (IBotCommand)lstCommands.Items[e.Index];
             string[] count = cmd.GetType().ToString().Split('.');
             string scmd = count[count.Count() - 1].Replace("Cmd", "");
-            //string WindowText = SystemColors.WindowText.ToArgb().ToString();
             SolidBrush color = new SolidBrush(GetCurrentColor(scmd));
             SolidBrush varColor = new SolidBrush(GetCurrentColor("Variable"));
             SolidBrush eVarColor = new SolidBrush(GetCurrentColor("ExtendedVariable"));
@@ -7951,7 +7924,6 @@ namespace Grimoire.UI
                             };
                             rainbowbrush.InterpolationColors = color_blend;
 
-                            // Draw the text.
                             txt = txt.Replace("[RGB]", "");
                             e.Graphics.DrawString(txt, the_font, rainbowbrush, e.Bounds, centered);
                         }
@@ -7991,10 +7963,7 @@ namespace Grimoire.UI
 
             if (!LabelLess.Contains(scmd))
             {
-                //Draw Index
-                //Region first = DrawString(e.Graphics, $"[{e.Index.ToString()}] ", this.Font, indexcolor, region, new StringFormat(StringFormatFlags.DirectionRightToLeft));
                 Region first = DrawString(e.Graphics, $"[{e.Index.ToString()}] ", font, indexcolor, region, StringFormat.GenericDefault);
-                // Adjust the region we wish to print with a +3 offset.
                 region = new RectangleF(region.X + first.GetBounds(e.Graphics).Width + 3, region.Y, region.Width, region.Height);
             }
 
@@ -8004,7 +7973,6 @@ namespace Grimoire.UI
                 return;
             }
 
-            // Draw the second string (rest of the string, in this case Command type).
             string cmdText = lstCommands.Items[e.Index].ToString();
             string[] toDraw;
             if (cmdText.Contains(':'))
@@ -8045,7 +8013,6 @@ namespace Grimoire.UI
                 FormatFlags = StringFormatFlags.DirectionRightToLeft
             };
             format.SetMeasurableCharacterRanges(new[] { new CharacterRange(0, s.Length) });
-            //g.DrawString(s, font, brush, layoutRectangle, format);
             Region length = g.MeasureCharacterRanges(s, font, layoutRectangle, format)[0];
             layoutRectangle = new RectangleF(layoutRectangle.Width, layoutRectangle.Y, length.GetBounds(g).Width, layoutRectangle.Height);
             DrawString(g, s, font, brush, layoutRectangle, format);
@@ -8226,7 +8193,6 @@ namespace Grimoire.UI
             }, (ModifierKeys & Keys.Control) == Keys.Control);
         }
 
-        //Search Command Function
         public int LastIndexedSearch = 0;
         public string SKeyword = "";
         public List<int> Filtered = new List<int>();
@@ -8241,7 +8207,7 @@ namespace Grimoire.UI
                 LastIndexedSearch = 0;
                 Filtered.Clear();
             }
-            for (int i = 0; i < lists.Count; i++) //Collect all filtered result
+            for (int i = 0; i < lists.Count; i++)
             {
                 if (Keyword == SKeyword)
                 {
@@ -8254,7 +8220,7 @@ namespace Grimoire.UI
                 }
             }
             SKeyword = Keyword;
-            if (Filtered.Count > 0) // Use the filtered Index
+            if (Filtered.Count > 0)
             {
                 SelectedList.SelectedIndex = -1;
                 SelectedList.SelectedIndex = Filtered[LastIndexedSearch];

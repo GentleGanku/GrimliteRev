@@ -14,26 +14,19 @@ namespace Grimoire.UI
 
         public Point previousPosition;
 
-        public Control activeControl
-        {
-            get;
-            set;
-        }
+        public Control activeControl { get; set; }
 
-        // Mouse Down - "On holding the mouse button"
         private void CommandNode_MouseDown(object sender, MouseEventArgs e)
         {
             activeControl = sender as Control;
-            previousPosition = e.Location;// Start position on panel move
+            previousPosition = e.Location;
             Cursor = Cursors.Hand;
         }
 
         private void CommandNode_MouseMove(object sender, MouseEventArgs e)
         {
-            // Mouse Button Left Down
-            if (e.Button == System.Windows.Forms.MouseButtons.Left) // The panel is attached to the mouse and you can move it
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)
             {
-                //Selected Panel Limited location of Bottom and Right
                 if (this.activeControl.Location.X == Math.Min(Math.Max(activeControl.Right + (e.X - previousPosition.X), 0), activeControl.Parent.Width - activeControl.Width) && this.activeControl.Location.Y == Math.Min(Math.Max(activeControl.Bottom + (e.Y - previousPosition.Y), 0), activeControl.Parent.Height - activeControl.Height))
                 {
                     int RightX = Math.Min(Math.Max(activeControl.Right + (e.X - previousPosition.X), 0), activeControl.Parent.Width - activeControl.Width);
@@ -44,7 +37,6 @@ namespace Grimoire.UI
                     ///!LocationRightPanel.Equals(this.activeControl) && this.activeControl.Bounds.IntersectsWith(LocationRightPanel.Bounds)
                 }
 
-                //Selected Panel Limited location of LEFT and TOP
                 else
                 {
                     int LeftX = Math.Min(Math.Max(activeControl.Left + (e.X - previousPosition.X), 0), activeControl.Parent.Width - activeControl.Width);
@@ -77,12 +69,11 @@ namespace Grimoire.UI
     {
         public ResizableUserControl()
         {
-            //this.FormBorderStyle = FormBorderStyle.None; // no borders
             this.DoubleBuffered = true;
             this.SetStyle(ControlStyles.ResizeRedraw, true); // this is to avoid visual artifacts
         }
 
-        protected override void OnPaint(PaintEventArgs e) // you can safely omit this method if you want
+        protected override void OnPaint(PaintEventArgs e)
         {
             e.Graphics.FillRectangle(Brushes.Transparent, Top);
             e.Graphics.FillRectangle(Brushes.Transparent, Left);
@@ -100,7 +91,7 @@ namespace Grimoire.UI
             HTBOTTOMLEFT = 16,
             HTBOTTOMRIGHT = 17;
 
-        const int _ = 6; // you can rename this variable if you like
+        const int _ = 6;
         Rectangle Top { get { return new Rectangle(0, 0, this.ClientSize.Width, _); } }
         Rectangle Left { get { return new Rectangle(0, 0, _, this.ClientSize.Height); } }
         Rectangle Bottom { get { return new Rectangle(0, this.ClientSize.Height - _, this.ClientSize.Width, _); } }

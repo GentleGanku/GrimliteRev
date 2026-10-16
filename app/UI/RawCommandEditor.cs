@@ -32,13 +32,6 @@ namespace Grimoire.UI
 
         private void RawCommandEditor_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //if (e.CloseReason == CloseReason.UserClosing || e.CloseReason == CloseReason.MdiFormClosing || e.CloseReason == CloseReason.FormOwnerClosing)
-            //{
-            //    if (WindowState == FormWindowState.Minimized)
-            //        WindowState = FormWindowState.Normal;
-            //    e.Cancel = true;
-            //    this.Hide();
-            //}
         }
 
         private void RawCommandEditor_Load(object sender, EventArgs e)

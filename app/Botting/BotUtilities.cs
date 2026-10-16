@@ -2,14 +2,12 @@ using AxShockwaveFlashObjects;
 using Grimoire.Botting.Commands.Combat;
 using Grimoire.Botting.Commands.Misc;
 using Grimoire.Botting.Commands.Misc.Statements;
-using Grimoire.Botting.Commands.Quest;
 using Grimoire.Game;
 using Grimoire.UI;
 using Grimoire.Game.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -20,28 +18,12 @@ namespace Grimoire.Botting
 
         public static AxShockwaveFlash flash;
 
-        public static bool ActiveBot
-        {
-            get;
-            set;
-        } = false;
+        public static bool ActiveBot { get; set; } = false;
 
-        public static bool BusyClient
-        {
-            get;
-            set;
-        } = false;
+        public static bool BusyClient { get; set; } = false;
 
-        public static bool HasLoadedQuests
-        {
-            get;
-            set;
-        }
-        public static bool ShouldUseSkill
-        {
-            get;
-            set;
-        }
+        public static bool HasLoadedQuests { get; set; }
+        public static bool ShouldUseSkill { get; set; }
 
         public static async Task WaitUntil(this IBotEngine instance, Func<bool> condition, Func<bool> prerequisite = null, int timeout = 15, int delay = 1000, int finalDelay = 0)
         {

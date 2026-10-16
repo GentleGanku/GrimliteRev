@@ -15,17 +15,9 @@ namespace Grimoire.Botting.Commands.Item
             Remove
         }
 
-        public string Item
-        {
-            get;
-            set;
-        }
+        public string Item { get; set; }
 
-        public state State
-        {
-            get;
-            set;
-        }
+        public state State { get; set; }
 
         public async Task Execute(IBotEngine instance)
         {

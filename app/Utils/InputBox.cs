@@ -1,9 +1,7 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using System.Drawing;
 using DarkUI.Forms;
 using DarkUI.Controls;
-using Grimoire.UI;
 
 namespace Grimoire.Utils
 {
@@ -22,11 +20,7 @@ namespace Grimoire.Utils
 
         public static DialogResult ShowInputDialogBox(ref string input, string prompt, string title = "Title", int width = 250, int height = 85)
         {
-            //This function creates the custom input dialog box by individually creating the different window elements and adding them to the dialog box
-
-            //Specify the size of the window using the parameters passed
             Size size = new Size(width, height);
-            //Create a new form using a System.Windows Form
             DarkForm inputBox = new DarkForm();
 
             inputBox.MaximizeBox = false;
@@ -35,10 +29,8 @@ namespace Grimoire.Utils
             inputBox.StartPosition = FormStartPosition.CenterScreen;
             inputBox.FormBorderStyle = FormBorderStyle.FixedDialog;
             inputBox.ClientSize = size;
-            //Set the window title using the parameter passed
             inputBox.Text = title;
 
-            //Create a new label to hold the prompt
             RichTextBox label = new RichTextBox();
             label.ForeColor = Color.White;
             label.Text = prompt;
@@ -52,7 +44,6 @@ namespace Grimoire.Utils
             label.TabIndex = 2;
             inputBox.Controls.Add(label);
 
-            //Create a textbox to accept the user's input
             DarkTextBox textBox = new DarkTextBox();
             textBox.BorderStyle = BorderStyle.FixedSingle;
             textBox.Size = new Size(size.Width - 10, 23);
@@ -61,7 +52,6 @@ namespace Grimoire.Utils
             textBox.TabIndex = 1;
             inputBox.Controls.Add(textBox);
 
-            //Create an OK Button 
             DarkButton okButton = new DarkButton();
             okButton.DialogResult = DialogResult.OK;
             okButton.BackColor = Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
@@ -71,7 +61,6 @@ namespace Grimoire.Utils
             okButton.Location = new Point(size.Width - 80 - 80, size.Height - 30);
             inputBox.Controls.Add(okButton);
 
-            //Create a Cancel Button
             DarkButton cancelButton = new DarkButton();
             cancelButton.BackColor = Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
             cancelButton.DialogResult = DialogResult.Cancel;
@@ -81,15 +70,12 @@ namespace Grimoire.Utils
             cancelButton.Location = new Point(size.Width - 80, size.Height - 30);
             inputBox.Controls.Add(cancelButton);
 
-            //Set the input box's buttons to the created OK and Cancel Buttons respectively so the window appropriately behaves with the button clicks
             inputBox.AcceptButton = okButton;
             inputBox.CancelButton = cancelButton;
 
-            //Show the window dialog box 
             DialogResult result = inputBox.ShowDialog();
             input = textBox.Text;
 
-            //After input has been submitted, return the input value
             return result;
         }
     }

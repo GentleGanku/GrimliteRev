@@ -10,32 +10,20 @@ namespace Grimoire.Botting.Commands.Map
 {
     public class CmdJoin : IBotCommand
     {
-        public string Map
-        {
-            get;
-            set;
-        }
+        public string Map { get; set; }
 
-        public string Cell
-        {
-            get;
-            set;
-        }
+        public string Cell { get; set; }
 
-        public string Pad
-        {
-            get;
-            set;
-        }
+        public string Pad { get; set; }
 
         public async Task Execute(IBotEngine instance)
         {
             BotData.BotState = BotData.State.Move;
             await instance.WaitUntil(() => World.IsActionAvailable(LockActions.Transfer));
             string cmdMap = Map.Contains("-") ? Map.Split('-')[0] : Map;
-            string text = Map.Substring(cmdMap.Length);
-            bool checkVar = instance.IsVar(text.Replace("-", ""));
-            if (text.Contains("Packet"))
+            string roomSuffix = Map.Substring(cmdMap.Length);
+            bool checkVar = instance.IsVar(roomSuffix.Replace("-", ""));
+            if (roomSuffix.Contains("Packet"))
             {
                 await instance.WaitUntil(() => World.IsActionAvailable(LockActions.Transfer));
                 if (!instance.IsRunning || !Player.IsAlive || !Player.IsLoggedIn)
@@ -51,15 +39,15 @@ namespace Grimoire.Botting.Commands.Map
             {
                 if (checkVar)
                 {
-                    text = "-" + Configuration.Tempvariable[instance.GetVar(text.Replace("-", ""))];
-                    await TryJoin(instance, cmdMap, text);
+                    roomSuffix = "-" + Configuration.Tempvariable[instance.GetVar(roomSuffix.Replace("-", ""))];
+                    await TryJoin(instance, cmdMap, roomSuffix);
                 }
                 else
-                    await TryJoin(instance, cmdMap, text);
+                    await TryJoin(instance, cmdMap, roomSuffix);
             }
             if (cmdMap.Equals(Player.Map, StringComparison.OrdinalIgnoreCase))
             {
-                if (!Player.Cell.Equals(Cell, StringComparison.OrdinalIgnoreCase) && !text.Contains("Packet"))
+                if (!Player.Cell.Equals(Cell, StringComparison.OrdinalIgnoreCase) && !roomSuffix.Contains("Packet"))
                 {
                     Player.MoveToCell(Cell, Pad);
                     await Task.Delay(500);
@@ -93,29 +81,13 @@ namespace Grimoire.Botting.Commands.Map
 
     public class CmdJoin2 : IBotCommand
     {
-        public string Map
-        {
-            get;
-            set;
-        }
+        public string Map { get; set; }
 
-        public string Room
-        {
-            get;
-            set;
-        }
+        public string Room { get; set; }
 
-        public string Cell
-        {
-            get;
-            set;
-        }
+        public string Cell { get; set; }
 
-        public string Pad
-        {
-            get;
-            set;
-        }
+        public string Pad { get; set; }
 
         private string _map => BotManager.Instance.ActiveBotEngine.Value(Map);
 

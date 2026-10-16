@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Windows.Forms;
-using Grimoire.Utils;
-using DarkUI.Forms;
 
 namespace Grimoire.Tools.Plugins
 {
@@ -17,20 +14,13 @@ namespace Grimoire.Tools.Plugins
 
         private IGrimoirePlugin _plugin;
 
-        public string Name
-        {
-            get;
-        }
+        public string Name { get; }
 
         public string Author => _plugin?.Author ?? string.Empty;
 
         public string Description => _plugin?.Description ?? string.Empty;
 
-        public string LastError
-        {
-            get;
-            private set;
-        }
+        public string LastError { get; private set; }
 
         public GrimoirePlugin(string dllFilePath)
         {

@@ -66,128 +66,60 @@ namespace Grimoire.Game.Data
         };
 
         [JsonProperty("iQty")]
-        public int Quantity
-        {
-            get;
-            set;
-        }
+        public int Quantity { get; set; }
 
         [JsonProperty("sDesc")]
-        public string Description
-        {
-            get;
-            set;
-        }
+        public string Description { get; set; }
 
         [JsonProperty("iStk")]
-        public int MaxStack
-        {
-            get;
-            set;
-        }
+        public int MaxStack { get; set; }
 
         [JsonProperty("iLvl")]
-        public int Level
-        {
-            get;
-            set;
-        }
+        public int Level { get; set; }
 
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bCoins")]
-        public bool IsAcItem
-        {
-            get;
-            set;
-        }
+        public bool IsAcItem { get; set; }
 
-        public int CharItemId
-        {
-            get;
-            set;
-        }
+        public int CharItemId { get; set; }
 
         [JsonProperty("sLink")]
-        public string Link
-        {
-            get;
-            set;
-        }
+        public string Link { get; set; }
 
         [JsonProperty("sFile")]
-        public string File
-        {
-            get;
-            set;
-        }
+        public string File { get; set; }
 
         [JsonProperty("strES")]
-        public string EquipmentSlot
-        {
-            get;
-            set;
-        }
+        public string EquipmentSlot { get; set; }
 
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bEquip")]
-        public bool IsEquipped
-        {
-            get;
-            set;
-        }
+        public bool IsEquipped { get; set; }
 
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bUpg")]
-        public bool IsMemberOnly
-        {
-            get;
-            set;
-        }
+        public bool IsMemberOnly { get; set; }
 
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bBank")]
-        public bool IsBankItem
-        {
-            get;
-            set;
-        }
+        public bool IsBankItem { get; set; }
 
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bHouse")]
-        public bool IsHouseItem
-        {
-            get;
-            set;
-        }
+        public bool IsHouseItem { get; set; }
 
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bTemp")]
-        public bool IsTemporary
-        {
-            get;
-            set;
-        }
+        public bool IsTemporary { get; set; }
 
         [JsonProperty("iCost")]
-        public int Cost
-        {
-            get;
-            set;
-        }
+        public int Cost { get; set; }
 
         [JsonProperty("sType")]
-        public string Category
-        {
-            get;
-            set;
-        }
+        public string Category { get; set; }
 
         [JsonProperty("ItemID")]
-        public int Id
-        {
-            get;
-            set;
-        }
+        public int Id { get; set; }
 
         [JsonProperty("sName")]
         public string Name
@@ -207,18 +139,10 @@ namespace Grimoire.Game.Data
         }
 
         [JsonProperty("ShopItemID")]
-        public int ShopItemId
-        {
-            get;
-            set;
-        }
+        public int ShopItemId { get; set; }
 
         [JsonProperty("iRate")]
-        public string DropChance
-        {
-            get;
-            set;
-        }
+        public string DropChance { get; set; }
 
         public override string ToString()
         {

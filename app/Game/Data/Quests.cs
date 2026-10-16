@@ -8,7 +8,6 @@ namespace Grimoire.Game.Data
     public class Quests
     {
         public List<Quest> QuestTree => Flash.Call<List<Quest>>("GetQuestTree", new string[0]);
-        //public List<Quest> QuestTree => LoadedQuests;
 
         public List<Quest> AcceptedQuests => QuestTree.Where((Quest q) => q.IsInProgress).ToList();
 

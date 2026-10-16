@@ -5,11 +5,7 @@ namespace Grimoire.Botting.Commands.Item
 {
     public class CmdMapItem : IBotCommand
     {
-        public int ItemId
-        {
-            get;
-            set;
-        }
+        public int ItemId { get; set; }
 
         public async Task Execute(IBotEngine instance)
         {
@@ -26,11 +22,7 @@ namespace Grimoire.Botting.Commands.Item
 
     public class CmdMapItem2 : IBotCommand
     {
-        public string ItemId
-        {
-            get;
-            set;
-        }
+        public string ItemId { get; set; }
 
         public async Task Execute(IBotEngine instance)
         {

@@ -15,7 +15,6 @@ namespace Grimoire.UI
         private readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
         {
             DefaultValueHandling = DefaultValueHandling.Include,
-            //NullValueHandling = NullValueHandling.Ignore,
             TypeNameHandling = TypeNameHandling.All
         };
 
@@ -63,11 +62,6 @@ namespace Grimoire.UI
 
         private void Set_Load(object sender, EventArgs e)
         {
-            //if (!Directory.Exists(path))
-            //{
-            //    Directory.CreateDirectory(path);
-            //}
-            //UpdateTree();
         }
 
         private void AddTreeNodes(TreeNode node, string path)
@@ -112,8 +106,6 @@ namespace Grimoire.UI
 
         private void UpdateTree()
         {
-            //treeView1.Nodes.Clear();
-            //AddTreeNodes(treeView1, path);
         }
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)

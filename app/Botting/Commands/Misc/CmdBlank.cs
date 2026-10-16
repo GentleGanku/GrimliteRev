@@ -21,11 +21,7 @@ namespace Grimoire.Botting.Commands.Misc
         {
         }
 
-        public string Text
-        {
-            get;
-            set;
-        }
+        public string Text { get; set; }
 
         public override string ToString()
         {
@@ -39,35 +35,15 @@ namespace Grimoire.Botting.Commands.Misc
         {
         }
 
-        public string Text
-        {
-            get;
-            set;
-        }
+        public string Text { get; set; }
 
-        public int Alpha
-        {
-            get;
-            set;
-        }
+        public int Alpha { get; set; }
 
-        public int R
-        {
-            get;
-            set;
-        }
+        public int R { get; set; }
 
-        public int G
-        {
-            get;
-            set;
-        }
+        public int G { get; set; }
 
-        public int B
-        {
-            get;
-            set;
-        }
+        public int B { get; set; }
 
         public Color Argb()
         {

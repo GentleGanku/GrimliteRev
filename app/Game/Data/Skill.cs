@@ -11,47 +11,19 @@ namespace Grimoire.Game.Data
             Label
         }
 
-        public string Text
-        {
-            get;
-            set;
-        }
+        public string Text { get; set; }
 
-        public SkillType Type
-        {
-            get;
-            set;
-        }
+        public SkillType Type { get; set; }
 
-        public string Index
-        {
-            get;
-            set;
-        }
+        public string Index { get; set; }
 
-        public int SafePercentage
-        {
-            get;
-            set;
-        }
+        public int SafePercentage { get; set; }
 
-        public bool SafeHp
-        {
-            get;
-            set;
-        }
+        public bool SafeHp { get; set; }
 
-        public bool SafeMp
-        {
-            get;
-            set;
-        }
+        public bool SafeMp { get; set; }
 
-        public bool ComparisonType
-        {
-            get;
-            set;
-        }
+        public bool ComparisonType { get; set; }
 
         public static string GetSkillName(string index)
         {

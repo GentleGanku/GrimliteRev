@@ -7,11 +7,7 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdStopBotWithMessage : IBotCommand
     {
-        public string Message
-        {
-            get;
-            set;
-        }
+        public string Message { get; set; }
 
         public async Task Execute(IBotEngine instance)
         {

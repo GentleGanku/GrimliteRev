@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System;
 using System.Linq;
 using System.Windows.Forms;
-using System.Threading.Tasks;
 
 namespace Grimoire.Botting
 {
@@ -15,11 +13,7 @@ namespace Grimoire.Botting
 
         public Config() { }
 
-        public static Config Instance
-        {
-            get;
-            set;
-        } = Config.Load(Application.StartupPath + "\\config.cfg");
+        public static Config Instance { get; set; } = Config.Load(Application.StartupPath + "\\config.cfg");
 
         public string Get(string key)
         {

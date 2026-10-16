@@ -92,7 +92,7 @@ namespace Grimoire.UI
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-                foreach (string fileLoc in files) // Code to read the contents of the text file
+                foreach (string fileLoc in files)
                 {
                     if (File.Exists(fileLoc))
                         using (TextReader tr = new StreamReader(fileLoc))

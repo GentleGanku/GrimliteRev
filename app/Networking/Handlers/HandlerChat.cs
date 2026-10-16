@@ -1,5 +1,4 @@
-﻿using Grimoire.Botting;
-using Grimoire.Game;
+﻿using Grimoire.Game;
 using Grimoire.UI;
 using System;
 using System.Threading.Tasks;

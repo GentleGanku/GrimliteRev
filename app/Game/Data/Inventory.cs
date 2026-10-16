@@ -1,6 +1,4 @@
 using Grimoire.Tools;
-using Grimoire.UI;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,21 +38,9 @@ namespace Grimoire.Game.Data
             InventoryItem inventoryItem = Items.FirstOrDefault((InventoryItem i) => i.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
             if (inventoryItem != null)
             {
-                //LogForm.Instance.AppendScript($"{inventoryItem.MaxStack}");
                 return inventoryItem.Quantity >= inventoryItem.MaxStack;
             }
             return false;
         }
-
-        //public int MaxItem(string name)
-        //{
-        //    InventoryItem inventoryItem = Items.FirstOrDefault((InventoryItem i) => i.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-        //    if (inventoryItem != null)
-        //    {
-        //        return inventoryItem.Quantity >= inventoryItem.MaxStack;
-        //    }
-        //    return 0;
-        //}
-
     }
 }

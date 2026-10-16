@@ -31,8 +31,6 @@ namespace Grimoire.Tools
                 { "CharLink"         , "/charlink NAME|Opens the full character page with the NAME on your default browser."},
                 { "Wiki"             , "/wiki NAME|Opens the wiki page with the NAME on your default browser."},
                 { "FPS"              , "/fps NUMBER|Sets the game's FPS with the NUMBER. Using this without the NUMBER will instead open/close the FPS box."},
-                //{ "PickAll"          , "/pickall|Picks up all of the item drops on the drop menu, including the ones that already got rejected."},
-                //{ "RejectAll"        , "/rejectall|Rejects all of the item drops on the drop menu."},
                 { "Relogin"          , "/relogin|Relogs your character on the same server."},
                 { "Mute"             , "/mute|Mutes or unmutes your character (depends on the condition)."}
         };
@@ -114,11 +112,7 @@ namespace Grimoire.Tools
 
         private static IBotEngine Engine => BotManager.Instance.ActiveBotEngine;
 
-        private static CmdKill cmdCombat
-        {
-            get;
-            set;
-        }
+        private static CmdKill cmdCombat { get; set; }
 
         private static bool ShouldCombat = false;
 

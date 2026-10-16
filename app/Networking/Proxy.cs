@@ -1,6 +1,5 @@
 ﻿using Grimoire.Botting;
 using Grimoire.Game;
-using Grimoire.Game.Data;
 using Grimoire.Networking.Handlers;
 using Grimoire.Tools;
 using Grimoire.UI;
@@ -8,7 +7,6 @@ using Grimoire.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.NetworkInformation;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Diagnostics;
@@ -33,11 +31,7 @@ namespace Grimoire.Networking
 
         public bool firstJoin { get; set; } = true;
 
-        public static Proxy Instance
-        {
-            get;
-            set;
-        }
+        public static Proxy Instance { get; set; }
 
         public static event Receive ReceivedFromGame;
 
@@ -116,8 +110,8 @@ namespace Grimoire.Networking
 
         public async Task SendToServer(string data)
         {
-            string text = data.Replace("{ROOM_ID}", World.RoomId.ToString());
-            if (text != null && text.Length > 0)
+            string packet = data.Replace("{ROOM_ID}", World.RoomId.ToString());
+            if (packet != null && packet.Length > 0)
             {
                 bool json = data.StartsWith("{");
                 World.SendPacket(data, json ? "Json" : "String");
@@ -126,8 +120,8 @@ namespace Grimoire.Networking
 
         public async Task SendToClient(string data)
         {
-            string text = data;
-            if (text != null && text.Length > 0)
+            string packet = data;
+            if (packet != null && packet.Length > 0)
             {
                 bool json = data.StartsWith("{");
                 World.SendClientPacket(data, json ? "json" : "str");

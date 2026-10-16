@@ -26,23 +26,11 @@ namespace Grimoire.UI
 
         public static UserFriendlyCommandEditor Instance = new UserFriendlyCommandEditor();
 
-        private static object cmdObj
-        {
-            get;
-            set;
-        }
+        private static object cmdObj { get; set; }
 
-        private static UserFriendlyCommandEditor commandEditor
-        {
-            get;
-            set;
-        }
+        private static UserFriendlyCommandEditor commandEditor { get; set; }
 
-        public static string cmd
-        {
-            get;
-            set;
-        }
+        public static string cmd { get; set; }
 
         private static readonly JsonSerializerSettings _questSerializerSettings = new JsonSerializerSettings
         {
@@ -68,13 +56,6 @@ namespace Grimoire.UI
 
         private void UserFriendlyCommandEditor_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //if (e.CloseReason == CloseReason.UserClosing || e.CloseReason == CloseReason.MdiFormClosing || e.CloseReason == CloseReason.FormOwnerClosing)
-            //{
-            //    if (WindowState == FormWindowState.Minimized)
-            //        WindowState = FormWindowState.Normal;
-            //    e.Cancel = true;
-            //    this.Hide();
-            //}
         }
 
         private void RawCommandEditor_Load(object sender, EventArgs e)
@@ -100,7 +81,6 @@ namespace Grimoire.UI
         {
             cmdObj = obj;
             var serializer = obj.GetType() == typeof(CmdCompleteQuest) || obj.GetType() == typeof(CmdAcceptQuest) ? _questSerializerSettings : _serializerSettings;
-            //MessageBox.Show(obj.GetType().ToString());
             JObject content = JObject.Parse(JsonConvert.SerializeObject(obj, serializer));
             using (commandEditor = new UserFriendlyCommandEditor())
             {
@@ -151,7 +131,6 @@ namespace Grimoire.UI
                         count++;
                         currentY += 30;
                     }
-                    //honestly i have no fucking idea how to implement this properly
                 }
                 commandEditor.Size = new Size(commandEditor.Size.Width, commandEditor.Size.Height + currentY - 13);
                 DialogResult results = commandEditor.ShowDialog();

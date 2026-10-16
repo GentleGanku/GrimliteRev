@@ -8,26 +8,17 @@ namespace Grimoire.Game.Data
         /// The ID of the faction.
         /// </summary>
         [JsonProperty("FactionID")]
-        public int ID
-        {
-            get;
-            set;
-        }
+        public int ID { get; set; }
 
         /// <summary>
         /// The in-game name of the faction.
         /// </summary>
         [JsonProperty("sName")]
-        public string Name
-        {
-            get;
-            set;
-        }
+        public string Name { get; set; }
 
         /// <summary>
         /// The rank that the player has achieved in this faction.
         /// </summary>
-        //[JsonProperty("iRank")]
         public int Rank
         {
             get
@@ -40,16 +31,11 @@ namespace Grimoire.Game.Data
         /// The total amount of rep the player has for this faction.
         /// </summary>
         [JsonProperty("iRep")]
-        public int TotalRep
-        {
-            get;
-            set;
-        }
+        public int TotalRep { get; set; }
 
         /// <summary>
         /// The amount of rep the player has for their current rank.
         /// </summary>
-        //[JsonProperty("iSpillRep")]
         public int Rep
         {
             get
@@ -61,7 +47,6 @@ namespace Grimoire.Game.Data
         /// <summary>
         /// The total required rep for the player to rank up.
         /// </summary>
-        //[JsonProperty("iRepToRank")]
         public int RequiredRep
         {
             get

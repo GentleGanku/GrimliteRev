@@ -7,11 +7,7 @@ namespace Grimoire.Botting.Commands.Quest
 {
     public class CmdAcceptQuest : IBotCommand
     {
-        public Game.Data.Quest Quest
-        {
-            get;
-            set;
-        }
+        public Game.Data.Quest Quest { get; set; }
 
         public async Task Execute(IBotEngine instance)
         {
@@ -30,11 +26,7 @@ namespace Grimoire.Botting.Commands.Quest
 
     public class CmdAcceptQuest2 : IBotCommand
     {
-        public string QuestID
-        {
-            get;
-            set;
-        }
+        public string QuestID { get; set; }
 
         private int _questID => int.Parse(BotManager.Instance.ActiveBotEngine.Value(QuestID));
 

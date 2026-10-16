@@ -5,11 +5,7 @@ namespace Grimoire.Botting.Commands.Combat
 {
     public class CmdAttack : IBotCommand
     {
-        public string Monster
-        {
-            get;
-            set;
-        }
+        public string Monster { get; set; }
 
         public async Task Execute(IBotEngine instance)
         {

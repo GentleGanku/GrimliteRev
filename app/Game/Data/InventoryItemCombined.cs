@@ -1,6 +1,5 @@
 ﻿using Grimoire.Tools;
 using Newtonsoft.Json;
-using System;
 using System.Linq;
 
 namespace Grimoire.Game.Data
@@ -58,77 +57,37 @@ namespace Grimoire.Game.Data
         };
 
         [JsonProperty("iLvl")]
-        public int Level
-        {
-            get;
-            set;
-        }
+        public int Level { get; set; }
 
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bCoins")]
-        public bool IsAcItem
-        {
-            get;
-            set;
-        }
+        public bool IsAcItem { get; set; }
 
-        public int CharItemId
-        {
-            get;
-            set;
-        }
+        public int CharItemId { get; set; }
 
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bEquip")]
-        public bool IsEquipped
-        {
-            get;
-            set;
-        }
+        public bool IsEquipped { get; set; }
 
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bUpg")]
-        public bool IsMemberOnly
-        {
-            get;
-            set;
-        }
+        public bool IsMemberOnly { get; set; }
 
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bTemp")]
-        public bool IsTemporary
-        {
-            get;
-            set;
-        }
+        public bool IsTemporary { get; set; }
 
         [JsonProperty("iCost")]
-        public int Cost
-        {
-            get;
-            set;
-        }
+        public int Cost { get; set; }
 
         [JsonProperty("ItemID")]
-        public int Id
-        {
-            get;
-            set;
-        }
+        public int Id { get; set; }
 
         [JsonProperty("ShopItemID")]
-        public int ShopItemId
-        {
-            get;
-            set;
-        }
+        public int ShopItemId { get; set; }
 
         [JsonProperty("iRate")]
-        public string DropChance
-        {
-            get;
-            set;
-        }
+        public string DropChance { get; set; }
 
         #region bools
         public bool IsEquippable => EquippableCategories.Contains(Category);

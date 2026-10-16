@@ -1,23 +1,14 @@
 using Grimoire.Game;
 using Grimoire.UI;
-using System;
 using System.Threading.Tasks;
 
 namespace Grimoire.Botting.Commands.Map
 {
     public class CmdMoveToCell : IBotCommand
     {
-        public string Cell
-        {
-            get;
-            set;
-        }
+        public string Cell { get; set; }
 
-        public string Pad
-        {
-            get;
-            set;
-        }
+        public string Pad { get; set; }
 
         private string _cell => BotManager.Instance.ActiveBotEngine.Value(Cell);
 

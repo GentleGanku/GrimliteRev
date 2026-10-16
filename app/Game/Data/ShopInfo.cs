@@ -12,92 +12,56 @@ namespace Grimoire.Game.Data
         /// </summary>
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bUpgrd")]
-        public bool Member
-        {
-            get;
-            set;
-        }
+        public bool Member { get; set; }
 
         /// <summary>
         /// The list of items the shop has.
         /// </summary>
         [JsonProperty("items")]
-        public List<InventoryItem> Items
-        {
-            get;
-            set;
-        }
+        public List<InventoryItem> Items { get; set; }
 
         /// <summary>
         /// The shop's field.
         /// </summary>
         [JsonProperty("sField")]
-        public string Field
-        {
-            get;
-            set;
-        }
+        public string Field { get; set; }
 
         /// <summary>
         /// The ID of the shop.
         /// </summary>
         [JsonProperty("ShopID")]
-        public int Id
-        {
-            get;
-            set;
-        }
+        public int Id { get; set; }
 
         /// <summary>
         /// The exclusivity state of the shop (either for Staff or not).
         /// </summary>
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bStaff")]
-        public bool Staff
-        {
-            get;
-            set;
-        }
+        public bool Staff { get; set; }
 
         /// <summary>
         /// The type of the shop (either as House Shop or not).
         /// </summary>
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bHouse")]
-        public bool House
-        {
-            get;
-            set;
-        }
+        public bool House { get; set; }
 
         /// <summary>
         /// The name of the shop.
         /// </summary>
         [JsonProperty("sName")]
-        public string Name
-        {
-            get;
-            set;
-        }
+        public string Name { get; set; }
 
         /// <summary>
         /// The location(s) of the shop (if more than 1 location, the substrings are divided by the comma (",").
         /// </summary>
         [JsonProperty("Location")]
-        public string Location
-        {
-            get;
-            set;
-        }
+        public string Location { get; set; }
 
         /// <summary>
         /// The index of the shop.
         /// </summary>
         [JsonProperty("iIndex")]
-        public int Index
-        {
-            get;
-            set;
-        }
+        public int Index { get; set; }
     }
 }

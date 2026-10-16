@@ -1,6 +1,5 @@
 using Grimoire.Tools;
 using Newtonsoft.Json;
-using System.Linq;
 
 namespace Grimoire.Game.Data
 {
@@ -22,76 +21,36 @@ namespace Grimoire.Game.Data
         }
 
         [JsonProperty("sDesc")]
-        public string Description
-        {
-            get;
-            set;
-        }
+        public string Description { get; set; }
 
         [JsonProperty("ItemID")]
-        public int Id
-        {
-            get;
-            set;
-        }
+        public int Id { get; set; }
 
         [JsonProperty("iLvl")]
-        public int Level
-        {
-            get;
-            set;
-        }
+        public int Level { get; set; }
 
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bCoins")]
-        public bool IsAcItem
-        {
-            get;
-            set;
-        }
+        public bool IsAcItem { get; set; }
 
         [JsonProperty("sLink")]
-        public string Link
-        {
-            get;
-            set;
-        }
+        public string Link { get; set; }
 
         [JsonProperty("iQty")]
-        public int Quantity
-        {
-            get;
-            set;
-        }
+        public int Quantity { get; set; }
 
         [JsonProperty("sType")]
-        public string Type
-        {
-            get;
-            set;
-        }
+        public string Type { get; set; }
 
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bUpg")]
-        public bool IsMemberOnly
-        {
-            get;
-            set;
-        }
+        public bool IsMemberOnly { get; set; }
 
         [JsonProperty("iCost")]
-        public int Cost
-        {
-            get;
-            set;
-        }
+        public int Cost { get; set; }
 
         [JsonProperty("iStk")]
-        public int MaxStack
-        {
-            get;
-            set;
-        }
+        public int MaxStack { get; set; }
 
         public bool ShouldSerializeDescription()
         {

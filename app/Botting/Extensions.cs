@@ -41,7 +41,6 @@ namespace Grimoire.Botting
             int green = random.Next(256);
             int blue = random.Next(256);
 
-            // mix the color
             red = (red + mixR) / 2;
             green = (green + mixG) / 2;
             blue = (blue + mixB) / 2;
@@ -112,25 +111,21 @@ namespace Grimoire.Botting
 
             public Line(string line)
             {
-                // Get leading integer.
                 int firstSpace = line.IndexOf(' ');
                 string integer = line.Substring(0, firstSpace);
                 this._number = int.Parse(integer);
 
-                // Store string.
                 this._afterNumber = line.Substring(firstSpace);
                 this._line = line;
             }
 
             public int CompareTo(Line other)
             {
-                // First compare number.
                 int result1 = _number.CompareTo(other._number);
                 if (result1 != 0)
                 {
                     return result1;
                 }
-                // Second compare part after number.
                 return _afterNumber.CompareTo(other._afterNumber);
             }
 
@@ -201,7 +196,6 @@ namespace Grimoire.Botting
         {
             if (from_unit == to_unit) return value;
 
-            // Convert to pixels. 
             switch (from_unit)
             {
                 case GraphicsUnit.Document:
@@ -214,7 +208,6 @@ namespace Grimoire.Botting
                     value *= gr.DpiX / 25.4F;
                     break;
                 case GraphicsUnit.Pixel:
-                    // Do nothing.
                     break;
                 case GraphicsUnit.Point:
                     value *= gr.DpiX / 72;
@@ -224,7 +217,6 @@ namespace Grimoire.Botting
                         from_unit.ToString() + " in FontInfo.ConvertUnits");
             }
 
-            // Convert from pixels to the new units. 
             switch (to_unit)
             {
                 case GraphicsUnit.Document:
@@ -237,7 +229,6 @@ namespace Grimoire.Botting
                     value /= gr.DpiX / 25.4F;
                     break;
                 case GraphicsUnit.Pixel:
-                    // Do nothing.
                     break;
                 case GraphicsUnit.Point:
                     value /= gr.DpiX / 72;
@@ -250,7 +241,6 @@ namespace Grimoire.Botting
             return value;
         }
 
-        // Initialize the properties.
         public FontInfo(Graphics gr, Font the_font)
         {
             float em_height = the_font.FontFamily.GetEmHeight(the_font.Style);

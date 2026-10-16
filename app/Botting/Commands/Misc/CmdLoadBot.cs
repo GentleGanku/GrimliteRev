@@ -10,17 +10,9 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdLoadBot : IBotCommand
     {
-        public string BotFileName
-        {
-            get;
-            set;
-        }
+        public string BotFileName { get; set; }
 
-        public string BotFilePath
-        {
-            get;
-            set;
-        }
+        public string BotFilePath { get; set; }
 
         private string _path => BotManager.Instance.ActiveBotEngine.Value(BotFilePath);
 

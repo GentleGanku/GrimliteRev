@@ -107,8 +107,6 @@ namespace Grimoire.UI
             var node = new CommandNode();
             var obj = lb_item;
 
-            //var type = Activator.CreateInstance(obj);
-
             var properties = obj.GetProperties();
             var propList = properties.ToList();
 

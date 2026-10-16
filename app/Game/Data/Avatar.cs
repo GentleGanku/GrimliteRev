@@ -21,31 +21,19 @@ namespace Grimoire.Game
         /// The name of the player.
         /// </summary>
         [JsonProperty("strUsername")]
-        public string Username
-        {
-            get;
-            set;
-        }
+        public string Username { get; set; }
 
         /// <summary>
         /// The player's gender (value is either M or F).
         /// </summary>
         [JsonProperty("strGender")]
-        public string Gender
-        {
-            get;
-            set;
-        }
+        public string Gender { get; set; }
 
         /// <summary>
         /// The class that the player is using.
         /// </summary>
         [JsonProperty("strClassName")]
-        public string Class
-        {
-            get;
-            set;
-        }
+        public string Class { get; set; }
 
         /// <summary>
         /// The rank of the player's class.
@@ -62,91 +50,55 @@ namespace Grimoire.Game
         /// The rank of the player's class (in Class Points).
         /// </summary>
         [JsonProperty("iCP")]
-        public int CP
-        {
-            get;
-            set;
-        }
+        public int CP { get; set; }
 
         /// <summary>
         /// The player's equipped items.
         /// </summary>
         [JsonProperty("eqp")]
-        public Dictionary<string, CosmeticEquipment> EquippedItems
-        {
-            get;
-            set;
-        }
+        public Dictionary<string, CosmeticEquipment> EquippedItems { get; set; }
 
         /// <summary>
         /// The player's current Health Point(s).
         /// </summary>
         [JsonProperty("intHP")]
-        public int HP
-        {
-            get;
-            set;
-        }
+        public int HP { get; set; }
 
         /// <summary>
         /// The player's maximum Health Point(s).
         /// </summary>
         [JsonProperty("intHPMax")]
-        public int MaxHP
-        {
-            get;
-            set;
-        }
+        public int MaxHP { get; set; }
 
         /// <summary>
         /// The player's current Mana Point(s).
         /// </summary>
         [JsonProperty("intMP")]
-        public int MP
-        {
-            get;
-            set;
-        }
+        public int MP { get; set; }
 
         /// <summary>
         /// The player's maximum Mana Point(s).
         /// </summary>
         [JsonProperty("intMPMax")]
-        public int MaxMP
-        {
-            get;
-            set;
-        }
+        public int MaxMP { get; set; }
 
         /// <summary>
         /// The player's current Stamina Point(s).
         /// </summary>
         [JsonProperty("intSP")]
-        public int SP
-        {
-            get;
-            set;
-        }
+        public int SP { get; set; }
 
         /// <summary>
         /// The player's maximum Stamina Point(s).
         /// </summary>
         [JsonProperty("intSPMax")]
-        public int MaxSP
-        {
-            get;
-            set;
-        }
+        public int MaxSP { get; set; }
 
         /// <summary>
         /// Whether the player is AFK.
         /// </summary>
         [JsonProperty("afk")]
-        public bool AFK
-        {
-            get;
-            set;
-        }
+        public bool AFK { get; set; }
 
         /// <summary>
         /// Whether the player is Member.
@@ -168,41 +120,25 @@ namespace Grimoire.Game
         /// </summary>
         /// 
         [JsonProperty("iUpgDays")]
-        public int UpgDays
-        {
-            get;
-            set;
-        }
+        public int UpgDays { get; set; }
 
         /// <summary>
         /// The user ID of the player.
         /// </summary>
         [JsonProperty("uid")]
-        public int UserID
-        {
-            get;
-            set;
-        }
+        public int UserID { get; set; }
 
         /// <summary>
         /// The entity ID of the player.
         /// </summary>
         [JsonProperty("entID")]
-        public int EntID
-        {
-            get;
-            set;
-        }
+        public int EntID { get; set; }
 
         /// <summary>
         /// The entity type of the player.
         /// </summary>
         [JsonProperty("entType")]
-        public string EntType
-        {
-            get;
-            set;
-        }
+        public string EntType { get; set; }
 
         /// <summary>
         /// The type of the player's access.
@@ -219,61 +155,37 @@ namespace Grimoire.Game
         /// The player's access level.
         /// </summary>
         [JsonProperty("intAccessLevel")]
-        public int AccessLevel
-        {
-            get;
-            set;
-        }
+        public int AccessLevel { get; set; }
 
         /// <summary>
         /// The player's level.
         /// </summary>
         [JsonProperty("intLevel")]
-        public int Level
-        {
-            get;
-            set;
-        }
+        public int Level { get; set; }
 
         /// <summary>
         /// The cell the player is currently in.
         /// </summary>
         [JsonProperty("strFrame")]
-        public string Cell
-        {
-            get;
-            set;
-        }
+        public string Cell { get; set; }
 
         /// <summary>
         /// The pad the player is currently in.
         /// </summary>
         [JsonProperty("strPad")]
-        public string Pad
-        {
-            get;
-            set;
-        }
+        public string Pad { get; set; }
 
         /// <summary>
         /// The player's X coordinate.
         /// </summary>
         [JsonProperty("tx")]
-        public float X
-        {
-            get;
-            set;
-        }
+        public float X { get; set; }
 
         /// <summary>
         /// The player's Y coordinate.
         /// </summary>
         [JsonProperty("ty")]
-        public float Y
-        {
-            get;
-            set;
-        }
+        public float Y { get; set; }
 
         /// <summary>
         /// The player's current position.
@@ -290,38 +202,22 @@ namespace Grimoire.Game
         /// The player's state.
         /// </summary>
         [JsonProperty("intState")]
-        public int CurrentState
-        {
-            get;
-            set;
-        }
+        public int CurrentState { get; set; }
 
         /// <summary>
         /// The extended avatar datas of the player.
         /// </summary>
-        public ExtendedAvatar Extended
-        {
-            get;
-            set;
-        }
+        public ExtendedAvatar Extended { get; set; }
 
         /// <summary>
         /// The list of auras the player has.
         /// </summary>
-        public List<Aura> Auras
-        {
-            get;
-            set;
-        }
+        public List<Aura> Auras { get; set; }
 
         /// <summary>
         /// The list of targets the player has.
         /// </summary>
-        public List<Monster> Targets
-        {
-            get;
-            set;
-        }
+        public List<Monster> Targets { get; set; }
 
         public enum State
         {

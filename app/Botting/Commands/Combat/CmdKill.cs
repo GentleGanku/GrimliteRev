@@ -9,17 +9,9 @@ namespace Grimoire.Botting.Commands.Combat
 {
     public class CmdKill : IBotCommand
     {
-        public string Monster
-        {
-            get;
-            set;
-        }
+        public string Monster { get; set; }
 
-        public bool Packet
-        {
-            get;
-            set;
-        }
+        public bool Packet { get; set; }
 
         private CancellationTokenSource _cts;
 

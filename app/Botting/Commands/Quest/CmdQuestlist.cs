@@ -1,7 +1,6 @@
 ﻿using Grimoire.Game;
 using Grimoire.UI;
 using System.Threading.Tasks;
-using System.Linq;
 
 namespace Grimoire.Botting.Commands.Quest
 {
@@ -14,23 +13,11 @@ namespace Grimoire.Botting.Commands.Quest
             Clear
         }
 
-        public string QuestID
-        {
-            get;
-            set;
-        }
+        public string QuestID { get; set; }
 
-        public string ItemID
-        {
-            get;
-            set;
-        }
+        public string ItemID { get; set; }
 
-        public State state
-        {
-            get;
-            set;
-        }
+        public State state { get; set; }
 
         private int _questID => int.Parse(BotManager.Instance.ActiveBotEngine.Value(QuestID));
 

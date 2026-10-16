@@ -7,11 +7,7 @@ namespace Grimoire.Game.Data
     public class Quest
     {
         [JsonProperty("sFaction")]
-        public string Faction
-        {
-            get;
-            set;
-        }
+        public string Faction { get; set; }
 
         [JsonProperty("iSlot")]
         public int Slot
@@ -28,146 +24,62 @@ namespace Grimoire.Game.Data
         }
 
         [JsonProperty("iClass")]
-        public int ClassPointsReward
-        {
-            get;
-            set;
-        }
+        public int ClassPointsReward { get; set; }
 
         [JsonProperty("oRewards")]
         [JsonConverter(typeof(QuestRewardConverter))]
-        public List<ItemBase> oRewards
-        {
-            get;
-            set;
-        } //= new List<ItemBase>();
-
-        //[JsonProperty("oReqd")]
-        //[JsonConverter(typeof(QuestReqConverter))]
-        //public List<ItemBase> oReqd
-        //{
-        //    get;
-        //    set;
-        //} //= new List<ItemBase>();
+        public List<ItemBase> oRewards { get; set; }
 
         [JsonProperty("sDesc")]
-        public string Description
-        {
-            get;
-            set;
-        }
+        public string Description { get; set; }
 
         [JsonProperty("sEndText")]
-        public string EndText
-        {
-            get;
-            set;
-        }
+        public string EndText { get; set; }
 
         [JsonProperty("iReqRep")]
-        public int RequiredReputation
-        {
-            get;
-            set;
-        }
+        public int RequiredReputation { get; set; }
 
         [JsonProperty("iRep")]
-        public int ReputationReward
-        {
-            get;
-            set;
-        }
+        public int ReputationReward { get; set; }
 
         [JsonProperty("iLvl")]
-        public int Level
-        {
-            get;
-            set;
-        }
+        public int Level { get; set; }
 
         [JsonProperty("turnin")]
-        public List<InventoryItem> RequiredItems
-        {
-            get;
-            set;
-        }
+        public List<InventoryItem> RequiredItems { get; set; }
 
         [JsonProperty("iGold")]
-        public int GoldReward
-        {
-            get;
-            set;
-        }
+        public int GoldReward { get; set; }
 
         [JsonProperty("iReqCP")]
-        public int RequiredClassPoints
-        {
-            get;
-            set;
-        }
+        public int RequiredClassPoints { get; set; }
 
         [JsonProperty("QuestID")]
-        public int Id
-        {
-            get;
-            set;
-        }
+        public int Id { get; set; }
 
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bOnce")]
-        public bool IsNotRepeatable
-        {
-            get;
-            set;
-        }
+        public bool IsNotRepeatable { get; set; }
 
         [JsonProperty("iExp")]
-        public int ExperienceReward
-        {
-            get;
-            set;
-        }
+        public int ExperienceReward { get; set; }
 
         [JsonProperty("reward")]
-        public List<InventoryItem> Rewards
-        {
-            get;
-            set;
-        }
+        public List<InventoryItem> Rewards { get; set; }
 
         [JsonProperty("sName")]
-        public string Name
-        {
-            get;
-            set;
-        }
+        public string Name { get; set; }
 
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bUpg")]
-        public bool IsMemberOnly
-        {
-            get;
-            set;
-        }
+        public bool IsMemberOnly { get; set; }
 
         [JsonProperty("FactionID")]
-        public int FactionId
-        {
-            get;
-            set;
-        }
+        public int FactionId { get; set; }
 
-        public string ItemId
-        {
-            get;
-            set;
-        }
+        public string ItemId { get; set; }
 
-        public string Text
-        {
-            get;
-            set;
-        }
+        public string Text { get; set; }
 
         public override string ToString()
         {

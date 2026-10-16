@@ -1,7 +1,6 @@
 using Grimoire.UI;
 using Grimoire.Game;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Grimoire.Botting.Commands.Misc.Statements

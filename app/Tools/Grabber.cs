@@ -17,10 +17,10 @@ namespace Grimoire.Tools
     {
         public static void GrabQuests(TreeView tree)
         {
-            List<Quest> list = Player.Quests.QuestTree?.OrderBy((Quest q) => q.Id).ToList();
-            if (list != null && list.Count > 0)
+            List<Quest> quests = Player.Quests.QuestTree?.OrderBy((Quest q) => q.Id).ToList();
+            if (quests != null && quests.Count > 0)
             {
-                foreach (Quest item in list)
+                foreach (Quest item in quests)
                 {
                     try
                     {
@@ -78,12 +78,10 @@ namespace Grimoire.Tools
 
         public static void GrabShopItems(TreeView tree)
         {
-            //List<ShopInfo> list = (from x in World.LoadedShops?.GroupBy((ShopInfo s) => s.Id)
-            //                       select x.First()).ToList();
-            List<ShopInfo> list = World.LoadedShops?.OrderBy((ShopInfo s) => s.Name).ToList();
-            if (list != null && list.Count > 0)
+            List<ShopInfo> shops = World.LoadedShops?.OrderBy((ShopInfo s) => s.Name).ToList();
+            if (shops != null && shops.Count > 0)
             {
-                foreach (ShopInfo item in list)
+                foreach (ShopInfo item in shops)
                 {
                     TreeNode treeNode = tree.Nodes.Add(item.Name);
                     treeNode.ContextMenuStrip = Wiki(item);
@@ -115,10 +113,10 @@ namespace Grimoire.Tools
 
         public static void GrabQuestIds(TreeView tree)
         {
-            List<Quest> list = Player.Quests.QuestTree?.OrderBy((Quest q) => q.Id).ToList();
-            if (list != null && list.Count > 0)
+            List<Quest> quests = Player.Quests.QuestTree?.OrderBy((Quest q) => q.Id).ToList();
+            if (quests != null && quests.Count > 0)
             {
-                foreach (Quest item in list)
+                foreach (Quest item in quests)
                 {
                     tree.Nodes.Add($"{item.Id} - {item.Name}").ContextMenuStrip = MenuQuest(item.Id);
                 }
@@ -137,10 +135,10 @@ namespace Grimoire.Tools
 
         private static void GrabItems(TreeView tree, bool inventory)
         {
-            List<InventoryItem> list = (inventory ? Player.Inventory.Items : Player.Bank.Items)?.OrderBy((InventoryItem i) => i.Name).ToList();
-            if (list != null && list.Count > 0)
+            List<InventoryItem> items = (inventory ? Player.Inventory.Items : Player.Bank.Items)?.OrderBy((InventoryItem i) => i.Name).ToList();
+            if (items != null && items.Count > 0)
             {
-                foreach (InventoryItem item in list)
+                foreach (InventoryItem item in items)
                 {
                     TreeNode treeNode = tree.Nodes.Add(item.Name);
                     treeNode.ContextMenuStrip = Wiki(item);
@@ -161,10 +159,10 @@ namespace Grimoire.Tools
 
         public static void GrabTempItems(TreeView tree)
         {
-            List<TempItem> list = Player.TempInventory.Items?.OrderBy((TempItem i) => i.Name).ToList();
-            if (list != null && list.Count > 0)
+            List<TempItem> tempItems = Player.TempInventory.Items?.OrderBy((TempItem i) => i.Name).ToList();
+            if (tempItems != null && tempItems.Count > 0)
             {
-                foreach (TempItem item in list)
+                foreach (TempItem item in tempItems)
                 {
                     TreeNode treeNode = tree.Nodes.Add(item.Name);
                     treeNode.ContextMenuStrip = Wiki(item.Name);
@@ -176,11 +174,11 @@ namespace Grimoire.Tools
 
         public static void GrabMonsters(TreeView tree)
         {
-            List<Monster> list = (from x in World.MonstersInMap?.GroupBy((Monster m) => m.Name)
+            List<Monster> monsters = (from x in World.MonstersInMap?.GroupBy((Monster m) => m.Name)
                                   select x.First()).ToList();
-            if (list != null && list.Count > 0)
+            if (monsters != null && monsters.Count > 0)
             {
-                foreach (Monster item in list)
+                foreach (Monster item in monsters)
                 {
                     TreeNode treeNode = tree.Nodes.Add(item.Name);
                     treeNode.ContextMenuStrip = Wiki(item.Name);
@@ -221,8 +219,8 @@ namespace Grimoire.Tools
                     foreach (var docLink in doc.DocumentNode.SelectNodes("//div[@id='page-content']//p//a[@href]"))
                     {
                         doc = await web.LoadFromWebAsync("https://aqwwiki.wikidot.com/" + docLink.Attributes["href"].Value);
-                        var text = doc.DocumentNode.SelectSingleNode("//div[@id='page-content']");
-                        if (text.InnerText.Contains($"Level: {item.Level}") && text.InnerText.Contains($"Total HP:") && text.InnerText.Contains($" {item.MaxHealth.ToString("N", new CultureInfo("en-US")).Split('.')[0]}"))
+                        var pageContent = doc.DocumentNode.SelectSingleNode("//div[@id='page-content']");
+                        if (pageContent.InnerText.Contains($"Level: {item.Level}") && pageContent.InnerText.Contains($"Total HP:") && pageContent.InnerText.Contains($" {item.MaxHealth.ToString("N", new CultureInfo("en-US")).Split('.')[0]}"))
                         {
                             targeted = doc.DocumentNode.SelectNodes("//div[@id='page-content']");
                             break;
@@ -318,12 +316,10 @@ namespace Grimoire.Tools
             };
             toolStripMenuItem.Click += delegate (object S, EventArgs E)
             {
-                //System.Diagnostics.Process.Start
                 Search("https://aqwwiki.wikidot.com/" + item.Replace(" ", "+"));
             };
             toolStripMenuItem1.Click += delegate (object S, EventArgs E)
             {
-                //System.Diagnostics.Process.Start
                 Search("https://aqwwiki.wikidot.com/search:site/q/" + item.Replace(" ", "+"));
             };
             contextMenuStrip.Items.Add(toolStripMenuItem);
@@ -348,12 +344,10 @@ namespace Grimoire.Tools
             };
             toolStripMenuItem.Click += delegate (object S, EventArgs E)
             {
-                //System.Diagnostics.Process.Start
                 Search("https://aqwwiki.wikidot.com/" + item.Name.Replace(" ", "+"));
             };
             toolStripMenuItem1.Click += delegate (object S, EventArgs E)
             {
-                //System.Diagnostics.Process.Start
                 Search("https://aqwwiki.wikidot.com/search:site/q/" + item.Name.Replace(" ", "+"));
             };
             toolStripMenuItem2.Click += delegate (object S, EventArgs E)
@@ -383,12 +377,10 @@ namespace Grimoire.Tools
             };
             toolStripMenuItem.Click += delegate (object S, EventArgs E)
             {
-                //System.Diagnostics.Process.Start
                 Search("https://aqwwiki.wikidot.com/" + Item.Name.Replace(" ", "+"));
             };
             toolStripMenuItem1.Click += delegate (object S, EventArgs E)
             {
-                //System.Diagnostics.Process.Start
                 Search("https://aqwwiki.wikidot.com/search:site/q/" + Item.Name.Replace(" ", "+"));
             };
             toolStripMenuItem2.Click += delegate
@@ -554,12 +546,10 @@ namespace Grimoire.Tools
             };
             toolStripMenuItem5.Click += delegate (object S, EventArgs E)
             {
-                //System.Diagnostics.Process.Start("https://aqwwiki.wikidot.com/" + Item.Name.Replace(" ", "+"));
                 Search("https://aqwwiki.wikidot.com/" + Item.Name.Replace(" ", "+"));
             };
             toolStripMenuItem6.Click += delegate (object S, EventArgs E)
             {
-                //System.Diagnostics.Process.Start("https://aqwwiki.wikidot.com/search:site/q/" + Item.Name.Replace(" ", "+"));
                 Search("https://aqwwiki.wikidot.com/search:site/q/" + Item.Name.Replace(" ", "+"));
             };
             contextMenuStrip.Items.Add(toolStripMenuItem);
@@ -621,12 +611,10 @@ namespace Grimoire.Tools
             };
             toolStripMenuItem5.Click += delegate (object S, EventArgs E)
             {
-                //System.Diagnostics.Process.Start("https://aqwwiki.wikidot.com/" + Item.Name.Replace(" ", "+"));
                 Search("https://aqwwiki.wikidot.com/" + Item.Name.Replace(" ", "+"));
             };
             toolStripMenuItem6.Click += delegate (object S, EventArgs E)
             {
-                //System.Diagnostics.Process.Start("https://aqwwiki.wikidot.com/search:site/q/" + Item.Name.Replace(" ", "+"));
                 Search("https://aqwwiki.wikidot.com/search:site/q/" + Item.Name.Replace(" ", "+"));
             };
             toolStripMenuItem7.Click += delegate
@@ -663,7 +651,6 @@ namespace Grimoire.Tools
 
         private static void Search(string Item)
         {
-            //BrowserForm.Instance.LoadUrl(Item);
             Process.Start(Item);
         }
 

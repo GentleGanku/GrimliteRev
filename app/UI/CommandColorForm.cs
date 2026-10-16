@@ -31,12 +31,12 @@ namespace Grimoire.UI
 
         private void CommandColorForm_Load(object sender, EventArgs e)
         {
-            var type = typeof(IBotCommand); // Get the type of our interface
-            var types = AppDomain.CurrentDomain.GetAssemblies() // Get the assemblies associated with our project
-                .SelectMany(s => s.GetTypes()) // Get all the types
-                .Where(p => type.IsAssignableFrom(p) && !p.IsInterface); // Filter to find any type that can be assigned to an IModule
+            var type = typeof(IBotCommand);
+            var types = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(s => s.GetTypes())
+                .Where(p => type.IsAssignableFrom(p) && !p.IsInterface);
 
-            var typeList = types as Type[] ?? types.ToArray(); // Convert to an array
+            var typeList = types as Type[] ?? types.ToArray();
             comboBox1.Items.Clear();
             comboBox1.Items.Add("Index");
             comboBox1.Items.Add("Variable");
@@ -121,7 +121,7 @@ namespace Grimoire.UI
         {
             if (!(e.Index > -1))
                 return;
-            int Index = e.Index;// + 1;
+            int Index = e.Index;
             try
             {
                 e.DrawBackground();
@@ -168,25 +168,14 @@ namespace Grimoire.UI
 
         private void btnRandomColors_Click(object sender, EventArgs e)
         {
-            var type = typeof(IBotCommand); // Get the type of our interface
-            var types = AppDomain.CurrentDomain.GetAssemblies() // Get the assemblies associated with our project
-                .SelectMany(s => s.GetTypes()) // Get all the types
-                .Where(p => type.IsAssignableFrom(p) && !p.IsInterface); // Filter to find any type that can be assigned to an IModule
+            var type = typeof(IBotCommand);
+            var types = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(s => s.GetTypes())
+                .Where(p => type.IsAssignableFrom(p) && !p.IsInterface);
 
-            var typeList = types as Type[] ?? types.ToArray(); // Convert to an array
+            var typeList = types as Type[] ?? types.ToArray();
             comboBox1.Items.Clear();
-            var random = new Random(); // Make sure this is out of the loop!
-            //foreach (var t in typeList)
-            //{
-            //    var i = t.ToString().Split('.');
-            //    var item = i[i.Count() - 1];
-            //    string x = item.Replace("Cmd", "") + "Color";
-            //    c.Set(x, string.Format("FF{0:X6}", random.Next(0x1000000)));
-            //    c.Save();
-            //}
-            //int mixR = random.Next(254);
-            //int mixG = random.Next(254);
-            //int mixB = random.Next(254);
+            var random = new Random(); // One instance for the whole loop: Random instances created in quick succession share a seed.
             int mixR = 255;
             int mixG = 255;
             int mixB = 255;
@@ -225,19 +214,18 @@ namespace Grimoire.UI
                 var i = t.ToString().Split('.');
                 var item = i[i.Count() - 1];
                 string x = item.Replace("Cmd", "") + "Color";
-                //c.Set(x, Extensions.generatePastelHex(random, mixR, mixG, mixB));
                 Config.Instance.SetValue(x, Extensions.generatePastelHex(random, mixR, mixG, mixB));
             }
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            var type = typeof(IBotCommand); // Get the type of our interface
-            var types = AppDomain.CurrentDomain.GetAssemblies() // Get the assemblies associated with our project
-                .SelectMany(s => s.GetTypes()) // Get all the types
-                .Where(p => type.IsAssignableFrom(p) && !p.IsInterface); // Filter to find any type that can be assigned to an IModule
+            var type = typeof(IBotCommand);
+            var types = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(s => s.GetTypes())
+                .Where(p => type.IsAssignableFrom(p) && !p.IsInterface);
 
-            var typeList = types as Type[] ?? types.ToArray(); // Convert to an array
+            var typeList = types as Type[] ?? types.ToArray();
             comboBox1.Items.Clear();
             comboBox1.Items.Add("Index");
             comboBox1.Items.Add("Variable");

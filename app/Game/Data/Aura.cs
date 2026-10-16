@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using System.Linq;
 
 namespace Grimoire.Game.Data
 {
@@ -12,29 +11,13 @@ namespace Grimoire.Game.Data
             set;
         }
 
-        public string Name
-        {
-            get;
-            set;
-        }
+        public string Name { get; set; }
 
-        public int Value
-        {
-            get;
-            set;
-        } = 0;
+        public int Value { get; set; } = 0;
 
-        public string realValue
-        {
-            get;
-            set;
-        }
+        public string realValue { get; set; }
 
-        public string disableType
-        {
-            get;
-            set;
-        }
+        public string disableType { get; set; }
 
         public int Duration
         {

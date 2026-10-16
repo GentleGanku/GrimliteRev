@@ -1,12 +1,10 @@
 using Grimoire.Game.Data;
 using Grimoire.Tools;
-using Grimoire.Botting;
 using Grimoire.UI;
 using Grimoire.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq;
 
 namespace Grimoire.Game
@@ -43,15 +41,12 @@ namespace Grimoire.Game
         private static readonly Dictionary<LockActions, string> LockedActions;
 
         public static List<Monster> VisibleMonsters => Flash.Call<List<Monster>>("GetVisibleMonstersInCell", new string[0]);
-        //public static List<Monster> VisibleMonsters => CurrentMap.Monsters.FindAll(mon => mon.Cell.Equals(Player.Cell) && mon.Alive);
 
         public static List<Monster> AvailableMonsters => Flash.Call<List<Monster>>("GetMonstersInCell", new string[0]);
-        //public static List<Monster> AvailableMonsters => CurrentMap.Monsters.FindAll(mon => mon.Cell.Equals(Player.Cell));
 
         public static bool IsMapLoading => !Flash.Call<bool>("MapLoadComplete", new string[0]);
 
         public static List<string> PlayersInMap => Flash.Call<List<string>>("PlayersInMap", new string[0]);
-        //public static List<string> PlayersInMap => Map.Players.ConvertAll<string>((Avatar a) => a.Username);
 
         public static List<InventoryItem> ItemTree => Flash.Call<List<InventoryItem>>("GetItemTree", new string[0]);
 
@@ -59,10 +54,8 @@ namespace Grimoire.Game
 
         public static List<string> Pads => Flash.Call<List<string>>("GetPads", new string[0]);
 
-        //public static int RoomId => Flash.Call<int>("RoomId", new string[0]);
         public static int RoomId => Map.ID;
 
-        //public static int RoomNumber => Flash.Call<int>("RoomNumber", new string[0]);
         public static int RoomNumber => int.Parse(Map.Instance);
 
         public static event Action<InventoryItem> ItemDropped;
@@ -93,10 +86,8 @@ namespace Grimoire.Game
         public static void SetSpawnPoint() => Flash.Call("SetSpawnPoint", new string[0]);
 
         public static bool IsMonsterAvailable(string name) => Flash.Call<bool>("IsMonsterAvailable", new string[1] { name });
-        //public static bool IsMonsterAvailable(string name) => CurrentMap.Monsters.Find(mon => mon.Name.Equals(name, StringComparison.OrdinalIgnoreCase) && mon.Alive) != null;
 
         public static int MonsterHealth(string name) => Flash.Call<int>("MonsterHealth", new string[1] { name });
-        //public static int MonsterHealth(string name) => CurrentMap.Monsters.Find(mon => mon.Name.Equals(name, StringComparison.OrdinalIgnoreCase)).Health;
 
         public static void ReloadCurrentMap() => Flash.Call("reloadCurrentMap", new string[0]);
 
@@ -105,7 +96,6 @@ namespace Grimoire.Game
         public static string ServerTime() => Flash.Call<string>("GetServerTime", new string[0]);
 
         public static string ServerName() => Flash.Call<string>("GetServerName", new string[0]);
-        //public static string ServerName() => CurrentServer.Name;
 
         public static void SendClientPacket(string packet, string type = "str")
         {
@@ -118,7 +108,6 @@ namespace Grimoire.Game
         }
 
         public static List<Avatar> AvatarsInMap => Flash.Call<List<Avatar>>("AvatarsInMap", new string[0]);
-        //public static List<Avatar> AvatarsInMap => Map.Players;
 
         public static List<Avatar> AvatarsInMyCell => AvatarsInMap.FindAll(a => a.Cell == Player.Cell);
 
@@ -132,11 +121,9 @@ namespace Grimoire.Game
 
         public static List<Monster> Monsters { get => GameObject.Select<List<Monster>>("world.monsters", "objData"); set => GameObject.Set("world.monsters", value); }
 
-        //public static List<Monster> MonstersInCell(string cell) => Monsters.FindAll(m => m.Cell == cell);
         public static List<Monster> MonstersInCell(string cell) => Monsters.FindAll(mon => mon.Cell == cell);
 
         public static List<Monster> VisibleMonster(string cell) => Monsters.FindAll(m => (m.Cell == cell) && m.Alive);
-        //public static List<Monster> VisibleMonster(string cell) => CurrentMap.Monsters.FindAll(mon => mon.Cell == cell && mon.Alive);
 
         public static bool IsGameLoaded() => Flash.Call<bool>("InGame", new string[0]);
 

@@ -21,10 +21,7 @@ namespace Grimoire.Tools
 
         private readonly IntPtr _hookId;
 
-        public static KeyboardHook Instance
-        {
-            get;
-        } = new KeyboardHook();
+        public static KeyboardHook Instance { get; } = new KeyboardHook();
 
         public event Action<Keys> KeyDown;
 

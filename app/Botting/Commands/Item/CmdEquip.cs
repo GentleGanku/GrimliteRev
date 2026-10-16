@@ -8,17 +8,9 @@ namespace Grimoire.Botting.Commands.Item
 {
     public class CmdEquip : IBotCommand
     {
-        public string ItemName
-        {
-            get;
-            set;
-        }
+        public string ItemName { get; set; }
 
-        public bool Safe
-        {
-            get;
-            set;
-        }
+        public bool Safe { get; set; }
 
         public async Task Execute(IBotEngine instance)
         {

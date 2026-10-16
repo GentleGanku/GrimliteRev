@@ -5,11 +5,7 @@ namespace Grimoire.Botting.Commands.Combat
 {
     public class CmdRest : IBotCommand
     {
-        public bool Full
-        {
-            get;
-            set;
-        }
+        public bool Full { get; set; }
 
         public async Task Execute(IBotEngine instance)
         {

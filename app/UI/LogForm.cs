@@ -87,10 +87,7 @@ namespace Grimoire.UI
             }
         }
 
-        public static LogForm Instance
-        {
-            get;
-        }
+        public static LogForm Instance { get; }
 
         public LogForm()
         {
@@ -120,9 +117,6 @@ namespace Grimoire.UI
             }
         }
 
-        //
-        // Append Debug
-        //
         public void AppendDebug(string text)
         {
             if (text.Contains("{CLEAR}"))
@@ -138,9 +132,6 @@ namespace Grimoire.UI
                 txtLogDebug.AppendText(text);
         }
 
-        //
-        // Append Drops
-        //
         public void AppendDrops(string text)
         {
             if (text.Contains("{CLEAR}"))
@@ -156,9 +147,6 @@ namespace Grimoire.UI
                 txtLogDrops.AppendText(text);
         }
 
-        //
-        // Append Chat
-        //
         public void AppendChat(string text)
         {
             if (text.Contains("{CLEAR}"))
@@ -173,9 +161,6 @@ namespace Grimoire.UI
             else
                 txtLogChat.AppendText(text);
         }
-        //
-        // Append Script
-        //
         public void AppendScript(string text, bool ignoreInvoke = false)
         {
             if (text.Contains("{CLEAR}"))

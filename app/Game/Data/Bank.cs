@@ -11,7 +11,6 @@ namespace Grimoire.Game.Data
     public class Bank
     {
         public List<InventoryItem> Items => Flash.Call<List<InventoryItem>>("GetBankItems", new string[0]);
-        //public List<InventoryItem> Items => Player.Self.Extended.Bank;
 
         public List<InventoryItem> SavedItems;
 

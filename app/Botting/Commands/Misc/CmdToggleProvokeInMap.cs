@@ -4,17 +4,9 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdToggleProvokeInMap : IBotCommand
     {
-        public int Type
-        {
-            get;
-            set;
-        }
+        public int Type { get; set; }
 
-        public string ProvokePacket
-        {
-            get;
-            set;
-        }
+        public string ProvokePacket { get; set; }
 
         public async Task Execute(IBotEngine instance)
         {
