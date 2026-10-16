@@ -4,6 +4,8 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdBankList : IBotCommand
     {
+        #region Methods
+
         public async Task Execute(IBotEngine instance)
         {
         }
@@ -12,5 +14,7 @@ namespace Grimoire.Botting.Commands.Misc
         {
             return "Bank Item list";
         }
+
+        #endregion
     }
 }

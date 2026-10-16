@@ -10,10 +10,16 @@ namespace Grimoire.UI
 {
     public partial class CommandColorForm : DarkForm
     {
+        #region Constructors
+
         public CommandColorForm()
         {
             InitializeComponent();
         }
+
+        #endregion
+
+        #region Methods
 
         private void btnLabelColor_Click(object sender, EventArgs e)
         {
@@ -77,7 +83,6 @@ namespace Grimoire.UI
             catch { }
             return int.Parse(SystemColors.WindowText.ToString());
         }
-
 
         private bool GetChecked(CheckBox ctr)
         {
@@ -242,5 +247,7 @@ namespace Grimoire.UI
             BotManager.Instance.CurrentCentered.Clear();
             BotManager.Instance.CurrentColors.Clear();
         }
+
+        #endregion
     }
 }

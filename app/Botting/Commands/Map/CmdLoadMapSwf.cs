@@ -6,11 +6,17 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdLoadMapSwf : IBotCommand
     {
+        #region Properties
+
         public string Name
         {
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -27,5 +33,7 @@ namespace Grimoire.Botting.Commands.Misc
         {
             return $"Load Map SWF: {Name}";
         }
+
+        #endregion
     }
 }

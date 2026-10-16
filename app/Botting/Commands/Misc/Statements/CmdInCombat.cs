@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdInCombat : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdInCombat()
         {
             Tag = "This player";
             Text = "Is in combat";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -24,5 +30,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return "This player is in combat state";
         }
+
+        #endregion
     }
 }

@@ -8,11 +8,15 @@ namespace Grimoire.UI
     /// </summary>
     public static class NewBadge
     {
+        #region Fields
+
         private const string Text = "NEW!";
-
         private static readonly Font BadgeFont = new Font("Segoe UI", 6F, FontStyle.Bold);
-
         private static readonly Size BadgeSize = TextRenderer.MeasureText(Text, BadgeFont, Size.Empty, TextFormatFlags.NoPadding);
+
+        #endregion
+
+        #region Methods
 
         public static void Attach(params ToolStripMenuItem[] items)
         {
@@ -40,5 +44,7 @@ namespace Grimoire.UI
             Point location = item.IsOnDropDown ? new Point(item.Width - BadgeSize.Width - 12, 2) : new Point(item.Width - BadgeSize.Width - 1, 0);
             TextRenderer.DrawText(e.Graphics, Text, BadgeFont, location, Color.LimeGreen, TextFormatFlags.NoPadding);
         }
+
+        #endregion
     }
 }

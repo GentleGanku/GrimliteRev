@@ -5,6 +5,8 @@ namespace Grimoire.Tools
 {
     public class BoolConverter : JsonConverter
     {
+        #region Methods
+
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             writer.WriteValue(((bool)value) ? 1 : 0);
@@ -19,5 +21,7 @@ namespace Grimoire.Tools
         {
             return objectType == typeof(bool);
         }
+
+        #endregion
     }
 }

@@ -5,6 +5,15 @@ namespace Grimoire.Game.Data
 {
     public class Aura
     {
+        #region Fields
+
+        public DateTime timeNow = new DateTime();
+        public int durationSpan;
+
+        #endregion
+
+        #region Properties
+
         public int entityID
         { 
             get;
@@ -44,9 +53,9 @@ namespace Grimoire.Game.Data
             set { }
         }
 
-        public DateTime timeNow = new DateTime();
+        #endregion
 
-        public int durationSpan;
+        #region Methods
 
         public TimeSpan time()
         {
@@ -61,5 +70,6 @@ namespace Grimoire.Game.Data
             World.auraCountdown -= aura.countdown;
         }
 
+        #endregion
     }
 }

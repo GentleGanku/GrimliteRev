@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdSkillIsAvailable : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdSkillIsAvailable()
         {
             Tag = "This player";
             Text = "Skill is available";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -24,5 +30,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return "Skill is available:" + Value1;
         }
+
+        #endregion
     }
 }

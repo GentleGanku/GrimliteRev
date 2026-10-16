@@ -13,9 +13,23 @@ namespace Grimoire.Game
 {
     public class DropStack : IReadOnlyList<InventoryItem>, IReadOnlyCollection<InventoryItem>, IEnumerable<InventoryItem>, IEnumerable
     {
-        private readonly List<InventoryItem> _drops = new List<InventoryItem>();
+        #region Fields
 
+        private readonly List<InventoryItem> _drops = new List<InventoryItem>();
         private readonly List<KeyValuePair<int, Stopwatch>> _cooldown = new List<KeyValuePair<int, Stopwatch>>();
+
+        #endregion
+
+        #region Constructors
+
+        public DropStack()
+        {
+            World.ItemDropped += OnItemDropped;
+        }
+
+        #endregion
+
+        #region Properties
 
         public List<string> MarkedDrops
         {
@@ -37,6 +51,10 @@ namespace Grimoire.Game
             }
         }
 
+        #endregion
+
+        #region Indexers
+
         public InventoryItem this[int index]
         {
             get
@@ -49,10 +67,9 @@ namespace Grimoire.Game
             }
         }
 
-        public DropStack()
-        {
-            World.ItemDropped += OnItemDropped;
-        }
+        #endregion
+
+        #region Methods
 
         public IEnumerator<InventoryItem> GetEnumerator()
         {
@@ -62,14 +79,6 @@ namespace Grimoire.Game
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
-        }
-
-        private void OnItemDropped(InventoryItem item)
-        {
-            if (_drops.All((InventoryItem d) => d.Id != item.Id))
-            {
-                _drops.Add(item);
-            }
         }
 
         public async Task<bool> GetDrop(string itemName)
@@ -135,5 +144,14 @@ namespace Grimoire.Game
             }
         }
 
+        private void OnItemDropped(InventoryItem item)
+        {
+            if (_drops.All((InventoryItem d) => d.Id != item.Id))
+            {
+                _drops.Add(item);
+            }
+        }
+
+        #endregion
     }
 }

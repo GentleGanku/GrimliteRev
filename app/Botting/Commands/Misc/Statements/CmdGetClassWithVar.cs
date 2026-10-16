@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdGetClassWithVar : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdGetClassWithVar()
         {
             Tag = "This player";
             Text = "Get equipped class with Variable";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -28,5 +34,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return $"Get equipped class with Variable: {Value1}";
         }
+
+        #endregion
     }
 }

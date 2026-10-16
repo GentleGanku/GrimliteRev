@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdPlayersInMyCellLessThan : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdPlayersInMyCellLessThan()
         {
             Tag = "Player";
             Text = "Player count in my cell is less than";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -31,5 +37,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return $"Player count in my cell is less than: {Value1}";
         }
+
+        #endregion
     }
 }

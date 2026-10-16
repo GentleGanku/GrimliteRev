@@ -5,6 +5,8 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdChange : IBotCommand
     {
+        #region Properties
+
         public bool Guild
         {
             get;
@@ -16,6 +18,10 @@ namespace Grimoire.Botting.Commands.Misc
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -31,5 +37,7 @@ namespace Grimoire.Botting.Commands.Misc
                 return $"Guild: {Text}";
             return $"Name: {Text}";
         }
+
+        #endregion
     }
 }

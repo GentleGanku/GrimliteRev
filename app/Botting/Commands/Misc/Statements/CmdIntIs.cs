@@ -4,11 +4,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdIntIs : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdIntIs()
         {
             Tag = "Misc";
             Text = "Int is";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -23,5 +29,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return $"{Value1} is equal to: {Value2} (value)";
         }
+
+        #endregion
     }
 }

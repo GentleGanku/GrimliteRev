@@ -11,6 +11,14 @@ namespace Grimoire.Networking.Handlers
 {
     public class HandlerLogin : IXtMessageHandler
     {
+        #region Fields
+
+        private static CancellationTokenSource _cts = new CancellationTokenSource();
+
+        #endregion
+
+        #region Properties
+
         public string[] HandledCommands
         {
             get;
@@ -21,7 +29,9 @@ namespace Grimoire.Networking.Handlers
             "bankFromInv"
         };
 
-        private static CancellationTokenSource _cts = new CancellationTokenSource();
+        #endregion
+
+        #region Methods
 
         public async void Handle(XtMessage message)
         {
@@ -56,5 +66,7 @@ namespace Grimoire.Networking.Handlers
                 Flash.Call("LoadTravelTriggers", BotClientConfig.Instance.GetValue<string>("customTravels"));
             }
         }
+
+        #endregion
     }
 }

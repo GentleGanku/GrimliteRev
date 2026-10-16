@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdVisibleMonstersGreaterThan : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdVisibleMonstersGreaterThan()
         {
             Tag = "Monster";
             Text = "Visible count is greater than";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -31,5 +37,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return "Visible monster count is greater than: " + Value1;
         }
+
+        #endregion
     }
 }

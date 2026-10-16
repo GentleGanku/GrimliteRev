@@ -4,11 +4,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdIntLessThan : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdIntLessThan()
         {
             Tag = "Misc";
             Text = "Int is less than";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -23,5 +29,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return $"{Value1} is less than: {Value2} (value)";
         }
+
+        #endregion
     }
 }

@@ -4,6 +4,19 @@ namespace Grimoire.Game
 {
     public class PlayerInfo
     {
+        #region Enums
+
+        public enum State
+        {
+            Dead,
+            Idle,
+            InCombat
+        }
+
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// The name of the player, in lowercase version.
         /// </summary>
@@ -90,17 +103,6 @@ namespace Grimoire.Game
         }
 
         /// <summary>
-        /// The remaining member days for the player.
-        /// </summary>
-        /// 
-        [JsonProperty("iUpgDays")]
-        private int UpgDays
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// The entity ID of the player.
         /// </summary>
         [JsonProperty("entID")]
@@ -170,16 +172,26 @@ namespace Grimoire.Game
             set;
         }
 
-        public enum State
+        /// <summary>
+        /// The remaining member days for the player.
+        /// </summary>
+        /// 
+        [JsonProperty("iUpgDays")]
+        private int UpgDays
         {
-            Dead,
-            Idle,
-            InCombat
+            get;
+            set;
         }
+
+        #endregion
+
+        #region Methods
 
         public override string ToString()
         {
             return $"{EntID}: {Name}";
         }
+
+        #endregion
     }
 }

@@ -11,7 +11,21 @@ namespace Grimoire.Game.Data
 {
     public class Shop
     {
+        #region Fields
+
         public static Shop Instance = new Shop();
+
+        #endregion
+
+        #region Properties
+
+        public static bool IsShopLoaded
+        {
+            get
+            {
+                return Flash.Call<bool>("IsShopLoaded", new string[0]);
+            }
+        }
 
         [JsonProperty("sName")]
         public string Name
@@ -40,13 +54,9 @@ namespace Grimoire.Game.Data
             set;
         }
 
-        public static bool IsShopLoaded
-        {
-            get
-            {
-                return Flash.Call<bool>("IsShopLoaded", new string[0]);
-            }
-        }
+        #endregion
+
+        #region Methods
 
         public static bool CanBuyItem(string name) => Flash.Call<bool>("CanBuyItem", name);
 
@@ -135,5 +145,7 @@ namespace Grimoire.Game.Data
         {
             Flash.Call("LoadArmorCustomizer", new string[0]);
         }
+
+        #endregion
     }
 }

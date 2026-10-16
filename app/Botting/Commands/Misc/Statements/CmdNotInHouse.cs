@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdNotInHouse : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdNotInHouse()
         {
             Tag = "Item";
             Text = "Is not in house";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -24,5 +30,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return "Item is not in house: " + Value1 + ", " + Value2;
         }
+
+        #endregion
     }
 }

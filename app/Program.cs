@@ -12,16 +12,14 @@ namespace Grimoire
 {
     internal static class Program
     {
+        #region Fields
+
         public static string version = "1.4.0";
         public static string releaseDate = "14 Oct 2026";
 
-        [STAThread]
-        private static void Main()
-        {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(defaultValue: false);
-            Application.Run(new Root());
-        }
+        #endregion
+
+        #region Methods
 
         public static async Task CheckForLatestBuild()
         {
@@ -70,5 +68,15 @@ namespace Grimoire
                 DarkMessageBox.Show(new Form { TopMost = true, StartPosition = FormStartPosition.CenterScreen }, "You have to install the Adobe Flash Player plugin (for ActiveX) in order for the game screen to load.", $"Failed loading the game!", MessageBoxIcon.Error);
             }
         }
+
+        [STAThread]
+        private static void Main()
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(defaultValue: false);
+            Application.Run(new Root());
+        }
+
+        #endregion
     }
 }

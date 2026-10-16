@@ -4,11 +4,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdSetVar : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdSetVar()
         {
             Tag = "Misc";
             Text = "Set Variable";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -27,5 +33,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return $"Set Variable {Value1}: {Value2}";
         }
+
+        #endregion
     }
 }

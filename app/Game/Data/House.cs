@@ -7,6 +7,8 @@ namespace Grimoire.Game.Data
 {
     public class House
     {
+        #region Properties
+
         public List<InventoryItem> Items
         {
             get
@@ -23,6 +25,10 @@ namespace Grimoire.Game.Data
             }
         }
 
+        #endregion
+
+        #region Methods
+
         public bool ContainsItem(string itemName, string quantity = "*")
         {
             InventoryItem inventoryItem = Items.FirstOrDefault((InventoryItem i) => i.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
@@ -36,5 +42,7 @@ namespace Grimoire.Game.Data
             }
             return false;
         }
+
+        #endregion
     }
 }

@@ -6,6 +6,8 @@ namespace Grimoire.Game.Data
 {
     public class Quest
     {
+        #region Properties
+
         [JsonProperty("sFaction")]
         public string Faction
         {
@@ -161,11 +163,6 @@ namespace Grimoire.Game.Data
             set;
         }
 
-        public override string ToString()
-        {
-            return Id.ToString();
-        }
-
         public bool IsInProgress
         {
             get
@@ -184,36 +181,6 @@ namespace Grimoire.Game.Data
                 return Flash.Call<bool>("CanComplete", new string[1] { Id.ToString() });
             }
         }
-
-        public void Accept()
-        {
-            Flash.Call("Accept", Id.ToString());
-        }
-
-        public void Complete()
-        {
-            if (!string.IsNullOrEmpty(ItemId))
-            {
-                Flash.Call("Complete", Id.ToString(), ItemId);
-            }
-            else
-            {
-                Flash.Call("Complete", Id.ToString());
-            }
-        }
-
-        #region ShouldSerialize
-        public bool ShouldSerializeFaction() => false;
-
-        public bool ShouldSerializeClassPointsReward() => false;
-
-        public bool ShouldSerializeDescription() => false;
-
-        public bool ShouldSerializeRequiredReputation() => false;
-
-        public bool ShouldSerializeReputationReward() => false;
-
-        public bool ShouldSerializeLevel() => false;
 
         public bool ShouldSerializeGoldReward
         {
@@ -294,6 +261,45 @@ namespace Grimoire.Game.Data
                 return false;
             }
         }
+
+        #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            return Id.ToString();
+        }
+
+        public void Accept()
+        {
+            Flash.Call("Accept", Id.ToString());
+        }
+
+        public void Complete()
+        {
+            if (!string.IsNullOrEmpty(ItemId))
+            {
+                Flash.Call("Complete", Id.ToString(), ItemId);
+            }
+            else
+            {
+                Flash.Call("Complete", Id.ToString());
+            }
+        }
+
+        public bool ShouldSerializeFaction() => false;
+
+        public bool ShouldSerializeClassPointsReward() => false;
+
+        public bool ShouldSerializeDescription() => false;
+
+        public bool ShouldSerializeRequiredReputation() => false;
+
+        public bool ShouldSerializeReputationReward() => false;
+
+        public bool ShouldSerializeLevel() => false;
+
         #endregion
     }
 }

@@ -4,11 +4,17 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdFollow : RegularExpression, IBotCommand
     {
+        #region Properties
+
         public string Name
         {
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -19,5 +25,7 @@ namespace Grimoire.Botting.Commands.Misc
         {
             return "Follow player: " + Name;
         }
+
+        #endregion
     }
 }

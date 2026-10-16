@@ -9,6 +9,8 @@ namespace Grimoire.Networking.Handlers
 {
     public class HandlerQuestComplete : IJsonMessageHandler
     {
+        #region Properties
+
         public string[] HandledCommands
         {
             get;
@@ -16,6 +18,10 @@ namespace Grimoire.Networking.Handlers
         {
             "ccqr"
         };
+
+        #endregion
+
+        #region Methods
 
         public void Handle(JsonMessage message)
         {
@@ -45,5 +51,6 @@ namespace Grimoire.Networking.Handlers
             }
         }
 
+        #endregion
     }
 }

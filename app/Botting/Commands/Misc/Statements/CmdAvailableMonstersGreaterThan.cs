@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdAvailableMonstersGreaterThan : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdAvailableMonstersGreaterThan()
         {
             Tag = "Monster";
             Text = "Available count is greater than";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -31,5 +37,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return "Available monster count is greater than: " + Value1;
         }
+
+        #endregion
     }
 }

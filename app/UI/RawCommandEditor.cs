@@ -8,12 +8,26 @@ namespace Grimoire.UI
 {
     public class RawCommandEditor : DarkForm
     {
+        #region Fields
+
+        public static RawCommandEditor Instance = new RawCommandEditor();
         private IContainer components;
         private DarkButton btnOK;
         private DarkButton btnCancel;
         private DarkTextBox txtCmd;
 
-        public static RawCommandEditor Instance = new RawCommandEditor();
+        #endregion
+
+        #region Constructors
+
+        public RawCommandEditor()
+        {
+            InitializeComponent();
+        }
+
+        #endregion
+
+        #region Properties
 
         public string Input
         {
@@ -31,33 +45,9 @@ namespace Grimoire.UI
             }
         }
 
-        public RawCommandEditor()
-        {
-            InitializeComponent();
-        }
+        #endregion
 
-        private void RawCommandEditor_FormClosing(object sender, FormClosingEventArgs e)
-        {
-        }
-
-        private void RawCommandEditor_Load(object sender, EventArgs e)
-        {
-            txtCmd.Select();
-        }
-
-        private void txtCmd_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Return:
-                    btnOK.PerformClick();
-                    break;
-
-                case Keys.Escape:
-                    btnCancel.PerformClick();
-                    break;
-            }
-        }
+        #region Methods
 
         public static string Show(string content)
         {
@@ -84,6 +74,29 @@ namespace Grimoire.UI
                 components.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private void RawCommandEditor_FormClosing(object sender, FormClosingEventArgs e)
+        {
+        }
+
+        private void RawCommandEditor_Load(object sender, EventArgs e)
+        {
+            txtCmd.Select();
+        }
+
+        private void txtCmd_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Return:
+                    btnOK.PerformClick();
+                    break;
+
+                case Keys.Escape:
+                    btnCancel.PerformClick();
+                    break;
+            }
         }
 
         private void InitializeComponent()
@@ -153,5 +166,7 @@ namespace Grimoire.UI
             this.PerformLayout();
 
         }
+
+        #endregion
     }
 }

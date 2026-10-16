@@ -8,22 +8,23 @@ namespace Grimoire.UI
 {
     public partial class NodeEditor : Form
     {
-        public class TypedCommand
-        {
-            public string Name;
-            public Type CommandType;
-            public override string ToString()
-            {
-                return Name;
-            }
-        }
+        #region Fields
+
+        public static NodeEditor Instance = new NodeEditor();
+        public Type lb_item = null;
+
+        #endregion
+
+        #region Constructors
 
         public NodeEditor()
         {
             InitializeComponent();
         }
 
-        public Type lb_item = null;
+        #endregion
+
+        #region Methods
 
         private void listBox1_MouseDown(object sender, MouseEventArgs e)
         {
@@ -48,8 +49,6 @@ namespace Grimoire.UI
         {
             lb_item = null;
         }
-
-        public static NodeEditor Instance = new NodeEditor();
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -98,8 +97,6 @@ namespace Grimoire.UI
             }
         }
 
-
-
         private void splitContainer1_Panel2_DragDrop(object sender, DragEventArgs e)
         {
             if (lb_item == null) return;
@@ -142,5 +139,30 @@ namespace Grimoire.UI
             e.Effect = DragDropEffects.All;
             lb_item = ((TypedCommand)listBox1.SelectedItem).CommandType;
         }
+
+        #endregion
+
+        #region Classes
+
+        public class TypedCommand
+        {
+            #region Fields
+
+            public string Name;
+            public Type CommandType;
+
+            #endregion
+
+            #region Methods
+
+            public override string ToString()
+            {
+                return Name;
+            }
+
+            #endregion
+        }
+
+        #endregion
     }
 }

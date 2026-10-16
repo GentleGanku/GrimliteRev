@@ -7,6 +7,20 @@ namespace Grimoire.Botting
 {
     public class Config
     {
+        #region Constructors
+
+        public Config() { }
+
+        #endregion
+
+        #region Properties
+
+        public static Config Instance
+        {
+            get;
+            set;
+        } = Config.Load(Application.StartupPath + "\\config.cfg");
+
         public string file
         {
             get;
@@ -19,13 +33,22 @@ namespace Grimoire.Botting
             set;
         } = new Dictionary<string, string>();
 
-        public Config() { }
+        #endregion
 
-        public static Config Instance
+        #region Methods
+
+        public static Config Load(string path)
         {
-            get;
-            set;
-        } = Config.Load(Application.StartupPath + "\\config.cfg");
+            if (!File.Exists(path))
+            {
+                File.Create(path).Dispose();
+            }
+            return new Config()
+            {
+                file = path,
+                Contents = File.ReadLines(path).Select(l => l.Split('=')).ToDictionary(a => a[0], a => a[1])
+            };
+        }
 
         public string Get(string key)
         {
@@ -40,19 +63,6 @@ namespace Grimoire.Botting
         public void Save()
         {
             File.WriteAllLines(file, Contents.Select(kvp => $"{kvp.Key}={kvp.Value}"));
-        }
-
-        public static Config Load(string path)
-        {
-            if (!File.Exists(path))
-            {
-                File.Create(path).Dispose();
-            }
-            return new Config()
-            {
-                file = path,
-                Contents = File.ReadLines(path).Select(l => l.Split('=')).ToDictionary(a => a[0], a => a[1])
-            };
         }
 
         public T GetValue<T>(string key)
@@ -86,5 +96,7 @@ namespace Grimoire.Botting
             Config.Instance.Set(key, value);
             Config.Instance.Save();
         }
+
+        #endregion
     }
 }

@@ -23,24 +23,64 @@ namespace Grimoire.UI
 {
     public class Root : DarkForm
     {
-        private IContainer components;
+        #region Fields
 
-        private NotifyIcon nTray;
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HT_CAPTION = 0x2;
 
-        private DarkProgressBar prgLoader;
+        public static List<Form> MainForms = new List<Form>()
+        {
+            Root.Instance,
+            AboutForm.Instance,
+            BankForm.Instance,
+            BotManager.Instance,
+            CommandColorForm.Instance,
+            CosmeticForm.Instance,
+            EyeDropper.Instance,
+            Hotkeys.Instance,
+            Loaders.Instance,
+            LogForm.Instance,
+            Notepad.Instance,
+            PacketLogger.Instance,
+            PacketSpammer.Instance,
+            PacketTamperer.Instance,
+            PluginManager.Instance,
+            RawCommandEditor.Instance,
+            Travel.Instance,
+            UserFriendlyCommandEditor.Instance
+        };
+
         public MenuStrip MenuMain;
         public CancellationTokenSource login_cts;
-        private Panel panel1;
         public RichTextBox rtbPing;
+        public DarkMenuStrip MenuStrip1;
+        public ToolStripMenuItem stopToolStripMenuItem;
+        public ToolStripMenuItem pingMonitorToolStripMenuItem;
+        public ToolStripMenuItem loginToolStripMenuItem;
+        public ToolStripComboBox toolStripComboBoxLoginServer;
+        public ToolStripMenuItem optionsToolStripMenuItem;
+        public ToolStripMenuItem infRangeToolStripMenuItem;
+        public ToolStripMenuItem provokeToolStripMenuItem1;
+        public ToolStripMenuItem enemyMagnetToolStripMenuItem;
+        public ToolStripMenuItem lagKillerToolStripMenuItem;
+        public ToolStripMenuItem hidePlayersToolStripMenuItem;
+        public ToolStripMenuItem skipCutscenesToolStripMenuItem;
+        public ToolStripMenuItem disableAnimationsToolStripMenuItem;
+        public ToolStripMenuItem pluginsStrip;
+        public ToolStripMenuItem settingsToolStripMenuItem;
+        public ToolStripMenuItem camouflageToolStripMenuItem;
+        public ToolStripMenuItem untargetSelfToolStripMenuItem;
+        private IContainer components;
+        private NotifyIcon nTray;
+        private DarkProgressBar prgLoader;
+        private Panel panel1;
         private DarkComboBox cbCells;
         private DarkComboBox2 cbPads;
         private DarkButton btnGetCurrentCell;
         private DarkButton btnJump;
-        public DarkMenuStrip MenuStrip1;
         private ToolStripMenuItem grimliteToolStripMenuItem;
         private ToolStripMenuItem botToolStripMenuItem;
         private ToolStripMenuItem startToolStripMenuItem;
-        public ToolStripMenuItem stopToolStripMenuItem;
         private ToolStripMenuItem managerToolStripMenuItem;
         private ToolStripMenuItem loadBotToolStripMenuItem;
         private ToolStripMenuItem toolsToolStripMenuItem;
@@ -53,11 +93,8 @@ namespace Grimoire.UI
         private ToolStripMenuItem eyeDropperToolStripMenuItem;
         private ToolStripMenuItem logsToolStripMenuItem1;
         private ToolStripMenuItem notepadToolStripMenuItem1;
-        public ToolStripMenuItem pingMonitorToolStripMenuItem;
         private ToolStripMenuItem FPSToolStripMenuItem;
         private ToolStripTextBox toolStripTextBox2;
-        public ToolStripMenuItem loginToolStripMenuItem;
-        public ToolStripComboBox toolStripComboBoxLoginServer;
         private ToolStripMenuItem DPSMeterToolStripMenuItem;
         private ToolStripMenuItem setsToolStripMenuItem;
         private ToolStripMenuItem commandeditornodeToolStripMenuItem;
@@ -65,41 +102,61 @@ namespace Grimoire.UI
         private ToolStripMenuItem snifferToolStripMenuItem;
         private ToolStripMenuItem spammerToolStripMenuItem;
         private ToolStripMenuItem tampererToolStripMenuItem;
-        public ToolStripMenuItem optionsToolStripMenuItem;
-        public ToolStripMenuItem infRangeToolStripMenuItem;
-        public ToolStripMenuItem provokeToolStripMenuItem1;
-        public ToolStripMenuItem enemyMagnetToolStripMenuItem;
-        public ToolStripMenuItem lagKillerToolStripMenuItem;
-        public ToolStripMenuItem hidePlayersToolStripMenuItem;
-        public ToolStripMenuItem skipCutscenesToolStripMenuItem;
-        public ToolStripMenuItem disableAnimationsToolStripMenuItem;
         private ToolStripMenuItem bankToolStripMenuItem1;
         private ToolStripMenuItem reloadToolStripMenuItem;
-        public ToolStripMenuItem pluginsStrip;
-        public ToolStripMenuItem settingsToolStripMenuItem;
-        public ToolStripMenuItem camouflageToolStripMenuItem;
         private ToolStripMenuItem discordToolStripMenuItem;
         private ToolStripMenuItem supportMeToolStripMenuItem;
-        public ToolStripMenuItem untargetSelfToolStripMenuItem;
         private ToolStripMenuItem walkSpeedToolStripMenuItem;
         private System.Threading.CancellationTokenSource _cts;
         private DarkPanel GamePanel;
+        private AxShockwaveFlash Game;
+
+        private string[] presetPads = new string[]
+        {
+            "Spawn",
+            "Center",
+            "Left",
+            "Right",
+            "Top",
+            "Bottom",
+            "Up",
+            "Down"
+        };
+
+        // Tracked separately because panel1.Visible reads false until the window is shown, and the constructor applies Camouflage before that.
+        private bool menuVisible = true;
+
+        private Icon defaultIcon;
+        private Icon defaultTrayIcon;
+
+        #endregion
+
+        #region Constructors
+
+        public Root()
+        {
+            InitializeComponent();
+            PreloadedPlugins = new PluginManager();
+            Instance = this;
+            pingMonitorToggle();
+            defaultIcon = Icon;
+            defaultTrayIcon = nTray.Icon;
+            camouflageToolStripMenuItem.Checked = BotClientConfig.Instance.GetValue<bool>("clientHeaderToggle");
+            ApplyCamouflage(camouflageToolStripMenuItem.Checked);
+            triggerToggle();
+            // Items that changed in this version; replace the list on every release.
+            NewBadge.Attach(grimliteToolStripMenuItem, botToolStripMenuItem, managerToolStripMenuItem, settingsToolStripMenuItem, camouflageToolStripMenuItem, discordToolStripMenuItem, supportMeToolStripMenuItem);
+        }
+
+        #endregion
+
+        #region Properties
 
         public static Root Instance
         {
             get;
             private set;
         }
-
-        public AxShockwaveFlash Client
-        {
-            get
-            {
-                return Game;
-            }
-        }
-
-        private AxShockwaveFlash Game;
 
         public static string PluginsPath
         {
@@ -125,19 +182,189 @@ namespace Grimoire.UI
             set;
         } = false;
 
-        public Root()
+        public AxShockwaveFlash Client
         {
-            InitializeComponent();
-            PreloadedPlugins = new PluginManager();
-            Instance = this;
-            pingMonitorToggle();
-            defaultIcon = Icon;
-            defaultTrayIcon = nTray.Icon;
-            camouflageToolStripMenuItem.Checked = BotClientConfig.Instance.GetValue<bool>("clientHeaderToggle");
-            ApplyCamouflage(camouflageToolStripMenuItem.Checked);
-            triggerToggle();
-            // Items that changed in this version; replace the list on every release.
-            NewBadge.Attach(grimliteToolStripMenuItem, botToolStripMenuItem, managerToolStripMenuItem, settingsToolStripMenuItem, camouflageToolStripMenuItem, discordToolStripMenuItem, supportMeToolStripMenuItem);
+            get
+            {
+                return Game;
+            }
+        }
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                {
+                    cp.Style |= 0x20000 | 0x80000 | 0x40000; //WS_MINIMIZEBOX | WS_SYSMENU | WS_SIZEBOX;
+                }
+                return cp;
+            }
+        }
+
+        private bool customTravel
+        {
+            get;
+            set;
+        } = true;
+
+        private bool travelInProgress
+        {
+            get;
+            set;
+        } = false;
+
+        #endregion
+
+        #region Methods
+
+        [DllImportAttribute("user32.dll")]
+        public static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
+
+        [DllImportAttribute("user32.dll")]
+        public static extern bool ReleaseCapture();
+
+        public void ShowForm(Form form)
+        {
+            if (form.WindowState == FormWindowState.Minimized)
+            {
+                form.WindowState = FormWindowState.Normal;
+                form.Show();
+                form.BringToFront();
+                form.Focus();
+            }
+            else if (form.Visible)
+            {
+                form.Hide();
+            }
+            else
+            {
+                form.Show();
+                form.BringToFront();
+                form.Focus();
+            }
+        }
+
+        public void BotStateChanged(bool IsRunning)
+        {
+            if (IsRunning)
+            {
+                startToolStripMenuItem.Enabled = false;
+                loadBotToolStripMenuItem.Enabled = false;
+                stopToolStripMenuItem.Enabled = true;
+            }
+            else
+            {
+                startToolStripMenuItem.Enabled = true;
+                loadBotToolStripMenuItem.Enabled = true;
+                stopToolStripMenuItem.Enabled = false;
+            }
+        }
+
+        public void loginBoxToggle(bool Type)
+        {
+            loginToolStripMenuItem.Enabled = Type;
+            toolStripComboBoxLoginServer.Enabled = Type;
+        }
+
+        public void serverCatch()
+        {
+            toolStripComboBoxLoginServer.SelectedIndex = int.Parse(BotClientConfig.Instance.GetValue<string>("serverIndex") ?? "0");
+            toolStripComboBoxLoginServer.SelectedItem = toolStripComboBoxLoginServer.SelectedIndex;
+        }
+
+        public void pingMonitorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            rtbPing.Visible = !rtbPing.Visible;
+            if (rtbPing.Visible)
+            {
+                DialogResult result = DarkMessageBox.Show(new Form { TopMost = true, StartPosition = FormStartPosition.CenterScreen }, "Do you wish to save this setting?", "Save Config", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    BotClientConfig.Instance.SetValue("pingMonitor", rtbPing.Visible.ToString());
+                }
+            }
+        }
+
+        public void pingMonitorToggle()
+        {
+            rtbPing.Visible = BotClientConfig.Instance.GetValue<bool>("pingMonitor");
+        }
+
+        public void Root_MenuChanged()
+        {
+            SetMenuVisible(!menuVisible);
+        }
+
+        public void SetMenuVisible(bool visible)
+        {
+            if (menuVisible == visible)
+            {
+                return;
+            }
+            menuVisible = visible;
+            int menuHeight = panel1.Height;
+            panel1.Visible = visible;
+            GamePanel.Dock = visible ? DockStyle.None : DockStyle.Fill;
+            // A normal window grows or shrinks by the menu's height so the game keeps its size; a maximized one keeps its size.
+            if (WindowState == FormWindowState.Normal)
+            {
+                ClientSize = new Size(ClientSize.Width, ClientSize.Height + (visible ? menuHeight : -menuHeight));
+            }
+            if (visible)
+            {
+                GamePanel.SetBounds(0, menuHeight, ClientSize.Width, ClientSize.Height - menuHeight);
+                GamePanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            }
+            prgLoader.Top += visible ? menuHeight : -menuHeight;
+        }
+
+        // Camouflage makes the client look like the official Artix Games Launcher: no title, the launcher icon on the window
+        // and tray, the game's own backgrounds (-1 in the bridge's getBackgroundIndex and setBackgroundIndex), and no main menu.
+        // The menu holds Camouflage's own toggle, so Ctrl+Shift+M (ProcessCmdKey) shows and hides it while Camouflage is on.
+        public void ApplyCamouflage(bool enabled)
+        {
+            this.Text = enabled ? "" : "Grimlite Rev";
+            this.Icon = enabled ? Resources.aeIcon : defaultIcon;
+            nTray.Icon = enabled ? Resources.aeIcon : defaultTrayIcon;
+            nTray.Text = enabled ? "" : "Grimlite Rev";
+            Flash.Call("setBackgroundIndex", enabled ? -1 : 0);
+            SetMenuVisible(!enabled);
+        }
+
+        public void triggerToggle()
+        {
+            BotManager.Instance.chkHideYulgarPlayers.Checked = BotClientConfig.Instance.GetValue<bool>("hideYulgarPlayers");
+            BotManager.Instance.chkAntiAfk.Checked = BotClientConfig.Instance.GetValue<bool>("antiAFK");
+            BotManager.Instance.chkChangeRoomTag.Checked = BotClientConfig.Instance.GetValue<bool>("anonymousRoom");
+            BotManager.Instance.chkChangeChat.Checked = BotClientConfig.Instance.GetValue<bool>("anonymousUser");
+            BotManager.Instance.chkExitCombatUponStop.Checked = BotClientConfig.Instance.GetValue<bool>("exitCombatUponStop");
+            Travel.Instance.chkCustomHotkeys.Checked = BotClientConfig.Instance.GetValue<bool>("customTravelHotkeys");
+            Travel.Instance.chkCustomChatTrigger.Checked = BotClientConfig.Instance.GetValue<bool>("customTravelTrigger");
+            Travel.Instance.scanCustomTravel();
+            if (Travel.Instance.travels.Count > 0)
+            {
+                Travel.Instance.cbCustomTravels.SelectedIndex = 0;
+            }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && components != null)
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        protected override bool ProcessCmdKey(ref System.Windows.Forms.Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Control | Keys.Shift | Keys.M) && camouflageToolStripMenuItem.Checked)
+            {
+                SetMenuVisible(!menuVisible);
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
         private void Root_Load(object sender, EventArgs e)
@@ -151,7 +378,7 @@ namespace Grimoire.UI
             Proxy.InitializeProxyHandlers();
             Task.Factory.StartNew(Proxy.Instance.ClientExecute, TaskCreationOptions.LongRunning);
         }
-        
+
         private async void Root_Shown(object sender, EventArgs e)
         {
             Program.CheckForFlashPlayer();
@@ -232,27 +459,6 @@ namespace Grimoire.UI
             ShowForm(PacketTamperer.Instance);
         }
 
-        public void ShowForm(Form form)
-        {
-            if (form.WindowState == FormWindowState.Minimized)
-            {
-                form.WindowState = FormWindowState.Normal;
-                form.Show();
-                form.BringToFront();
-                form.Focus();
-            }
-            else if (form.Visible)
-            {
-                form.Hide();
-            }
-            else
-            {
-                form.Show();
-                form.BringToFront();
-                form.Focus();
-            }
-        }
-
         private void cbCells_Click(object sender, EventArgs e)
         {
             if (Player.IsLoggedIn)
@@ -264,18 +470,6 @@ namespace Grimoire.UI
                 cbCells.Items.AddRange(World.Cells);
             }
         }
-
-        private string[] presetPads = new string[]
-        {
-            "Spawn",
-            "Center",
-            "Left",
-            "Right",
-            "Top",
-            "Bottom",
-            "Up",
-            "Down"
-        };
 
         private void cbPads_Click(object sender, EventArgs e)
         {
@@ -346,15 +540,6 @@ namespace Grimoire.UI
             nTray.Icon.Dispose();
             nTray.Dispose();
             Process.GetCurrentProcess().Kill();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && components != null)
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
         }
 
         private void InitializeComponent()
@@ -1133,22 +1318,6 @@ namespace Grimoire.UI
             ShowForm(Set.Instance);
         }
 
-        public void BotStateChanged(bool IsRunning)
-        {
-            if (IsRunning)
-            {
-                startToolStripMenuItem.Enabled = false;
-                loadBotToolStripMenuItem.Enabled = false;
-                stopToolStripMenuItem.Enabled = true;
-            }
-            else
-            {
-                startToolStripMenuItem.Enabled = true;
-                loadBotToolStripMenuItem.Enabled = true;
-                stopToolStripMenuItem.Enabled = false;
-            }
-        }
-
         private void nTray_MouseClick(object sender, MouseEventArgs e)
         {
             ShowForm(this);
@@ -1250,14 +1419,6 @@ namespace Grimoire.UI
             }
         }
 
-        [DllImportAttribute("user32.dll")]
-        public static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
-        [DllImportAttribute("user32.dll")]
-        public static extern bool ReleaseCapture();
-
-        public const int WM_NCLBUTTONDOWN = 0xA1;
-        public const int HT_CAPTION = 0x2;
-
         private void MenuMain_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -1318,18 +1479,6 @@ namespace Grimoire.UI
             await Task.Delay(2000);
             this.BotStateChanged(IsRunning: false);
             BotManager.Instance.btnBotStart.Enabled = true;
-        }
-
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                CreateParams cp = base.CreateParams;
-                {
-                    cp.Style |= 0x20000 | 0x80000 | 0x40000; //WS_MINIMIZEBOX | WS_SYSMENU | WS_SIZEBOX;
-                }
-                return cp;
-            }
         }
 
         private void grimliteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1434,83 +1583,6 @@ namespace Grimoire.UI
             }
         }
 
-        public void loginBoxToggle(bool Type)
-        {
-            loginToolStripMenuItem.Enabled = Type;
-            toolStripComboBoxLoginServer.Enabled = Type;
-        }
-
-        public void serverCatch()
-        {
-            toolStripComboBoxLoginServer.SelectedIndex = int.Parse(BotClientConfig.Instance.GetValue<string>("serverIndex") ?? "0");
-            toolStripComboBoxLoginServer.SelectedItem = toolStripComboBoxLoginServer.SelectedIndex;
-        }
-
-        public void pingMonitorToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            rtbPing.Visible = !rtbPing.Visible;
-            if (rtbPing.Visible)
-            {
-                DialogResult result = DarkMessageBox.Show(new Form { TopMost = true, StartPosition = FormStartPosition.CenterScreen }, "Do you wish to save this setting?", "Save Config", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (result == DialogResult.Yes)
-                {
-                    BotClientConfig.Instance.SetValue("pingMonitor", rtbPing.Visible.ToString());
-                }
-            }
-        }
-
-        public void pingMonitorToggle()
-        {
-            rtbPing.Visible = BotClientConfig.Instance.GetValue<bool>("pingMonitor");
-        }
-
-        public void Root_MenuChanged()
-        {
-            SetMenuVisible(!menuVisible);
-        }
-
-        // Tracked separately because panel1.Visible reads false until the window is shown, and the constructor applies Camouflage before that.
-        private bool menuVisible = true;
-
-        public void SetMenuVisible(bool visible)
-        {
-            if (menuVisible == visible)
-            {
-                return;
-            }
-            menuVisible = visible;
-            int menuHeight = panel1.Height;
-            panel1.Visible = visible;
-            GamePanel.Dock = visible ? DockStyle.None : DockStyle.Fill;
-            // A normal window grows or shrinks by the menu's height so the game keeps its size; a maximized one keeps its size.
-            if (WindowState == FormWindowState.Normal)
-            {
-                ClientSize = new Size(ClientSize.Width, ClientSize.Height + (visible ? menuHeight : -menuHeight));
-            }
-            if (visible)
-            {
-                GamePanel.SetBounds(0, menuHeight, ClientSize.Width, ClientSize.Height - menuHeight);
-                GamePanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            }
-            prgLoader.Top += visible ? menuHeight : -menuHeight;
-        }
-
-        private Icon defaultIcon;
-        private Icon defaultTrayIcon;
-
-        // Camouflage makes the client look like the official Artix Games Launcher: no title, the launcher icon on the window
-        // and tray, the game's own backgrounds (-1 in the bridge's getBackgroundIndex and setBackgroundIndex), and no main menu.
-        // The menu holds Camouflage's own toggle, so Ctrl+Shift+M (ProcessCmdKey) shows and hides it while Camouflage is on.
-        public void ApplyCamouflage(bool enabled)
-        {
-            this.Text = enabled ? "" : "Grimlite Rev";
-            this.Icon = enabled ? Resources.aeIcon : defaultIcon;
-            nTray.Icon = enabled ? Resources.aeIcon : defaultTrayIcon;
-            nTray.Text = enabled ? "" : "Grimlite Rev";
-            Flash.Call("setBackgroundIndex", enabled ? -1 : 0);
-            SetMenuVisible(!enabled);
-        }
-
         private void camouflageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             BotClientConfig.Instance.SetValue("clientHeaderToggle", camouflageToolStripMenuItem.Checked.ToString());
@@ -1520,27 +1592,6 @@ namespace Grimoire.UI
                 DarkMessageBox.Show(new Form { TopMost = true, StartPosition = FormStartPosition.CenterScreen }, "The main menu is now hidden. Press Ctrl+Shift+M to show or hide it while Camouflage is on. To turn Camouflage off, show the menu and uncheck Settings > Camouflage.", "Camouflage", MessageBoxIcon.Information);
             }
         }
-
-        protected override bool ProcessCmdKey(ref System.Windows.Forms.Message msg, Keys keyData)
-        {
-            if (keyData == (Keys.Control | Keys.Shift | Keys.M) && camouflageToolStripMenuItem.Checked)
-            {
-                SetMenuVisible(!menuVisible);
-                return true;
-            }
-            return base.ProcessCmdKey(ref msg, keyData);
-        }
-
-        private bool customTravel
-        {
-            get;
-            set;
-        } = true;
-        private bool travelInProgress
-        {
-            get;
-            set;
-        } = false;
 
         private async void customTravel_KeyPress(object sender, KeyEventArgs e)
         {
@@ -1607,43 +1658,6 @@ namespace Grimoire.UI
             }
         }
 
-        public void triggerToggle()
-        {
-            BotManager.Instance.chkHideYulgarPlayers.Checked = BotClientConfig.Instance.GetValue<bool>("hideYulgarPlayers");
-            BotManager.Instance.chkAntiAfk.Checked = BotClientConfig.Instance.GetValue<bool>("antiAFK");
-            BotManager.Instance.chkChangeRoomTag.Checked = BotClientConfig.Instance.GetValue<bool>("anonymousRoom");
-            BotManager.Instance.chkChangeChat.Checked = BotClientConfig.Instance.GetValue<bool>("anonymousUser");
-            BotManager.Instance.chkExitCombatUponStop.Checked = BotClientConfig.Instance.GetValue<bool>("exitCombatUponStop");
-            Travel.Instance.chkCustomHotkeys.Checked = BotClientConfig.Instance.GetValue<bool>("customTravelHotkeys");
-            Travel.Instance.chkCustomChatTrigger.Checked = BotClientConfig.Instance.GetValue<bool>("customTravelTrigger");
-            Travel.Instance.scanCustomTravel();
-            if (Travel.Instance.travels.Count > 0)
-            {
-                Travel.Instance.cbCustomTravels.SelectedIndex = 0;
-            }
-        }
-
-        public static List<Form> MainForms = new List<Form>()
-        {
-            Root.Instance,
-            AboutForm.Instance,
-            BankForm.Instance,
-            BotManager.Instance,
-            CommandColorForm.Instance,
-            CosmeticForm.Instance,
-            EyeDropper.Instance,
-            Hotkeys.Instance,
-            Loaders.Instance,
-            LogForm.Instance,
-            Notepad.Instance,
-            PacketLogger.Instance,
-            PacketSpammer.Instance,
-            PacketTamperer.Instance,
-            PluginManager.Instance,
-            RawCommandEditor.Instance,
-            Travel.Instance,
-            UserFriendlyCommandEditor.Instance
-        };
-
+        #endregion
     }
 }

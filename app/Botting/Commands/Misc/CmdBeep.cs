@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdBeep : IBotCommand
     {
+        #region Properties
+
         public int Times
         {
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -23,5 +29,7 @@ namespace Grimoire.Botting.Commands.Misc
         {
             return string.Format("Beep {0} Times ", Times.ToString());
         }
+
+        #endregion
     }
 }

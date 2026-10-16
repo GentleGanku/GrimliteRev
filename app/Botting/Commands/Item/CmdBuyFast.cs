@@ -6,6 +6,8 @@ namespace Grimoire.Botting.Commands.Item
 {
     public class CmdBuyFast : IBotCommand
     {
+        #region Properties
+
         public string ItemName
         {
             get;
@@ -18,6 +20,10 @@ namespace Grimoire.Botting.Commands.Item
             set;
         } = false;
 
+        #endregion
+
+        #region Methods
+
         public async Task Execute(IBotEngine instance)
         {
             BotData.BotState = BotData.State.Transaction;
@@ -28,5 +34,7 @@ namespace Grimoire.Botting.Commands.Item
         {
             return "Buy item fast: " + ItemName;
         }
+
+        #endregion
     }
 }

@@ -11,7 +11,8 @@ namespace Grimoire.UI
 {
     public class PluginManager : DarkForm
     {
-        private IContainer components;
+        #region Fields
+
         public DarkGroupBox gbLoaded;
         public DarkButton btnUnload;
         public DarkTextBox txtDesc;
@@ -20,20 +21,69 @@ namespace Grimoire.UI
         public DarkGroupBox gbLoad;
         public DarkButton btnBrowse;
         public DarkButton btnLoad;
-        private TreeView treePlugins;
         public DarkTextBox txtPlugin;
+        private IContainer components;
+        private TreeView treePlugins;
+        private string path = Application.StartupPath + "\\Plugins";
+        private string Plugintext;
 
-        public static PluginManager Instance
-        {
-            get;
-        } = new PluginManager();
+        #endregion
+
+        #region Constructors
 
         public PluginManager()
         {
             InitializeComponent();
         }
 
-        private string path = Application.StartupPath + "\\Plugins";
+        #endregion
+
+        #region Properties
+
+        public static PluginManager Instance
+        {
+            get;
+        } = new PluginManager();
+
+        public string LastError
+        {
+            get;
+            private set;
+        }
+
+        #endregion
+
+        #region Methods
+
+        public bool LoadPlugins(string path)
+        {
+            GrimoirePlugin grimoirePlugin = null;
+            if (File.Exists(path))
+            {
+                grimoirePlugin = new GrimoirePlugin(path);
+                if (grimoirePlugin.Load())
+                {
+                    GrimoirePlugin.LoadedPlugins.Add(grimoirePlugin);
+                    return true;
+                }
+            }
+            LastError = grimoirePlugin?.LastError;
+            return false;
+        }
+
+        public bool LoadRange(string[] paths)
+        {
+            return paths.All(LoadPlugins);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && components != null)
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
 
         private void PluginManager_Load(object sender, EventArgs e)
         {
@@ -126,7 +176,6 @@ namespace Grimoire.UI
             }
         }
 
-        private string Plugintext;
         private void btnBrowse_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -139,28 +188,6 @@ namespace Grimoire.UI
                     Plugintext = openFileDialog.FileName;
                 }
             }
-        }
-
-        public string LastError
-        {
-            get;
-            private set;
-        }
-
-        public bool LoadPlugins(string path)
-        {
-            GrimoirePlugin grimoirePlugin = null;
-            if (File.Exists(path))
-            {
-                grimoirePlugin = new GrimoirePlugin(path);
-                if (grimoirePlugin.Load())
-                {
-                    GrimoirePlugin.LoadedPlugins.Add(grimoirePlugin);
-                    return true;
-                }
-            }
-            LastError = grimoirePlugin?.LastError;
-            return false;
         }
 
         private void btnLoad_Click(object sender, EventArgs e)
@@ -204,11 +231,6 @@ namespace Grimoire.UI
             }
         }
 
-        public bool LoadRange(string[] paths)
-        {
-            return paths.All(LoadPlugins);
-        }
-
         private void lstLoaded_SelectedIndexChanged(object sender, EventArgs e)
         {
             int selectedIndex;
@@ -227,15 +249,6 @@ namespace Grimoire.UI
                 e.Cancel = true;
                 Hide();
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && components != null)
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
         }
 
         private void InitializeComponent()
@@ -394,5 +407,7 @@ namespace Grimoire.UI
             this.ResumeLayout(false);
 
         }
+
+        #endregion
     }
 }

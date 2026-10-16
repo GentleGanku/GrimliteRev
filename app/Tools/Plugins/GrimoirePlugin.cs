@@ -8,11 +8,25 @@ namespace Grimoire.Tools.Plugins
 {
     public class GrimoirePlugin
     {
+        #region Fields
+
         public static List<GrimoirePlugin> LoadedPlugins = new List<GrimoirePlugin>();
-
         private readonly string _pluginPath;
-
         private IGrimoirePlugin _plugin;
+
+        #endregion
+
+        #region Constructors
+
+        public GrimoirePlugin(string dllFilePath)
+        {
+            _pluginPath = dllFilePath;
+            Name = Path.GetFileName(dllFilePath);
+        }
+
+        #endregion
+
+        #region Properties
 
         public string Name
         {
@@ -41,23 +55,9 @@ namespace Grimoire.Tools.Plugins
             private set;
         }
 
-        public GrimoirePlugin(string dllFilePath)
-        {
-            _pluginPath = dllFilePath;
-            Name = Path.GetFileName(dllFilePath);
-        }
+        #endregion
 
-        private Type[] TryGetTypes(Assembly asm)
-        {
-            try
-            {
-                return asm.GetTypes();
-            }
-            catch (ReflectionTypeLoadException ex)
-            {
-                return ex.Types.Where((Type t) => t != null).ToArray();
-            }
-        }
+        #region Methods
 
         public bool Load()
         {
@@ -107,5 +107,19 @@ namespace Grimoire.Tools.Plugins
                 return false;
             }
         }
+
+        private Type[] TryGetTypes(Assembly asm)
+        {
+            try
+            {
+                return asm.GetTypes();
+            }
+            catch (ReflectionTypeLoadException ex)
+            {
+                return ex.Types.Where((Type t) => t != null).ToArray();
+            }
+        }
+
+        #endregion
     }
 }

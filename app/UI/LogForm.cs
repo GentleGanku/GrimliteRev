@@ -12,62 +12,53 @@ namespace Grimoire.UI
 {
     public class LogForm : DarkForm
     {
-        public class DebugLogger : TraceListener
-        {
-            private LogForm log;
-
-            public DebugLogger(LogForm log)
-            {
-                this.log = log;
-            }
-
-            public override void Write(string message)
-            {
-                log.AppendDebug(message);
-            }
-
-            public override void WriteLine(string message)
-            {
-                log.AppendDebug(message + "\r\n");
-            }
-        }
+        #region Fields
 
         public static DebugLogger logRec;
-
-        private IContainer components;
-
-        private DarkButton btnClear;
-
-        private DarkButton btnSave;
-
-        private VisualStudioTabControl.VisualStudioTabControl tabLogs;
-
-        private TabPage tabLogDebug;
-
-        private TabPage tabLogScript;
-
         public DarkTextBox txtLogDebug;
-
         public DarkTextBox txtLogScript;
-
+        private IContainer components;
+        private DarkButton btnClear;
+        private DarkButton btnSave;
+        private VisualStudioTabControl.VisualStudioTabControl tabLogs;
+        private TabPage tabLogDebug;
+        private TabPage tabLogScript;
         private TabPage tabLogDrops;
-
         private TabPage tabLogChat;
-
         private DarkTextBox txtLogDrops;
-
         private ContextMenuStrip contextMenuStrip1;
-
         private ToolStripMenuItem changeFontToolStripMenuItem;
-
         private ToolStripMenuItem changeColorToolStripMenuItem;
-
         private ColorDialog colorDialog1;
         private TabPage tabLogBot;
         private DarkTextBox txtLogBot;
         private Panel panel1;
         private Panel panel2;
         private DarkTextBox txtLogChat;
+
+        #endregion
+
+        #region Constructors
+
+        public LogForm()
+        {
+            InitializeComponent();
+            logRec = new DebugLogger(this);
+        }
+
+        static LogForm()
+        {
+            Instance = new LogForm();
+        }
+
+        #endregion
+
+        #region Properties
+
+        public static LogForm Instance
+        {
+            get;
+        }
 
         public TextBox SelectedLog
         {
@@ -87,38 +78,9 @@ namespace Grimoire.UI
             }
         }
 
-        public static LogForm Instance
-        {
-            get;
-        }
+        #endregion
 
-        public LogForm()
-        {
-            InitializeComponent();
-            logRec = new DebugLogger(this);
-        }
-
-        private void LogForm_Load(object sender, EventArgs e)
-        {
-            FormClosing += LogForm_FormClosing;
-            string font = Config.Instance.GetValue<string>("font");
-            float? fontSize = float.Parse(Config.Instance.GetValue<string>("fontSize") ?? "8.25", System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-            if (font != null && fontSize != null)
-            {
-                this.Font = new Font(font, (float)fontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
-            }
-        }
-
-        private void LogForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (e.CloseReason == CloseReason.UserClosing || e.CloseReason == CloseReason.MdiFormClosing || e.CloseReason == CloseReason.FormOwnerClosing)
-            {
-                if (WindowState == FormWindowState.Minimized)
-                    WindowState = FormWindowState.Normal;
-                e.Cancel = true;
-                Hide();
-            }
-        }
+        #region Methods
 
         public void AppendDebug(string text)
         {
@@ -164,6 +126,7 @@ namespace Grimoire.UI
             else
                 txtLogChat.AppendText(text);
         }
+
         public void AppendScript(string text, bool ignoreInvoke = false)
         {
             if (text.Contains("{CLEAR}"))
@@ -178,6 +141,7 @@ namespace Grimoire.UI
             else
                 txtLogScript.AppendText(text);
         }
+
         /// <summary>
         /// Append Bot
         /// </summary>
@@ -194,6 +158,37 @@ namespace Grimoire.UI
             }
             else
                 txtLogBot.AppendText(text);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && components != null)
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        private void LogForm_Load(object sender, EventArgs e)
+        {
+            FormClosing += LogForm_FormClosing;
+            string font = Config.Instance.GetValue<string>("font");
+            float? fontSize = float.Parse(Config.Instance.GetValue<string>("fontSize") ?? "8.25", System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            if (font != null && fontSize != null)
+            {
+                this.Font = new Font(font, (float)fontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
+            }
+        }
+
+        private void LogForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing || e.CloseReason == CloseReason.MdiFormClosing || e.CloseReason == CloseReason.FormOwnerClosing)
+            {
+                if (WindowState == FormWindowState.Minimized)
+                    WindowState = FormWindowState.Normal;
+                e.Cancel = true;
+                Hide();
+            }
         }
 
         private void btnClear_Click(object sender, EventArgs e)
@@ -213,15 +208,6 @@ namespace Grimoire.UI
                     File.WriteAllText(saveFileDialog.FileName, SelectedLog.Text);
                 }
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && components != null)
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
         }
 
         private void InitializeComponent()
@@ -516,11 +502,6 @@ namespace Grimoire.UI
 
         }
 
-        static LogForm()
-        {
-            Instance = new LogForm();
-        }
-
         private void changeColorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ColorDialog cdlg = new ColorDialog();
@@ -534,5 +515,43 @@ namespace Grimoire.UI
             fdlg.ShowDialog();
             this.Font = fdlg.Font;
         }
+
+        #endregion
+
+        #region Classes
+
+        public class DebugLogger : TraceListener
+        {
+            #region Fields
+
+            private LogForm log;
+
+            #endregion
+
+            #region Constructors
+
+            public DebugLogger(LogForm log)
+            {
+                this.log = log;
+            }
+
+            #endregion
+
+            #region Methods
+
+            public override void Write(string message)
+            {
+                log.AppendDebug(message);
+            }
+
+            public override void WriteLine(string message)
+            {
+                log.AppendDebug(message + "\r\n");
+            }
+
+            #endregion
+        }
+
+        #endregion
     }
 }

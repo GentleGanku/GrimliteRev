@@ -4,6 +4,8 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdRestart : IBotCommand
     {
+        #region Methods
+
         public async Task Execute(IBotEngine instance)
         {
             instance.Index = 0;
@@ -14,5 +16,7 @@ namespace Grimoire.Botting.Commands.Misc
         {
             return "Restart bot";
         }
+
+        #endregion
     }
 }

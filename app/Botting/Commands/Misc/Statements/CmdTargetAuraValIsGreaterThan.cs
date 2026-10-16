@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdTargetAuraValIsGreaterThan : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdTargetAuraValIsGreaterThan()
         {
             Tag = "Target Aura";
             Text = "Target Aura's value is greater than";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -24,5 +30,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return $"Target Aura's value is greater than: {Value1}, {Value2}";
         }
+
+        #endregion
     }
 }

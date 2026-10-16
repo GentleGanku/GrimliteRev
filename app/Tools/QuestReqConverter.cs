@@ -8,6 +8,8 @@ namespace Grimoire.Tools
 {
     public class QuestReqConverter : JsonConverter
     {
+        #region Methods
+
         public override bool CanConvert(Type objectType)
         {
             return objectType == typeof(List<ItemBase>);
@@ -22,5 +24,7 @@ namespace Grimoire.Tools
         {
 
         }
+
+        #endregion
     }
 }

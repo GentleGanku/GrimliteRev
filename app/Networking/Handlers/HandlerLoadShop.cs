@@ -8,6 +8,8 @@ namespace Grimoire.Networking.Handlers
 {
     public class HandlerLoadShop : IJsonMessageHandler
     {
+        #region Properties
+
         public string[] HandledCommands
         {
             get;
@@ -15,6 +17,10 @@ namespace Grimoire.Networking.Handlers
         {
             "loadShop"
         };
+
+        #endregion
+
+        #region Methods
 
         public async void Handle(JsonMessage message)
         {
@@ -24,10 +30,14 @@ namespace Grimoire.Networking.Handlers
                 World.OnShopLoaded(jToken.ToObject<ShopInfo>());
             }
         }
+
+        #endregion
     }
 
     public class HandlerBuyItem : IJsonMessageHandler
     {
+        #region Properties
+
         public string[] HandledCommands
         {
             get;
@@ -35,6 +45,10 @@ namespace Grimoire.Networking.Handlers
         {
             "buyItem"
         };
+
+        #endregion
+
+        #region Methods
 
         public async void Handle(JsonMessage message)
         {
@@ -60,6 +74,8 @@ namespace Grimoire.Networking.Handlers
                 Bot.Instance.ReloginOnItemBuyFailure();
             }
         }
+
+        #endregion
     }
 
 }

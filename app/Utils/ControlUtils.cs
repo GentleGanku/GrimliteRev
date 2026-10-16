@@ -5,11 +5,15 @@ namespace Grimoire.Utils
 {
     public static class ControlUtils
     {
+        #region Methods
+
         public static bool CheckedInvoke(this Control c, Action a)
         {
             bool req = c.InvokeRequired;
             (req ? () => c.Invoke(a) : a)();
             return req;
         }
+
+        #endregion
     }
 }

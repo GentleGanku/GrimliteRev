@@ -6,6 +6,8 @@ namespace Grimoire.Botting.Commands.Item
 {
     public class CmdBuyBack : IBotCommand
     {
+        #region Properties
+
         public string ItemName
         {
             get;
@@ -17,6 +19,10 @@ namespace Grimoire.Botting.Commands.Item
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -44,5 +50,7 @@ namespace Grimoire.Botting.Commands.Item
         {
             return "Buy back: " + ItemName;
         }
+
+        #endregion
     }
 }

@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdInTemp : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdInTemp()
         {
             Tag = "Item";
             Text = "Is in temp inventory";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -24,5 +30,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return $"Item is in temp inventory: {Value1}, {Value2}";
         }
+
+        #endregion
     }
 }

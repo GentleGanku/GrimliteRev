@@ -4,6 +4,16 @@ namespace Grimoire.Botting
 {
     public interface IBotEngine
     {
+        #region Events
+
+        event Action<bool> IsRunningChanged;
+        event Action<int> IndexChanged;
+        event Action<Configuration> ConfigurationChanged;
+
+        #endregion
+
+        #region Properties
+
         bool IsRunning
         {
             get;
@@ -15,12 +25,6 @@ namespace Grimoire.Botting
             get;
             set;
         }
-
-        bool IsVar(string value);
-
-        string GetVar(string value);
-
-        string Value(string var);
 
         Configuration Configuration
         {
@@ -34,11 +38,15 @@ namespace Grimoire.Botting
             set;
         }
 
-        event Action<bool> IsRunningChanged;
+        #endregion
 
-        event Action<int> IndexChanged;
+        #region Methods
 
-        event Action<Configuration> ConfigurationChanged;
+        bool IsVar(string value);
+
+        string GetVar(string value);
+
+        string Value(string var);
 
         void Start(Configuration config);
 
@@ -48,5 +56,6 @@ namespace Grimoire.Botting
 
         void Pause();
 
+        #endregion
     }
 }

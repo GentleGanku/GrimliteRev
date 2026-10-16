@@ -8,11 +8,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdPlayerIsInCell : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdPlayerIsInCell()
         {
             Tag = "Player";
             Text = "Player is in cell";
         }
+
+        #endregion
+
+        #region Properties
 
         private string _cell
         {
@@ -21,6 +27,10 @@ namespace Grimoire.Botting.Commands.Misc.Statements
                 return BotManager.Instance.ActiveBotEngine.Value(Value2);
             }
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -42,5 +52,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return $"Player is in {Value2}: " + Value1;
         }
+
+        #endregion
     }
 }

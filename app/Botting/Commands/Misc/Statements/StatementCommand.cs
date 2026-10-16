@@ -2,6 +2,8 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class StatementCommand
     {
+        #region Properties
+
         public string Tag
         {
             get;
@@ -37,5 +39,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
             get;
             set;
         }
+
+        #endregion
     }
 }

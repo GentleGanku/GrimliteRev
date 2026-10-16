@@ -9,9 +9,30 @@ namespace Grimoire.Tools.Buyback
 {
     public class AutoBuyBack : IDisposable
     {
-        private const string UrlBuyBack = "inventory.aspx?tab=buyback";
+        #region Fields
 
+        private const string UrlBuyBack = "inventory.aspx?tab=buyback";
         private readonly HttpClient _client;
+
+        #endregion
+
+        #region Constructors
+
+        public AutoBuyBack()
+        {
+            _client = new HttpClient(new HttpClientHandler
+            {
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
+                CookieContainer = new CookieContainer()
+            })
+            {
+                BaseAddress = new Uri("https://account.aq.com")
+            };
+        }
+
+        #endregion
+
+        #region Properties
 
         protected internal string Username
         {
@@ -29,17 +50,9 @@ namespace Grimoire.Tools.Buyback
             }
         }
 
-        public AutoBuyBack()
-        {
-            _client = new HttpClient(new HttpClientHandler
-            {
-                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
-                CookieContainer = new CookieContainer()
-            })
-            {
-                BaseAddress = new Uri("https://account.aq.com")
-            };
-        }
+        #endregion
+
+        #region Methods
 
         public async Task Perform(string item, int pageCap)
         {
@@ -58,6 +71,12 @@ namespace Grimoire.Tools.Buyback
                     await SendPost("inventory.aspx?tab=buyback", postData2);
                 }
             }
+        }
+
+        public void Dispose()
+        {
+            SendGet("logout.aspx").Wait();
+            _client.Dispose();
         }
 
         private async Task<string[]> GetItemHtml(string lastRequestedPage, string item, int cap)
@@ -107,10 +126,6 @@ namespace Grimoire.Tools.Buyback
             }
         }
 
-        public void Dispose()
-        {
-            SendGet("logout.aspx").Wait();
-            _client.Dispose();
-        }
+        #endregion
     }
 }

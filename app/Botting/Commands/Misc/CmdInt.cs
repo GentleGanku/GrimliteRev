@@ -4,12 +4,18 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdInt : IBotCommand
     {
+        #region Enums
+
         public enum Types
         {
             Set,
             Upper,
             Lower
         }
+
+        #endregion
+
+        #region Properties
 
         public Types type
         {
@@ -28,6 +34,10 @@ namespace Grimoire.Botting.Commands.Misc
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -65,5 +75,7 @@ namespace Grimoire.Botting.Commands.Misc
                     return $"Decrease {Int} by 1";
             }
         }
+
+        #endregion
     }
 }

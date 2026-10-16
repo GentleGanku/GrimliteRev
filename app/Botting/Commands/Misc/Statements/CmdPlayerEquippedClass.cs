@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdPlayerEquippedClass : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdPlayerEquippedClass()
         {
             Tag = "Player";
             Text = "Player's equipped class is";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -24,5 +30,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return $"Player's equipped class is: {Value1}, {Value2}";
         }
+
+        #endregion
     }
 }

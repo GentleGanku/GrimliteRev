@@ -5,6 +5,8 @@ namespace Grimoire.Networking.Handlers
 {
     public class HandlerAFK : IXtMessageHandler
     {
+        #region Properties
+
         public string[] HandledCommands
         {
             get;
@@ -12,6 +14,10 @@ namespace Grimoire.Networking.Handlers
         {
             "afk"
         };
+
+        #endregion
+
+        #region Methods
 
         public async void Handle(XtMessage message)
         {
@@ -25,5 +31,7 @@ namespace Grimoire.Networking.Handlers
                     break;
             }
         }
+
+        #endregion
     }
 }

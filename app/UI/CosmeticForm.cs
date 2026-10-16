@@ -13,16 +13,26 @@ namespace Grimoire.UI
 {
     public partial class CosmeticForm : DarkForm
     {
-        public static CosmeticForm Instance
-        {
-            get;
-        } = new CosmeticForm();
+        #region Constructors
 
         public CosmeticForm()
         {
             InitializeComponent();
             lbItems.SelectionMode = SelectionMode.MultiExtended;
         }
+
+        #endregion
+
+        #region Properties
+
+        public static CosmeticForm Instance
+        {
+            get;
+        } = new CosmeticForm();
+
+        #endregion
+
+        #region Methods
 
         private void lnkRefresh_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -439,5 +449,7 @@ namespace Grimoire.UI
 
             }
         }
+
+        #endregion
     }
 }

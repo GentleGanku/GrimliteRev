@@ -5,6 +5,8 @@ namespace Grimoire.Botting.Commands.Item
 {
     public class CmdBankTransfer : IBotCommand
     {
+        #region Properties
+
         public bool TransferFromBank
         {
             get;
@@ -16,6 +18,10 @@ namespace Grimoire.Botting.Commands.Item
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -34,5 +40,7 @@ namespace Grimoire.Botting.Commands.Item
         {
             return (TransferFromBank ? "Bank -> Inventory: " : "Inventory -> Bank: ") + ItemName;
         }
+
+        #endregion
     }
 }

@@ -5,6 +5,8 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdLogout : IBotCommand
     {
+        #region Methods
+
         public async Task Execute(IBotEngine instance)
         {
             Player.Logout();
@@ -15,5 +17,7 @@ namespace Grimoire.Botting.Commands.Misc
         {
             return "Logout";
         }
+
+        #endregion
     }
 }

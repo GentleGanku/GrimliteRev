@@ -7,6 +7,8 @@ namespace Grimoire.Networking.Handlers
 {
     public class HandlerChat : IXtMessageHandler
     {
+        #region Properties
+
         public string[] HandledCommands
         {
             get;
@@ -16,6 +18,19 @@ namespace Grimoire.Networking.Handlers
             "whisper",
             "server"
         };
+
+        #endregion
+
+        #region Methods
+
+        public static async Task ResetAFKTimer()
+        {
+            while (Player.IsAfk)
+            {
+                Player.AFKPostpone();
+                await Task.Delay(60000);
+            }
+        }
 
         public void Handle(XtMessage message)
         {
@@ -40,14 +55,6 @@ namespace Grimoire.Networking.Handlers
             }
         }
 
-        public static async Task ResetAFKTimer()
-        {
-            while (Player.IsAfk)
-            {
-                Player.AFKPostpone();
-                await Task.Delay(60000);
-            }
-        }
-
+        #endregion
     }
 }

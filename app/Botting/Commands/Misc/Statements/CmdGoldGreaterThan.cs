@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdGoldGreaterThan : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdGoldGreaterThan()
         {
             Tag = "This player";
             Text = "Gold is greater than";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -24,5 +30,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return "Gold is greater than: " + Value1;
         }
+
+        #endregion
     }
 }

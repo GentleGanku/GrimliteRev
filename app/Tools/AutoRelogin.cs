@@ -11,6 +11,8 @@ namespace Grimoire.Tools
 {
     public static class AutoRelogin
     {
+        #region Properties
+
         public static bool IsTemporarilyKicked
         {
             get
@@ -26,8 +28,6 @@ namespace Grimoire.Tools
                 return Flash.Call<bool>("AreServersLoaded", new string[0]);
             }
         }
-
-        public static bool IsClientLoading(string Type) => Flash.Call<bool>("IsClientLoading", Type);
 
         public static bool LoginLabel
         {
@@ -60,6 +60,12 @@ namespace Grimoire.Tools
                 return Flash.Call<bool>("GameLabel", new string[0]);
             }
         }
+
+        #endregion
+
+        #region Methods
+
+        public static bool IsClientLoading(string Type) => Flash.Call<bool>("IsClientLoading", Type);
 
         public static void Login()
         {
@@ -105,23 +111,6 @@ namespace Grimoire.Tools
                 Task.Run(() => EnsureLoginSuccess(cts));
             }
             OptionsCheck(true);
-        }
-
-        private static async Task EnsureLoginSuccess(CancellationTokenSource cts)
-        {
-            for (int i = 0; i < 20; i++)
-            {
-                await Task.Delay(1000);
-                string map = Player.Map;
-                if (!string.IsNullOrEmpty(map) && !map.Equals("name", StringComparison.OrdinalIgnoreCase) && !map.Equals("battleon", StringComparison.OrdinalIgnoreCase))
-                {
-                    break;
-                }
-            }
-            if (Player.Map.Equals("battleon", StringComparison.OrdinalIgnoreCase))
-            {
-                Player.Logout();
-            }
         }
 
         public static async Task ForceLogin(Server server, CancellationTokenSource cts)
@@ -174,5 +163,23 @@ namespace Grimoire.Tools
             }
         }
 
+        private static async Task EnsureLoginSuccess(CancellationTokenSource cts)
+        {
+            for (int i = 0; i < 20; i++)
+            {
+                await Task.Delay(1000);
+                string map = Player.Map;
+                if (!string.IsNullOrEmpty(map) && !map.Equals("name", StringComparison.OrdinalIgnoreCase) && !map.Equals("battleon", StringComparison.OrdinalIgnoreCase))
+                {
+                    break;
+                }
+            }
+            if (Player.Map.Equals("battleon", StringComparison.OrdinalIgnoreCase))
+            {
+                Player.Logout();
+            }
+        }
+
+        #endregion
     }
 }

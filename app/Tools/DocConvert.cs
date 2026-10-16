@@ -8,6 +8,8 @@ namespace Grimoire.Tools
 {
     public static class DocConvert
     {
+        #region Methods
+
         public static bool IsBase64Encoded(string str)
         {
             try
@@ -128,5 +130,6 @@ namespace Grimoire.Tools
             return Task.FromResult(0);
         }
 
+        #endregion
     }
 }

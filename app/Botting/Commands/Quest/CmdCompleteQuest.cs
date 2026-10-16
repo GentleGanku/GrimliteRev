@@ -8,11 +8,17 @@ namespace Grimoire.Botting.Commands.Quest
 {
     public class CmdCompleteQuest : IBotCommand
     {
+        #region Properties
+
         public Game.Data.Quest Quest
         {
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -46,10 +52,14 @@ namespace Grimoire.Botting.Commands.Quest
         {
             return "Complete quest: " + ((Quest.ItemId != null && Quest.ItemId != "0") ? $"{Quest.Id}, {Quest.ItemId}" : Quest.Id.ToString());
         }
+
+        #endregion
     }
 
     public class CmdCompleteQuest2 : IBotCommand
     {
+        #region Properties
+
         public string QuestID
         {
             get;
@@ -78,6 +88,10 @@ namespace Grimoire.Botting.Commands.Quest
             }
         }
 
+        #endregion
+
+        #region Methods
+
         public async Task Execute(IBotEngine instance)
         {
             if (Player.Quests.LoadedQuests.Find(q => q.Id == _questID) == null)
@@ -105,6 +119,8 @@ namespace Grimoire.Botting.Commands.Quest
         {
             return $"Complete quest: {((ItemID != null && ItemID != "0") ? $"{QuestID}, {ItemID}" : QuestID)}";
         }
+
+        #endregion
     }
 
 }

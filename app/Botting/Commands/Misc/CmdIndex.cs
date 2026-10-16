@@ -4,12 +4,18 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdIndex : IBotCommand
     {
+        #region Enums
+
         public enum IndexCommand
         {
             Up,
             Down,
             Goto
         }
+
+        #endregion
+
+        #region Properties
 
         public IndexCommand Type
         {
@@ -22,6 +28,10 @@ namespace Grimoire.Botting.Commands.Misc
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -78,5 +88,7 @@ namespace Grimoire.Botting.Commands.Misc
                     return $"Goto index: {Index}";
             }
         }
+
+        #endregion
     }
 }

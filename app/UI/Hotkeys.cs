@@ -23,6 +23,8 @@ namespace Grimoire.UI
 {
     public class Hotkeys : DarkForm
     {
+        #region Fields
+
         public static readonly Action[] Actions = new Action[20]
         {
             delegate
@@ -158,6 +160,73 @@ namespace Grimoire.UI
             }
         };
 
+        public static readonly List<Hotkey> InstalledHotkeys = new List<Hotkey>();
+        private int _processId;
+        private IContainer components;
+        private DarkListBox lstKeys;
+        private DarkComboBox cbKeys;
+        private DarkComboBox cbActions;
+        private DarkButton btnAdd;
+        private DarkButton btnRemove;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Label label1;
+        private Label label2;
+        private DarkButton btnSave;
+        private static System.Threading.CancellationTokenSource login_cts;
+        private static System.Threading.CancellationTokenSource _cts;
+
+        #endregion
+
+        #region Constructors
+
+        private Hotkeys()
+        {
+            InitializeComponent();
+        }
+
+        #endregion
+
+        #region Properties
+
+        public static Hotkeys Instance
+        {
+            get;
+        } = new Hotkeys();
+
+        private string configPath
+        {
+            get
+            {
+                return Path.Combine(Application.StartupPath, "hotkeys.json");
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        public static async void ForceLogin(CancellationTokenSource cts)
+        {
+            if (!AutoRelogin.IsTemporarilyKicked)
+            {
+                Root.Instance.loginBoxToggle(false);
+                if (Player.IsLoggedIn)
+                {
+                    Player.Logout();
+                    await BotManager.Instance.ActiveBotEngine.WaitUntil(() => AutoRelogin.LoginLabel, () => !cts.IsCancellationRequested, 5, 1500);
+                }
+                AutoRelogin.LoginExecute();
+                await BotManager.Instance.ActiveBotEngine.WaitUntil(() => !AutoRelogin.IsClientLoading("Account"), () => !cts.IsCancellationRequested, 10, 500);
+                Root.Instance.serverCatch();
+                try
+                {
+                    await AutoRelogin.ForceLogin((Server)Root.Instance.toolStripComboBoxLoginServer.SelectedItem, cts);
+                }
+                catch { }
+                Root.Instance.loginBoxToggle(true);
+            }
+        }
+
         public void ShowForm(Form form)
         {
             if (form.WindowState == FormWindowState.Minimized)
@@ -177,6 +246,54 @@ namespace Grimoire.UI
                 form.BringToFront();
                 form.Focus();
             }
+        }
+
+        public void LoadHotkeys()
+        {
+            if (File.Exists(configPath))
+            {
+                Hotkey[] array = JsonConvert.DeserializeObject<Hotkey[]>(File.ReadAllText(configPath));
+                if (array != null)
+                {
+                    InstalledHotkeys.AddRange(array);
+                    foreach (Hotkey installedHotkey in InstalledHotkeys)
+                    {
+                        lstKeys.Items.Add(installedHotkey.Text);
+                        installedHotkey.Install();
+                    }
+                }
+            }
+            KeyboardHook.Instance.KeyDown += OnKeyDown;
+            _processId = Process.GetCurrentProcess().Id;
+        }
+
+        public void OnKeyDown(Keys key)
+        {
+            Hotkey hotkey = InstalledHotkeys.First((Hotkey h) => h.Key == key);
+            if (ApplicationContainsFocus() || (string)cbActions.Items[hotkey.ActionIndex] == "Minimize to tray")
+            {
+                Actions[hotkey.ActionIndex]();
+            }
+        }
+
+        public bool ApplicationContainsFocus()
+        {
+            IntPtr foregroundWindow = GetForegroundWindow();
+            if (foregroundWindow == IntPtr.Zero)
+            {
+                return false;
+            }
+            GetWindowThreadProcessId(foregroundWindow, out int processId);
+            return processId == _processId;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && components != null)
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
         private static async void BotToggleAsync()
@@ -213,88 +330,11 @@ namespace Grimoire.UI
             }
         }
 
-        public static async void ForceLogin(CancellationTokenSource cts)
-        {
-            if (!AutoRelogin.IsTemporarilyKicked)
-            {
-                Root.Instance.loginBoxToggle(false);
-                if (Player.IsLoggedIn)
-                {
-                    Player.Logout();
-                    await BotManager.Instance.ActiveBotEngine.WaitUntil(() => AutoRelogin.LoginLabel, () => !cts.IsCancellationRequested, 5, 1500);
-                }
-                AutoRelogin.LoginExecute();
-                await BotManager.Instance.ActiveBotEngine.WaitUntil(() => !AutoRelogin.IsClientLoading("Account"), () => !cts.IsCancellationRequested, 10, 500);
-                Root.Instance.serverCatch();
-                try
-                {
-                    await AutoRelogin.ForceLogin((Server)Root.Instance.toolStripComboBoxLoginServer.SelectedItem, cts);
-                }
-                catch { }
-                Root.Instance.loginBoxToggle(true);
-            }
-        }
-
-        public static readonly List<Hotkey> InstalledHotkeys = new List<Hotkey>();
-
-        private int _processId;
-
-        private IContainer components;
-
-        private DarkListBox lstKeys;
-
-        private DarkComboBox cbKeys;
-
-        private DarkComboBox cbActions;
-
-        private DarkButton btnAdd;
-
-        private DarkButton btnRemove;
-
-        private TableLayoutPanel tableLayoutPanel1;
-        private Label label1;
-        private Label label2;
-        private DarkButton btnSave;
-
-        private static System.Threading.CancellationTokenSource login_cts;
-        private static System.Threading.CancellationTokenSource _cts;
-
-        public static Hotkeys Instance
-        {
-            get;
-        } = new Hotkeys();
-
-        private string configPath
-        {
-            get
-            {
-                return Path.Combine(Application.StartupPath, "hotkeys.json");
-            }
-        }
-
         [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
         private static extern IntPtr GetForegroundWindow();
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern int GetWindowThreadProcessId(IntPtr handle, out int processId);
-
-        private Hotkeys()
-        {
-            InitializeComponent();
-        }
-
-        private void Hotkeys_Load(object sender, EventArgs e)
-        {
-            string font = Config.Instance.GetValue<string>("font");
-            float? fontSize = float.Parse(Config.Instance.GetValue<string>("fontSize") ?? "8.25", System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-            lstKeys.DisplayMember = "Text";
-            cbActions.SelectedIndex = 0;
-            cbKeys.SelectedIndex = 0;
-            if (font != null && fontSize != null)
-            {
-                this.Font = new Font(font, (float)fontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
-            }
-        }
 
         private static CmdJoin2 CreateJoinCommand(string map, string room = "1e99", string cell = "Enter", string pad = "Spawn")
         {
@@ -313,6 +353,19 @@ namespace Grimoire.UI
             {
                 await cmd.Execute(null);
                 await Task.Delay(1000);
+            }
+        }
+
+        private void Hotkeys_Load(object sender, EventArgs e)
+        {
+            string font = Config.Instance.GetValue<string>("font");
+            float? fontSize = float.Parse(Config.Instance.GetValue<string>("fontSize") ?? "8.25", System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            lstKeys.DisplayMember = "Text";
+            cbActions.SelectedIndex = 0;
+            cbKeys.SelectedIndex = 0;
+            if (font != null && fontSize != null)
+            {
+                this.Font = new Font(font, (float)fontSize, FontStyle.Regular, GraphicsUnit.Point, 0);
             }
         }
 
@@ -370,45 +423,6 @@ namespace Grimoire.UI
             File.WriteAllText(configPath, JsonConvert.SerializeObject(InstalledHotkeys));
         }
 
-        public void LoadHotkeys()
-        {
-            if (File.Exists(configPath))
-            {
-                Hotkey[] array = JsonConvert.DeserializeObject<Hotkey[]>(File.ReadAllText(configPath));
-                if (array != null)
-                {
-                    InstalledHotkeys.AddRange(array);
-                    foreach (Hotkey installedHotkey in InstalledHotkeys)
-                    {
-                        lstKeys.Items.Add(installedHotkey.Text);
-                        installedHotkey.Install();
-                    }
-                }
-            }
-            KeyboardHook.Instance.KeyDown += OnKeyDown;
-            _processId = Process.GetCurrentProcess().Id;
-        }
-
-        public void OnKeyDown(Keys key)
-        {
-            Hotkey hotkey = InstalledHotkeys.First((Hotkey h) => h.Key == key);
-            if (ApplicationContainsFocus() || (string)cbActions.Items[hotkey.ActionIndex] == "Minimize to tray")
-            {
-                Actions[hotkey.ActionIndex]();
-            }
-        }
-
-        public bool ApplicationContainsFocus()
-        {
-            IntPtr foregroundWindow = GetForegroundWindow();
-            if (foregroundWindow == IntPtr.Zero)
-            {
-                return false;
-            }
-            GetWindowThreadProcessId(foregroundWindow, out int processId);
-            return processId == _processId;
-        }
-
         private void Hotkeys_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing)
@@ -416,15 +430,6 @@ namespace Grimoire.UI
                 e.Cancel = true;
                 Hide();
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && components != null)
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
         }
 
         private void InitializeComponent()
@@ -668,5 +673,7 @@ namespace Grimoire.UI
             this.PerformLayout();
 
         }
+
+        #endregion
     }
 }

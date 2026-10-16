@@ -5,18 +5,7 @@ namespace Grimoire.Networking
 {
     public class JsonMessage : Message
     {
-        public JToken Object
-        {
-            get;
-        }
-
-        public JToken DataObject
-        {
-            get
-            {
-                return Object?["b"]?["o"];
-            }
-        }
+        #region Constructors
 
         public JsonMessage(string raw)
         {
@@ -31,9 +20,32 @@ namespace Grimoire.Networking
             }
         }
 
+        #endregion
+
+        #region Properties
+
+        public JToken Object
+        {
+            get;
+        }
+
+        public JToken DataObject
+        {
+            get
+            {
+                return Object?["b"]?["o"];
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
         public override string ToString()
         {
             return Object.ToString(Formatting.None);
         }
+
+        #endregion
     }
 }

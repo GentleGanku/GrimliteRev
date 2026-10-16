@@ -4,11 +4,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdUpdateVar : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdUpdateVar()
         {
             Tag = "Misc";
             Text = "Update Variable";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -27,5 +33,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return $"Update Variable {Value1}: {Value2}";
         }
+
+        #endregion
     }
 }

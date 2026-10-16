@@ -6,19 +6,33 @@ namespace Grimoire.UI
 {
     public partial class CommandNode : ResizableUserControl
     {
+        #region Fields
+
+        public Point previousPosition;
+
+        #endregion
+
+        #region Constructors
+
         public CommandNode()
         {
             InitializeComponent();
             previousPosition = this.Location;
         }
 
-        public Point previousPosition;
+        #endregion
+
+        #region Properties
 
         public Control activeControl
         {
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         private void CommandNode_MouseDown(object sender, MouseEventArgs e)
         {
@@ -67,23 +81,13 @@ namespace Grimoire.UI
         {
             this.Dispose();
         }
+
+        #endregion
     }
 
     public class ResizableUserControl : UserControl
     {
-        public ResizableUserControl()
-        {
-            this.DoubleBuffered = true;
-            this.SetStyle(ControlStyles.ResizeRedraw, true); // this is to avoid visual artifacts
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            e.Graphics.FillRectangle(Brushes.Transparent, Top);
-            e.Graphics.FillRectangle(Brushes.Transparent, Left);
-            e.Graphics.FillRectangle(Brushes.Transparent, Right);
-            e.Graphics.FillRectangle(Brushes.Transparent, Bottom);
-        }
+        #region Fields
 
         private const int
             HTLEFT = 10,
@@ -96,6 +100,21 @@ namespace Grimoire.UI
             HTBOTTOMRIGHT = 17;
 
         const int _ = 6;
+
+        #endregion
+
+        #region Constructors
+
+        public ResizableUserControl()
+        {
+            this.DoubleBuffered = true;
+            this.SetStyle(ControlStyles.ResizeRedraw, true); // this is to avoid visual artifacts
+        }
+
+        #endregion
+
+        #region Properties
+
         Rectangle Top
         {
             get
@@ -103,6 +122,7 @@ namespace Grimoire.UI
                 return new Rectangle(0, 0, this.ClientSize.Width, _);
             }
         }
+
         Rectangle Left
         {
             get
@@ -110,6 +130,7 @@ namespace Grimoire.UI
                 return new Rectangle(0, 0, _, this.ClientSize.Height);
             }
         }
+
         Rectangle Bottom
         {
             get
@@ -117,6 +138,7 @@ namespace Grimoire.UI
                 return new Rectangle(0, this.ClientSize.Height - _, this.ClientSize.Width, _);
             }
         }
+
         Rectangle Right
         {
             get
@@ -132,6 +154,7 @@ namespace Grimoire.UI
                 return new Rectangle(0, 0, _, _);
             }
         }
+
         Rectangle TopRight
         {
             get
@@ -139,6 +162,7 @@ namespace Grimoire.UI
                 return new Rectangle(this.ClientSize.Width - _, 0, _, _);
             }
         }
+
         Rectangle BottomLeft
         {
             get
@@ -146,6 +170,7 @@ namespace Grimoire.UI
                 return new Rectangle(0, this.ClientSize.Height - _, _, _);
             }
         }
+
         Rectangle BottomRight
         {
             get
@@ -154,6 +179,17 @@ namespace Grimoire.UI
             }
         }
 
+        #endregion
+
+        #region Methods
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            e.Graphics.FillRectangle(Brushes.Transparent, Top);
+            e.Graphics.FillRectangle(Brushes.Transparent, Left);
+            e.Graphics.FillRectangle(Brushes.Transparent, Right);
+            e.Graphics.FillRectangle(Brushes.Transparent, Bottom);
+        }
 
         protected override void WndProc(ref Message message)
         {
@@ -175,5 +211,7 @@ namespace Grimoire.UI
             }
 
         }
+
+        #endregion
     }
 }

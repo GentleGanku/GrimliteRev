@@ -7,22 +7,13 @@ namespace Grimoire.Game.Data
 {
     public class Map
     {
+        #region Properties
 
         /// <summary>
         /// The ID of the map area.
         /// </summary>
         [JsonProperty("areaId")]
         public static int ID
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The name of the map.
-        /// </summary>
-        [JsonProperty("strMapName")]
-        public string Name
         {
             get;
             set;
@@ -47,6 +38,16 @@ namespace Grimoire.Game.Data
             {
                 return Area.Split('-')[1];
             }
+        }
+
+        /// <summary>
+        /// The name of the map.
+        /// </summary>
+        [JsonProperty("strMapName")]
+        public string Name
+        {
+            get;
+            set;
         }
 
         /// <summary>
@@ -137,10 +138,12 @@ namespace Grimoire.Game.Data
             }
         }
 
+        #endregion
     }
 
     public class Cell
     {
+        #region Properties
 
         /// <summary>
         /// The name of the cell.
@@ -172,10 +175,13 @@ namespace Grimoire.Game.Data
             set;
         }
 
+        #endregion
     }
 
     public class MapItem
     {
+        #region Properties
+
         /// <summary>
         /// The ID of the map item.
         /// </summary>
@@ -226,5 +232,6 @@ namespace Grimoire.Game.Data
             set;
         }
 
+        #endregion
     }
 }

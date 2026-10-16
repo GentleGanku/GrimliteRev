@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Combat
 {
     public class CmdAttack : IBotCommand
     {
+        #region Properties
+
         public string Monster
         {
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -20,5 +26,7 @@ namespace Grimoire.Botting.Commands.Combat
         {
             return "Attack: " + Monster;
         }
+
+        #endregion
     }
 }

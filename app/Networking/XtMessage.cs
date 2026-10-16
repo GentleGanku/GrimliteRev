@@ -2,11 +2,7 @@ namespace Grimoire.Networking
 {
     public class XtMessage : Message
     {
-        public string[] Arguments
-        {
-            get;
-            set;
-        }
+        #region Constructors
 
         public XtMessage(string raw)
         {
@@ -20,9 +16,25 @@ namespace Grimoire.Networking
             }
         }
 
+        #endregion
+
+        #region Properties
+
+        public string[] Arguments
+        {
+            get;
+            set;
+        }
+
+        #endregion
+
+        #region Methods
+
         public override string ToString()
         {
             return string.Join("%", Arguments);
         }
+
+        #endregion
     }
 }

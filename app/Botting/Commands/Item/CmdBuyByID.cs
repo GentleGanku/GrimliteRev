@@ -6,6 +6,8 @@ namespace Grimoire.Botting.Commands.Item
 {
     public class CmdBuyByID : IBotCommand
     {
+        #region Properties
+
         public string ItemID
         {
             get;
@@ -30,6 +32,10 @@ namespace Grimoire.Botting.Commands.Item
             set;
         } = false;
 
+        #endregion
+
+        #region Methods
+
         public async Task Execute(IBotEngine instance)
         {
             BotData.BotState = BotData.State.Transaction;
@@ -41,5 +47,7 @@ namespace Grimoire.Botting.Commands.Item
         {
             return $"Buy item by ID: {ItemID}, {ShopID}, {ShopItemID}";
         }
+
+        #endregion
     }
 }

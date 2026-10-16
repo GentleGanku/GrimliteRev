@@ -4,6 +4,8 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdToggleProvokeInMap : IBotCommand
     {
+        #region Properties
+
         public int Type
         {
             get;
@@ -15,6 +17,10 @@ namespace Grimoire.Botting.Commands.Misc
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -32,5 +38,7 @@ namespace Grimoire.Botting.Commands.Misc
                     return "Provoke in map: Toggle";
             }
         }
+
+        #endregion
     }
 }

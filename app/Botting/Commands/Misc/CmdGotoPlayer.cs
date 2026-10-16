@@ -9,6 +9,14 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdGotoPlayer : RegularExpression, IBotCommand
     {
+        #region Fields
+
+        private string _map;
+
+        #endregion
+
+        #region Properties
+
         public string PlayerName
         {
             get;
@@ -23,7 +31,9 @@ namespace Grimoire.Botting.Commands.Misc
             }
         }
 
-        private string _map;
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -51,5 +61,7 @@ namespace Grimoire.Botting.Commands.Misc
         {
             return "Goto player: " + PlayerName;
         }
+
+        #endregion
     }
 }

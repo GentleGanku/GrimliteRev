@@ -7,11 +7,17 @@ namespace Grimoire.Botting.Commands.Quest
 {
     public class CmdAcceptQuest : IBotCommand
     {
+        #region Properties
+
         public Game.Data.Quest Quest
         {
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -26,10 +32,14 @@ namespace Grimoire.Botting.Commands.Quest
         {
             return $"Accept quest: {Quest.Id}";
         }
+
+        #endregion
     }
 
     public class CmdAcceptQuest2 : IBotCommand
     {
+        #region Properties
+
         public string QuestID
         {
             get;
@@ -43,6 +53,10 @@ namespace Grimoire.Botting.Commands.Quest
                 return int.Parse(BotManager.Instance.ActiveBotEngine.Value(QuestID));
             }
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -61,6 +75,8 @@ namespace Grimoire.Botting.Commands.Quest
         {
             return $"Accept quest: {QuestID}";
         }
+
+        #endregion
     }
 
 }

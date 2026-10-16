@@ -7,11 +7,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdPlayerIsNotInMyCell : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdPlayerIsNotInMyCell()
         {
             Tag = "Player";
             Text = "Player is not in my cell";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -33,5 +39,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return "Player is not in my cell: " + Value1;
         }
+
+        #endregion
     }
 }

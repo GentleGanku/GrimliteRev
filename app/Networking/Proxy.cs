@@ -15,15 +15,46 @@ namespace Grimoire.Networking
 {
     public class Proxy
     {
-        public delegate void Receive(Message message);
-
-        private List<IJsonMessageHandler> _handlersJson;
-
-        private List<IXtMessageHandler> _handlersXt;
-
-        private List<IXmlMessageHandler> _handlersXml;
+        #region Fields
 
         public static CancellationTokenSource AppClosingToken;
+        private List<IJsonMessageHandler> _handlersJson;
+        private List<IXtMessageHandler> _handlersXt;
+        private List<IXmlMessageHandler> _handlersXml;
+
+        #endregion
+
+        #region Constructors
+
+        static Proxy()
+        {
+        }
+
+        private Proxy()
+        {
+        }
+
+        #endregion
+
+        #region Delegates
+
+        public delegate void Receive(Message message);
+
+        #endregion
+
+        #region Events
+
+        public static event Receive ReceivedFromGame;
+
+        #endregion
+
+        #region Properties
+
+        public static Proxy Instance
+        {
+            get;
+            set;
+        }
 
         public bool _catchXtPackets
         {
@@ -43,160 +74,9 @@ namespace Grimoire.Networking
             set;
         } = true;
 
-        public static Proxy Instance
-        {
-            get;
-            set;
-        }
+        #endregion
 
-        public static event Receive ReceivedFromGame;
-
-        private Proxy()
-        {
-        }
-
-        internal protected static void InitializeProxyHandlers()
-        {
-            Instance = new Proxy();
-            AppClosingToken = new CancellationTokenSource();
-            Instance._handlersJson = new List<IJsonMessageHandler>
-            {
-                new HandlerDrops(),
-                new HandlerGetQuests(),
-                new HandlerQuestComplete(),
-                new HandlerLoadShop(),
-                new HandlerBuyItem(),
-                new HandlerSkills(),
-                new HandlerArea(),
-                new HandlerBotSkills()
-            };
-            Instance._handlersXt = new List<IXtMessageHandler>
-            {
-                new HandlerAFK(),
-                new HandlerWarningsXt(),
-                new HandlerLogin(),
-                new HandlerChat(),
-                new HandlerXtJoin(),
-                new HandlerXtCellJoin(),
-                new HandlerConnection()
-            };
-            Instance._handlersXml = new List<IXmlMessageHandler>
-            {
-            };
-            ReceivedFromGame += Instance.ProcessMessage;
-        }
-
-        public void RegisterHandler(IJsonMessageHandler handler)
-        {
-            RegisterHandler(handler, _handlersJson);
-        }
-
-        public void RegisterHandler(IXmlMessageHandler handler)
-        {
-            RegisterHandler(handler, _handlersXml);
-        }
-
-        public void RegisterHandler(IXtMessageHandler handler)
-        {
-            RegisterHandler(handler, _handlersXt);
-        }
-
-        public void UnregisterHandler(IJsonMessageHandler handler)
-        {
-            _handlersJson.Remove(handler);
-        }
-
-        public void UnregisterHandler(IXmlMessageHandler handler)
-        {
-            _handlersXml.Remove(handler);
-        }
-
-        public void UnregisterHandler(IXtMessageHandler handler)
-        {
-            _handlersXt.Remove(handler);
-        }
-
-        private void RegisterHandler<T>(T handler, List<T> list)
-        {
-            if (!list.Contains(handler))
-            {
-                list.Add(handler);
-            }
-        }
-
-        public async Task SendToServer(string data)
-        {
-            string packet = data.Replace("{ROOM_ID}", World.RoomId.ToString());
-            if (packet != null && packet.Length > 0)
-            {
-                bool json = data.StartsWith("{");
-                World.SendPacket(data, json ? "Json" : "String");
-            }
-        }
-
-        public async Task SendToClient(string data)
-        {
-            string packet = data;
-            if (packet != null && packet.Length > 0)
-            {
-                bool json = data.StartsWith("{");
-                World.SendClientPacket(data, json ? "json" : "str");
-            }
-        }
-
-        private void ProcessMessage(Message message)
-        {
-            try
-            {
-                switch (message)
-                {
-                    case XtMessage xtMessage:
-                        foreach (IXtMessageHandler item in Instance._handlersXt.Where((IXtMessageHandler h) => h.HandledCommands.Contains(xtMessage.Command)))
-                        {
-                            item.Handle(xtMessage);
-                        }
-                        break;
-
-                    case JsonMessage jsonMessage:
-                        foreach (IJsonMessageHandler item in Instance._handlersJson.Where((IJsonMessageHandler h) => h.HandledCommands.Contains(jsonMessage.Command)))
-                        {
-                            item.Handle(jsonMessage);
-                        }
-                        break;
-
-                    case XmlMessage xmlMessage:
-                        foreach (IXmlMessageHandler item in Instance._handlersXml.Where((IXmlMessageHandler h) => h.HandledCommands.Contains(xmlMessage.Command)))
-                        {
-                            item.Handle(xmlMessage);
-                        }
-                        break;
-                }
-            }
-            catch { }
-        }
-
-        private Message CreateMessage(string raw)
-        {
-            if (raw != null && raw.Length > 0)
-            {
-                switch (raw[0])
-                {
-                    case '<':
-                        return new XmlMessage(raw);
-
-                    case '%':
-                        return new XtMessage(raw);
-
-                    case '{':
-                        return new JsonMessage(raw);
-                }
-            }
-            return null;
-        }
-
-        static Proxy()
-        {
-        }
+        #region Methods
 
         public static async void DisableBotSkill()
         {
@@ -237,6 +117,56 @@ namespace Grimoire.Networking
                 }
                 Root.Instance.rtbPing.Clear();
                 Root.Instance.rtbPing.AppendText($"⬤  {latency} ms");
+            }
+        }
+
+        public void RegisterHandler(IJsonMessageHandler handler)
+        {
+            RegisterHandler(handler, _handlersJson);
+        }
+
+        public void RegisterHandler(IXmlMessageHandler handler)
+        {
+            RegisterHandler(handler, _handlersXml);
+        }
+
+        public void RegisterHandler(IXtMessageHandler handler)
+        {
+            RegisterHandler(handler, _handlersXt);
+        }
+
+        public void UnregisterHandler(IJsonMessageHandler handler)
+        {
+            _handlersJson.Remove(handler);
+        }
+
+        public void UnregisterHandler(IXmlMessageHandler handler)
+        {
+            _handlersXml.Remove(handler);
+        }
+
+        public void UnregisterHandler(IXtMessageHandler handler)
+        {
+            _handlersXt.Remove(handler);
+        }
+
+        public async Task SendToServer(string data)
+        {
+            string packet = data.Replace("{ROOM_ID}", World.RoomId.ToString());
+            if (packet != null && packet.Length > 0)
+            {
+                bool json = data.StartsWith("{");
+                World.SendPacket(data, json ? "Json" : "String");
+            }
+        }
+
+        public async Task SendToClient(string data)
+        {
+            string packet = data;
+            if (packet != null && packet.Length > 0)
+            {
+                bool json = data.StartsWith("{");
+                World.SendClientPacket(data, json ? "json" : "str");
             }
         }
 
@@ -291,5 +221,95 @@ namespace Grimoire.Networking
             }
         }
 
+        internal protected static void InitializeProxyHandlers()
+        {
+            Instance = new Proxy();
+            AppClosingToken = new CancellationTokenSource();
+            Instance._handlersJson = new List<IJsonMessageHandler>
+            {
+                new HandlerDrops(),
+                new HandlerGetQuests(),
+                new HandlerQuestComplete(),
+                new HandlerLoadShop(),
+                new HandlerBuyItem(),
+                new HandlerSkills(),
+                new HandlerArea(),
+                new HandlerBotSkills()
+            };
+            Instance._handlersXt = new List<IXtMessageHandler>
+            {
+                new HandlerAFK(),
+                new HandlerWarningsXt(),
+                new HandlerLogin(),
+                new HandlerChat(),
+                new HandlerXtJoin(),
+                new HandlerXtCellJoin(),
+                new HandlerConnection()
+            };
+            Instance._handlersXml = new List<IXmlMessageHandler>
+            {
+            };
+            ReceivedFromGame += Instance.ProcessMessage;
+        }
+
+        private void RegisterHandler<T>(T handler, List<T> list)
+        {
+            if (!list.Contains(handler))
+            {
+                list.Add(handler);
+            }
+        }
+
+        private void ProcessMessage(Message message)
+        {
+            try
+            {
+                switch (message)
+                {
+                    case XtMessage xtMessage:
+                        foreach (IXtMessageHandler item in Instance._handlersXt.Where((IXtMessageHandler h) => h.HandledCommands.Contains(xtMessage.Command)))
+                        {
+                            item.Handle(xtMessage);
+                        }
+                        break;
+
+                    case JsonMessage jsonMessage:
+                        foreach (IJsonMessageHandler item in Instance._handlersJson.Where((IJsonMessageHandler h) => h.HandledCommands.Contains(jsonMessage.Command)))
+                        {
+                            item.Handle(jsonMessage);
+                        }
+                        break;
+
+                    case XmlMessage xmlMessage:
+                        foreach (IXmlMessageHandler item in Instance._handlersXml.Where((IXmlMessageHandler h) => h.HandledCommands.Contains(xmlMessage.Command)))
+                        {
+                            item.Handle(xmlMessage);
+                        }
+                        break;
+                }
+            }
+            catch { }
+        }
+
+        private Message CreateMessage(string raw)
+        {
+            if (raw != null && raw.Length > 0)
+            {
+                switch (raw[0])
+                {
+                    case '<':
+                        return new XmlMessage(raw);
+
+                    case '%':
+                        return new XtMessage(raw);
+
+                    case '{':
+                        return new JsonMessage(raw);
+                }
+            }
+            return null;
+        }
+
+        #endregion
     }
 }

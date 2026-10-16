@@ -8,6 +8,8 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdPacket : RegularExpression, IBotCommand
     {
+        #region Properties
+
         public string Packet
         {
             get;
@@ -19,6 +21,10 @@ namespace Grimoire.Botting.Commands.Misc
             get;
             set;
         } = false;
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -61,10 +67,20 @@ namespace Grimoire.Botting.Commands.Misc
         {
             return (Client ? "Send client packet: " : "Send server packet: ") + Packet;
         }
+
+        #endregion
     }
 
     public class CmdPacket2 : RegularExpression, IBotCommand
     {
+        #region Fields
+
+        private string _packet;
+
+        #endregion
+
+        #region Properties
+
         public string Packet
         {
             get;
@@ -83,7 +99,9 @@ namespace Grimoire.Botting.Commands.Misc
             set;
         }
 
-        private string _packet;
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -97,6 +115,8 @@ namespace Grimoire.Botting.Commands.Misc
         {
             return (Client ? "Send packet to client: " : "Send packet to server: ") + Packet;
         }
+
+        #endregion
     }
 
 }

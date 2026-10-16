@@ -7,6 +7,15 @@ namespace Grimoire.Game.Data
 {
     public class Quests
     {
+        #region Events
+
+        public event Action<List<Quest>> QuestsLoaded;
+        public event Action<CompletedQuest> QuestCompleted;
+
+        #endregion
+
+        #region Properties
+
         public List<Quest> QuestTree
         {
             get
@@ -45,9 +54,9 @@ namespace Grimoire.Game.Data
             set;
         } = new List<Quest>();
 
-        public event Action<List<Quest>> QuestsLoaded;
+        #endregion
 
-        public event Action<CompletedQuest> QuestCompleted;
+        #region Methods
 
         public void OnQuestsLoaded(List<Quest> quests) => this.QuestsLoaded?.Invoke(quests);
 
@@ -81,5 +90,6 @@ namespace Grimoire.Game.Data
 
         public bool IsAvailable(int id) => Flash.Call<bool>("IsAvailable", id.ToString());
 
+        #endregion
     }
 }

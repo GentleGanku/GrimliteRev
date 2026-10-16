@@ -7,6 +7,8 @@ namespace Grimoire.Networking.Handlers
 {
     public class HandlerGetQuests : IJsonMessageHandler
     {
+        #region Properties
+
         public string[] HandledCommands
         {
             get;
@@ -14,6 +16,10 @@ namespace Grimoire.Networking.Handlers
         {
             "getQuests"
         };
+
+        #endregion
+
+        #region Methods
 
         public void Handle(JsonMessage message)
         {
@@ -24,5 +30,7 @@ namespace Grimoire.Networking.Handlers
                 Player.Quests.LoadedQuests.AddRange(quests.Select((KeyValuePair<int, Quest> q) => q.Value).ToList());
             }
         }
+
+        #endregion
     }
 }

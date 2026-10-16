@@ -6,6 +6,14 @@ namespace Grimoire.Game.Data
 {
     public class Server
     {
+        #region Properties
+
+        public static List<Server> List
+        {
+            get;
+            set;
+        }
+
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bOnline")]
         public bool IsOnline
@@ -72,11 +80,9 @@ namespace Grimoire.Game.Data
             set;
         }
 
-        public static List<Server> List
-        {
-            get;
-            set;
-        }
+        #endregion
+
+        #region Methods
 
         public override string ToString()
         {
@@ -102,5 +108,7 @@ namespace Grimoire.Game.Data
         {
             return false;
         }
+
+        #endregion
     }
 }

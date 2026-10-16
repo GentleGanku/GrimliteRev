@@ -5,6 +5,8 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdClientMessage : IBotCommand
     {
+        #region Properties
+
         public string Messages
         {
             get;
@@ -17,6 +19,10 @@ namespace Grimoire.Botting.Commands.Misc
             set;
         }
 
+        #endregion
+
+        #region Methods
+
         public async Task Execute(IBotEngine instance)
         {
             await Proxy.Instance.SendToClient(IsWarning ? $"%xt%warning%-1%{Messages}%" : $"%xt%server%-1%{Messages}%");
@@ -26,5 +32,7 @@ namespace Grimoire.Botting.Commands.Misc
         {
             return "Send " + (IsWarning ? "warning" : "info") + " message: " + Messages;
         }
+
+        #endregion
     }
 }

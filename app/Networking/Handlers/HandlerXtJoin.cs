@@ -7,6 +7,8 @@ namespace Grimoire.Networking.Handlers
 {
     public class HandlerXtJoin : IXtMessageHandler
     {
+        #region Properties
+
         public string[] HandledCommands
         {
             get;
@@ -14,6 +16,10 @@ namespace Grimoire.Networking.Handlers
         {
             "server"
         };
+
+        #endregion
+
+        #region Methods
 
         public void Handle(XtMessage message)
         {
@@ -26,10 +32,14 @@ namespace Grimoire.Networking.Handlers
             if (BotManager.Instance.CustomGuild != null)
                 BotManager.Instance.CustomGuild = BotManager.Instance.CustomGuild;
         }
+
+        #endregion
     }
 
     public class HandlerXtCellJoin : IXtMessageHandler
     {
+        #region Properties
+
         public string[] HandledCommands
         {
             get;
@@ -37,6 +47,10 @@ namespace Grimoire.Networking.Handlers
         {
             "moveToCell"
         };
+
+        #endregion
+
+        #region Methods
 
         public void Handle(XtMessage message)
         {
@@ -46,5 +60,7 @@ namespace Grimoire.Networking.Handlers
             if (OptionsManager.HidePlayers)
                 OptionsManager.DestroyPlayers(true);
         }
+
+        #endregion
     }
 }

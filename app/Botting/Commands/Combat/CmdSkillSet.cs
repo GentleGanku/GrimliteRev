@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Combat
 {
     public class CmdSkillSet : IBotCommand
     {
+        #region Properties
+
         public string Name
         {
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -21,5 +27,7 @@ namespace Grimoire.Botting.Commands.Combat
         {
             return "Use skill set: " + Name;
         }
+
+        #endregion
     }
 }

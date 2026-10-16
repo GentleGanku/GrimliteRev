@@ -7,6 +7,8 @@ namespace Grimoire.Game.Data
 {
     public class BankItem
     {
+        #region Fields
+
         public static readonly string[] EquippableCategories = new string[19]
         {
             "Sword",
@@ -63,6 +65,10 @@ namespace Grimoire.Game.Data
             {6, "Mage"},
             {9, "Lucky"}
         };
+
+        #endregion
+
+        #region Properties
 
         // Enhancement level; 100 is the maximum.
         [JsonProperty("EnhLvl")]
@@ -129,7 +135,6 @@ namespace Grimoire.Game.Data
             get;
             set;
         }
-
 
         [JsonProperty("bBank")]
         public string Bank
@@ -290,7 +295,6 @@ namespace Grimoire.Game.Data
             set;
         }
 
-        #region bools
         public bool IsEquippable
         {
             get
@@ -379,17 +383,6 @@ namespace Grimoire.Game.Data
             }
         }
 
-        public bool ShouldSerializeIsTemporary() => false;
-
-        public bool ShouldSerializeCost() => false;
-
-        public bool ShouldSerializeCategory() => false;
-
-        public bool ShouldSerializeShopItemId() => false;
-
-        public bool ShouldSerializeDropChance() => false;
-        #endregion
-
         /// <summary>
         /// The ID of the item.
         /// </summary>
@@ -399,6 +392,7 @@ namespace Grimoire.Game.Data
             get;
             set;
         }
+
         /// <summary>
         /// The name of the item.
         /// </summary>
@@ -409,6 +403,7 @@ namespace Grimoire.Game.Data
             get;
             set;
         }
+
         /// <summary>
         /// The description of the item.
         /// </summary>
@@ -418,6 +413,7 @@ namespace Grimoire.Game.Data
             get;
             set;
         }
+
         /// <summary>
         /// The quantity of the item in this stack.
         /// </summary>
@@ -427,6 +423,7 @@ namespace Grimoire.Game.Data
             get;
             set;
         }
+
         /// <summary>
         /// The maximum stack size this item can exit in.
         /// </summary>
@@ -436,6 +433,7 @@ namespace Grimoire.Game.Data
             get;
             set;
         }
+
         /// <summary>
         /// Indicates if the item is a member/upgrade only item.
         /// </summary>
@@ -446,6 +444,7 @@ namespace Grimoire.Game.Data
             get;
             set;
         }
+
         /// <summary>
         /// Indicates if the item is an AC item.
         /// </summary>
@@ -456,6 +455,7 @@ namespace Grimoire.Game.Data
             get;
             set;
         }
+
         /// <summary>
         /// The category of the item.
         /// </summary>
@@ -465,6 +465,7 @@ namespace Grimoire.Game.Data
             get;
             set;
         }
+
         /// <summary>
         /// Indicates if the item is a temporary item.
         /// </summary>
@@ -475,6 +476,7 @@ namespace Grimoire.Game.Data
             get;
             set;
         }
+
         /// <summary>
         /// Gets the item's sFile
         /// </summary>
@@ -484,6 +486,7 @@ namespace Grimoire.Game.Data
             get;
             set;
         }
+
         /// <summary>
         /// Gets the item's sFile
         /// </summary>
@@ -493,5 +496,21 @@ namespace Grimoire.Game.Data
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
+
+        public bool ShouldSerializeIsTemporary() => false;
+
+        public bool ShouldSerializeCost() => false;
+
+        public bool ShouldSerializeCategory() => false;
+
+        public bool ShouldSerializeShopItemId() => false;
+
+        public bool ShouldSerializeDropChance() => false;
+
+        #endregion
     }
 }

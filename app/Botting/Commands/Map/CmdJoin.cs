@@ -10,6 +10,8 @@ namespace Grimoire.Botting.Commands.Map
 {
     public class CmdJoin : IBotCommand
     {
+        #region Properties
+
         public string Map
         {
             get;
@@ -27,6 +29,10 @@ namespace Grimoire.Botting.Commands.Map
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -89,10 +95,14 @@ namespace Grimoire.Botting.Commands.Map
         {
             return $"Join: {Map}, {Cell}, {Pad}";
         }
+
+        #endregion
     }
 
     public class CmdJoin2 : IBotCommand
     {
+        #region Properties
+
         public string Map
         {
             get;
@@ -149,6 +159,10 @@ namespace Grimoire.Botting.Commands.Map
             }
         }
 
+        #endregion
+
+        #region Methods
+
         public async Task Execute(IBotEngine instance)
         {
             BotData.BotState = BotData.State.Move;
@@ -187,5 +201,7 @@ namespace Grimoire.Botting.Commands.Map
         {
             return $"Join: {Map}, {Room}, {Cell}, {Pad}";
         }
+
+        #endregion
     }
 }

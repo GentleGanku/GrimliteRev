@@ -7,11 +7,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdCellIs : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdCellIs()
         {
             Tag = "Map";
             Text = "Cell is";
         }
+
+        #endregion
+
+        #region Properties
 
         private string _cell
         {
@@ -20,6 +26,10 @@ namespace Grimoire.Botting.Commands.Misc.Statements
                 return (BotManager.Instance.ActiveBotEngine.Value(Value1) != "Blank" && BotManager.Instance.ActiveBotEngine.Value(Value1) != "Wait") ? BotManager.Instance.ActiveBotEngine.Value(Value1) : "Enter";
             }
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -34,5 +44,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return "Cell is: " + Value1;
         }
+
+        #endregion
     }
 }

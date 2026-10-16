@@ -8,10 +8,23 @@ namespace Grimoire.UI
 {
     public partial class Notepad : DarkForm
     {
+        #region Fields
+
+        private string font = System.Configuration.ConfigurationManager.AppSettings.Get("Font");
+        private float? fontSize = float.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("FontSize") ?? "8.25", System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+
+        #endregion
+
+        #region Constructors
+
         public Notepad()
         {
             InitializeComponent();
         }
+
+        #endregion
+
+        #region Methods
 
         private void Notepad_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -23,10 +36,6 @@ namespace Grimoire.UI
                 Hide();
             }
         }
-
-        private string font = System.Configuration.ConfigurationManager.AppSettings.Get("Font");
-
-        private float? fontSize = float.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("FontSize") ?? "8.25", System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
 
         private void Notepad_Load(object sender, EventArgs e)
         {
@@ -125,5 +134,7 @@ namespace Grimoire.UI
                 e.SuppressKeyPress = true;
             }
         }
+
+        #endregion
     }
 }

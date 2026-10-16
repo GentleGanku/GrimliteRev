@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdIsNotMember : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdIsNotMember()
         {
             Tag = "This player";
             Text = "This player is not Member";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -24,5 +30,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return "This player is not Member";
         }
+
+        #endregion
     }
 }

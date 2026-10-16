@@ -7,9 +7,14 @@ namespace Grimoire.Utils
 {
     public class InputBox
     {
-        private static int extraHeight = 20;
+        #region Fields
 
+        private static int extraHeight = 20;
         private static int labelHeight = 20;
+
+        #endregion
+
+        #region Methods
 
         public static DialogResult InputDialog(ref string input, string prompt, string title = "Title", int width = 250, int height = 85, int eHeight = 20, int lHeight = 20)
         {
@@ -78,5 +83,7 @@ namespace Grimoire.Utils
 
             return result;
         }
+
+        #endregion
     }
 }

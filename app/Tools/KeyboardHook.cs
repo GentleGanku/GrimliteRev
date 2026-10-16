@@ -7,26 +7,55 @@ namespace Grimoire.Tools
 {
     public class KeyboardHook : IDisposable
     {
-        public delegate IntPtr CallbackDelegate(int code, IntPtr wParam, IntPtr lParam);
+        #region Fields
 
         private const int WH_KEYBOARD_LL = 13;
-
         private const int WM_KEYDOWN = 256;
-
         private const int WM_SYSKEYDOWN = 260;
-
-        private readonly CallbackDelegate hookCallback;
-
         public readonly List<Keys> TargetedKeys;
-
+        private readonly CallbackDelegate hookCallback;
         private readonly IntPtr _hookId;
+
+        #endregion
+
+        #region Constructors
+
+        private KeyboardHook()
+        {
+            hookCallback = HookProc;
+            _hookId = SetWindowsHookEx(13, hookCallback, IntPtr.Zero, 0);
+            TargetedKeys = new List<Keys>();
+        }
+
+        #endregion
+
+        #region Delegates
+
+        public delegate IntPtr CallbackDelegate(int code, IntPtr wParam, IntPtr lParam);
+
+        #endregion
+
+        #region Events
+
+        public event Action<Keys> KeyDown;
+
+        #endregion
+
+        #region Properties
 
         public static KeyboardHook Instance
         {
             get;
         } = new KeyboardHook();
 
-        public event Action<Keys> KeyDown;
+        #endregion
+
+        #region Methods
+
+        public void Dispose()
+        {
+            UnhookWindowsHookEx(_hookId);
+        }
 
         [DllImport("user32", CallingConvention = CallingConvention.StdCall)]
         private static extern IntPtr SetWindowsHookEx(int idHook, CallbackDelegate lpfn, IntPtr hInstance, int threadId);
@@ -36,13 +65,6 @@ namespace Grimoire.Tools
 
         [DllImport("user32", CallingConvention = CallingConvention.StdCall)]
         private static extern IntPtr CallNextHookEx(IntPtr idHook, int nCode, IntPtr wParam, IntPtr lParam);
-
-        private KeyboardHook()
-        {
-            hookCallback = HookProc;
-            _hookId = SetWindowsHookEx(13, hookCallback, IntPtr.Zero, 0);
-            TargetedKeys = new List<Keys>();
-        }
 
         private IntPtr HookProc(int code, IntPtr wParam, IntPtr lParam)
         {
@@ -61,9 +83,6 @@ namespace Grimoire.Tools
             return CallNextHookEx(_hookId, code, wParam, lParam);
         }
 
-        public void Dispose()
-        {
-            UnhookWindowsHookEx(_hookId);
-        }
+        #endregion
     }
 }

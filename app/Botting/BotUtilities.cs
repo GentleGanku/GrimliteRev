@@ -15,8 +15,13 @@ namespace Grimoire.Botting
 {
     public static class BotUtilities
     {
+        #region Fields
 
         public static AxShockwaveFlash flash;
+
+        #endregion
+
+        #region Properties
 
         public static bool ActiveBot
         {
@@ -35,11 +40,16 @@ namespace Grimoire.Botting
             get;
             set;
         }
+
         public static bool ShouldUseSkill
         {
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public static async Task WaitUntil(this IBotEngine instance, Func<bool> condition, Func<bool> prerequisite = null, int timeout = 15, int delay = 1000, int finalDelay = 0)
         {
@@ -163,5 +173,6 @@ namespace Grimoire.Botting
             }
         }
 
+        #endregion
     }
 }

@@ -6,11 +6,17 @@ namespace Grimoire.Botting.Commands.Item
 {
     public class CmdLoad : IBotCommand
     {
+        #region Properties
+
         public int ShopId
         {
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -22,15 +28,23 @@ namespace Grimoire.Botting.Commands.Item
         {
             return "Load Shop: " + ShopId;
         }
+
+        #endregion
     }
 
     public class CmdLoad2 : IBotCommand
     {
+        #region Properties
+
         public string ShopId
         {
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -42,5 +56,7 @@ namespace Grimoire.Botting.Commands.Item
         {
             return "Load Shop: " + ShopId;
         }
+
+        #endregion
     }
 }

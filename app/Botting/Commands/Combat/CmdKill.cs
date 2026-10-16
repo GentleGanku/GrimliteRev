@@ -9,6 +9,16 @@ namespace Grimoire.Botting.Commands.Combat
 {
     public class CmdKill : IBotCommand
     {
+        #region Fields
+
+        private CancellationTokenSource _cts;
+        private int Index;
+        private int Count;
+
+        #endregion
+
+        #region Properties
+
         public string Monster
         {
             get;
@@ -21,11 +31,9 @@ namespace Grimoire.Botting.Commands.Combat
             set;
         }
 
-        private CancellationTokenSource _cts;
+        #endregion
 
-        private int Index;
-
-        private int Count;
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -42,6 +50,11 @@ namespace Grimoire.Botting.Commands.Combat
             await instance.WaitUntil(() => !Player.HasTarget, () => !_cts.IsCancellationRequested, -1, 500);
             _cts.Cancel();
             Player.CancelTarget();
+        }
+
+        public override string ToString()
+        {
+            return "Kill: " + Monster;
         }
 
         private async Task UseSkills(IBotEngine instance)
@@ -112,9 +125,6 @@ namespace Grimoire.Botting.Commands.Combat
             }
         }
 
-        public override string ToString()
-        {
-            return "Kill: " + Monster;
-        }
+        #endregion
     }
 }

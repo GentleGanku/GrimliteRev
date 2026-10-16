@@ -6,6 +6,7 @@ namespace Grimoire.Game.Data
 {
     public class ShopInfo
     {
+        #region Properties
 
         /// <summary>
         /// The exclusivity state of the shop (either for Member or not).
@@ -99,5 +100,7 @@ namespace Grimoire.Game.Data
             get;
             set;
         }
+
+        #endregion
     }
 }

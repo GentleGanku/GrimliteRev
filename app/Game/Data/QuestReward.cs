@@ -4,6 +4,8 @@ namespace Grimoire.Game.Data
 {
     public class QuestReward
     {
+        #region Properties
+
         [JsonProperty("iCP")]
         public int ClassPoints
         {
@@ -31,5 +33,7 @@ namespace Grimoire.Game.Data
             get;
             set;
         }
+
+        #endregion
     }
 }

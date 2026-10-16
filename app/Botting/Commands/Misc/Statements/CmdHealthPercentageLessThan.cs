@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdHealthPercentageLessThan : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdHealthPercentageLessThan()
         {
             Tag = "This player";
             Text = "Health percentage is less than";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -24,5 +30,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return "Health percentage is less than: " + Value1;
         }
+
+        #endregion
     }
 }

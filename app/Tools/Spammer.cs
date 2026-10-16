@@ -8,22 +8,38 @@ namespace Grimoire.Tools
 {
     public class Spammer
     {
+        #region Fields
+
         public List<string> _packets;
-
         private int _delay;
-
         private CancellationTokenSource _cancellationTokenSource;
+
+        #endregion
+
+        #region Constructors
+
+        public Spammer()
+        {
+        }
+
+        #endregion
+
+        #region Events
+
+        public event Action<int> IndexChanged;
+
+        #endregion
+
+        #region Properties
 
         public static Spammer Instance
         {
             get;
         } = new Spammer();
 
-        public event Action<int> IndexChanged;
+        #endregion
 
-        public Spammer()
-        {
-        }
+        #region Methods
 
         public void Start(List<string> packets, int delay)
         {
@@ -52,5 +68,7 @@ namespace Grimoire.Tools
                 await Task.Delay(_delay);
             }
         }
+
+        #endregion
     }
 }

@@ -6,12 +6,18 @@ namespace Grimoire.Botting.Commands.Quest
 {
     public class CmdQuestlist : IBotCommand
     {
+        #region Enums
+
         public enum State
         {
             Add,
             Remove,
             Clear
         }
+
+        #endregion
+
+        #region Properties
 
         public string QuestID
         {
@@ -46,6 +52,10 @@ namespace Grimoire.Botting.Commands.Quest
                 return (!string.IsNullOrEmpty(ItemID)) ? BotManager.Instance.ActiveBotEngine.Value(ItemID) : null;
             }
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -89,5 +99,7 @@ namespace Grimoire.Botting.Commands.Quest
             }
             return "Quest list";
         }
+
+        #endregion
     }
 }

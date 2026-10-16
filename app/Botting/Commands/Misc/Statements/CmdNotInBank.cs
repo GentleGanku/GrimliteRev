@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdNotInBank : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdNotInBank()
         {
             Tag = "Item";
             Text = "Is not in bank";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -24,5 +30,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return "Item is not in bank: " + Value1 + ", " + Value2;
         }
+
+        #endregion
     }
 }

@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Item
 {
     public class CmdGetDrop : IBotCommand
     {
+        #region Properties
+
         public string ItemName
         {
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -21,5 +27,7 @@ namespace Grimoire.Botting.Commands.Item
         {
             return "Get drop: " + ItemName;
         }
+
+        #endregion
     }
 }

@@ -7,11 +7,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdNotEquipped : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdNotEquipped()
         {
             Tag = "Item";
             Text = "Is not equipped";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -26,5 +32,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return "Item is not equipped: " + Value1;
         }
+
+        #endregion
     }
 }

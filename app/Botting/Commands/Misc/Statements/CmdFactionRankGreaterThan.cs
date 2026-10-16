@@ -6,11 +6,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdFactionRankGreaterThan : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdFactionRankGreaterThan()
         {
             Tag = "This player";
             Text = "Faction Rank is greater than";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -25,5 +31,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return $"Faction Rank is greater than: {Value1}, {Value2}";
         }
+
+        #endregion
     }
 }

@@ -7,6 +7,8 @@ namespace Grimoire.UI
 {
     public partial class ShortcutsForm : DarkForm
     {
+        #region Fields
+
         // Keep in sync with the handlers in BotManager (lstBoxs_KeyPress, btnSearchCmd_KeyDown, lstCommands_DoubleClick, AddCommand).
         private static readonly string[][] Sections =
         {
@@ -29,6 +31,10 @@ namespace Grimoire.UI
             new[] { "Right-click", "Bot Manager menu" }
         };
 
+        #endregion
+
+        #region Constructors
+
         public ShortcutsForm()
         {
             InitializeComponent();
@@ -46,6 +52,10 @@ namespace Grimoire.UI
             }
             tblShortcuts.ResumeLayout();
         }
+
+        #endregion
+
+        #region Methods
 
         private void AddHeading(string text)
         {
@@ -77,5 +87,7 @@ namespace Grimoire.UI
                 Hide();
             }
         }
+
+        #endregion
     }
 }

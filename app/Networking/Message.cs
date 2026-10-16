@@ -2,6 +2,8 @@ namespace Grimoire.Networking
 {
     public class Message
     {
+        #region Properties
+
         public string RawContent
         {
             get;
@@ -19,5 +21,7 @@ namespace Grimoire.Networking
             get;
             set;
         } = true;
+
+        #endregion
     }
 }

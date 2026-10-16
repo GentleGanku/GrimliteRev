@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdPlayerAuraIsActive : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdPlayerAuraIsActive()
         {
             Tag = "Player Aura";
             Text = "Player Aura is active";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -24,5 +30,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return $"Player Aura is active: {Value1}";
         }
+
+        #endregion
     }
 }

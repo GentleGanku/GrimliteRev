@@ -10,10 +10,16 @@ namespace Grimoire.UI
 {
     public partial class BankForm : DarkForm
     {
+        #region Constructors
+
         public BankForm()
         {
             InitializeComponent();
         }
+
+        #endregion
+
+        #region Methods
 
         private string categoryName(string category)
         {
@@ -125,5 +131,7 @@ namespace Grimoire.UI
                 Hide();
             }
         }
+
+        #endregion
     }
 }

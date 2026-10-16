@@ -8,11 +8,17 @@ namespace Grimoire.Botting.Commands.Item
 {
     public class CmdUseBoost : IBotCommand
     {
+        #region Properties
+
         public string ItemName
         {
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -31,5 +37,7 @@ namespace Grimoire.Botting.Commands.Item
         {
             return ("Use boost: " + ItemName);
         }
+
+        #endregion
     }
 }

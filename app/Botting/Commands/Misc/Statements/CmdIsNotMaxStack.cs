@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdIsNotMaxStack : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdIsNotMaxStack()
         {
             Tag = "Item";
             Text = "Is not maxed in inventory";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -24,5 +30,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return $"Item is not maxed in inventory: {Value1}";
         }
+
+        #endregion
     }
 }

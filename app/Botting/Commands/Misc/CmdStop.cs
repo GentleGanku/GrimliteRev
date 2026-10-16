@@ -4,6 +4,8 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdStop : IBotCommand
     {
+        #region Methods
+
         public async Task Execute(IBotEngine instance)
         {
             BotManager.Instance.btnBotStart.Enabled = false;
@@ -21,5 +23,7 @@ namespace Grimoire.Botting.Commands.Misc
         {
             return "Stop bot";
         }
+
+        #endregion
     }
 }

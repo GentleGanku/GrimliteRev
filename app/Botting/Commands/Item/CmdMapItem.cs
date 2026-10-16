@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Item
 {
     public class CmdMapItem : IBotCommand
     {
+        #region Properties
+
         public int ItemId
         {
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -22,15 +28,23 @@ namespace Grimoire.Botting.Commands.Item
         {
             return $"Get map item: {ItemId}";
         }
+
+        #endregion
     }
 
     public class CmdMapItem2 : IBotCommand
     {
+        #region Properties
+
         public string ItemId
         {
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -44,5 +58,7 @@ namespace Grimoire.Botting.Commands.Item
         {
             return "Get map item: " + ItemId;
         }
+
+        #endregion
     }
 }

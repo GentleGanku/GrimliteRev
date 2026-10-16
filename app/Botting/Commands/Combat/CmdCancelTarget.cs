@@ -5,6 +5,8 @@ namespace Grimoire.Botting.Commands.Combat
 {
     public class CmdCancelTarget : IBotCommand
     {
+        #region Methods
+
         public async Task Execute(IBotEngine instance)
         {
             Player.CancelTarget();
@@ -14,5 +16,7 @@ namespace Grimoire.Botting.Commands.Combat
         {
             return "Cancel target";
         }
+
+        #endregion
     }
 }

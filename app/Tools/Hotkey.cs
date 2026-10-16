@@ -4,6 +4,8 @@ namespace Grimoire.Tools
 {
     public class Hotkey
     {
+        #region Properties
+
         public string Text
         {
             get;
@@ -22,6 +24,10 @@ namespace Grimoire.Tools
             set;
         }
 
+        #endregion
+
+        #region Methods
+
         public void Install()
         {
             KeyboardHook.Instance.TargetedKeys.Add(Key);
@@ -31,5 +37,7 @@ namespace Grimoire.Tools
         {
             KeyboardHook.Instance.TargetedKeys.Remove(Key);
         }
+
+        #endregion
     }
 }

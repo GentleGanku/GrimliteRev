@@ -4,6 +4,8 @@ namespace Grimoire.Game.Data
 {
     public class Faction
     {
+        #region Properties
+
         /// <summary>
         /// The ID of the faction.
         /// </summary>
@@ -78,6 +80,10 @@ namespace Grimoire.Game.Data
             }
         }
 
+        #endregion
+
+        #region Methods
+
         public int CalculatePoints(int value)
         {
             if (value >= 302500)
@@ -128,5 +134,6 @@ namespace Grimoire.Game.Data
             return 0;
         }
 
+        #endregion
     }
 }

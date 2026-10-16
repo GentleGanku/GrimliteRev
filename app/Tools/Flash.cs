@@ -23,7 +23,23 @@ namespace Grimoire.Tools
 
     public class Flash
     {
+        #region Fields
+
+        public static AxShockwaveFlash flash;
         private static Flash _instance;
+
+        #endregion
+
+        #region Events
+
+        public static event FlashCallHandler FlashCall;
+        public static event FlashErrorHandler FlashError;
+        public static event Action<int> SwfLoadProgress;
+
+        #endregion
+
+        #region Properties
+
         public static Flash Instance
         {
             get
@@ -32,13 +48,9 @@ namespace Grimoire.Tools
             }
         }
 
-        public static AxShockwaveFlash flash;
+        #endregion
 
-        public static event FlashCallHandler FlashCall;
-
-        public static event FlashErrorHandler FlashError;
-
-        public static event Action<int> SwfLoadProgress;
+        #region Methods
 
         public static void ProcessFlashCall(object sender, _IShockwaveFlashEvents_FlashCallEvent e)
         {
@@ -68,36 +80,9 @@ namespace Grimoire.Tools
             }
         }
 
-        public string GetGameObject(string path)
-        {
-            return Call<string>("getGameObject", path);
-        }
-
-        public string GetGameObjectStatic(string path)
-        {
-            return Call<string>("getGameObjectS", path);
-        }
-
-        public T GetGameObject<T>(string path, T def = default)
-        {
-            try
-            {
-                return JsonConvert.DeserializeObject<T>(GetGameObject(path));
-            }
-            catch
-            {
-                return def;
-            }
-        }
-
         public static string CallGameFunction(string path, params object[] args)
         {
             return args.Length > 0 ? Call("callGameFunction", new object[] { path }.Concat(args).ToArray()) : Call<string>("callGameFunction0", path);
-        }
-
-        public void SetGameObject(string path, object value)
-        {
-            Call("setGameObject", path, value);
         }
 
         public static string Call(string function, params object[] args)
@@ -155,6 +140,99 @@ namespace Grimoire.Tools
             Call<string>(function, args);
         }
 
+        public static string ToFlashXml(object o)
+        {
+            switch (o)
+            {
+                case null:
+                    return "<null/>";
+
+                case bool _:
+                    return $"<{o.ToString().ToLower()}/>";
+
+                case double _:
+                case float _:
+                case long _:
+                case int _:
+                    return $"<number>{o}</number>";
+
+                case ExpandoObject _:
+                    StringBuilder sb = new StringBuilder().Append("<object>");
+                    foreach (KeyValuePair<string, object> kvp in o as IDictionary<string, object>)
+                        sb.Append($"<property id=\"{kvp.Key}\">{ToFlashXml(kvp.Value)}</property>");
+                    return sb.Append("</object>").ToString();
+
+                default:
+                    if (o is Array)
+                    {
+                        StringBuilder _sb = new StringBuilder().Append("<array>");
+                        int k = 0;
+                        foreach (object el in o as Array)
+                            _sb.Append($"<property id=\"{k++}\">{ToFlashXml(el)}</property>");
+                        return _sb.Append("</array>").ToString();
+                    }
+                    return $"<string>{SecurityElement.Escape(o.ToString())}</string>";
+            }
+        }
+
+        public static object FromFlashXml(XElement el)
+        {
+            switch (el.Name.ToString())
+            {
+                case "number":
+                    return int.TryParse(el.Value, out int i) ? i : float.TryParse(el.Value, out float f) ? f : 0;
+                case "true":
+                    return true;
+                case "false":
+                    return false;
+                case "null":
+                    return null;
+                case "array":
+                    return el.Elements().Select(e => FromFlashXml(e)).ToArray();
+                case "object":
+                    dynamic d = new ExpandoObject();
+                    el.Elements().ForEach(e => d[e.Attribute("id").Value] = FromFlashXml(e.Elements().First()));
+                    return d;
+                default:
+                    return el.Value;
+            }
+        }
+
+        public static void CallHandler(object sender, _IShockwaveFlashEvents_FlashCallEvent e)
+        {
+            XElement el = XElement.Parse(e.request);
+            string name = el.Attribute("name").Value;
+            object[] args = el.Elements().Select(x => FromFlashXml(x)).ToArray();
+            FlashCall?.Invoke(flash, name, args);
+        }
+
+        public string GetGameObject(string path)
+        {
+            return Call<string>("getGameObject", path);
+        }
+
+        public string GetGameObjectStatic(string path)
+        {
+            return Call<string>("getGameObjectS", path);
+        }
+
+        public T GetGameObject<T>(string path, T def = default)
+        {
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(GetGameObject(path));
+            }
+            catch
+            {
+                return def;
+            }
+        }
+
+        public void SetGameObject(string path, object value)
+        {
+            Call("setGameObject", path, value);
+        }
+
         private static string BuildRequest(string method, params string[] args)
         {
             StringBuilder stringBuilder = new StringBuilder();
@@ -193,41 +271,6 @@ namespace Grimoire.Tools
             catch
             {
                 return default;
-            }
-        }
-
-        public static string ToFlashXml(object o)
-        {
-            switch (o)
-            {
-                case null:
-                    return "<null/>";
-
-                case bool _:
-                    return $"<{o.ToString().ToLower()}/>";
-
-                case double _:
-                case float _:
-                case long _:
-                case int _:
-                    return $"<number>{o}</number>";
-
-                case ExpandoObject _:
-                    StringBuilder sb = new StringBuilder().Append("<object>");
-                    foreach (KeyValuePair<string, object> kvp in o as IDictionary<string, object>)
-                        sb.Append($"<property id=\"{kvp.Key}\">{ToFlashXml(kvp.Value)}</property>");
-                    return sb.Append("</object>").ToString();
-
-                default:
-                    if (o is Array)
-                    {
-                        StringBuilder _sb = new StringBuilder().Append("<array>");
-                        int k = 0;
-                        foreach (object el in o as Array)
-                            _sb.Append($"<property id=\"{k++}\">{ToFlashXml(el)}</property>");
-                        return _sb.Append("</array>").ToString();
-                    }
-                    return $"<string>{SecurityElement.Escape(o.ToString())}</string>";
             }
         }
 
@@ -276,35 +319,6 @@ namespace Grimoire.Tools
             Player.CharUserID = int.Parse(loginResponse["userid"].ToString());
         }
 
-        public static object FromFlashXml(XElement el)
-        {
-            switch (el.Name.ToString())
-            {
-                case "number":
-                    return int.TryParse(el.Value, out int i) ? i : float.TryParse(el.Value, out float f) ? f : 0;
-                case "true":
-                    return true;
-                case "false":
-                    return false;
-                case "null":
-                    return null;
-                case "array":
-                    return el.Elements().Select(e => FromFlashXml(e)).ToArray();
-                case "object":
-                    dynamic d = new ExpandoObject();
-                    el.Elements().ForEach(e => d[e.Attribute("id").Value] = FromFlashXml(e.Elements().First()));
-                    return d;
-                default:
-                    return el.Value;
-            }
-        }
-
-        public static void CallHandler(object sender, _IShockwaveFlashEvents_FlashCallEvent e)
-        {
-            XElement el = XElement.Parse(e.request);
-            string name = el.Attribute("name").Value;
-            object[] args = el.Elements().Select(x => FromFlashXml(x)).ToArray();
-            FlashCall?.Invoke(flash, name, args);
-        }
+        #endregion
     }
 }

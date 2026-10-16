@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdGotoLabel : IBotCommand
     {
+        #region Properties
+
         public string Label
         {
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -25,5 +31,7 @@ namespace Grimoire.Botting.Commands.Misc
         {
             return "Goto label: " + Label;
         }
+
+        #endregion
     }
 }

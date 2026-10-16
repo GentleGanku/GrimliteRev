@@ -6,6 +6,8 @@ namespace Grimoire.Utils
 {
     public static class ReflectUtils
     {
+        #region Methods
+
         public static object GetDefaultValue(this Type type)
         {
             return type != typeof(void) && type != null && type.IsValueType ? Activator.CreateInstance(type) : null;
@@ -29,5 +31,7 @@ namespace Grimoire.Utils
             TimeZoneInfo tz = target ?? TimeZoneInfo.Local;
             return TimeZoneInfo.ConvertTimeFromUtc(linkTimeUtc, tz);
         }
+
+        #endregion
     }
 }

@@ -7,6 +7,8 @@ namespace Grimoire.Utils
 
     public static class EnumerableUtils
     {
+        #region Methods
+
         public static void ForEach<T>(this IEnumerable<T> enumerable, Consumer<T> func)
         {
             foreach (T item in enumerable)
@@ -28,5 +30,7 @@ namespace Grimoire.Utils
             list[indexB] = tmp;
             return list;
         }
+
+        #endregion
     }
 }

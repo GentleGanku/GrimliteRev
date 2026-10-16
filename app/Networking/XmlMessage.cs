@@ -4,10 +4,7 @@ namespace Grimoire.Networking
 {
     public class XmlMessage : Message
     {
-        public XmlDocument Body
-        {
-            get;
-        }
+        #region Constructors
 
         public XmlMessage(string raw)
         {
@@ -23,9 +20,24 @@ namespace Grimoire.Networking
             }
         }
 
+        #endregion
+
+        #region Properties
+
+        public XmlDocument Body
+        {
+            get;
+        }
+
+        #endregion
+
+        #region Methods
+
         public override string ToString()
         {
             return Body.OuterXml;
         }
+
+        #endregion
     }
 }

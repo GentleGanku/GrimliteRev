@@ -7,6 +7,8 @@ namespace Grimoire.Networking.Handlers
 {
     public class HandlerMapJoin : IJsonMessageHandler
     {
+        #region Properties
+
         public string[] HandledCommands
         {
             get;
@@ -14,6 +16,10 @@ namespace Grimoire.Networking.Handlers
         {
             "moveToArea"
         };
+
+        #endregion
+
+        #region Methods
 
         public void Handle(JsonMessage message)
         {
@@ -29,5 +35,7 @@ namespace Grimoire.Networking.Handlers
             await Task.Delay(10);
             Flash.Call("ChangeAreaName", BotClientConfig.Instance.GetValue<string>("areaName") ?? "discord.io/aqwbots");
         }
+
+        #endregion
     }
 }

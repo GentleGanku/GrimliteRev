@@ -8,6 +8,8 @@ namespace Grimoire.Botting.Commands.Item
 {
     public class CmdEquip : IBotCommand
     {
+        #region Properties
+
         public string ItemName
         {
             get;
@@ -19,6 +21,10 @@ namespace Grimoire.Botting.Commands.Item
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -39,5 +45,7 @@ namespace Grimoire.Botting.Commands.Item
         {
             return (Safe ? "Safe " : null) + "Equip: " + ItemName;
         }
+
+        #endregion
     }
 }

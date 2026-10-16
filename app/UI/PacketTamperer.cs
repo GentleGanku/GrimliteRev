@@ -10,29 +10,48 @@ namespace Grimoire.UI
 {
     public class PacketTamperer : DarkForm
     {
-        private IContainer components;
-
-        private RichTextBox txtSend;
+        #region Fields
 
         public RichTextBox txtReceive;
-
-        private DarkButton btnToServer;
-
         public DarkCheckBox chkCapturePackets;
+        private IContainer components;
+        private RichTextBox txtSend;
+        private DarkButton btnToServer;
         private SplitContainer splitContainer1;
         private DarkPanel panel1;
         private DarkButton btnToClient;
         private DarkButton btnClearCaptured;
         private TableLayoutPanel tableLayoutPanel1;
 
+        #endregion
+
+        #region Constructors
+
+        private PacketTamperer()
+        {
+            InitializeComponent();
+        }
+
+        #endregion
+
+        #region Properties
+
         public static PacketTamperer Instance
         {
             get;
         } = new PacketTamperer();
 
-        private PacketTamperer()
+        #endregion
+
+        #region Methods
+
+        protected override void Dispose(bool disposing)
         {
-            InitializeComponent();
+            if (disposing && components != null)
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
         private void PacketTamperer_FormClosing(object sender, FormClosingEventArgs e)
@@ -83,15 +102,6 @@ namespace Grimoire.UI
         private void btnClearCaptured_Click(object sender, EventArgs e)
         {
             txtReceive.Clear();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && components != null)
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
         }
 
         private void InitializeComponent()
@@ -265,5 +275,7 @@ namespace Grimoire.UI
             this.ResumeLayout(false);
 
         }
+
+        #endregion
     }
 }

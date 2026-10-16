@@ -7,6 +7,8 @@ namespace Grimoire.Game
 {
     public class ExtendedAvatar
     {
+        #region Properties
+
         /// <summary>
         /// The player's universal User ID.
         /// </summary>
@@ -203,5 +205,6 @@ namespace Grimoire.Game
             set;
         }
 
+        #endregion
     }
 }

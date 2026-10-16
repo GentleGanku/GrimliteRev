@@ -4,6 +4,8 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdSetClientLevel : IBotCommand
     {
+        #region Methods
+
         public async Task Execute(IBotEngine instance)
         {
             OptionsManager.SetClientLevel();
@@ -13,5 +15,7 @@ namespace Grimoire.Botting.Commands.Misc
         {
             return "Set client level to max";
         }
+
+        #endregion
     }
 }

@@ -9,15 +9,24 @@ namespace Grimoire.UI
 {
     public partial class DPSForm : DarkForm
     {
+        #region Fields
+
+        public Dictionary<string, int> Damage = new Dictionary<string, int>();
+        public Dictionary<string, int> DamagePerSecond = new Dictionary<string, int>();
+
+        #endregion
+
+        #region Constructors
+
         public DPSForm()
         {
             InitializeComponent();
             timer1.Start();
         }
 
-        public Dictionary<string, int> Damage = new Dictionary<string, int>();
+        #endregion
 
-        public Dictionary<string, int> DamagePerSecond = new Dictionary<string, int>();
+        #region Methods
 
         private void DPSForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -47,5 +56,7 @@ namespace Grimoire.UI
         {
             chart1.Series.Clear();
         }
+
+        #endregion
     }
 }

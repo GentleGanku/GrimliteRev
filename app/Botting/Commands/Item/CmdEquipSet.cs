@@ -11,17 +11,27 @@ namespace Grimoire.Botting.Commands.Item
 {
     public class CmdEquipSet : IBotCommand
     {
-        public string ItemName
-        {
-            get;
-            set;
-        }
+        #region Fields
 
         private readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
         {
             DefaultValueHandling = DefaultValueHandling.Include,
             TypeNameHandling = TypeNameHandling.All
         };
+
+        #endregion
+
+        #region Properties
+
+        public string ItemName
+        {
+            get;
+            set;
+        }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -54,5 +64,7 @@ namespace Grimoire.Botting.Commands.Item
         {
             return "Equip Set: " + ItemName;
         }
+
+        #endregion
     }
 }

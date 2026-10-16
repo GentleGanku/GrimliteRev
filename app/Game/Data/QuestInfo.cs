@@ -5,13 +5,18 @@ namespace Grimoire.Game.Data
 {
     public class QuestInfo
     {
-        public itemsS sItems;
+        #region Fields
 
+        public itemsS sItems;
         public itemsR rItems;
+
+        #endregion
     }
 
     public class itemsS
     {
+        #region Properties
+
         [JsonProperty("sIcon")]
         public string Icon
         {
@@ -119,7 +124,6 @@ namespace Grimoire.Game.Data
             set;
         }
 
-
         [JsonProperty("iStk")]
         public int MaxStack
         {
@@ -184,10 +188,14 @@ namespace Grimoire.Game.Data
             get;
             set;
         }
+
+        #endregion
     }
 
     public class itemsR
     {
+        #region Properties
+
         [JsonProperty("sIcon")]
         public string Icon
         {
@@ -295,7 +303,6 @@ namespace Grimoire.Game.Data
             set;
         }
 
-
         [JsonProperty("iStk")]
         public int MaxStack
         {
@@ -360,5 +367,7 @@ namespace Grimoire.Game.Data
             get;
             set;
         }
+
+        #endregion
     }
 }

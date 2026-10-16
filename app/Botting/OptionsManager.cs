@@ -10,23 +10,38 @@ namespace Grimoire.Botting
 {
     public class OptionsManager
     {
+        #region Fields
+
+        private static readonly string[] empty = new string[0];
         private static bool _isRunning;
-
         private static bool _disableAnimation;
-
         private static bool _lagKiller;
-
         private static bool _hidePlayers;
-
         private static bool _infRange;
-
         private static bool _hideYulgar;
-
         private static bool _hideRoom;
-
         private static bool _afk;
-
         private static bool _afk2;
+
+        #endregion
+
+        #region Constructors
+
+        static OptionsManager()
+        {
+            HandlerHideRoom = new HandlerMapJoin();
+            WalkSpeed = 8;
+        }
+
+        #endregion
+
+        #region Events
+
+        public static event Action<bool> StateChanged;
+
+        #endregion
+
+        #region Properties
 
         public static bool IsRunning
         {
@@ -226,9 +241,19 @@ namespace Grimoire.Botting
             }
         }
 
-        private static readonly string[] empty = new string[0];
+        private static IJsonMessageHandler HandlerHideRoom
+        {
+            get;
+        }
 
-        public static event Action<bool> StateChanged;
+        private static IXtMessageHandler HandlerAFK1
+        {
+            get;
+        }
+
+        #endregion
+
+        #region Methods
 
         public static void SetInfiniteRange(bool Toggle) => Flash.Call("SetInfiniteRange", Toggle);
 
@@ -303,16 +328,6 @@ namespace Grimoire.Botting
                 await Task.Delay(60000);
             }
         }
-        
-        private static void Provoke()
-        {
-            if (ProvokeMonsters)
-            {
-                World.SendPacket(!string.IsNullOrEmpty(ProvokePacket) && !ProvokePacket.Contains("MonMapID") ? $"{ProvokePacket}" : $"%xt%zm%aggroMon%{World.RoomId}%{string.Join("%", World.MonstersInCell(Player.Cell)?.ConvertAll<int>(m => m.MonMapID))}%");
-            }
-        }
-
-
 
         public static async Task ApplySettings()
         {
@@ -334,20 +349,14 @@ namespace Grimoire.Botting
             }
         }
 
-        private static IJsonMessageHandler HandlerHideRoom
+        private static void Provoke()
         {
-            get;
+            if (ProvokeMonsters)
+            {
+                World.SendPacket(!string.IsNullOrEmpty(ProvokePacket) && !ProvokePacket.Contains("MonMapID") ? $"{ProvokePacket}" : $"%xt%zm%aggroMon%{World.RoomId}%{string.Join("%", World.MonstersInCell(Player.Cell)?.ConvertAll<int>(m => m.MonMapID))}%");
+            }
         }
 
-        private static IXtMessageHandler HandlerAFK1
-        {
-            get;
-        }
-
-        static OptionsManager()
-        {
-            HandlerHideRoom = new HandlerMapJoin();
-            WalkSpeed = 8;
-        }
+        #endregion
     }
 }

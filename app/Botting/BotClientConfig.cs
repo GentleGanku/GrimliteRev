@@ -7,6 +7,20 @@ namespace Grimoire.Botting
 {
     public class BotClientConfig
     {
+        #region Constructors
+
+        public BotClientConfig() { }
+
+        #endregion
+
+        #region Properties
+
+        public static BotClientConfig Instance
+        {
+            get;
+            set;
+        } = BotClientConfig.Load(Application.StartupPath + "\\BotClientConfig.cfg");
+
         public string file
         {
             get;
@@ -19,13 +33,22 @@ namespace Grimoire.Botting
             set;
         } = new Dictionary<string, string>();
 
-        public BotClientConfig() { }
+        #endregion
 
-        public static BotClientConfig Instance
+        #region Methods
+
+        public static BotClientConfig Load(string path)
         {
-            get;
-            set;
-        } = BotClientConfig.Load(Application.StartupPath + "\\BotClientConfig.cfg");
+            if (!File.Exists(path))
+            {
+                File.Create(path).Dispose();
+            }
+            return new BotClientConfig()
+            {
+                file = path,
+                Contents = File.ReadLines(path).Select(l => l.Split('=')).ToDictionary(a => a[0], a => a[1])
+            };
+        }
 
         public string Get(string key)
         {
@@ -40,19 +63,6 @@ namespace Grimoire.Botting
         public void Save()
         {
             File.WriteAllLines(file, Contents.Select(kvp => $"{kvp.Key}={kvp.Value}"));
-        }
-
-        public static BotClientConfig Load(string path)
-        {
-            if (!File.Exists(path))
-            {
-                File.Create(path).Dispose();
-            }
-            return new BotClientConfig()
-            {
-                file = path,
-                Contents = File.ReadLines(path).Select(l => l.Split('=')).ToDictionary(a => a[0], a => a[1])
-            };
         }
 
         public T GetValue<T>(string key)
@@ -86,5 +96,7 @@ namespace Grimoire.Botting
             BotClientConfig.Instance.Set(key, value);
             BotClientConfig.Instance.Save();
         }
+
+        #endregion
     }
 }

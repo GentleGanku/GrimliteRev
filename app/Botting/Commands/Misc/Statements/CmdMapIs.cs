@@ -6,11 +6,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdMapIs : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdMapIs()
         {
             Tag = "Map";
             Text = "Map is";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -25,5 +31,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return "Map is: " + Value1;
         }
+
+        #endregion
     }
 }

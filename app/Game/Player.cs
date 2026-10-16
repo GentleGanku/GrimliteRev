@@ -11,6 +11,20 @@ namespace Grimoire.Game
 {
     public static class Player
     {
+        #region Constructors
+
+        static Player()
+        {
+            Bank = new Bank();
+            Inventory = new Inventory();
+            TempInventory = new TempInventory();
+            House = new House();
+            Quests = new Quests();
+        }
+
+        #endregion
+
+        #region Enums
 
         public enum State
         {
@@ -18,6 +32,10 @@ namespace Grimoire.Game
             Idle,
             InCombat
         }
+
+        #endregion
+
+        #region Properties
 
         public static int UserID
         {
@@ -76,17 +94,6 @@ namespace Grimoire.Game
         {
             get;
             set;
-        }
-
-        /// <summary>
-        /// Grabs Password string.
-        /// </summary>
-        private static string Password
-        {
-            get
-            {
-                return Flash.Call<string>("Password", new string[0]);
-            }
         }
 
         /// <summary>
@@ -274,6 +281,89 @@ namespace Grimoire.Game
             }
         }
 
+        public static string Class
+        {
+            get
+            {
+                return Flash.Call<string>("Class", new string[0]);
+            }
+        }
+
+        public static int ActivationFlag
+        {
+            get
+            {
+                return GameObject.Get<int>("world.myAvatar.objData.intActivationFlag");
+            }
+            set
+            {
+                GameObject.Set("world.myAvatar.objData.intActivationFlag", value);
+            }
+        }
+
+        public static bool HasDeathAd
+        {
+            get
+            {
+                return GameObject.Get<bool>("userPreference.data.bDeathAd");
+            }
+            set
+            {
+                GameObject.Set("userPreference.data.bDeathAd", value);
+            }
+        }
+
+        public static bool targetOnSelf
+        {
+            get
+            {
+                return GameObject.Get<bool>("world.myAvatar.target.isMyAvatar");
+            }
+            set
+            {
+                GameObject.Set("world.myAvatar.target.isMyAvatar", value);
+            }
+        }
+
+        public static int walkSpeed
+        {
+            get
+            {
+                return GameObject.Get<int>("world.WALKSPEED");
+            }
+            set
+            {
+                GameObject.Set("world.WALKSPEED", value);
+            }
+        }
+
+        public static int levelCap
+        {
+            get
+            {
+                return GameObject.Get<int>("intLevelCap");
+            }
+            set
+            {
+                GameObject.Set("intLevelCap", value);
+            }
+        }
+
+        /// <summary>
+        /// Grabs Password string.
+        /// </summary>
+        private static string Password
+        {
+            get
+            {
+                return Flash.Call<string>("Password", new string[0]);
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Checks if int skill is available (i think if its also off cooldown).
         /// </summary>
@@ -376,14 +466,6 @@ namespace Grimoire.Game
 
         public static void LoadMap(string name) => Flash.Call("LoadMap", new string[1] { name });
 
-        public static string Class
-        {
-            get
-            {
-                return Flash.Call<string>("Class", new string[0]);
-            }
-        }
-
         public static void AcceptQuest(int id) => Flash.Call("Accept", id.ToString());
 
         public static void CompleteQuest(int id, string itemid = null) => Flash.Call("Complete", id.ToString(), itemid);
@@ -405,30 +487,6 @@ namespace Grimoire.Game
 
         public static bool HasLoadedAvatar() => Flash.Call<bool>("HasLoadedAvatar", new string[0]);
 
-        public static int ActivationFlag
-        {
-            get
-            {
-                return GameObject.Get<int>("world.myAvatar.objData.intActivationFlag");
-            }
-            set
-            {
-                GameObject.Set("world.myAvatar.objData.intActivationFlag", value);
-            }
-        }
-
-        public static bool HasDeathAd
-        {
-            get
-            {
-                return GameObject.Get<bool>("userPreference.data.bDeathAd");
-            }
-            set
-            {
-                GameObject.Set("userPreference.data.bDeathAd", value);
-            }
-        }
-
         public static bool isAuraActive(string target, string aura) => Flash.Call<bool>("isAuraActive", target, aura);
 
         public static bool isAuraWithStrValActive(string target, string aura, string value) => Flash.Call<bool>("isAuraWithStrValActive", target, aura, value);
@@ -437,53 +495,10 @@ namespace Grimoire.Game
 
         public static void cancelAfk() => Flash.Call("cancelAfk", new string[0]);
 
-        public static bool targetOnSelf
-        {
-            get
-            {
-                return GameObject.Get<bool>("world.myAvatar.target.isMyAvatar");
-            }
-            set
-            {
-                GameObject.Set("world.myAvatar.target.isMyAvatar", value);
-            }
-        }
-
-        public static int walkSpeed
-        {
-            get
-            {
-                return GameObject.Get<int>("world.WALKSPEED");
-            }
-            set
-            {
-                GameObject.Set("world.WALKSPEED", value);
-            }
-        }
-
         public static void Unequip(string itemID) => Flash.Call("Unequip", itemID);
 
         public static void UnequipPotion(string itemName) => Flash.Call("UnequipPotion", itemName);
 
-        public static int levelCap
-        {
-            get
-            {
-                return GameObject.Get<int>("intLevelCap");
-            }
-            set
-            {
-                GameObject.Set("intLevelCap", value);
-            }
-        }
-
-        static Player()
-        {
-            Bank = new Bank();
-            Inventory = new Inventory();
-            TempInventory = new TempInventory();
-            House = new House();
-            Quests = new Quests();
-        }
+        #endregion
     }
 }

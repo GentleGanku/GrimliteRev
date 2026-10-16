@@ -12,6 +12,15 @@ namespace Grimoire.Networking.Handlers
 {
     public class HandlerDrops : IJsonMessageHandler
     {
+        #region Fields
+
+        public JToken items;
+        public InventoryItem drop;
+
+        #endregion
+
+        #region Properties
+
         public string[] HandledCommands
         {
             get;
@@ -22,9 +31,9 @@ namespace Grimoire.Networking.Handlers
             "addItems"
         };
 
-        public JToken items;
+        #endregion
 
-        public InventoryItem drop;
+        #region Methods
 
         public async void Handle(JsonMessage message)
         {
@@ -106,5 +115,7 @@ namespace Grimoire.Networking.Handlers
                     break;
             }
         }
+
+        #endregion
     }
 }

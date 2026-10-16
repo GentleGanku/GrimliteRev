@@ -5,7 +5,13 @@ namespace Grimoire.Utils
 {
     public class TimeLimiter
     {
+        #region Fields
+
         private Dictionary<string, int> _last = new Dictionary<string, int>();
+
+        #endregion
+
+        #region Methods
 
         public bool LimitedRun(string name, int delay, Action action)
         {
@@ -17,5 +23,7 @@ namespace Grimoire.Utils
             }
             return run;
         }
+
+        #endregion
     }
 }

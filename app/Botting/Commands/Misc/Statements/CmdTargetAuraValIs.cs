@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdTargetAuraValIs : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdTargetAuraValIs()
         {
             Tag = "Target Aura";
             Text = "Target Aura's value is";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -24,5 +30,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return $"Target Aura's value is: {Value1}, {Value2}";
         }
+
+        #endregion
     }
 }

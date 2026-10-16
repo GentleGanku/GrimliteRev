@@ -5,7 +5,13 @@ namespace Grimoire.Game.Data
 {
     public class TempItem
     {
+        #region Fields
+
         private string _name;
+
+        #endregion
+
+        #region Properties
 
         [JsonProperty("sName")]
         public string Name
@@ -92,6 +98,10 @@ namespace Grimoire.Game.Data
             set;
         }
 
+        #endregion
+
+        #region Methods
+
         public bool ShouldSerializeDescription()
         {
             return false;
@@ -131,5 +141,7 @@ namespace Grimoire.Game.Data
         {
             return false;
         }
+
+        #endregion
     }
 }

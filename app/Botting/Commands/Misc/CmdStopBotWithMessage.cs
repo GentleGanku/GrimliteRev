@@ -7,11 +7,17 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdStopBotWithMessage : IBotCommand
     {
+        #region Properties
+
         public string Message
         {
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -35,5 +41,7 @@ namespace Grimoire.Botting.Commands.Misc
         {
             return "Stop bot with message";
         }
+
+        #endregion
     }
 }

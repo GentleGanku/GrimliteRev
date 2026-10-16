@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdQuestInProgress : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdQuestInProgress()
         {
             Tag = "Quest";
             Text = "Quest is in progress";
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -28,5 +34,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return "Quest is in progress: " + Value1;
         }
+
+        #endregion
     }
 }

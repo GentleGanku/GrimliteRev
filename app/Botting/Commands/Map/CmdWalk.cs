@@ -7,6 +7,8 @@ namespace Grimoire.Botting.Commands.Map
 {
     public class CmdWalk : IBotCommand
     {
+        #region Properties
+
         public string X
         {
             get;
@@ -41,6 +43,10 @@ namespace Grimoire.Botting.Commands.Map
             }
         }
 
+        #endregion
+
+        #region Methods
+
         public async Task Execute(IBotEngine instance)
         {
             BotData.BotState = BotData.State.Others;
@@ -56,5 +62,7 @@ namespace Grimoire.Botting.Commands.Map
         {
             return (Type == "Random") ? "Walk randomly" : "Walk to: " + X + ", " + Y;
         }
+
+        #endregion
     }
 }

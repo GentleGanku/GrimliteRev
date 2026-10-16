@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdPlayersLessThan : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdPlayersLessThan()
         {
             Tag = "Player";
             Text = "Count is less than";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -24,5 +30,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return "Player count is less than: " + Value1;
         }
+
+        #endregion
     }
 }

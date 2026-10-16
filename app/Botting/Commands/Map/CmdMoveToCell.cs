@@ -6,6 +6,8 @@ namespace Grimoire.Botting.Commands.Map
 {
     public class CmdMoveToCell : IBotCommand
     {
+        #region Properties
+
         public string Cell
         {
             get;
@@ -34,6 +36,10 @@ namespace Grimoire.Botting.Commands.Map
             }
         }
 
+        #endregion
+
+        #region Methods
+
         public async Task Execute(IBotEngine instance)
         {
             BotData.BotState = BotData.State.Move;
@@ -46,5 +52,7 @@ namespace Grimoire.Botting.Commands.Map
         {
             return "Move to Cell: " + Cell + ", " + Pad;
         }
+
+        #endregion
     }
 }

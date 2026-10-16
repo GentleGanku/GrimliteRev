@@ -4,11 +4,17 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdDelay : IBotCommand
     {
+        #region Properties
+
         public int Delay
         {
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -19,5 +25,7 @@ namespace Grimoire.Botting.Commands.Misc
         {
             return "Delay: " + Delay;
         }
+
+        #endregion
     }
 }

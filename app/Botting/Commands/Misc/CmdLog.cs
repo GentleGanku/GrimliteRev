@@ -9,6 +9,8 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdLog : IBotCommand
     {
+        #region Properties
+
         public string Text
         {
             get;
@@ -26,6 +28,10 @@ namespace Grimoire.Botting.Commands.Misc
             get;
             set;
         } = false;
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -95,5 +101,7 @@ namespace Grimoire.Botting.Commands.Misc
             Clear = Text.Contains("{CLEAR}") ? true : false;
             return Clear ? $"Clear {typetxt}" : $"Log {typetxt}: {Text}";
         }
+
+        #endregion
     }
 }

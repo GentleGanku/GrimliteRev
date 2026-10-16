@@ -10,6 +10,14 @@ namespace Grimoire.Game.Data
 {
     public class Bank
     {
+        #region Fields
+
+        public List<InventoryItem> SavedItems;
+
+        #endregion
+
+        #region Properties
+
         public List<InventoryItem> Items
         {
             get
@@ -17,8 +25,6 @@ namespace Grimoire.Game.Data
                 return Flash.Call<List<InventoryItem>>("GetBankItems", new string[0]);
             }
         }
-
-        public List<InventoryItem> SavedItems;
 
         public int AvailableSlots
         {
@@ -43,6 +49,26 @@ namespace Grimoire.Game.Data
                 return Flash.Call<int>("BankSlots", new string[0]);
             }
         }
+
+        public bool HasBankOpen
+        {
+            get
+            {
+                return Flash.Call<bool>("HasBankOpen", new bool[0]);
+            }
+        }
+
+        public bool IsBankLoaded
+        {
+            get
+            {
+                return Flash.Call<bool>("IsBankLoaded", new string[0]);
+            }
+        }
+
+        #endregion
+
+        #region Methods
 
         public async Task TransferToBank(string itemName)
         {
@@ -107,21 +133,6 @@ namespace Grimoire.Game.Data
 
         public bool CanBankSwap(string invItemName, string bankItemName) => Flash.Call<bool>("CanBankSwap", invItemName, bankItemName);
 
-        public bool HasBankOpen
-        {
-            get
-            {
-                return Flash.Call<bool>("HasBankOpen", new bool[0]);
-            }
-        }
-
-        public bool IsBankLoaded
-        {
-            get
-            {
-                return Flash.Call<bool>("IsBankLoaded", new string[0]);
-            }
-        }
-
+        #endregion
     }
 }

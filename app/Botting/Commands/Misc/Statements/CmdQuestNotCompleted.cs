@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdQuestNotCompleted : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdQuestNotCompleted()
         {
             Tag = "Quest";
             Text = "Quest can not be turned in";
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -28,5 +34,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return "Quest cannot be turned in: " + Value1;
         }
+
+        #endregion
     }
 }

@@ -16,6 +16,42 @@ namespace Grimoire.UI
 {
     public class Loaders : DarkForm
     {
+        #region Fields
+
+        private const string XmlNodeTag = "n";
+        private const string XmlNodeTextAtt = "t";
+        private const string XmlNodeTagAtt = "tg";
+        private const string XmlNodeImageIndexAtt = "imageindex";
+        private readonly string font = Config.Instance.GetValue<string>("font");
+        private readonly float? fontSize = float.Parse(Config.Instance.GetValue<string>("fontSize") ?? "8.25", System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+        private IContainer components;
+        private DarkTextBox txtLoaders;
+        private DarkComboBox cbLoad;
+        private DarkButton btnLoad;
+        private DarkComboBox cbGrab;
+        private DarkButton btnGrab;
+        private DarkButton btnSave;
+        private DarkPanel panel1;
+        private DarkPanel panel2;
+        private SplitContainer splitContainer1;
+        private DarkButton btnLoad1;
+        private DarkButton btnForceAccept;
+        private TableLayoutPanel tableLayoutPanel1;
+        private TreeView treeGrabbed;
+
+        #endregion
+
+        #region Constructors
+
+        private Loaders()
+        {
+            InitializeComponent();
+        }
+
+        #endregion
+
+        #region Enums
+
         public enum Type
         {
             ShopItems,
@@ -27,33 +63,9 @@ namespace Grimoire.UI
             Monsters
         }
 
-        private IContainer components;
+        #endregion
 
-        private DarkTextBox txtLoaders;
-
-        private DarkComboBox cbLoad;
-
-        private DarkButton btnLoad;
-
-        private DarkComboBox cbGrab;
-
-        private DarkButton btnGrab;
-
-        private DarkButton btnSave;
-
-        private DarkPanel panel1;
-
-        private DarkPanel panel2;
-
-        private SplitContainer splitContainer1;
-
-        private DarkButton btnLoad1;
-
-        private DarkButton btnForceAccept;
-
-        private TableLayoutPanel tableLayoutPanel1;
-
-        private TreeView treeGrabbed;
+        #region Properties
 
         public static Loaders Instance
         {
@@ -66,9 +78,17 @@ namespace Grimoire.UI
             set;
         }
 
-        private Loaders()
+        #endregion
+
+        #region Methods
+
+        protected override void Dispose(bool disposing)
         {
-            InitializeComponent();
+            if (disposing && components != null)
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
         private void btnLoad_Click(object sender, EventArgs e)
@@ -151,11 +171,6 @@ namespace Grimoire.UI
             }
         }
 
-        private const string XmlNodeTag = "n";
-        private const string XmlNodeTextAtt = "t";
-        private const string XmlNodeTagAtt = "tg";
-        private const string XmlNodeImageIndexAtt = "imageindex";
-
         private void SaveNodes(TreeNodeCollection nodesCollection, XmlTextWriter textWriter)
         {
             for (int i = 0; i < nodesCollection.Count; i++)
@@ -232,15 +247,6 @@ namespace Grimoire.UI
                 e.Cancel = true;
                 Hide();
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && components != null)
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
         }
 
         private void InitializeComponent()
@@ -481,9 +487,6 @@ namespace Grimoire.UI
 
         }
 
-        private readonly string font = Config.Instance.GetValue<string>("font");
-        private readonly float? fontSize = float.Parse(Config.Instance.GetValue<string>("fontSize") ?? "8.25", System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-
         private void Loaders_Load(object sender, EventArgs e)
         {
             this.FormClosing += this.Loaders_FormClosing;
@@ -525,5 +528,7 @@ namespace Grimoire.UI
                 catch { }
             }
         }
+
+        #endregion
     }
 }

@@ -7,17 +7,23 @@ namespace Grimoire.UI
 {
     public partial class AboutForm : DarkForm
     {
+        #region Constructors
+
         public AboutForm()
         {
             InitializeComponent();
             lblUpdate.Text = $"v{Program.version} ({Program.releaseDate})";
         }
 
+        #endregion
+
+        #region Methods
+
         private async void AboutForm_Shown(object sender, EventArgs e)
         {
             await Program.CheckForLatestBuild();
         }
-        
+
         private void AboutForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing || e.CloseReason == CloseReason.MdiFormClosing || e.CloseReason == CloseReason.FormOwnerClosing)
@@ -72,5 +78,7 @@ namespace Grimoire.UI
         {
             Process.Start("https://github.com/GentleGanku");
         }
+
+        #endregion
     }
 }

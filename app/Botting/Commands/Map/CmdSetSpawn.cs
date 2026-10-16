@@ -5,6 +5,8 @@ namespace Grimoire.Botting.Commands.Map
 {
     public class CmdSetSpawn : IBotCommand
     {
+        #region Methods
+
         public async Task Execute(IBotEngine instance)
         {
             Player.SetSpawnPoint();
@@ -14,5 +16,7 @@ namespace Grimoire.Botting.Commands.Map
         {
             return "Set Spawnpoint";
         }
+
+        #endregion
     }
 }

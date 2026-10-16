@@ -9,7 +9,7 @@ namespace Grimoire.Game.Data
 {
     public class InventoryItem
     {
-        private string _name;
+        #region Fields
 
         public static readonly string[] EquippableCategories = new string[21]
         {
@@ -64,6 +64,12 @@ namespace Grimoire.Game.Data
             "Misc",
             "Item"
         };
+
+        private string _name;
+
+        #endregion
+
+        #region Properties
 
         [JsonProperty("iQty")]
         public int Quantity
@@ -220,34 +226,6 @@ namespace Grimoire.Game.Data
             set;
         }
 
-        public override string ToString()
-        {
-            return Name;
-        }
-
-        public async Task Equip()
-        {
-            if (IsEquipped || !IsEquippable)
-            {
-                return;
-            }
-            await BotManager.Instance.ActiveBotEngine.WaitUntil(() => World.IsActionAvailable(LockActions.EquipItem), null, 10, 500);
-            if (Category == "Item")
-            {
-                if (Player.Inventory.Items.FirstOrDefault((InventoryItem i) => i.Category == "Item" && i.IsEquipped) != null)
-                {
-                    Player.UnequipPotion(Name);
-                }
-                Player.EquipPotion(Id, Description, File, Name);
-            }
-            else
-            {
-                Player.Equip(Id);
-            }
-            await BotManager.Instance.ActiveBotEngine.WaitUntil(() => IsEquipped, null, 10, 500);
-        }
-
-        #region bools
         public bool IsEquippable
         {
             get
@@ -336,6 +314,37 @@ namespace Grimoire.Game.Data
             }
         }
 
+        #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            return Name;
+        }
+
+        public async Task Equip()
+        {
+            if (IsEquipped || !IsEquippable)
+            {
+                return;
+            }
+            await BotManager.Instance.ActiveBotEngine.WaitUntil(() => World.IsActionAvailable(LockActions.EquipItem), null, 10, 500);
+            if (Category == "Item")
+            {
+                if (Player.Inventory.Items.FirstOrDefault((InventoryItem i) => i.Category == "Item" && i.IsEquipped) != null)
+                {
+                    Player.UnequipPotion(Name);
+                }
+                Player.EquipPotion(Id, Description, File, Name);
+            }
+            else
+            {
+                Player.Equip(Id);
+            }
+            await BotManager.Instance.ActiveBotEngine.WaitUntil(() => IsEquipped, null, 10, 500);
+        }
+
         public bool ShouldSerializeIsTemporary() => false;
 
         public bool ShouldSerializeCost() => false;
@@ -345,6 +354,7 @@ namespace Grimoire.Game.Data
         public bool ShouldSerializeShopItemId() => false;
 
         public bool ShouldSerializeDropChance() => false;
+
         #endregion
     }
 }

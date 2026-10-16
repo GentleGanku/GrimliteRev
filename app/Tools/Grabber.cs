@@ -15,6 +15,8 @@ namespace Grimoire.Tools
 {
     public static class Grabber
     {
+        #region Methods
+
         public static void GrabQuests(TreeView tree)
         {
             List<Quest> quests = Player.Quests.QuestTree?.OrderBy((Quest q) => q.Id).ToList();
@@ -133,30 +135,6 @@ namespace Grimoire.Tools
             GrabItems(tree, inventory: false);
         }
 
-        private static void GrabItems(TreeView tree, bool inventory)
-        {
-            List<InventoryItem> items = (inventory ? Player.Inventory.Items : Player.Bank.Items)?.OrderBy((InventoryItem i) => i.Name).ToList();
-            if (items != null && items.Count > 0)
-            {
-                foreach (InventoryItem item in items)
-                {
-                    TreeNode treeNode = tree.Nodes.Add(item.Name);
-                    treeNode.ContextMenuStrip = Wiki(item);
-                    treeNode.Nodes.Add($"ID: {item.Id}");
-                    treeNode.Nodes.Add($"Char Item ID: {item.CharItemId}");
-                    treeNode.Nodes.Add($"Quantity: {item.Quantity}/{item.MaxStack}");
-                    treeNode.Nodes.Add($"AC-tagged: {item.IsAcItem}");
-                    treeNode.Nodes.Add($"Category: {item.Category}");
-                    treeNode.Nodes.Add($"Description: {item.Description}");
-                    if (item.IsEquippableNonItem || item.IsWeapon)
-                    {
-                        treeNode.Nodes.Add($"sFile: {item.File}");
-                        treeNode.Nodes.Add($"sLink: {item.Link}");
-                    }
-                }
-            }
-        }
-
         public static void GrabTempItems(TreeView tree)
         {
             List<TempItem> tempItems = Player.TempInventory.Items?.OrderBy((TempItem i) => i.Name).ToList();
@@ -200,6 +178,30 @@ namespace Grimoire.Tools
                         }
                         catch { }
                     };
+                }
+            }
+        }
+
+        private static void GrabItems(TreeView tree, bool inventory)
+        {
+            List<InventoryItem> items = (inventory ? Player.Inventory.Items : Player.Bank.Items)?.OrderBy((InventoryItem i) => i.Name).ToList();
+            if (items != null && items.Count > 0)
+            {
+                foreach (InventoryItem item in items)
+                {
+                    TreeNode treeNode = tree.Nodes.Add(item.Name);
+                    treeNode.ContextMenuStrip = Wiki(item);
+                    treeNode.Nodes.Add($"ID: {item.Id}");
+                    treeNode.Nodes.Add($"Char Item ID: {item.CharItemId}");
+                    treeNode.Nodes.Add($"Quantity: {item.Quantity}/{item.MaxStack}");
+                    treeNode.Nodes.Add($"AC-tagged: {item.IsAcItem}");
+                    treeNode.Nodes.Add($"Category: {item.Category}");
+                    treeNode.Nodes.Add($"Description: {item.Description}");
+                    if (item.IsEquippableNonItem || item.IsWeapon)
+                    {
+                        treeNode.Nodes.Add($"sFile: {item.File}");
+                        treeNode.Nodes.Add($"sLink: {item.Link}");
+                    }
                 }
             }
         }
@@ -718,10 +720,11 @@ namespace Grimoire.Tools
             }
         }
 
-
         private static void AddQuest(object s, EventArgs e, int ID)
         {
             BotManager.Instance.AddQuest(ID);
         }
+
+        #endregion
     }
 }

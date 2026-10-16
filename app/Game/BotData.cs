@@ -4,6 +4,8 @@ namespace Grimoire.Game
 {
     public static class BotData
     {
+        #region Enums
+
         public enum State
         {
             Others,
@@ -13,6 +15,10 @@ namespace Grimoire.Game
             Rest,
             Quest
         }
+
+        #endregion
+
+        #region Properties
 
         public static State BotState
         {
@@ -56,5 +62,6 @@ namespace Grimoire.Game
             set;
         } = new List<int>();
 
+        #endregion
     }
 }

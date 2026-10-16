@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdLevelGreaterThan : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdLevelGreaterThan()
         {
             Tag = "This player";
             Text = "Level is greater than";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -24,5 +30,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return "Level is greater than: " + Value1;
         }
+
+        #endregion
     }
 }

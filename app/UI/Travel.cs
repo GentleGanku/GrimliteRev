@@ -15,6 +15,11 @@ namespace Grimoire.UI
 {
     public class Travel : DarkForm
     {
+        #region Fields
+
+        public DarkComboBox cbCustomTravels;
+        public DarkCheckBox chkCustomHotkeys;
+        public DarkCheckBox chkCustomChatTrigger;
         private IContainer components;
         private DarkButton btnDage;
         private DarkButton btnEscherion;
@@ -44,7 +49,6 @@ namespace Grimoire.UI
         private DarkTextBox txtCustomCell;
         private DarkTextBox txtCustomPad;
         private DarkTextBox txtCustomTravelName;
-        public DarkComboBox cbCustomTravels;
         private DarkGroupBox grpCustomTravel2;
         private DarkButton btnGo;
         private Label lblCustomTravelTip;
@@ -62,18 +66,92 @@ namespace Grimoire.UI
         private DarkButton btnDummy;
         private DarkButton btnFrostSpirit;
         private DarkButton btnUltraBosses;
-        public DarkCheckBox chkCustomHotkeys;
-        public DarkCheckBox chkCustomChatTrigger;
         private DarkButton btnBinky;
+
+        #endregion
+
+        #region Constructors
+
+        static Travel()
+        {
+            Instance = new Travel();
+        }
+
+        private Travel()
+        {
+            InitializeComponent();
+        }
+
+        #endregion
+
+        #region Properties
 
         public static Travel Instance
         {
             get;
         }
 
-        private Travel()
+        public List<string> travels
         {
-            InitializeComponent();
+            get;
+            set;
+        } = new List<string>();
+
+        private List<string> travelNames
+        {
+            get;
+            set;
+        } = new List<string>();
+
+        #endregion
+
+        #region Methods
+
+        public void executeCustomTravel()
+        {
+            if (Player.IsAlive && Player.IsLoggedIn)
+            {
+                string[] targetedTravel = travels[cbCustomTravels.SelectedIndex].Split('`');
+                ExecuteTravel(new List<IBotCommand>
+                    {
+                        CreateJoinCommand(targetedTravel[1], targetedTravel[2], targetedTravel[3], true)
+                    });
+            }
+        }
+
+        public void scanCustomTravel()
+        {
+            if (travels.Count > 0)
+            {
+                travels.Clear();
+            }
+            if (cbCustomTravels.Items.Count > 0)
+            {
+                cbCustomTravels.Items.Clear();
+            }
+            if (travelNames.Count > 0)
+            {
+                travelNames.Clear();
+            }
+            string tempTravels = BotClientConfig.Instance.GetValue<string>("customTravels");
+            if (!string.IsNullOrEmpty(tempTravels))
+            {
+                travels.AddRange(tempTravels.Split('|'));
+                foreach (string travel in travels)
+                {
+                    travelNames.Add(travel.Split('`')[0]);
+                }
+                cbCustomTravels.Items.AddRange(travelNames.ToArray());
+            }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && components != null)
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
         private void Travel_FormClosing(object sender, FormClosingEventArgs e)
@@ -248,15 +326,6 @@ namespace Grimoire.UI
                 grpTravel.Enabled = true;
                 aweGroup.Enabled = true;
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && components != null)
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
         }
 
         private void InitializeComponent()
@@ -927,11 +996,6 @@ namespace Grimoire.UI
 
         }
 
-        static Travel()
-        {
-            Instance = new Travel();
-        }
-
         private void btnBinky_Click(object sender, EventArgs e)
         {
             if (Player.IsAlive && Player.IsLoggedIn)
@@ -1130,17 +1194,6 @@ namespace Grimoire.UI
             }
         }
 
-        public List<string> travels
-        {
-            get;
-            set;
-        } = new List<string>();
-        private List<string> travelNames
-        {
-            get;
-            set;
-        } = new List<string>();
-
         private void cbCustomTravels_Click(object sender, EventArgs e)
         {
             try
@@ -1250,18 +1303,6 @@ namespace Grimoire.UI
             }
         }
 
-        public void executeCustomTravel()
-        {
-            if (Player.IsAlive && Player.IsLoggedIn)
-            {
-                string[] targetedTravel = travels[cbCustomTravels.SelectedIndex].Split('`');
-                ExecuteTravel(new List<IBotCommand>
-                    {
-                        CreateJoinCommand(targetedTravel[1], targetedTravel[2], targetedTravel[3], true)
-                    });
-            }
-        }
-
         private void chkCustomHotkeys_CheckedChanged(object sender, EventArgs e)
         {
             BotClientConfig.Instance.SetValue("customTravelHotkeys", chkCustomHotkeys.Checked.ToString());
@@ -1276,31 +1317,6 @@ namespace Grimoire.UI
             }
         }
 
-        public void scanCustomTravel()
-        {
-            if (travels.Count > 0)
-            {
-                travels.Clear();
-            }
-            if (cbCustomTravels.Items.Count > 0)
-            {
-                cbCustomTravels.Items.Clear();
-            }
-            if (travelNames.Count > 0)
-            {
-                travelNames.Clear();
-            }
-            string tempTravels = BotClientConfig.Instance.GetValue<string>("customTravels");
-            if (!string.IsNullOrEmpty(tempTravels))
-            {
-                travels.AddRange(tempTravels.Split('|'));
-                foreach (string travel in travels)
-                {
-                    travelNames.Add(travel.Split('`')[0]);
-                }
-                cbCustomTravels.Items.AddRange(travelNames.ToArray());
-            }
-        }
-
+        #endregion
     }
 }

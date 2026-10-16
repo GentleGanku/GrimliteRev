@@ -4,6 +4,8 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdClearTemp : IBotCommand
     {
+        #region Methods
+
         public async Task Execute(IBotEngine instance)
         {
             Configuration.Tempvalues.Clear();
@@ -14,5 +16,7 @@ namespace Grimoire.Botting.Commands.Misc
         {
             return "Clear Variables and Integers";
         }
+
+        #endregion
     }
 }

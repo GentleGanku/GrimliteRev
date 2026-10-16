@@ -5,6 +5,8 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdBlank : IBotCommand
     {
+        #region Methods
+
         public async Task Execute(IBotEngine instance)
         {
         }
@@ -13,13 +15,13 @@ namespace Grimoire.Botting.Commands.Misc
         {
             return "";
         }
+
+        #endregion
     }
 
     public class CmdBlank2 : IBotCommand
     {
-        public async Task Execute(IBotEngine instance)
-        {
-        }
+        #region Properties
 
         public string Text
         {
@@ -27,17 +29,25 @@ namespace Grimoire.Botting.Commands.Misc
             set;
         }
 
+        #endregion
+
+        #region Methods
+
+        public async Task Execute(IBotEngine instance)
+        {
+        }
+
         public override string ToString()
         {
             return $"{Text}";
         }
+
+        #endregion
     }
 
     public class CmdBlank3 : IBotCommand
     {
-        public async Task Execute(IBotEngine instance)
-        {
-        }
+        #region Properties
 
         public string Text
         {
@@ -69,6 +79,14 @@ namespace Grimoire.Botting.Commands.Misc
             set;
         }
 
+        #endregion
+
+        #region Methods
+
+        public async Task Execute(IBotEngine instance)
+        {
+        }
+
         public Color Argb()
         {
             return Color.FromArgb(Alpha, R, G, B);
@@ -78,5 +96,7 @@ namespace Grimoire.Botting.Commands.Misc
         {
             return $"{Text}";
         }
+
+        #endregion
     }
 }

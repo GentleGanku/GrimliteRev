@@ -8,15 +8,25 @@ namespace Grimoire.UI
 {
     public partial class EyeDropper : DarkForm
     {
+        #region Constructors
+
         public EyeDropper()
         {
             InitializeComponent();
         }
 
+        #endregion
+
+        #region Properties
+
         public static EyeDropper Instance
         {
             get;
         } = new EyeDropper();
+
+        #endregion
+
+        #region Methods
 
         private void EyeDropper_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -50,5 +60,7 @@ namespace Grimoire.UI
                 eyeDropper1.SelectedColor.ToArgb().ToString("X2").Substring(2));
             richTextBox1.AppendText(color, eyeDropper1.SelectedColor);
         }
+
+        #endregion
     }
 }

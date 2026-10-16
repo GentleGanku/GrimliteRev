@@ -7,11 +7,25 @@ namespace Grimoire.Tools.Buyback
 {
     public class BuyBackPage
     {
-        private readonly HtmlDocument _doc;
+        #region Fields
 
         public const string EventTarget = "GridBuyBack";
-
         public const string Confirm = "YES%2c+GET+NOW+FOR+FREE";
+        private readonly HtmlDocument _doc;
+
+        #endregion
+
+        #region Constructors
+
+        public BuyBackPage(string html)
+        {
+            _doc = new HtmlDocument();
+            _doc.LoadHtml(html);
+        }
+
+        #endregion
+
+        #region Properties
 
         public string EventArgument
         {
@@ -74,10 +88,6 @@ namespace Grimoire.Tools.Buyback
             }
         }
 
-        public BuyBackPage(string html)
-        {
-            _doc = new HtmlDocument();
-            _doc.LoadHtml(html);
-        }
+        #endregion
     }
 }

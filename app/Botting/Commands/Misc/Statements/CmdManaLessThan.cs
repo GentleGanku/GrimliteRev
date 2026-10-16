@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdManaLessThan : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdManaLessThan()
         {
             Tag = "This player";
             Text = "Mana is less than";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -24,5 +30,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return "Mana is less than: " + Value1;
         }
+
+        #endregion
     }
 }

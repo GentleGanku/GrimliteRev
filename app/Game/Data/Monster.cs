@@ -5,7 +5,24 @@ namespace Grimoire.Game.Data
 {
     public class Monster
     {
+        #region Fields
+
         private string _name;
+
+        #endregion
+
+        #region Enums
+
+        public enum State
+        {
+            Dead,
+            Idle,
+            InCombat
+        }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// The race of the monster.
@@ -143,12 +160,6 @@ namespace Grimoire.Game.Data
             set;
         }
 
-        public enum State
-        {
-            Dead,
-            Idle,
-            InCombat
-        }
-
+        #endregion
     }
 }

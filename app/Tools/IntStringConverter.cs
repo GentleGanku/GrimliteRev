@@ -5,6 +5,8 @@ namespace Grimoire.Tools
 {
     public class IntStringConverter : JsonConverter
     {
+        #region Methods
+
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             writer.WriteValue((string)value == "undefined" ? 0 : value);
@@ -19,5 +21,7 @@ namespace Grimoire.Tools
         {
             return objectType == typeof(string);
         }
+
+        #endregion
     }
 }

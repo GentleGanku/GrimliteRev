@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdSetFPS : IBotCommand
     {
+        #region Properties
+
         public int FPS
         {
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -20,5 +26,7 @@ namespace Grimoire.Botting.Commands.Misc
         {
             return $"Set FPS: {FPS}";
         }
+
+        #endregion
     }
 }

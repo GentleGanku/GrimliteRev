@@ -8,6 +8,14 @@ namespace Grimoire.Networking.Handlers
 {
     public class HandlerArea : IJsonMessageHandler
     {
+        #region Fields
+
+        private static System.Threading.CancellationTokenSource _cts = new System.Threading.CancellationTokenSource();
+
+        #endregion
+
+        #region Properties
+
         public string[] HandledCommands
         {
             get;
@@ -16,7 +24,9 @@ namespace Grimoire.Networking.Handlers
             "moveToArea"
         };
 
-        private static System.Threading.CancellationTokenSource _cts = new System.Threading.CancellationTokenSource();
+        #endregion
+
+        #region Methods
 
         public async void Handle(JsonMessage message)
         {
@@ -24,5 +34,7 @@ namespace Grimoire.Networking.Handlers
             Map map = JsonConvert.DeserializeObject<Map>(message.DataObject.ToString());
             World.CurrentMap = map;
         }
+
+        #endregion
     }
 }

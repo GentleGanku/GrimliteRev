@@ -6,11 +6,17 @@ namespace Grimoire.Botting.Commands.Item
 {
     public class CmdSell : IBotCommand
     {
+        #region Properties
+
         public string ItemName
         {
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -22,5 +28,7 @@ namespace Grimoire.Botting.Commands.Item
         {
             return "Sell: " + ItemName;
         }
+
+        #endregion
     }
 }

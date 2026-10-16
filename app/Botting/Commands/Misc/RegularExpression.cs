@@ -4,6 +4,8 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class RegularExpression
     {
+        #region Methods
+
         public bool IsVar(string value)
         {
             return Regex.IsMatch(value, @"\[([^\)]*)\]");
@@ -13,5 +15,7 @@ namespace Grimoire.Botting.Commands.Misc
         {
             return Regex.Replace(value, @"[\[\]']+", "");
         }
+
+        #endregion
     }
 }

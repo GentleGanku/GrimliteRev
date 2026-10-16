@@ -4,6 +4,8 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdReturn : IBotCommand
     {
+        #region Methods
+
         public async Task Execute(IBotEngine instance)
         {
             try
@@ -25,5 +27,7 @@ namespace Grimoire.Botting.Commands.Misc
         {
             return "Return";
         }
+
+        #endregion
     }
 }

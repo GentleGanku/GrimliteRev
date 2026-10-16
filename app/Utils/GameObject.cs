@@ -5,7 +5,13 @@ namespace Grimoire.Utils
 {
     public static class GameObject
     {
+        #region Fields
+
         private static readonly TypedValueProvider _defaultProvider = new DefaultTypedValueProvider();
+
+        #endregion
+
+        #region Methods
 
         public static T Get<T>(string path)
         {
@@ -32,5 +38,7 @@ namespace Grimoire.Utils
         }
 
         public static void Set(string path, object value) => Flash.Call("setGameObject", path, value);
+
+        #endregion
     }
 }

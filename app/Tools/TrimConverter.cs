@@ -5,6 +5,8 @@ namespace Grimoire.Tools
 {
     public class TrimConverter : JsonConverter
     {
+        #region Methods
+
         public override bool CanConvert(Type objectType)
         {
             return objectType == typeof(string);
@@ -19,5 +21,7 @@ namespace Grimoire.Tools
         {
             throw new NotImplementedException();
         }
+
+        #endregion
     }
 }

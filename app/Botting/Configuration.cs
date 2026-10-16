@@ -5,7 +5,31 @@ namespace Grimoire.Botting
 {
     public class Configuration
     {
+        #region Fields
+
+        public static Dictionary<string, int> Tempvalues = new Dictionary<string, int>();
+        public static Dictionary<string, string> Tempvariable = new Dictionary<string, string>();
         private static Configuration _instance;
+
+        #endregion
+
+        #region Constructors
+
+        public Configuration()
+        {
+            Commands = new List<IBotCommand>();
+            Skills = new List<Skill>();
+            Quests = new List<Quest>();
+            Boosts = new List<InventoryItem>();
+            Drops = new List<string>();
+            Items = new List<string>();
+            NotifyUponDrop = new List<string>();
+        }
+
+        #endregion
+
+        #region Properties
+
         public static Configuration Instance
         {
             get
@@ -302,18 +326,6 @@ namespace Grimoire.Botting
             set;
         }
 
-        public static Dictionary<string, int> Tempvalues = new Dictionary<string, int>();
-        public static Dictionary<string, string> Tempvariable = new Dictionary<string, string>();
-
-        public Configuration()
-        {
-            Commands = new List<IBotCommand>();
-            Skills = new List<Skill>();
-            Quests = new List<Quest>();
-            Boosts = new List<InventoryItem>();
-            Drops = new List<string>();
-            Items = new List<string>();
-            NotifyUponDrop = new List<string>();
-        }
+        #endregion
     }
 }

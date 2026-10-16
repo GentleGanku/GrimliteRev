@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdListInInv : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdListInInv()
         {
             Tag = "Item";
             Text = "All in Item List is in inventory";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -24,5 +30,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return $"All in Item List is in inventory";
         }
+
+        #endregion
     }
 }

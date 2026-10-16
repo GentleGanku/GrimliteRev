@@ -2,6 +2,8 @@ namespace Grimoire.Tools.Plugins
 {
     public interface IGrimoirePlugin
     {
+        #region Properties
+
         string Author
         {
             get;
@@ -12,8 +14,14 @@ namespace Grimoire.Tools.Plugins
             get;
         }
 
+        #endregion
+
+        #region Methods
+
         void Load();
 
         void Unload();
+
+        #endregion
     }
 }

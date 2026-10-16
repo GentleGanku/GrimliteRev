@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdMonsterHealthLessThan : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdMonsterHealthLessThan()
         {
             Tag = "Monster";
             Text = "Monster's health is less than";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -24,5 +30,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return $"Monster's health is less than: {Value1}, {Value2}";
         }
+
+        #endregion
     }
 }

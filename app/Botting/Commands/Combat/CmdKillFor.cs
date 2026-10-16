@@ -5,6 +5,8 @@ namespace Grimoire.Botting.Commands.Combat
 {
     public class CmdKillFor : IBotCommand
     {
+        #region Properties
+
         public string Monster
         {
             get;
@@ -29,17 +31,9 @@ namespace Grimoire.Botting.Commands.Combat
             set;
         }
 
-        private bool notInInventory(string item, string quantity)
-        {
-            if (ItemType == ItemType.Items)
-            {
-                return !Player.Inventory.ContainsItem(item, quantity);
-            }
-            else
-            {
-                return !Player.TempInventory.ContainsItem(item, quantity);
-            }
-        }
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -58,5 +52,19 @@ namespace Grimoire.Botting.Commands.Combat
         {
             return "Kill for " + ((ItemType == ItemType.Items) ? "items" : "temporary items") + ": " + Monster;
         }
+
+        private bool notInInventory(string item, string quantity)
+        {
+            if (ItemType == ItemType.Items)
+            {
+                return !Player.Inventory.ContainsItem(item, quantity);
+            }
+            else
+            {
+                return !Player.TempInventory.ContainsItem(item, quantity);
+            }
+        }
+
+        #endregion
     }
 }

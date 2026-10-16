@@ -5,6 +5,8 @@ namespace Grimoire.Botting.Commands.Combat
 {
     public class CmdUseSkill : IBotCommand
     {
+        #region Properties
+
         public string Skill
         {
             get;
@@ -35,6 +37,10 @@ namespace Grimoire.Botting.Commands.Combat
             set;
         }
 
+        #endregion
+
+        #region Methods
+
         public async Task Execute(IBotEngine instance)
         {
             BotData.BotState = BotData.State.Combat;
@@ -60,10 +66,14 @@ namespace Grimoire.Botting.Commands.Combat
         {
             return "Skill " + this.Skill;
         }
+
+        #endregion
     }
 
     public class CmdUseSkill2 : IBotCommand
     {
+        #region Properties
+
         public string Monster
         {
             get;
@@ -100,6 +110,10 @@ namespace Grimoire.Botting.Commands.Combat
             set;
         }
 
+        #endregion
+
+        #region Methods
+
         public async Task Execute(IBotEngine instance)
         {
             var monster = instance.Value(Monster);
@@ -130,5 +144,7 @@ namespace Grimoire.Botting.Commands.Combat
         {
             return "Skill " + Skill;
         }
+
+        #endregion
     }
 }

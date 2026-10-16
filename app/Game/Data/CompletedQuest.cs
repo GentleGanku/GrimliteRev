@@ -5,6 +5,8 @@ namespace Grimoire.Game.Data
 {
     public class CompletedQuest
     {
+        #region Properties
+
         [JsonProperty("QuestID")]
         public int Id
         {
@@ -33,5 +35,7 @@ namespace Grimoire.Game.Data
             get;
             set;
         }
+
+        #endregion
     }
 }

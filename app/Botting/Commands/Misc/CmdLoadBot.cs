@@ -10,6 +10,8 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdLoadBot : IBotCommand
     {
+        #region Properties
+
         public string BotFileName
         {
             get;
@@ -29,6 +31,10 @@ namespace Grimoire.Botting.Commands.Misc
                 return BotManager.Instance.ActiveBotEngine.Value(BotFilePath);
             }
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -75,5 +81,7 @@ namespace Grimoire.Botting.Commands.Misc
         {
             return "Load bot: " + BotFileName;
         }
+
+        #endregion
     }
 }

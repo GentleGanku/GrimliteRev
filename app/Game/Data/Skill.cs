@@ -4,12 +4,18 @@ namespace Grimoire.Game.Data
 {
     public class Skill
     {
+        #region Enums
+
         public enum SkillType
         {
             Normal,
             Safe,
             Label
         }
+
+        #endregion
+
+        #region Properties
 
         public string Text
         {
@@ -53,6 +59,10 @@ namespace Grimoire.Game.Data
             set;
         }
 
+        #endregion
+
+        #region Methods
+
         public static string GetSkillName(string index)
         {
             return Flash.Call<string>("GetSkillName", new string[1]
@@ -70,5 +80,7 @@ namespace Grimoire.Game.Data
                 Player.UseSkill(Index);
             }
         }
+
+        #endregion
     }
 }

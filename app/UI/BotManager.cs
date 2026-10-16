@@ -34,11 +34,61 @@ namespace Grimoire.UI
 {
     public class BotManager : DarkForm
     {
-        private IBotEngine _activeBotEngine = new Bot();
+        #region Fields
 
-        private List<StatementCommand> _statementCommands;
-
-        private Dictionary<string, string> _defaultControlText;
+        public static LogForm Log;
+        public ListBox lstCommands;
+        public ListBox lstSkills;
+        public ListBox lstQuests;
+        public ListBox lstDrops;
+        public ListBox lstItems;
+        public DarkCheckBox chkSkillCD;
+        public DarkNumericUpDown numSkillD;
+        public DarkCheckBox chkAllSkillsCD;
+        public DarkCheckBox chkDisableAnims;
+        public DarkCheckBox chkSkipCutscenes;
+        public DarkCheckBox chkHidePlayers;
+        public DarkCheckBox chkLag;
+        public DarkCheckBox chkMagnet;
+        public DarkCheckBox chkProvoke;
+        public DarkCheckBox chkInfiniteRange;
+        public DarkComboBox cbServers;
+        public DarkCheckBox chkRelog;
+        public DarkCheckBox chkGender;
+        public DarkCheckBox chkUntarget;
+        public DarkCheckBox chkAntiAfk;
+        public DarkCheckBox chkChangeRoomTag;
+        public DarkCheckBox chkChangeChat;
+        public DarkCheckBox chkHideYulgarPlayers;
+        public DarkTextBox txtSearchCmd;
+        public DarkCheckBox chkPickup;
+        public DarkCheckBox chkPickupAcTag;
+        public DarkCheckBox chkBankOnStop;
+        public DarkButton btnGotoLabel;
+        public DarkButton btnAddLabel;
+        public DarkTextBox txtLabel;
+        public DarkCheckBox chkInMapCustom;
+        public DarkButton btnBotStart;
+        public DarkButton btnBotStop;
+        public DarkButton btnBotPause;
+        public DarkButton btnBotResume;
+        public DarkButton btnLoad;
+        public DarkCheckBox chkExitCombatUponStop;
+        public DarkCheckBox chkNotifyItemOnPickup;
+        public DarkCheckBox chkUnbankOnStart;
+        public DarkCheckBox chkRelogUponFailBuy;
+        public Dictionary<string, Color> CurrentColors = new Dictionary<string, Color>();
+        public Dictionary<string, bool> CurrentCentered = new Dictionary<string, bool>();
+        public int LastIndexedSearch = 0;
+        public string SKeyword = "";
+        public List<int> Filtered = new List<int>();
+        internal DarkTextBox txtCustomAggromon;
+        internal DarkTextBox txtQuestItemID;
+        internal DarkTextBox txtQuestID;
+        internal DarkCheckBox chkQuestlistItemID;
+        internal DarkTextBox numQuestItem;
+        internal DarkTextBox numQuestID;
+        internal DarkCheckBox chkReloginOnQuestFailure;
 
         private readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
         {
@@ -54,19 +104,15 @@ namespace Grimoire.UI
             TypeNameHandling = TypeNameHandling.All
         };
 
-        #region Definitions
+        private IBotEngine _activeBotEngine = new Bot();
+        private List<StatementCommand> _statementCommands;
+        private Dictionary<string, string> _defaultControlText;
         private IContainer components;
         private Panel[] _panels;
-        public ListBox lstCommands;
-        public ListBox lstSkills;
-        public ListBox lstQuests;
-        public ListBox lstDrops;
         private ListBox lstBoosts;
-        public static LogForm Log;
         private string _customName;
         private string _customGuild;
         private string _customClassName;
-        public ListBox lstItems;
         private VisualStudioTabControl.VisualStudioTabControl mainTabControl;
         private TabPage tabCombat;
         private DarkButton btnUseSkillSet;
@@ -75,7 +121,6 @@ namespace Grimoire.UI
         private DarkCheckBox chkSafeMP;
         private DarkButton btnRest;
         private DarkButton btnRestF;
-        public DarkCheckBox chkSkillCD;
         private DarkLabel label12;
         private DarkLabel label11;
         private DarkLabel label10;
@@ -86,12 +131,10 @@ namespace Grimoire.UI
         private DarkCheckBox chkMP;
         private DarkNumericUpDown numRest;
         private DarkCheckBox chkHP;
-        public DarkNumericUpDown numSkillD;
         private DarkLabel label2;
         private DarkNumericUpDown numSafe;
         private DarkNumericUpDown numSkillCmd;
         private DarkCheckBox chkExitRest;
-        public DarkCheckBox chkAllSkillsCD;
         private DarkTextBox txtKillFQ;
         private DarkTextBox txtKillFItem;
         private DarkTextBox txtKillFMon;
@@ -146,7 +189,6 @@ namespace Grimoire.UI
         private DarkButton btnServerPacket;
         private TabPage tabOptions;
         private DarkCheckBox chkEnableSettings;
-        public DarkCheckBox chkDisableAnims;
         private DarkTextBox txtSoundItem;
         private DarkButton btnSoundAdd;
         private DarkButton btnSoundDelete;
@@ -155,23 +197,14 @@ namespace Grimoire.UI
         private DarkLabel label9;
         private DarkNumericUpDown numWalkSpeed;
         private DarkLabel label8;
-        public DarkCheckBox chkSkipCutscenes;
-        public DarkCheckBox chkHidePlayers;
-        public DarkCheckBox chkLag;
-        public DarkCheckBox chkMagnet;
-        public DarkCheckBox chkProvoke;
-        public DarkCheckBox chkInfiniteRange;
         private DarkGroupBox grpLogin;
-        public DarkComboBox cbServers;
         private DarkCheckBox chkRelogRetry;
-        public DarkCheckBox chkRelog;
         private DarkNumericUpDown numRelogDelay;
         private DarkLabel label7;
         private DarkTextBox txtUsername;
         private DarkTextBox txtGuild;
         private DarkButton btnchangeName;
         private DarkButton btnchangeGuild;
-        public DarkCheckBox chkGender;
         private TabPage tabBots;
         private DarkLabel lblBoosts;
         private DarkLabel lblDrops;
@@ -193,7 +226,6 @@ namespace Grimoire.UI
         private DarkButton btnLogDebug;
         private DarkButton btnLog;
         private DarkTextBox txtLog;
-        public DarkCheckBox chkUntarget;
         private DarkLabel label5;
         private DarkNumericUpDown numOptionsTimer;
         private DarkLabel label6;
@@ -237,19 +269,14 @@ namespace Grimoire.UI
         private ToolStripMenuItem commandColorsToolStripMenuItem;
         private DarkButton btnChangeNameCmd;
         private DarkButton btnChangeGuildCmd;
-        public DarkCheckBox chkAntiAfk;
-        public DarkCheckBox chkChangeRoomTag;
-        public DarkCheckBox chkChangeChat;
         private DarkButton btnSetJoinLevel;
         private DarkButton btnClientPacket;
-        public DarkCheckBox chkHideYulgarPlayers;
         private DarkNumericUpDown numSetInt;
         private DarkTextBox txtSetInt;
         private DarkButton btnSetInt;
         private DarkButton btnDecreaseInt;
         private DarkButton btnIncreaseInt;
         private DarkButton btnSearchCmd;
-        public DarkTextBox txtSearchCmd;
         private TabPage tabMisc2;
         private DarkGroupBox groupBox1;
         private DarkButton btnAddInfoMsg;
@@ -259,10 +286,7 @@ namespace Grimoire.UI
         private DarkButton btnClearTempVar;
         private DarkGroupBox darkGroupBox4;
         private DarkCheckBox chkPickupAll;
-        public DarkCheckBox chkPickup;
         private DarkCheckBox chkReject;
-        public DarkCheckBox chkPickupAcTag;
-        public DarkCheckBox chkBankOnStop;
         private DarkGroupBox darkGroupBox3;
         private DarkNumericUpDown numShopId;
         private DarkButton btnLoadShop;
@@ -308,7 +332,6 @@ namespace Grimoire.UI
         private DarkPanel darkPanel2;
         private DarkGroupBox darkGroupBox14;
         private DarkButton btnAttack;
-        #endregion
         private SplitContainer splitContainer5;
         private LinkLabel lnkCustomCommands;
         private LinkLabel lnkShortcuts;
@@ -336,11 +359,6 @@ namespace Grimoire.UI
         private DarkButton btnSetCustomClassName;
         private DarkGroupBox darkGroupBox19;
         private SplitContainer splitContainer4;
-        public DarkButton btnGotoLabel;
-        public DarkButton btnAddLabel;
-        public DarkTextBox txtLabel;
-        internal DarkTextBox txtCustomAggromon;
-        public DarkCheckBox chkInMapCustom;
         private DarkLabel txtInRoom;
         private DarkLabel darkLabel2;
         private DarkCheckBox chkSafeGreaterThan;
@@ -352,13 +370,8 @@ namespace Grimoire.UI
         private DarkGroupBox darkGroupBox20;
         private DarkButton btnQuestlistRemoveCmd;
         private DarkButton btnQuestlistAddCmd;
-        internal DarkTextBox txtQuestItemID;
-        internal DarkTextBox txtQuestID;
         private DarkLabel darkLabel7;
-        internal DarkCheckBox chkQuestlistItemID;
         private DarkComboBox cbLists;
-        public DarkButton btnBotStart;
-        public DarkButton btnBotStop;
         private DarkGroupBox darkGroupBox18;
         private DarkGroupBox darkGroupBox1;
         private DarkGroupBox darkGroupBox22;
@@ -398,26 +411,36 @@ namespace Grimoire.UI
         private DarkLabel darkLabel10;
         private DarkCheckBox chkSkillCmdWait;
         private DarkNumericUpDown numSkillCmdHPMP;
-        public DarkButton btnBotPause;
-        public DarkButton btnBotResume;
-        internal DarkTextBox numQuestItem;
-        internal DarkTextBox numQuestID;
-        public DarkButton btnLoad;
         private DarkButton btnSave;
-        public DarkCheckBox chkExitCombatUponStop;
         private DarkButton btnReloadMap;
         private DarkButton btnSaveDirectory;
         private DarkCheckBox chkSkillCmdTargetSelf;
-        public DarkCheckBox chkNotifyItemOnPickup;
         private DarkLabel darkLabel12;
         private DarkLabel darkLabel3;
-        public DarkCheckBox chkUnbankOnStart;
         private DarkGroupBox darkGroupBox31;
-        internal DarkCheckBox chkReloginOnQuestFailure;
         private DarkLabel lblGuideDescription;
         private DarkCheckBox chkBuyManual;
-        public DarkCheckBox chkRelogUponFailBuy;
         private DarkLabel darkLabel11;
+        private bool customCommandsEnabled = true;
+
+        #endregion
+
+        #region Constructors
+
+        public BotManager()
+        {
+            InitializeComponent();
+        }
+
+        static BotManager()
+        {
+            Instance = new BotManager();
+            Log = new LogForm();
+        }
+
+        #endregion
+
+        #region Properties
 
         public static BotManager Instance
         {
@@ -438,33 +461,6 @@ namespace Grimoire.UI
                 }
 
                 _activeBotEngine = value ?? throw new ArgumentNullException("value");
-            }
-        }
-
-        private ListBox SelectedList
-        {
-            get
-            {
-                switch (cbLists.SelectedIndex)
-                {
-                    case 1:
-                        return lstSkills;
-
-                    case 2:
-                        return lstQuests;
-
-                    case 3:
-                        return lstDrops;
-
-                    case 4:
-                        return lstBoosts;
-
-                    case 5:
-                        return lstItems;
-
-                    default:
-                        return lstCommands;
-                }
             }
         }
 
@@ -509,10 +505,57 @@ namespace Grimoire.UI
             }
         }
 
-        public BotManager()
+        // Draws the command list with the custom command colors when enabled; the link is green when on, grey when off.
+        public bool CustomCommandsEnabled
         {
-            InitializeComponent();
+            get
+            {
+                return customCommandsEnabled;
+            }
+            set
+            {
+                customCommandsEnabled = value;
+                ControlInvoke(lnkCustomCommands, () =>
+                {
+                    Color color = value ? Color.LimeGreen : Color.DarkGray;
+                    lnkCustomCommands.LinkColor = color;
+                    lnkCustomCommands.ActiveLinkColor = color;
+                    lnkCustomCommands.VisitedLinkColor = color;
+                    lstCommands.Invalidate();
+                });
+            }
         }
+
+        private ListBox SelectedList
+        {
+            get
+            {
+                switch (cbLists.SelectedIndex)
+                {
+                    case 1:
+                        return lstSkills;
+
+                    case 2:
+                        return lstQuests;
+
+                    case 3:
+                        return lstDrops;
+
+                    case 4:
+                        return lstBoosts;
+
+                    case 5:
+                        return lstItems;
+
+                    default:
+                        return lstCommands;
+                }
+            }
+        }
+
+        #endregion
+
+        #region Methods
 
         public void BotManager_Load(object sender, EventArgs e)
         {
@@ -534,21 +577,6 @@ namespace Grimoire.UI
             if (font != null)
             {
                 Font = new Font(font, 8.25f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            }
-        }
-
-        private void TextboxEnter(object sender, EventArgs e)
-        {
-            DarkTextBox textBox = (DarkTextBox)sender;
-            textBox.Clear();
-        }
-
-        private void TextboxLeave(object sender, EventArgs e)
-        {
-            DarkTextBox textBox = (DarkTextBox)sender;
-            if (string.IsNullOrEmpty(textBox.Text) && _defaultControlText.TryGetValue(textBox.Name, out string value))
-            {
-                textBox.Text = value;
             }
         }
 
@@ -839,6 +867,302 @@ namespace Grimoire.UI
                 }
                 BotStateChanged(IsRunning);
             });
+        }
+
+        public void btnLoad_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Title = "Load bot";
+                openFileDialog.InitialDirectory = Config.Instance.GetValue<string>("botsDirectory") ?? Path.Combine(Application.StartupPath, "Bots");
+                openFileDialog.Filter = "Grimoire bots|*.gbot";
+                openFileDialog.DefaultExt = ".gbot";
+                if (openFileDialog.ShowDialog() == DialogResult.OK && TryDeserializeLoadBot(File.ReadAllText(openFileDialog.FileName), out Configuration config))
+                {
+                    ApplyConfiguration(config);
+                    GetAllCommands<CmdLabel>(lbLabels);
+                }
+            }
+        }
+
+        public void AddCommand(IBotCommand cmd, bool Insert = false)
+        {
+            if (Insert)
+            {
+                lstCommands.Items.Insert((lstCommands.SelectedIndex > -1) ? lstCommands.SelectedIndex : lstCommands.Items.Count, cmd);
+            }
+            else
+            {
+                lstCommands.Items.Add(cmd);
+            }
+        }
+
+        public void AddQuest(int QuestID, string ItemID = null, bool toConfig = false)
+        {
+            string questText = (ItemID != null) ? $"{QuestID}:{ItemID}" : QuestID.ToString();
+            if (lstQuests.Items.Cast<Quest>().ToList().Find(q => q.Text == questText) == null)
+            {
+                Quest quest = new Quest
+                {
+                    Id = QuestID,
+                    ItemId = ItemID,
+                    Text = questText
+                };
+                lstQuests.Items.Add(quest);
+                if (toConfig)
+                {
+                    BotManager.Instance.ActiveBotEngine.Configuration.Quests.Add(quest);
+                }
+            }
+        }
+
+        public void AddDrop(string Name, bool toConfig = false)
+        {
+            if (lstDrops.Items.Cast<string>().ToList().Find(i => i.Equals(Name, StringComparison.OrdinalIgnoreCase)) == null)
+            {
+                lstDrops.Items.Add(Name);
+                if (toConfig)
+                {
+                    BotManager.Instance.ActiveBotEngine.Configuration.Drops.Add(Name);
+                }
+            }
+        }
+
+        public void RemoveQuest(int QuestID, string ItemID = null, bool toConfig = false)
+        {
+            Quest quest = lstQuests.Items.Cast<Quest>().ToList().Find(q => q.Text == ((ItemID != null) ? $"{QuestID}:{ItemID}" : QuestID.ToString()));
+            if (quest != null)
+            {
+                lstQuests.Items.Remove(quest);
+                if (toConfig)
+                {
+                    BotManager.Instance.ActiveBotEngine.Configuration.Quests.Remove(quest);
+                }
+            }
+        }
+
+        public void RemoveDrop(string Name, bool toConfig = false)
+        {
+            string item = lstDrops.Items.Cast<string>().ToList().Find(i => i.Equals(Name, StringComparison.OrdinalIgnoreCase));
+            if (item != null)
+            {
+                lstDrops.Items.Remove(item);
+                if (toConfig)
+                {
+                    BotManager.Instance.ActiveBotEngine.Configuration.Drops.Remove(item);
+                }
+            }
+        }
+
+        public async void btnBotStart_ClickAsync(object sender, EventArgs e)
+        {
+            if (Player.IsAlive && Player.IsLoggedIn && lstCommands.Items.Count > 0)
+            {
+                btnBotStop.Enabled = false;
+                btnBotPause.Enabled = false;
+                CustomCommandToggle(false);
+                SelectionModeToggle(false);
+                OnBotExecute(true);
+                BotStateChanged(IsRunning: true);
+                await Task.Delay(2000);
+                Root.Instance.BotStateChanged(IsRunning: true);
+                btnBotPause.Enabled = true;
+                btnBotStop.Enabled = true;
+            }
+        }
+
+        public async void btnBotStop_Click(object sender, EventArgs e)
+        {
+            btnBotStart.Enabled = false;
+            CustomCommandToggle(true);
+            ActiveBotEngine.Stop();
+            SelectionModeToggle(true);
+            BotStateChanged(IsRunning: false);
+            await Task.Delay(2000);
+            Root.Instance.BotStateChanged(IsRunning: false);
+            btnBotStart.Enabled = true;
+        }
+
+        public void BotStateChanged(bool IsRunning)
+        {
+            if (IsRunning)
+            {
+                btnBotStart.Hide();
+                btnBotStop.Show();
+                btnBotPause.Show();
+                btnBotResume.Show();
+            }
+            else
+            {
+                btnBotStop.Hide();
+                btnBotPause.Hide();
+                btnBotResume.Hide();
+                btnBotStart.Show();
+            }
+            btnUp.Enabled = !IsRunning;
+            btnDown.Enabled = !IsRunning;
+            btnClear.Enabled = !IsRunning;
+            btnRemove.Enabled = !IsRunning;
+            btnSearchCmd.Enabled = !IsRunning;
+            txtSearchCmd.Enabled = !IsRunning;
+            btnLoad.Enabled = !IsRunning;
+        }
+
+        public void ControlInvoke(Control control, MethodInvoker action)
+        {
+            if (control.InvokeRequired)
+            {
+                control.Invoke(action);
+            }
+            else
+            {
+                action();
+            }
+        }
+
+        public void changeGenderAsync(object sender, EventArgs e)
+        {
+            if (!Player.IsLoggedIn)
+            {
+                return;
+            }
+            string gender = Flash.Call<string>("Gender", new string[0]);
+            gender = (!gender.Contains("M")) ? "M" : "F";
+            string data = $"{{\"t\":\"xt\",\"b\":{{\"r\":-1,\"o\":{{\"cmd\":\"genderSwap\",\"bitSuccess\":1,\"gender\":\"{gender}\",\"intCoins\":0,\"uid\":\"{Flash.Call<int>("UserID", new string[0])}\",\"strHairFileName\":\"\",\"HairID\":\"\",\"strHairName\":\"\"}}}}}}";
+            Proxy.Instance.SendToClient(data);
+        }
+
+        public void AddItem(string Name)
+        {
+            if (!lstItems.Items.Contains(Name))
+            {
+                lstItems.Items.Add(Name);
+            }
+        }
+
+        public void MultiMode()
+        {
+            if (this.lstCommands.SelectionMode != SelectionMode.MultiExtended)
+            {
+                this.lstCommands.SelectionMode = SelectionMode.MultiExtended;
+                this.lstItems.SelectionMode = SelectionMode.MultiExtended;
+                this.lstSkills.SelectionMode = SelectionMode.MultiExtended;
+                this.lstQuests.SelectionMode = SelectionMode.MultiExtended;
+                this.lstDrops.SelectionMode = SelectionMode.MultiExtended;
+                this.lstBoosts.SelectionMode = SelectionMode.MultiExtended;
+            }
+            else
+            {
+                this.lstCommands.SelectionMode = SelectionMode.One;
+                this.lstItems.SelectionMode = SelectionMode.One;
+                this.lstSkills.SelectionMode = SelectionMode.One;
+                this.lstQuests.SelectionMode = SelectionMode.One;
+                this.lstDrops.SelectionMode = SelectionMode.One;
+                this.lstBoosts.SelectionMode = SelectionMode.One;
+            }
+        }
+
+        public Color GetCurrentColor(string cmd)
+        {
+            if (!CurrentColors.ContainsKey(cmd))
+            {
+                CurrentColors[cmd] = GetColor(cmd);
+            }
+            return CurrentColors[cmd];
+        }
+
+        public Color GetColor(string name)
+        {
+            return Color.FromArgb(int.Parse(Config.Instance.GetValue<string>(name + "Color") ?? "FFDCDCDC", System.Globalization.NumberStyles.HexNumber));
+        }
+
+        public void SelectionModeToggle(bool Type)
+        {
+            if (Type)
+            {
+                this.lstCommands.SelectionMode = SelectionMode.MultiExtended;
+                this.lstItems.SelectionMode = SelectionMode.MultiExtended;
+                this.lstSkills.SelectionMode = SelectionMode.MultiExtended;
+                this.lstQuests.SelectionMode = SelectionMode.MultiExtended;
+                this.lstDrops.SelectionMode = SelectionMode.MultiExtended;
+                this.lstBoosts.SelectionMode = SelectionMode.MultiExtended;
+            }
+            else
+            {
+                this.lstCommands.SelectionMode = SelectionMode.One;
+                this.lstItems.SelectionMode = SelectionMode.One;
+                this.lstSkills.SelectionMode = SelectionMode.One;
+                this.lstQuests.SelectionMode = SelectionMode.One;
+                this.lstDrops.SelectionMode = SelectionMode.One;
+                this.lstBoosts.SelectionMode = SelectionMode.One;
+            }
+        }
+
+        public void ButtonToggle(bool Check)
+        {
+            btnUp.Enabled = Check;
+            btnDown.Enabled = Check;
+            btnClear.Enabled = Check;
+            btnRemove.Enabled = Check;
+            btnSearchCmd.Enabled = Check;
+            txtSearchCmd.Enabled = Check;
+        }
+
+        public void OnBotExecute(bool Type)
+        {
+            ActiveBotEngine.IsRunningChanged += OnIsRunningChanged;
+            ActiveBotEngine.IndexChanged += OnIndexChanged;
+            ActiveBotEngine.ConfigurationChanged += OnConfigurationChanged;
+            if (Type)
+            {
+                ActiveBotEngine.Start(GenerateConfiguration());
+            }
+            else
+            {
+                ActiveBotEngine.Resume(GenerateConfiguration());
+            }
+        }
+
+        public async void CustomCommandToggle(bool Type)
+        {
+            if (BotClientConfig.Instance.GetValue<bool>("customCommandToggle"))
+            {
+                CustomCommandsEnabled = Type;
+            }
+        }
+
+        public void chkExitCombatUponStop_Click(object sender, EventArgs e)
+        {
+            BotClientConfig.Instance.SetValue("exitCombatUponStop", chkExitCombatUponStop.Checked.ToString());
+        }
+
+        public void btnSaveDirectory_Click(object sender, EventArgs e)
+        {
+            Config.Instance.SetValue("botsDirectory", txtSaved.Text.ToString());
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && components != null)
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        private void TextboxEnter(object sender, EventArgs e)
+        {
+            DarkTextBox textBox = (DarkTextBox)sender;
+            textBox.Clear();
+        }
+
+        private void TextboxLeave(object sender, EventArgs e)
+        {
+            DarkTextBox textBox = (DarkTextBox)sender;
+            if (string.IsNullOrEmpty(textBox.Text) && _defaultControlText.TryGetValue(textBox.Name, out string value))
+            {
+                textBox.Text = value;
+            }
         }
 
         private void lstCommands_DoubleClick(object sender, EventArgs e)
@@ -1406,22 +1730,6 @@ namespace Grimoire.UI
             AddCommand(new CmdRestart(), (ModifierKeys & Keys.Control) == Keys.Control);
         }
 
-        public void btnLoad_Click(object sender, EventArgs e)
-        {
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
-            {
-                openFileDialog.Title = "Load bot";
-                openFileDialog.InitialDirectory = Config.Instance.GetValue<string>("botsDirectory") ?? Path.Combine(Application.StartupPath, "Bots");
-                openFileDialog.Filter = "Grimoire bots|*.gbot";
-                openFileDialog.DefaultExt = ".gbot";
-                if (openFileDialog.ShowDialog() == DialogResult.OK && TryDeserializeLoadBot(File.ReadAllText(openFileDialog.FileName), out Configuration config))
-                {
-                    ApplyConfiguration(config);
-                    GetAllCommands<CmdLabel>(lbLabels);
-                }
-            }
-        }
-
         private bool TryDeserializeLoadBot(string json, out Configuration config)
         {
             try
@@ -1911,18 +2219,6 @@ namespace Grimoire.UI
             }
         }
 
-        public void AddCommand(IBotCommand cmd, bool Insert = false)
-        {
-            if (Insert)
-            {
-                lstCommands.Items.Insert((lstCommands.SelectedIndex > -1) ? lstCommands.SelectedIndex : lstCommands.Items.Count, cmd);
-            }
-            else
-            {
-                lstCommands.Items.Add(cmd);
-            }
-        }
-
         private void AddSkill(Skill skill, bool Insert)
         {
             if (Insert)
@@ -1932,129 +2228,6 @@ namespace Grimoire.UI
             else
             {
                 lstSkills.Items.Add(skill);
-            }
-        }
-
-        public void AddQuest(int QuestID, string ItemID = null, bool toConfig = false)
-        {
-            string questText = (ItemID != null) ? $"{QuestID}:{ItemID}" : QuestID.ToString();
-            if (lstQuests.Items.Cast<Quest>().ToList().Find(q => q.Text == questText) == null)
-            {
-                Quest quest = new Quest
-                {
-                    Id = QuestID,
-                    ItemId = ItemID,
-                    Text = questText
-                };
-                lstQuests.Items.Add(quest);
-                if (toConfig)
-                {
-                    BotManager.Instance.ActiveBotEngine.Configuration.Quests.Add(quest);
-                }
-            }
-        }
-
-        public void AddDrop(string Name, bool toConfig = false)
-        {
-            if (lstDrops.Items.Cast<string>().ToList().Find(i => i.Equals(Name, StringComparison.OrdinalIgnoreCase)) == null)
-            {
-                lstDrops.Items.Add(Name);
-                if (toConfig)
-                {
-                    BotManager.Instance.ActiveBotEngine.Configuration.Drops.Add(Name);
-                }
-            }
-        }
-
-        public void RemoveQuest(int QuestID, string ItemID = null, bool toConfig = false)
-        {
-            Quest quest = lstQuests.Items.Cast<Quest>().ToList().Find(q => q.Text == ((ItemID != null) ? $"{QuestID}:{ItemID}" : QuestID.ToString()));
-            if (quest != null)
-            {
-                lstQuests.Items.Remove(quest);
-                if (toConfig)
-                {
-                    BotManager.Instance.ActiveBotEngine.Configuration.Quests.Remove(quest);
-                }
-            }
-        }
-
-        public void RemoveDrop(string Name, bool toConfig = false)
-        {
-            string item = lstDrops.Items.Cast<string>().ToList().Find(i => i.Equals(Name, StringComparison.OrdinalIgnoreCase));
-            if (item != null)
-            {
-                lstDrops.Items.Remove(item);
-                if (toConfig)
-                {
-                    BotManager.Instance.ActiveBotEngine.Configuration.Drops.Remove(item);
-                }
-            }
-        }
-
-        public async void btnBotStart_ClickAsync(object sender, EventArgs e)
-        {
-            if (Player.IsAlive && Player.IsLoggedIn && lstCommands.Items.Count > 0)
-            {
-                btnBotStop.Enabled = false;
-                btnBotPause.Enabled = false;
-                CustomCommandToggle(false);
-                SelectionModeToggle(false);
-                OnBotExecute(true);
-                BotStateChanged(IsRunning: true);
-                await Task.Delay(2000);
-                Root.Instance.BotStateChanged(IsRunning: true);
-                btnBotPause.Enabled = true;
-                btnBotStop.Enabled = true;
-            }
-        }
-
-        public async void btnBotStop_Click(object sender, EventArgs e)
-        {
-            btnBotStart.Enabled = false;
-            CustomCommandToggle(true);
-            ActiveBotEngine.Stop();
-            SelectionModeToggle(true);
-            BotStateChanged(IsRunning: false);
-            await Task.Delay(2000);
-            Root.Instance.BotStateChanged(IsRunning: false);
-            btnBotStart.Enabled = true;
-        }
-
-        public void BotStateChanged(bool IsRunning)
-        {
-            if (IsRunning)
-            {
-                btnBotStart.Hide();
-                btnBotStop.Show();
-                btnBotPause.Show();
-                btnBotResume.Show();
-            }
-            else
-            {
-                btnBotStop.Hide();
-                btnBotPause.Hide();
-                btnBotResume.Hide();
-                btnBotStart.Show();
-            }
-            btnUp.Enabled = !IsRunning;
-            btnDown.Enabled = !IsRunning;
-            btnClear.Enabled = !IsRunning;
-            btnRemove.Enabled = !IsRunning;
-            btnSearchCmd.Enabled = !IsRunning;
-            txtSearchCmd.Enabled = !IsRunning;
-            btnLoad.Enabled = !IsRunning;
-        }
-
-        public void ControlInvoke(Control control, MethodInvoker action)
-        {
-            if (control.InvokeRequired)
-            {
-                control.Invoke(action);
-            }
-            else
-            {
-                action();
             }
         }
 
@@ -2081,15 +2254,6 @@ namespace Grimoire.UI
                     Name = txtSkillSet.Text.ToUpper()
                 }, (ModifierKeys & Keys.Control) == Keys.Control);
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && components != null)
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
         }
 
         private void InitializeComponent()
@@ -7447,12 +7611,6 @@ namespace Grimoire.UI
 
         }
 
-        static BotManager()
-        {
-            Instance = new BotManager();
-            Log = new LogForm();
-        }
-
         private void btnBuyFast_Click(object sender, EventArgs e)
         {
             if (txtShopItem.TextLength > 0)
@@ -7471,18 +7629,6 @@ namespace Grimoire.UI
             {
                 ShopId = ((int)numShopId.Value).ToString()
             }, (ModifierKeys & Keys.Control) == Keys.Control);
-        }
-
-        public void changeGenderAsync(object sender, EventArgs e)
-        {
-            if (!Player.IsLoggedIn)
-            {
-                return;
-            }
-            string gender = Flash.Call<string>("Gender", new string[0]);
-            gender = (!gender.Contains("M")) ? "M" : "F";
-            string data = $"{{\"t\":\"xt\",\"b\":{{\"r\":-1,\"o\":{{\"cmd\":\"genderSwap\",\"bitSuccess\":1,\"gender\":\"{gender}\",\"intCoins\":0,\"uid\":\"{Flash.Call<int>("UserID", new string[0])}\",\"strHairFileName\":\"\",\"HairID\":\"\",\"strHairName\":\"\"}}}}}}";
-            Proxy.Instance.SendToClient(data);
         }
 
         private void logScript(object sender, EventArgs e)
@@ -7529,14 +7675,6 @@ namespace Grimoire.UI
             }, (ModifierKeys & Keys.Control) == Keys.Control);
         }
 
-        public void AddItem(string Name)
-        {
-            if (!lstItems.Items.Contains(Name))
-            {
-                lstItems.Items.Add(Name);
-            }
-        }
-
         private void btnUnbanklst_Click(object sender, EventArgs e)
         {
             string itemName = txtWhitelist.Text;
@@ -7581,28 +7719,6 @@ namespace Grimoire.UI
         private void lstLogText_DoubleClick(object sender, EventArgs e)
         {
             this.txtLog.Text = $"{(this.txtLog.Text == "Logs" ? "" : txtLog.Text + " ")}{this.lstLogText.SelectedItem.ToString()}";
-        }
-
-        public void MultiMode()
-        {
-            if (this.lstCommands.SelectionMode != SelectionMode.MultiExtended)
-            {
-                this.lstCommands.SelectionMode = SelectionMode.MultiExtended;
-                this.lstItems.SelectionMode = SelectionMode.MultiExtended;
-                this.lstSkills.SelectionMode = SelectionMode.MultiExtended;
-                this.lstQuests.SelectionMode = SelectionMode.MultiExtended;
-                this.lstDrops.SelectionMode = SelectionMode.MultiExtended;
-                this.lstBoosts.SelectionMode = SelectionMode.MultiExtended;
-            }
-            else
-            {
-                this.lstCommands.SelectionMode = SelectionMode.One;
-                this.lstItems.SelectionMode = SelectionMode.One;
-                this.lstSkills.SelectionMode = SelectionMode.One;
-                this.lstQuests.SelectionMode = SelectionMode.One;
-                this.lstDrops.SelectionMode = SelectionMode.One;
-                this.lstBoosts.SelectionMode = SelectionMode.One;
-            }
         }
 
         private void chkUntarget_CheckedChanged(object sender, EventArgs e)
@@ -7674,6 +7790,7 @@ namespace Grimoire.UI
             this.txtCell.Text = "Blank";
             this.txtPad.Text = "Spawn";
         }
+
         private void btnSetSpawn_Click(object sender, EventArgs e)
         {
             AddCommand(new CmdSetSpawn(), (ModifierKeys & Keys.Control) == Keys.Control);
@@ -7822,24 +7939,6 @@ namespace Grimoire.UI
                 mainTabControl.Visible = true;
             }
         }
-
-        public Dictionary<string, Color> CurrentColors = new Dictionary<string, Color>();
-
-        public Color GetCurrentColor(string cmd)
-        {
-            if (!CurrentColors.ContainsKey(cmd))
-            {
-                CurrentColors[cmd] = GetColor(cmd);
-            }
-            return CurrentColors[cmd];
-        }
-
-        public Color GetColor(string name)
-        {
-            return Color.FromArgb(int.Parse(Config.Instance.GetValue<string>(name + "Color") ?? "FFDCDCDC", System.Globalization.NumberStyles.HexNumber));
-        }
-
-        public Dictionary<string, bool> CurrentCentered = new Dictionary<string, bool>();
 
         private bool GetCurrentBoolCentered(string cmd)
         {
@@ -8125,6 +8224,7 @@ namespace Grimoire.UI
         {
             Proxy.Instance.SendToClient("{\"t\":\"xt\",\"b\":{\"r\":-1,\"o\":{\"id\":1,\"cmd\":\"addGoldExp\",\"intGold\":99999999,\"intExp\":0,\"typ\":\"m\"}}}");
         }
+
         private void btnAddClientACs_Click(object sender, EventArgs e)
         {
             Proxy.Instance.SendToClient("{\"t\":\"xt\",\"b\":{\"r\":-1,\"o\":{\"cmd\":\"sellItem\",\"intAmount\":999999,\"CharItemID\":1,\"bCoins\":1}}}");
@@ -8204,10 +8304,6 @@ namespace Grimoire.UI
                 State = CmdWhitelist.state.Clear
             }, (ModifierKeys & Keys.Control) == Keys.Control);
         }
-
-        public int LastIndexedSearch = 0;
-        public string SKeyword = "";
-        public List<int> Filtered = new List<int>();
 
         private void btnSearchCmd_Click(object sender, EventArgs e)
         {
@@ -8563,84 +8659,6 @@ namespace Grimoire.UI
             }
         }
 
-        public void SelectionModeToggle(bool Type)
-        {
-            if (Type)
-            {
-                this.lstCommands.SelectionMode = SelectionMode.MultiExtended;
-                this.lstItems.SelectionMode = SelectionMode.MultiExtended;
-                this.lstSkills.SelectionMode = SelectionMode.MultiExtended;
-                this.lstQuests.SelectionMode = SelectionMode.MultiExtended;
-                this.lstDrops.SelectionMode = SelectionMode.MultiExtended;
-                this.lstBoosts.SelectionMode = SelectionMode.MultiExtended;
-            }
-            else
-            {
-                this.lstCommands.SelectionMode = SelectionMode.One;
-                this.lstItems.SelectionMode = SelectionMode.One;
-                this.lstSkills.SelectionMode = SelectionMode.One;
-                this.lstQuests.SelectionMode = SelectionMode.One;
-                this.lstDrops.SelectionMode = SelectionMode.One;
-                this.lstBoosts.SelectionMode = SelectionMode.One;
-            }
-        }
-
-        public void ButtonToggle(bool Check)
-        {
-            btnUp.Enabled = Check;
-            btnDown.Enabled = Check;
-            btnClear.Enabled = Check;
-            btnRemove.Enabled = Check;
-            btnSearchCmd.Enabled = Check;
-            txtSearchCmd.Enabled = Check;
-        }
-
-        public void OnBotExecute(bool Type)
-        {
-            ActiveBotEngine.IsRunningChanged += OnIsRunningChanged;
-            ActiveBotEngine.IndexChanged += OnIndexChanged;
-            ActiveBotEngine.ConfigurationChanged += OnConfigurationChanged;
-            if (Type)
-            {
-                ActiveBotEngine.Start(GenerateConfiguration());
-            }
-            else
-            {
-                ActiveBotEngine.Resume(GenerateConfiguration());
-            }
-        }
-
-        private bool customCommandsEnabled = true;
-
-        // Draws the command list with the custom command colors when enabled; the link is green when on, grey when off.
-        public bool CustomCommandsEnabled
-        {
-            get
-            {
-                return customCommandsEnabled;
-            }
-            set
-            {
-                customCommandsEnabled = value;
-                ControlInvoke(lnkCustomCommands, () =>
-                {
-                    Color color = value ? Color.LimeGreen : Color.DarkGray;
-                    lnkCustomCommands.LinkColor = color;
-                    lnkCustomCommands.ActiveLinkColor = color;
-                    lnkCustomCommands.VisitedLinkColor = color;
-                    lstCommands.Invalidate();
-                });
-            }
-        }
-
-        public async void CustomCommandToggle(bool Type)
-        {
-            if (BotClientConfig.Instance.GetValue<bool>("customCommandToggle"))
-            {
-                CustomCommandsEnabled = Type;
-            }
-        }
-
         private void lnkCustomCommands_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             CustomCommandsEnabled = !CustomCommandsEnabled;
@@ -8649,16 +8667,6 @@ namespace Grimoire.UI
         private void lnkShortcuts_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Root.Instance.ShowForm(ShortcutsForm.Instance);
-        }
-
-        public void chkExitCombatUponStop_Click(object sender, EventArgs e)
-        {
-            BotClientConfig.Instance.SetValue("exitCombatUponStop", chkExitCombatUponStop.Checked.ToString());
-        }
-
-        public void btnSaveDirectory_Click(object sender, EventArgs e)
-        {
-            Config.Instance.SetValue("botsDirectory", txtSaved.Text.ToString());
         }
 
         private void lblGuideDescription_Click(object sender, EventArgs e)
@@ -8675,5 +8683,6 @@ namespace Grimoire.UI
             "8) Load the bot file and the information panel will be loaded with the saved content. You will see it on the Info tab in the bot manager.", "Guide on Setting Up The Description", MessageBoxIcon.Information);
         }
 
+        #endregion
     }
 }

@@ -7,6 +7,29 @@ namespace Grimoire.Game
 {
     public class Avatar
     {
+        #region Enums
+
+        public enum State
+        {
+            Dead,
+            Idle,
+            InCombat
+        }
+
+        public enum Access
+        {
+            Player = 0,
+            Staff = 30,
+            Tester = 40,
+            Developer = 50,
+            Moderator = 60,
+            LeadDeveloper = 100
+        }
+
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// The name of the player, in lowercase.
         /// </summary>
@@ -323,22 +346,9 @@ namespace Grimoire.Game
             set;
         }
 
-        public enum State
-        {
-            Dead,
-            Idle,
-            InCombat
-        }
+        #endregion
 
-        public enum Access
-        {
-            Player = 0,
-            Staff = 30,
-            Tester = 40,
-            Developer = 50,
-            Moderator = 60,
-            LeadDeveloper = 100
-        }
+        #region Methods
 
         public int CalculatePoints(int value)
         {
@@ -369,5 +379,7 @@ namespace Grimoire.Game
         {
             return $"{EntID}: {Name}";
         }
+
+        #endregion
     }
 }

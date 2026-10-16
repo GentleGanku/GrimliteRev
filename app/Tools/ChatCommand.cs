@@ -14,6 +14,7 @@ namespace Grimoire.Tools
 {
     public static class ChatCommand
     {
+        #region Fields
 
         private static Dictionary<string, string> ChatCommands = new Dictionary<string, string>
         {
@@ -34,6 +35,31 @@ namespace Grimoire.Tools
                 { "Relogin"          , "/relogin|Relogs your character on the same server."},
                 { "Mute"             , "/mute|Mutes or unmutes your character (depends on the condition)."}
         };
+
+        private static bool ShouldCombat = false;
+        private static bool ShouldProvoke = false;
+
+        #endregion
+
+        #region Properties
+
+        private static IBotEngine Engine
+        {
+            get
+            {
+                return BotManager.Instance.ActiveBotEngine;
+            }
+        }
+
+        private static CmdKill cmdCombat
+        {
+            get;
+            set;
+        }
+
+        #endregion
+
+        #region Methods
 
         public static async void ExecuteCommand(string text)
         {
@@ -109,24 +135,6 @@ namespace Grimoire.Tools
                     break;
             }
         }
-
-        private static IBotEngine Engine
-        {
-            get
-            {
-                return BotManager.Instance.ActiveBotEngine;
-            }
-        }
-
-        private static CmdKill cmdCombat
-        {
-            get;
-            set;
-        }
-
-        private static bool ShouldCombat = false;
-
-        private static bool ShouldProvoke = false;
 
         public static async void Combat(string target, bool isNull)
         {
@@ -221,6 +229,17 @@ namespace Grimoire.Tools
                     Provoke(ids, false);
                 }
             }
+        }
+
+        public static async void Relogin()
+        {
+            Server server = Server.List.Find((Server s) => s.Name.Equals(World.ServerName(), StringComparison.OrdinalIgnoreCase));
+            Player.Logout();
+            Root.Instance.login_cts = new CancellationTokenSource();
+            await BotManager.Instance.ActiveBotEngine.WaitUntil(() => AutoRelogin.LoginLabel, () => !Root.Instance.login_cts.IsCancellationRequested, 10, 1000);
+            AutoRelogin.LoginExecute();
+            await BotManager.Instance.ActiveBotEngine.WaitUntil(() => !AutoRelogin.IsClientLoading("Account"), () => !Root.Instance.login_cts.IsCancellationRequested, 10, 500);
+            AutoRelogin.ForceLogin(server, Root.Instance.login_cts);
         }
 
         private static async void LoadQuest(List<string> ids, bool isNull)
@@ -325,16 +344,6 @@ namespace Grimoire.Tools
             }
         }
 
-        public static async void Relogin()
-        {
-            Server server = Server.List.Find((Server s) => s.Name.Equals(World.ServerName(), StringComparison.OrdinalIgnoreCase));
-            Player.Logout();
-            Root.Instance.login_cts = new CancellationTokenSource();
-            await BotManager.Instance.ActiveBotEngine.WaitUntil(() => AutoRelogin.LoginLabel, () => !Root.Instance.login_cts.IsCancellationRequested, 10, 1000);
-            AutoRelogin.LoginExecute();
-            await BotManager.Instance.ActiveBotEngine.WaitUntil(() => !AutoRelogin.IsClientLoading("Account"), () => !Root.Instance.login_cts.IsCancellationRequested, 10, 500);
-            AutoRelogin.ForceLogin(server, Root.Instance.login_cts);
-        }
-
+        #endregion
     }
 }

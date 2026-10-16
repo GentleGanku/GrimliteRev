@@ -4,6 +4,8 @@ namespace Grimoire.Botting.Commands.Item
 {
     public class CmdPacketlist2 : IBotCommand
     {
+        #region Properties
+
         public int Type
         {
             get;
@@ -21,6 +23,10 @@ namespace Grimoire.Botting.Commands.Item
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -52,5 +58,7 @@ namespace Grimoire.Botting.Commands.Item
                     return "Spam packet";
             }
         }
+
+        #endregion
     }
 }

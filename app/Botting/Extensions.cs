@@ -9,6 +9,8 @@ namespace Grimoire.Botting
 {
     public static class Extensions
     {
+        #region Methods
+
         public static string Correct(this string str)
         {
             return !str.Contains("<false/>") && !str.Contains("<true/>") ? str : str.Replace("<false/>", bool.FalseString).Replace("<true/>", bool.TrueString);
@@ -103,38 +105,6 @@ namespace Grimoire.Botting
             return relativePath.Replace(path[0] + @"\", "");
         }
 
-        public class Line : IComparable<Line>
-        {
-            int _number;
-            string _afterNumber;
-            readonly string _line;
-
-            public Line(string line)
-            {
-                int firstSpace = line.IndexOf(' ');
-                string integer = line.Substring(0, firstSpace);
-                this._number = int.Parse(integer);
-
-                this._afterNumber = line.Substring(firstSpace);
-                this._line = line;
-            }
-
-            public int CompareTo(Line other)
-            {
-                int result1 = _number.CompareTo(other._number);
-                if (result1 != 0)
-                {
-                    return result1;
-                }
-                return _afterNumber.CompareTo(other._afterNumber);
-            }
-
-            public override string ToString()
-            {
-                return this._line;
-            }
-        }
-
         public static string[] JtoArray(string result)
         {
             string[] resultArray = JsonConvert.DeserializeObject<string[]>(result);
@@ -174,12 +144,65 @@ namespace Grimoire.Botting
         {
             return (float)value;
         }
+
+        #endregion
+
+        #region Classes
+
+        public class Line : IComparable<Line>
+        {
+            #region Fields
+
+            readonly string _line;
+            int _number;
+            string _afterNumber;
+
+            #endregion
+
+            #region Constructors
+
+            public Line(string line)
+            {
+                int firstSpace = line.IndexOf(' ');
+                string integer = line.Substring(0, firstSpace);
+                this._number = int.Parse(integer);
+
+                this._afterNumber = line.Substring(firstSpace);
+                this._line = line;
+            }
+
+            #endregion
+
+            #region Methods
+
+            public int CompareTo(Line other)
+            {
+                int result1 = _number.CompareTo(other._number);
+                if (result1 != 0)
+                {
+                    return result1;
+                }
+                return _afterNumber.CompareTo(other._afterNumber);
+            }
+
+            public override string ToString()
+            {
+                return this._line;
+            }
+
+            #endregion
+        }
+
+        #endregion
     }
 
     public class FontInfo
     {
+        #region Fields
+
         // Heights and positions in pixels.
         public float EmHeightPixels;
+
         public float AscentPixels;
         public float DescentPixels;
         public float CellHeightPixels;
@@ -189,8 +212,33 @@ namespace Grimoire.Botting
 
         // Distances from the top of the cell in pixels.
         public float RelTop;
+
         public float RelBaseline;
         public float RelBottom;
+
+        #endregion
+
+        #region Constructors
+
+        public FontInfo(Graphics gr, Font the_font)
+        {
+            float em_height = the_font.FontFamily.GetEmHeight(the_font.Style);
+            EmHeightPixels = ConvertUnits(gr, the_font.Size, the_font.Unit, GraphicsUnit.Pixel);
+            float design_to_pixels = EmHeightPixels / em_height;
+            AscentPixels = design_to_pixels * the_font.FontFamily.GetCellAscent(the_font.Style);
+            DescentPixels = design_to_pixels * the_font.FontFamily.GetCellDescent(the_font.Style);
+            CellHeightPixels = AscentPixels + DescentPixels;
+            InternalLeadingPixels = CellHeightPixels - EmHeightPixels;
+            LineSpacingPixels = design_to_pixels * the_font.FontFamily.GetLineSpacing(the_font.Style);
+            ExternalLeadingPixels = LineSpacingPixels - CellHeightPixels;
+            RelTop = InternalLeadingPixels;
+            RelBaseline = AscentPixels;
+            RelBottom = CellHeightPixels;
+        }
+
+        #endregion
+
+        #region Methods
 
         private float ConvertUnits(Graphics gr, float value, GraphicsUnit from_unit, GraphicsUnit to_unit)
         {
@@ -241,20 +289,6 @@ namespace Grimoire.Botting
             return value;
         }
 
-        public FontInfo(Graphics gr, Font the_font)
-        {
-            float em_height = the_font.FontFamily.GetEmHeight(the_font.Style);
-            EmHeightPixels = ConvertUnits(gr, the_font.Size, the_font.Unit, GraphicsUnit.Pixel);
-            float design_to_pixels = EmHeightPixels / em_height;
-            AscentPixels = design_to_pixels * the_font.FontFamily.GetCellAscent(the_font.Style);
-            DescentPixels = design_to_pixels * the_font.FontFamily.GetCellDescent(the_font.Style);
-            CellHeightPixels = AscentPixels + DescentPixels;
-            InternalLeadingPixels = CellHeightPixels - EmHeightPixels;
-            LineSpacingPixels = design_to_pixels * the_font.FontFamily.GetLineSpacing(the_font.Style);
-            ExternalLeadingPixels = LineSpacingPixels - CellHeightPixels;
-            RelTop = InternalLeadingPixels;
-            RelBaseline = AscentPixels;
-            RelBottom = CellHeightPixels;
-        }
+        #endregion
     }
 }

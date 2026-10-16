@@ -7,6 +7,8 @@ namespace Grimoire.Botting
 {
     public class CosmeticEquipment
     {
+        #region Fields
+
         private static Dictionary<EquipType, string> _cosMap = new Dictionary<EquipType, string>()
         {
             { EquipType.Helm, "he" },
@@ -19,6 +21,10 @@ namespace Grimoire.Botting
         };
 
         private static Dictionary<string, EquipType> _backMap = _cosMap.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);
+
+        #endregion
+
+        #region Properties
 
         public EquipType Slot
         {
@@ -61,6 +67,16 @@ namespace Grimoire.Botting
             set;
         }
 
+        #endregion
+
+        #region Methods
+
+        public static List<CosmeticEquipment> Get(int id)
+        {
+            Dictionary<string, CosmeticEquipment> items = JsonConvert.DeserializeObject<Dictionary<string, CosmeticEquipment>>(Tools.Flash.Call("GetEquip", id)) ?? new Dictionary<string, CosmeticEquipment>();
+            return items.Select(kvp => (kvp.Value.Slot = _backMap.TryGetValue(kvp.Key, out EquipType slot) ? slot : EquipType.None) != EquipType.None ? kvp.Value : null).Where(x => x != null).ToList();
+        }
+
         public void Equip()
         {
             string slot = _cosMap[Slot];
@@ -79,10 +95,6 @@ namespace Grimoire.Botting
             return $"{Slot}: {SWFFile};{Link}";
         }
 
-        public static List<CosmeticEquipment> Get(int id)
-        {
-            Dictionary<string, CosmeticEquipment> items = JsonConvert.DeserializeObject<Dictionary<string, CosmeticEquipment>>(Tools.Flash.Call("GetEquip", id)) ?? new Dictionary<string, CosmeticEquipment>();
-            return items.Select(kvp => (kvp.Value.Slot = _backMap.TryGetValue(kvp.Key, out EquipType slot) ? slot : EquipType.None) != EquipType.None ? kvp.Value : null).Where(x => x != null).ToList();
-        }
+        #endregion
     }
 }

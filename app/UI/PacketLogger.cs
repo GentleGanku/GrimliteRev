@@ -9,26 +9,45 @@ namespace Grimoire.UI
 {
     public class PacketLogger : DarkForm
     {
-        private IContainer components;
+        #region Fields
 
         public DarkTextBox txtPackets;
-
         public DarkButton btnStart;
-
+        private IContainer components;
         private DarkButton btnStop;
-
         private DarkButton btnCopy;
         private TableLayoutPanel tableLayoutPanel1;
         private DarkButton btnClear;
+
+        #endregion
+
+        #region Constructors
+
+        private PacketLogger()
+        {
+            InitializeComponent();
+        }
+
+        #endregion
+
+        #region Properties
 
         public static PacketLogger Instance
         {
             get;
         } = new PacketLogger();
 
-        private PacketLogger()
+        #endregion
+
+        #region Methods
+
+        protected override void Dispose(bool disposing)
         {
-            InitializeComponent();
+            if (disposing && components != null)
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
         private void btnClear_Click(object sender, EventArgs e)
@@ -65,15 +84,6 @@ namespace Grimoire.UI
                 e.Cancel = true;
                 Hide();
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && components != null)
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
         }
 
         private void InitializeComponent()
@@ -193,5 +203,7 @@ namespace Grimoire.UI
             this.PerformLayout();
 
         }
+
+        #endregion
     }
 }

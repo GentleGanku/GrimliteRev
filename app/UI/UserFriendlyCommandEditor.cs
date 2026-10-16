@@ -16,33 +16,9 @@ namespace Grimoire.UI
 {
     public class UserFriendlyCommandEditor : DarkForm
     {
-        private IContainer components;
-        private DarkButton btnOK;
-        private DarkListBox listContainer1;
-        private ToolStripContainer toolStripContainer1;
-        private SplitContainer splitContainer1;
-        private DarkButton btnRawCommand;
-        private DarkButton btnCancel;
+        #region Fields
 
         public static UserFriendlyCommandEditor Instance = new UserFriendlyCommandEditor();
-
-        private static object cmdObj
-        {
-            get;
-            set;
-        }
-
-        private static UserFriendlyCommandEditor commandEditor
-        {
-            get;
-            set;
-        }
-
-        public static string cmd
-        {
-            get;
-            set;
-        }
 
         private static readonly JsonSerializerSettings _questSerializerSettings = new JsonSerializerSettings
         {
@@ -58,7 +34,18 @@ namespace Grimoire.UI
             TypeNameHandling = TypeNameHandling.All
         };
 
+        private IContainer components;
+        private DarkButton btnOK;
+        private DarkListBox listContainer1;
+        private ToolStripContainer toolStripContainer1;
+        private SplitContainer splitContainer1;
+        private DarkButton btnRawCommand;
+        private DarkButton btnCancel;
         private List<StatementCommand> statementCommands;
+
+        #endregion
+
+        #region Constructors
 
         private UserFriendlyCommandEditor()
         {
@@ -66,28 +53,31 @@ namespace Grimoire.UI
             statementCommands = JsonConvert.DeserializeObject<List<StatementCommand>>(Resources.statementcmds, _serializerSettings);
         }
 
-        private void UserFriendlyCommandEditor_FormClosing(object sender, FormClosingEventArgs e)
+        #endregion
+
+        #region Properties
+
+        public static string cmd
         {
+            get;
+            set;
         }
 
-        private void RawCommandEditor_Load(object sender, EventArgs e)
+        private static object cmdObj
         {
-
+            get;
+            set;
         }
 
-        private void txtCmd_KeyDown(object sender, KeyEventArgs e)
+        private static UserFriendlyCommandEditor commandEditor
         {
-            switch (e.KeyCode)
-            {
-                case Keys.Return:
-                    btnOK.PerformClick();
-                    break;
-
-                case Keys.Escape:
-                    btnCancel.PerformClick();
-                    break;
-            }
+            get;
+            set;
         }
+
+        #endregion
+
+        #region Methods
 
         public static string Show(object obj)
         {
@@ -174,6 +164,29 @@ namespace Grimoire.UI
                 components.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private void UserFriendlyCommandEditor_FormClosing(object sender, FormClosingEventArgs e)
+        {
+        }
+
+        private void RawCommandEditor_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtCmd_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Return:
+                    btnOK.PerformClick();
+                    break;
+
+                case Keys.Escape:
+                    btnCancel.PerformClick();
+                    break;
+            }
         }
 
         private void InitializeComponent()
@@ -285,5 +298,7 @@ namespace Grimoire.UI
                     break;
             }
         }
+
+        #endregion
     }
 }

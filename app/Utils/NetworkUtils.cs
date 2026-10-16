@@ -5,6 +5,8 @@ namespace Grimoire.Utils
 {
     public class NetworkUtils
     {
+        #region Methods
+
         public static int GetAvailablePort()
         {
             int port;
@@ -15,5 +17,7 @@ namespace Grimoire.Utils
             }
             return port;
         }
+
+        #endregion
     }
 }

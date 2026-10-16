@@ -16,38 +16,42 @@ namespace Grimoire.UI
 {
     public class PacketSpammer : DarkForm
     {
-        private IContainer components;
+        #region Fields
+
         public DarkListBox lstPackets;
-
         public DarkTextBox txtPacket;
-
         public DarkButton btnAdd;
-
         public DarkButton btnClear;
-
         public DarkButton btnLoad;
-
         public DarkButton btnSave;
-
         public DarkButton btnStartAndStop;
-
         public DarkNumericUpDown numDelay;
-
+        public DarkButton btnRemove;
+        private IContainer components;
         private DarkButton btnSend;
-
         private TableLayoutPanel tableLayoutPanel1;
 
-        public DarkButton btnRemove;
+        #endregion
+
+        #region Constructors
+
+        public PacketSpammer()
+        {
+            InitializeComponent();
+        }
+
+        #endregion
+
+        #region Properties
 
         public static PacketSpammer Instance
         {
             get;
         } = new PacketSpammer();
 
-        public PacketSpammer()
-        {
-            InitializeComponent();
-        }
+        #endregion
+
+        #region Methods
 
         public void btnClear_Click(object sender, EventArgs e)
         {
@@ -114,6 +118,31 @@ namespace Grimoire.UI
             }
         }
 
+        internal void SetButtonsEnabled(bool enabled)
+        {
+            btnAdd.Enabled = enabled;
+            btnRemove.Enabled = enabled;
+            btnClear.Enabled = enabled;
+            btnLoad.Enabled = enabled;
+        }
+
+        internal void IndexChanged(int index)
+        {
+            lstPackets.Invoke((Action)delegate
+            {
+                lstPackets.SelectedIndex = index;
+            });
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && components != null)
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
         private void PacketSpammer_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing || e.CloseReason == CloseReason.MdiFormClosing || e.CloseReason == CloseReason.FormOwnerClosing)
@@ -173,22 +202,6 @@ namespace Grimoire.UI
             }
         }
 
-        internal void SetButtonsEnabled(bool enabled)
-        {
-            btnAdd.Enabled = enabled;
-            btnRemove.Enabled = enabled;
-            btnClear.Enabled = enabled;
-            btnLoad.Enabled = enabled;
-        }
-
-        internal void IndexChanged(int index)
-        {
-            lstPackets.Invoke((Action)delegate
-            {
-                lstPackets.SelectedIndex = index;
-            });
-        }
-
         private void btnRemove_Click(object sender, EventArgs e)
         {
             int selectedIndex = lstPackets.SelectedIndex;
@@ -196,15 +209,6 @@ namespace Grimoire.UI
             {
                 lstPackets.Items.RemoveAt(selectedIndex);
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && components != null)
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
         }
 
         private void InitializeComponent()
@@ -418,5 +422,7 @@ namespace Grimoire.UI
             this.PerformLayout();
 
         }
+
+        #endregion
     }
 }

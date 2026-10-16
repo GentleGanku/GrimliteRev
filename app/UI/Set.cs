@@ -12,16 +12,28 @@ namespace Grimoire.UI
 {
     public partial class Set : DarkForm
     {
+        #region Fields
+
         private readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
         {
             DefaultValueHandling = DefaultValueHandling.Include,
             TypeNameHandling = TypeNameHandling.All
         };
 
+        private string path = Application.StartupPath + "\\Sets";
+
+        #endregion
+
+        #region Constructors
+
         public Set()
         {
             InitializeComponent();
         }
+
+        #endregion
+
+        #region Methods
 
         private void ApplyConfig(SetItem config)
         {
@@ -57,8 +69,6 @@ namespace Grimoire.UI
                 Type = t2
             });
         }
-
-        private string path = Application.StartupPath + "\\Sets";
 
         private void Set_Load(object sender, EventArgs e)
         {
@@ -266,6 +276,8 @@ namespace Grimoire.UI
         {
             listBox1.Items.Clear();
         }
+
+        #endregion
     }
 
     public interface ISetInterface
@@ -275,11 +287,17 @@ namespace Grimoire.UI
 
     public class SetItem
     {
+        #region Fields
+
         public List<ISetInterface> Set = new List<ISetInterface>();
+
+        #endregion
     }
 
     public class Item : ISetInterface
     {
+        #region Properties
+
         public string Type
         {
             get;
@@ -292,9 +310,15 @@ namespace Grimoire.UI
             set;
         }
 
+        #endregion
+
+        #region Methods
+
         public override string ToString()
         {
             return $"[{Type}] : {Name}";
         }
+
+        #endregion
     }
 }

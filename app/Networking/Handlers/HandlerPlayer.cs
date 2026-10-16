@@ -11,6 +11,8 @@ namespace Grimoire.Networking.Handlers
 {
     public class HandlerSkills : IJsonMessageHandler
     {
+        #region Properties
+
         public string[] HandledCommands
         {
             get;
@@ -19,16 +21,24 @@ namespace Grimoire.Networking.Handlers
             "sAct"
         };
 
+        #endregion
+
+        #region Methods
+
         public async void Handle(JsonMessage message)
         {
             await Task.Delay(10);
             Flash.Call("getRange", new string[0]);
             OptionsManager.SetInfiniteRange(OptionsManager.InfiniteRange);
         }
+
+        #endregion
     }
 
     public class HandlerBotSkills : IJsonMessageHandler
     {
+        #region Properties
+
         public string[] HandledCommands
         {
             get;
@@ -36,6 +46,10 @@ namespace Grimoire.Networking.Handlers
         {
             "ct"
         };
+
+        #endregion
+
+        #region Methods
 
         public async void Handle(JsonMessage message)
         {
@@ -55,10 +69,14 @@ namespace Grimoire.Networking.Handlers
                 }
             }
         }
+
+        #endregion
     }
 
         public class HandlerInfo : IJsonMessageHandler
     {
+            #region Properties
+
         public string[] HandledCommands
         {
             get;
@@ -69,6 +87,10 @@ namespace Grimoire.Networking.Handlers
             "moveToArea",
             "uotls"
         };
+
+            #endregion
+
+            #region Methods
 
         public async void Handle(JsonMessage message)
         {
@@ -88,10 +110,14 @@ namespace Grimoire.Networking.Handlers
                     break;
             }
         }
-    }
+
+            #endregion
+        }
 
     public class HandlerAura : IJsonMessageHandler
     {
+        #region Properties
+
         public string[] HandledCommands
         {
             get;
@@ -99,6 +125,10 @@ namespace Grimoire.Networking.Handlers
         {
             "ct"
         };
+
+        #endregion
+
+        #region Methods
 
         public async void Handle(JsonMessage message)
         {
@@ -211,5 +241,6 @@ namespace Grimoire.Networking.Handlers
             World.auraCountdown -= aura.countdown;
         }
 
+        #endregion
     }
 }

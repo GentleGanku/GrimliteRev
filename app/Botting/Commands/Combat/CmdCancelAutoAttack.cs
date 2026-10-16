@@ -5,6 +5,8 @@ namespace Grimoire.Botting.Commands.Combat
 {
     public class CmdCancelAutoAttack : IBotCommand
     {
+        #region Methods
+
         public async Task Execute(IBotEngine instance)
         {
             Player.CancelAutoAttack();
@@ -14,5 +16,7 @@ namespace Grimoire.Botting.Commands.Combat
         {
             return "Cancel auto attack";
         }
+
+        #endregion
     }
 }

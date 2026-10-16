@@ -6,6 +6,8 @@ namespace Grimoire.Botting.Commands.Item
 {
     public class CmdWhitelist : IBotCommand
     {
+        #region Enums
+
         public enum state
         {
             On,
@@ -14,6 +16,10 @@ namespace Grimoire.Botting.Commands.Item
             Add,
             Remove
         }
+
+        #endregion
+
+        #region Properties
 
         public string Item
         {
@@ -26,6 +32,10 @@ namespace Grimoire.Botting.Commands.Item
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -73,5 +83,7 @@ namespace Grimoire.Botting.Commands.Item
             }
             return "Drop list";
         }
+
+        #endregion
     }
 }

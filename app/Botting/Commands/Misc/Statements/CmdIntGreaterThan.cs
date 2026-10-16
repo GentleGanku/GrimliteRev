@@ -4,11 +4,17 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 {
     public class CmdIntGreaterThan : StatementCommand, IBotCommand
     {
+        #region Constructors
+
         public CmdIntGreaterThan()
         {
             Tag = "Misc";
             Text = "Int is greater than";
         }
+
+        #endregion
+
+        #region Methods
 
         public Task Execute(IBotEngine instance)
         {
@@ -23,5 +29,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         {
             return $"{Value1} is greater than: {Value2} (value)";
         }
+
+        #endregion
     }
 }

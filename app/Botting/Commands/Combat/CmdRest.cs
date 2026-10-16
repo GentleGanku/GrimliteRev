@@ -5,11 +5,17 @@ namespace Grimoire.Botting.Commands.Combat
 {
     public class CmdRest : IBotCommand
     {
+        #region Properties
+
         public bool Full
         {
             get;
             set;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task Execute(IBotEngine instance)
         {
@@ -30,5 +36,7 @@ namespace Grimoire.Botting.Commands.Combat
         {
             return Full ? "Rest fully" : "Rest";
         }
+
+        #endregion
     }
 }
