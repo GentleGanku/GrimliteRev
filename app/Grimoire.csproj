@@ -325,6 +325,7 @@
     <Compile Include="UI\CommandNode.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UI\ResizableUserControl.cs" />
     <Compile Include="UI\CommandNode.Designer.cs">
       <DependentUpon>CommandNode.cs</DependentUpon>
     </Compile>
@@ -385,6 +386,53 @@
     <Compile Include="UI\BotManager.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UI\BotManager.Designer.cs">
+      <DependentUpon>BotManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\BotManager.Info.cs">
+      <DependentUpon>BotManager.cs</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\BotManager.Client.cs">
+      <DependentUpon>BotManager.cs</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\BotManager.Options.cs">
+      <DependentUpon>BotManager.cs</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\BotManager.Misc.cs">
+      <DependentUpon>BotManager.cs</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\BotManager.Quest.cs">
+      <DependentUpon>BotManager.cs</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\BotManager.Map.cs">
+      <DependentUpon>BotManager.cs</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\BotManager.Item.cs">
+      <DependentUpon>BotManager.cs</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\BotManager.Combat.cs">
+      <DependentUpon>BotManager.cs</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\BotManager.Bots.cs">
+      <DependentUpon>BotManager.cs</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\BotManager.CommandListDrawing.cs">
+      <DependentUpon>BotManager.cs</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\BotManager.CommandList.cs">
+      <DependentUpon>BotManager.cs</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="UI\CommandColorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -400,11 +448,20 @@
     <Compile Include="UI\Hotkeys.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UI\Hotkeys.Designer.cs">
+      <DependentUpon>Hotkeys.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Loaders.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UI\Loaders.Designer.cs">
+      <DependentUpon>Loaders.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\LogForm.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LogForm.Designer.cs">
+      <DependentUpon>LogForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\NewBadge.cs" />
     <Compile Include="UI\Notepad.cs">
@@ -416,27 +473,51 @@
     <Compile Include="UI\PacketLogger.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UI\PacketLogger.Designer.cs">
+      <DependentUpon>PacketLogger.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\PacketSpammer.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\PacketSpammer.Designer.cs">
+      <DependentUpon>PacketSpammer.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\PacketTamperer.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UI\PacketTamperer.Designer.cs">
+      <DependentUpon>PacketTamperer.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\PluginManager.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\PluginManager.Designer.cs">
+      <DependentUpon>PluginManager.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\UserFriendlyCommandEditor.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UI\UserFriendlyCommandEditor.Designer.cs">
+      <DependentUpon>UserFriendlyCommandEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\RawCommandEditor.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\RawCommandEditor.Designer.cs">
+      <DependentUpon>RawCommandEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Root.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UI\Root.Designer.cs">
+      <DependentUpon>Root.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Set.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UI\Item.cs" />
+    <Compile Include="UI\SetItem.cs" />
+    <Compile Include="UI\ISetInterface.cs" />
     <Compile Include="UI\Set.Designer.cs">
       <DependentUpon>Set.cs</DependentUpon>
     </Compile>
@@ -448,6 +529,9 @@
     </Compile>
     <Compile Include="UI\Travel.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Travel.Designer.cs">
+      <DependentUpon>Travel.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils\ControlUtils.cs" />
     <Compile Include="Utils\EnumerableUtils.cs" />
