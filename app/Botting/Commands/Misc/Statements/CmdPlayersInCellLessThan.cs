@@ -12,7 +12,13 @@ namespace Grimoire.Botting.Commands.Misc.Statements
             Text = "Player count in cell is less than";
         }
 
-        private string _cell => BotManager.Instance.ActiveBotEngine.Value(Value1);
+        private string _cell
+        {
+            get
+            {
+                return BotManager.Instance.ActiveBotEngine.Value(Value1);
+            }
+        }
 
         public Task Execute(IBotEngine instance)
         {

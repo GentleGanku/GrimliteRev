@@ -15,7 +15,13 @@ namespace Grimoire.UI
 
         public static RawCommandEditor Instance = new RawCommandEditor();
 
-        public string Input => txtCmd.Text;
+        public string Input
+        {
+            get
+            {
+                return txtCmd.Text;
+            }
+        }
 
         public string Content
         {

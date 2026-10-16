@@ -14,7 +14,10 @@ namespace Grimoire.Tools
 
         private CancellationTokenSource _cancellationTokenSource;
 
-        public static Spammer Instance { get; } = new Spammer();
+        public static Spammer Instance
+        {
+            get;
+        } = new Spammer();
 
         public event Action<int> IndexChanged;
 

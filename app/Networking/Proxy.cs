@@ -25,13 +25,29 @@ namespace Grimoire.Networking
 
         public static CancellationTokenSource AppClosingToken;
 
-        public bool _catchXtPackets { get; set; } = false;
+        public bool _catchXtPackets
+        {
+            get;
+            set;
+        } = false;
 
-        public bool _catchAllPackets { get; set; } = false;
+        public bool _catchAllPackets
+        {
+            get;
+            set;
+        } = false;
 
-        public bool firstJoin { get; set; } = true;
+        public bool firstJoin
+        {
+            get;
+            set;
+        } = true;
 
-        public static Proxy Instance { get; set; }
+        public static Proxy Instance
+        {
+            get;
+            set;
+        }
 
         public static event Receive ReceivedFromGame;
 

@@ -19,119 +19,260 @@ namespace Grimoire.Game
             InCombat
         }
 
-        public static int UserID => Flash.Call<int>("UserID", new object[0]);
+        public static int UserID
+        {
+            get
+            {
+                return Flash.Call<int>("UserID", new object[0]);
+            }
+        }
 
-        public static int CharUserID { get; set; }
+        public static int CharUserID
+        {
+            get;
+            set;
+        }
 
-        public static Bank Bank { get; }
+        public static Bank Bank
+        {
+            get;
+        }
 
-        public static Inventory Inventory { get; }
+        public static Inventory Inventory
+        {
+            get;
+        }
 
-        public static TempInventory TempInventory { get; }
+        public static TempInventory TempInventory
+        {
+            get;
+        }
 
-        public static House House { get; }
+        public static House House
+        {
+            get;
+        }
 
         /// <summary>
         /// Gets an array containing all the names of the factions that the player has some reputation in.
         /// </summary>
-        public static List<Faction> Factions => JsonConvert.DeserializeObject<List<Faction>>(Flash.Call("GetFactions", new object[0]));
+        public static List<Faction> Factions
+        {
+            get
+            {
+                return JsonConvert.DeserializeObject<List<Faction>>(Flash.Call("GetFactions", new object[0]));
+            }
+        }
 
-        public static Quests Quests { get; }
+        public static Quests Quests
+        {
+            get;
+        }
 
         /// <summary>
         /// Grabs Username string.
         /// </summary>
-        public static string Username { get; set; }
+        public static string Username
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Grabs Password string.
         /// </summary>
-        private static string Password => Flash.Call<string>("Password", new string[0]);
+        private static string Password
+        {
+            get
+            {
+                return Flash.Call<string>("Password", new string[0]);
+            }
+        }
 
         /// <summary>
         /// Checks if Logged in.
         /// </summary>
-        public static bool IsLoggedIn { get; set; }
+        public static bool IsLoggedIn
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Gets Cell.
         /// </summary>
-        public static string Cell => Flash.Call<string>("Cell", new string[0]);
+        public static string Cell
+        {
+            get
+            {
+                return Flash.Call<string>("Cell", new string[0]);
+            }
+        }
 
         /// <summary>
         /// Gets Pad.
         /// </summary>
-        public static string Pad => Flash.Call<string>("Pad", new string[0]);
+        public static string Pad
+        {
+            get
+            {
+                return Flash.Call<string>("Pad", new string[0]);
+            }
+        }
 
         /// <summary>
         /// Gets Current State (Dead, Idle or InCombat).
         /// </summary>
-        public static State CurrentState => (State)Flash.Call<int>("State", new string[0]);
+        public static State CurrentState
+        {
+            get
+            {
+                return (State)Flash.Call<int>("State", new string[0]);
+            }
+        }
 
         /// <summary>
         /// Gets Current Health.
         /// </summary>
-        public static int Health => Flash.Call<int>("Health", new string[0]);
+        public static int Health
+        {
+            get
+            {
+                return Flash.Call<int>("Health", new string[0]);
+            }
+        }
 
         /// <summary>
         /// Gets Health max.
         /// </summary>
-        public static int HealthMax => Flash.Call<int>("HealthMax", new string[0]);
+        public static int HealthMax
+        {
+            get
+            {
+                return Flash.Call<int>("HealthMax", new string[0]);
+            }
+        }
 
         /// <summary>
         /// Checks if Health is above 0.
         /// </summary>
-        public static bool IsAlive => Health > 0;
+        public static bool IsAlive
+        {
+            get
+            {
+                return Health > 0;
+            }
+        }
 
         /// <summary>
         /// Gets Current Mana.
         /// </summary>
-        public static int Mana => Flash.Call<int>("Mana", new string[0]);
+        public static int Mana
+        {
+            get
+            {
+                return Flash.Call<int>("Mana", new string[0]);
+            }
+        }
 
         /// <summary>
         /// Gets Mana max.
         /// </summary>
-        public static int ManaMax => Flash.Call<int>("ManaMax", new string[0]);
+        public static int ManaMax
+        {
+            get
+            {
+                return Flash.Call<int>("ManaMax", new string[0]);
+            }
+        }
 
         /// <summary>
         /// Gets map string.
         /// </summary>
-        public static string Map => Data.Map.Area.Split('-')[0];
+        public static string Map
+        {
+            get
+            {
+                return Data.Map.Area.Split('-')[0];
+            }
+        }
 
         /// <summary>
         /// Gets level int.
         /// </summary>
-        public static int Level => Flash.Call<int>("Level", new string[0]);
+        public static int Level
+        {
+            get
+            {
+                return Flash.Call<int>("Level", new string[0]);
+            }
+        }
 
         /// <summary>
         /// Gets gold int.
         /// </summary>
-        public static int Gold => Flash.Call<int>("Gold", new string[0]);
+        public static int Gold
+        {
+            get
+            {
+                return Flash.Call<int>("Gold", new string[0]);
+            }
+        }
 
         /// <summary>
         /// Checks if the player has a target.
         /// </summary>
-        public static bool HasTarget => Flash.Call<bool>("HasTarget", new string[0]);
+        public static bool HasTarget
+        {
+            get
+            {
+                return Flash.Call<bool>("HasTarget", new string[0]);
+            }
+        }
 
         /// <summary>
         /// Checks if all skills are available or off cooldown.
         /// </summary>
-        public static int AllSkillsAvailable => Flash.Call<int>("AllSkillsAvailable", new string[0]);
+        public static int AllSkillsAvailable
+        {
+            get
+            {
+                return Flash.Call<int>("AllSkillsAvailable", new string[0]);
+            }
+        }
 
         /// <summary>
         /// Checks if the player is afk.
         /// </summary>
-        public static bool IsAfk => Flash.Call<bool>("IsAfk", new string[0]);
+        public static bool IsAfk
+        {
+            get
+            {
+                return Flash.Call<bool>("IsAfk", new string[0]);
+            }
+        }
 
         /// <summary>
         /// Finds player position (float).
         /// </summary>
-        public static float[] Position => Flash.Call<float[]>("Position", new string[0]);
+        public static float[] Position
+        {
+            get
+            {
+                return Flash.Call<float[]>("Position", new string[0]);
+            }
+        }
 
         /// <summary>
         /// Checks if the player is a member (upgrade).
         /// </summary>
-        public static bool IsMember => Flash.Call<bool>("IsMember", new string[0]);
+        public static bool IsMember
+        {
+            get
+            {
+                return Flash.Call<bool>("IsMember", new string[0]);
+            }
+        }
 
         /// <summary>
         /// Checks if int skill is available (i think if its also off cooldown).
@@ -235,7 +376,13 @@ namespace Grimoire.Game
 
         public static void LoadMap(string name) => Flash.Call("LoadMap", new string[1] { name });
 
-        public static string Class => Flash.Call<string>("Class", new string[0]);
+        public static string Class
+        {
+            get
+            {
+                return Flash.Call<string>("Class", new string[0]);
+            }
+        }
 
         public static void AcceptQuest(int id) => Flash.Call("Accept", id.ToString());
 
@@ -258,9 +405,29 @@ namespace Grimoire.Game
 
         public static bool HasLoadedAvatar() => Flash.Call<bool>("HasLoadedAvatar", new string[0]);
 
-        public static int ActivationFlag { get => GameObject.Get<int>("world.myAvatar.objData.intActivationFlag"); set => GameObject.Set("world.myAvatar.objData.intActivationFlag", value); }
+        public static int ActivationFlag
+        {
+            get
+            {
+                return GameObject.Get<int>("world.myAvatar.objData.intActivationFlag");
+            }
+            set
+            {
+                GameObject.Set("world.myAvatar.objData.intActivationFlag", value);
+            }
+        }
 
-        public static bool HasDeathAd { get => GameObject.Get<bool>("userPreference.data.bDeathAd"); set => GameObject.Set("userPreference.data.bDeathAd", value); }
+        public static bool HasDeathAd
+        {
+            get
+            {
+                return GameObject.Get<bool>("userPreference.data.bDeathAd");
+            }
+            set
+            {
+                GameObject.Set("userPreference.data.bDeathAd", value);
+            }
+        }
 
         public static bool isAuraActive(string target, string aura) => Flash.Call<bool>("isAuraActive", target, aura);
 
@@ -270,15 +437,45 @@ namespace Grimoire.Game
 
         public static void cancelAfk() => Flash.Call("cancelAfk", new string[0]);
 
-        public static bool targetOnSelf { get => GameObject.Get<bool>("world.myAvatar.target.isMyAvatar"); set => GameObject.Set("world.myAvatar.target.isMyAvatar", value); }
+        public static bool targetOnSelf
+        {
+            get
+            {
+                return GameObject.Get<bool>("world.myAvatar.target.isMyAvatar");
+            }
+            set
+            {
+                GameObject.Set("world.myAvatar.target.isMyAvatar", value);
+            }
+        }
 
-        public static int walkSpeed { get => GameObject.Get<int>("world.WALKSPEED"); set => GameObject.Set("world.WALKSPEED", value); }
+        public static int walkSpeed
+        {
+            get
+            {
+                return GameObject.Get<int>("world.WALKSPEED");
+            }
+            set
+            {
+                GameObject.Set("world.WALKSPEED", value);
+            }
+        }
 
         public static void Unequip(string itemID) => Flash.Call("Unequip", itemID);
 
         public static void UnequipPotion(string itemName) => Flash.Call("UnequipPotion", itemName);
 
-        public static int levelCap { get => GameObject.Get<int>("intLevelCap"); set => GameObject.Set("intLevelCap", value); }
+        public static int levelCap
+        {
+            get
+            {
+                return GameObject.Get<int>("intLevelCap");
+            }
+            set
+            {
+                GameObject.Set("intLevelCap", value);
+            }
+        }
 
         static Player()
         {

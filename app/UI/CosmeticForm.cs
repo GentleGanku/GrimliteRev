@@ -13,7 +13,10 @@ namespace Grimoire.UI
 {
     public partial class CosmeticForm : DarkForm
     {
-        public static CosmeticForm Instance { get; } = new CosmeticForm();
+        public static CosmeticForm Instance
+        {
+            get;
+        } = new CosmeticForm();
 
         public CosmeticForm()
         {

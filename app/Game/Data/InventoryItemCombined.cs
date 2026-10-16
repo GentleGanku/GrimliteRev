@@ -57,60 +57,166 @@ namespace Grimoire.Game.Data
         };
 
         [JsonProperty("iLvl")]
-        public int Level { get; set; }
+        public int Level
+        {
+            get;
+            set;
+        }
 
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bCoins")]
-        public bool IsAcItem { get; set; }
+        public bool IsAcItem
+        {
+            get;
+            set;
+        }
 
-        public int CharItemId { get; set; }
+        public int CharItemId
+        {
+            get;
+            set;
+        }
 
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bEquip")]
-        public bool IsEquipped { get; set; }
+        public bool IsEquipped
+        {
+            get;
+            set;
+        }
 
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bUpg")]
-        public bool IsMemberOnly { get; set; }
+        public bool IsMemberOnly
+        {
+            get;
+            set;
+        }
 
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bTemp")]
-        public bool IsTemporary { get; set; }
+        public bool IsTemporary
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("iCost")]
-        public int Cost { get; set; }
+        public int Cost
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("ItemID")]
-        public int Id { get; set; }
+        public int Id
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("ShopItemID")]
-        public int ShopItemId { get; set; }
+        public int ShopItemId
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("iRate")]
-        public string DropChance { get; set; }
+        public string DropChance
+        {
+            get;
+            set;
+        }
 
         #region bools
-        public bool IsEquippable => EquippableCategories.Contains(Category);
+        public bool IsEquippable
+        {
+            get
+            {
+                return EquippableCategories.Contains(Category);
+            }
+        }
 
-        public bool IsWeapon => Weapons.Contains(Category);
+        public bool IsWeapon
+        {
+            get
+            {
+                return Weapons.Contains(Category);
+            }
+        }
 
-        public bool IsEquippableNonItem => EquippableNonWeapon.Contains(Category);
+        public bool IsEquippableNonItem
+        {
+            get
+            {
+                return EquippableNonWeapon.Contains(Category);
+            }
+        }
 
-        public bool ShouldSerializeDescription => false;
+        public bool ShouldSerializeDescription
+        {
+            get
+            {
+                return false;
+            }
+        }
 
-        public bool ShouldSerializeMaxStack => false;
+        public bool ShouldSerializeMaxStack
+        {
+            get
+            {
+                return false;
+            }
+        }
 
-        public bool ShouldSerializeLevel => false;
+        public bool ShouldSerializeLevel
+        {
+            get
+            {
+                return false;
+            }
+        }
 
-        public bool ShouldSerializeIsAcItem => false;
+        public bool ShouldSerializeIsAcItem
+        {
+            get
+            {
+                return false;
+            }
+        }
 
-        public bool ShouldSerializeLink => false;
+        public bool ShouldSerializeLink
+        {
+            get
+            {
+                return false;
+            }
+        }
 
-        public bool ShouldSerializeFile => false;
+        public bool ShouldSerializeFile
+        {
+            get
+            {
+                return false;
+            }
+        }
 
-        public bool ShouldSerializeIsEquipped => false;
+        public bool ShouldSerializeIsEquipped
+        {
+            get
+            {
+                return false;
+            }
+        }
 
-        public bool ShouldSerializeIsMemberOnly => false;
+        public bool ShouldSerializeIsMemberOnly
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         public bool ShouldSerializeIsTemporary() => false;
 
@@ -127,60 +233,104 @@ namespace Grimoire.Game.Data
         /// The ID of the item.
         /// </summary>
         [JsonProperty("ItemID")]
-        public virtual int ID { get; set; }
+        public virtual int ID
+        {
+            get;
+            set;
+        }
         /// <summary>
         /// The name of the item.
         /// </summary>
         [JsonProperty("sName")]
         [JsonConverter(typeof(TrimConverter))]
-        public virtual string Name { get; set; }
+        public virtual string Name
+        {
+            get;
+            set;
+        }
         /// <summary>
         /// The description of the item.
         /// </summary>
         [JsonProperty("sDesc")]
-        public virtual string Description { get; set; }
+        public virtual string Description
+        {
+            get;
+            set;
+        }
         /// <summary>
         /// The quantity of the item in this stack.
         /// </summary>
         [JsonProperty("iQty")]
-        public virtual int Quantity { get; set; }
+        public virtual int Quantity
+        {
+            get;
+            set;
+        }
         /// <summary>
         /// The maximum stack size this item can exit in.
         /// </summary>
         [JsonProperty("iStk")]
-        public virtual int MaxStack { get; set; }
+        public virtual int MaxStack
+        {
+            get;
+            set;
+        }
         /// <summary>
         /// Indicates if the item is a member/upgrade only item.
         /// </summary>
         [JsonProperty("bUpg")]
         [JsonConverter(typeof(StringBoolConverter))]
-        public virtual bool Upgrade { get; set; }
+        public virtual bool Upgrade
+        {
+            get;
+            set;
+        }
         /// <summary>
         /// Indicates if the item is an AC item.
         /// </summary>
         [JsonProperty("bCoins")]
         [JsonConverter(typeof(StringBoolConverter))]
-        public virtual bool Coins { get; set; }
+        public virtual bool Coins
+        {
+            get;
+            set;
+        }
         /// <summary>
         /// The category of the item.
         /// </summary>
         [JsonProperty("sType")]
-        public virtual string Category { get; set; }
+        public virtual string Category
+        {
+            get;
+            set;
+        }
         /// <summary>
         /// Indicates if the item is a temporary item.
         /// </summary>
         [JsonProperty("bTemp")]
         [JsonConverter(typeof(StringBoolConverter))]
-        public virtual bool Temp { get; set; }
+        public virtual bool Temp
+        {
+            get;
+            set;
+        }
         /// <summary>
         /// Gets the item's sFile
         /// </summary>
         [JsonProperty("sFile")]
-        public virtual string File { get; set; }
+        public virtual string File
+        {
+            get;
+            set;
+        }
         /// <summary>
         /// Gets the item's sFile
         /// </summary>
         [JsonProperty("sLink")]
-        public virtual string Link { get; set; }
+        public virtual string Link
+        {
+            get;
+            set;
+        }
     }
 }

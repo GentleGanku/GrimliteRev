@@ -259,9 +259,18 @@ namespace Grimoire.UI
         private static System.Threading.CancellationTokenSource login_cts;
         private static System.Threading.CancellationTokenSource _cts;
 
-        public static Hotkeys Instance { get; } = new Hotkeys();
+        public static Hotkeys Instance
+        {
+            get;
+        } = new Hotkeys();
 
-        private string configPath => Path.Combine(Application.StartupPath, "hotkeys.json");
+        private string configPath
+        {
+            get
+            {
+                return Path.Combine(Application.StartupPath, "hotkeys.json");
+            }
+        }
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
         private static extern IntPtr GetForegroundWindow();

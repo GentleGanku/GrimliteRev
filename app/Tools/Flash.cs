@@ -24,7 +24,13 @@ namespace Grimoire.Tools
     public class Flash
     {
         private static Flash _instance;
-        public static Flash Instance => _instance ?? (_instance = new Flash());
+        public static Flash Instance
+        {
+            get
+            {
+                return _instance ?? (_instance = new Flash());
+            }
+        }
 
         public static AxShockwaveFlash flash;
 

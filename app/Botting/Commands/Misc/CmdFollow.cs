@@ -4,7 +4,11 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdFollow : RegularExpression, IBotCommand
     {
-        public string Name { get; set; }
+        public string Name
+        {
+            get;
+            set;
+        }
 
         public async Task Execute(IBotEngine instance)
         {

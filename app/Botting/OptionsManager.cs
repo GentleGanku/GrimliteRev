@@ -41,19 +41,42 @@ namespace Grimoire.Botting
             }
         }
 
-        public static bool ProvokeMonsters { get; set; }
+        public static bool ProvokeMonsters
+        {
+            get;
+            set;
+        }
 
-        public static bool PacketSpam { get; set; }
+        public static bool PacketSpam
+        {
+            get;
+            set;
+        }
 
-        public static string ProvokePacket { get; set; }
+        public static string ProvokePacket
+        {
+            get;
+            set;
+        }
 
-        public static string SpamPacket { get; set; }
+        public static string SpamPacket
+        {
+            get;
+            set;
+        }
 
-        public static bool EnemyMagnet { get; set; }
+        public static bool EnemyMagnet
+        {
+            get;
+            set;
+        }
 
         public static bool LagKiller
         {
-            get => _lagKiller;
+            get
+            {
+                return _lagKiller;
+            }
             set
             {
                 _lagKiller = value;
@@ -61,11 +84,18 @@ namespace Grimoire.Botting
             }
         }
 
-        public static bool SkipCutscenes { get; set; }
+        public static bool SkipCutscenes
+        {
+            get;
+            set;
+        }
 
         public static bool DisableAnimations
         {
-            get => _disableAnimation;
+            get
+            {
+                return _disableAnimation;
+            }
             set
             {
                 _disableAnimation = value;
@@ -75,7 +105,10 @@ namespace Grimoire.Botting
 
         public static bool HidePlayers
         {
-            get => _hidePlayers;
+            get
+            {
+                return _hidePlayers;
+            }
             set
             {
                 _hidePlayers = value;
@@ -85,7 +118,10 @@ namespace Grimoire.Botting
 
         public static bool InfiniteRange
         {
-            get => _infRange;
+            get
+            {
+                return _infRange;
+            }
             set
             {
                 _infRange = value;
@@ -93,19 +129,42 @@ namespace Grimoire.Botting
             }
         }
 
-        public static int WalkSpeed { get; set; }
+        public static int WalkSpeed
+        {
+            get;
+            set;
+        }
 
-        public static int Timer { get; set; } = 250;
+        public static int Timer
+        {
+            get;
+            set;
+        } = 250;
 
-        public static int PacketDelay { get; set; }
+        public static int PacketDelay
+        {
+            get;
+            set;
+        }
 
-        public static int RoomNumber { get; set; }
+        public static int RoomNumber
+        {
+            get;
+            set;
+        }
 
-        public static bool Untarget { get; set; }
+        public static bool Untarget
+        {
+            get;
+            set;
+        }
 
         public static bool AFK
         {
-            get => _afk;
+            get
+            {
+                return _afk;
+            }
             set
             {
                 _afk = value;
@@ -118,7 +177,10 @@ namespace Grimoire.Botting
 
         public static bool HideRoom
         {
-            get => _hideRoom;
+            get
+            {
+                return _hideRoom;
+            }
             set
             {
                 _hideRoom = value;
@@ -129,15 +191,30 @@ namespace Grimoire.Botting
             }
         }
 
-        public static bool ChangeChat { get; set; }
+        public static bool ChangeChat
+        {
+            get;
+            set;
+        }
 
-        public static bool WarningMsgFilter { get; set; }
+        public static bool WarningMsgFilter
+        {
+            get;
+            set;
+        }
 
-        public static bool _antiAfk { get; set; } = false;
+        public static bool _antiAfk
+        {
+            get;
+            set;
+        } = false;
 
         public static bool HideYulgar
         {
-            get => _hideYulgar;
+            get
+            {
+                return _hideYulgar;
+            }
             set
             {
                 _hideYulgar = value;
@@ -257,9 +334,15 @@ namespace Grimoire.Botting
             }
         }
 
-        private static IJsonMessageHandler HandlerHideRoom { get; }
+        private static IJsonMessageHandler HandlerHideRoom
+        {
+            get;
+        }
 
-        private static IXtMessageHandler HandlerAFK1 { get; }
+        private static IXtMessageHandler HandlerAFK1
+        {
+            get;
+        }
 
         static OptionsManager()
         {

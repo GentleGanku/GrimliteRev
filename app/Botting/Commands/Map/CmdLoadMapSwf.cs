@@ -6,7 +6,11 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdLoadMapSwf : IBotCommand
     {
-        public string Name { get; set; }
+        public string Name
+        {
+            get;
+            set;
+        }
 
         public async Task Execute(IBotEngine instance)
         {

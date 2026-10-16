@@ -26,11 +26,23 @@ namespace Grimoire.UI
 
         public static UserFriendlyCommandEditor Instance = new UserFriendlyCommandEditor();
 
-        private static object cmdObj { get; set; }
+        private static object cmdObj
+        {
+            get;
+            set;
+        }
 
-        private static UserFriendlyCommandEditor commandEditor { get; set; }
+        private static UserFriendlyCommandEditor commandEditor
+        {
+            get;
+            set;
+        }
 
-        public static string cmd { get; set; }
+        public static string cmd
+        {
+            get;
+            set;
+        }
 
         private static readonly JsonSerializerSettings _questSerializerSettings = new JsonSerializerSettings
         {

@@ -5,13 +5,29 @@ namespace Grimoire.Botting.Commands.Combat
 {
     public class CmdKillFor : IBotCommand
     {
-        public string Monster { get; set; }
+        public string Monster
+        {
+            get;
+            set;
+        }
 
-        public string ItemName { get; set; }
+        public string ItemName
+        {
+            get;
+            set;
+        }
 
-        public ItemType ItemType { get; set; }
+        public ItemType ItemType
+        {
+            get;
+            set;
+        }
 
-        public string Quantity { get; set; }
+        public string Quantity
+        {
+            get;
+            set;
+        }
 
         private bool notInInventory(string item, string quantity)
         {

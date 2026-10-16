@@ -7,7 +7,13 @@ namespace Grimoire.Game.Data
 {
     public class TempInventory
     {
-        public List<TempItem> Items => Flash.Call<List<TempItem>>("GetTempItems", new string[0]);
+        public List<TempItem> Items
+        {
+            get
+            {
+                return Flash.Call<List<TempItem>>("GetTempItems", new string[0]);
+            }
+        }
 
         public bool ContainsItem(string name, string qty)
         {

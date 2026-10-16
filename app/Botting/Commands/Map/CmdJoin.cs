@@ -10,11 +10,23 @@ namespace Grimoire.Botting.Commands.Map
 {
     public class CmdJoin : IBotCommand
     {
-        public string Map { get; set; }
+        public string Map
+        {
+            get;
+            set;
+        }
 
-        public string Cell { get; set; }
+        public string Cell
+        {
+            get;
+            set;
+        }
 
-        public string Pad { get; set; }
+        public string Pad
+        {
+            get;
+            set;
+        }
 
         public async Task Execute(IBotEngine instance)
         {
@@ -81,21 +93,61 @@ namespace Grimoire.Botting.Commands.Map
 
     public class CmdJoin2 : IBotCommand
     {
-        public string Map { get; set; }
+        public string Map
+        {
+            get;
+            set;
+        }
 
-        public string Room { get; set; }
+        public string Room
+        {
+            get;
+            set;
+        }
 
-        public string Cell { get; set; }
+        public string Cell
+        {
+            get;
+            set;
+        }
 
-        public string Pad { get; set; }
+        public string Pad
+        {
+            get;
+            set;
+        }
 
-        private string _map => BotManager.Instance.ActiveBotEngine.Value(Map);
+        private string _map
+        {
+            get
+            {
+                return BotManager.Instance.ActiveBotEngine.Value(Map);
+            }
+        }
 
-        private string _room => (BotManager.Instance.ActiveBotEngine.Value(Room) != "1e99") ? BotManager.Instance.ActiveBotEngine.Value(Room) : new Random().Next(1001, 99999).ToString();
+        private string _room
+        {
+            get
+            {
+                return (BotManager.Instance.ActiveBotEngine.Value(Room) != "1e99") ? BotManager.Instance.ActiveBotEngine.Value(Room) : new Random().Next(1001, 99999).ToString();
+            }
+        }
 
-        private string _cell => BotManager.Instance.ActiveBotEngine.Value(Cell);
+        private string _cell
+        {
+            get
+            {
+                return BotManager.Instance.ActiveBotEngine.Value(Cell);
+            }
+        }
 
-        private string _pad => BotManager.Instance.ActiveBotEngine.Value(Pad);
+        private string _pad
+        {
+            get
+            {
+                return BotManager.Instance.ActiveBotEngine.Value(Pad);
+            }
+        }
 
         public async Task Execute(IBotEngine instance)
         {

@@ -5,9 +5,17 @@ namespace Grimoire.Botting.Commands.Item
 {
     public class CmdBankSwap : IBotCommand
     {
-        public string BankItemName { get; set; }
+        public string BankItemName
+        {
+            get;
+            set;
+        }
 
-        public string InventoryItemName { get; set; }
+        public string InventoryItemName
+        {
+            get;
+            set;
+        }
 
         public async Task Execute(IBotEngine instance)
         {

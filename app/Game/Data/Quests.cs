@@ -7,15 +7,43 @@ namespace Grimoire.Game.Data
 {
     public class Quests
     {
-        public List<Quest> QuestTree => Flash.Call<List<Quest>>("GetQuestTree", new string[0]);
+        public List<Quest> QuestTree
+        {
+            get
+            {
+                return Flash.Call<List<Quest>>("GetQuestTree", new string[0]);
+            }
+        }
 
-        public List<Quest> AcceptedQuests => QuestTree.Where((Quest q) => q.IsInProgress).ToList();
+        public List<Quest> AcceptedQuests
+        {
+            get
+            {
+                return QuestTree.Where((Quest q) => q.IsInProgress).ToList();
+            }
+        }
 
-        public List<Quest> UnacceptedQuests => QuestTree.Where((Quest q) => !q.IsInProgress).ToList();
+        public List<Quest> UnacceptedQuests
+        {
+            get
+            {
+                return QuestTree.Where((Quest q) => !q.IsInProgress).ToList();
+            }
+        }
 
-        public List<Quest> CompletedQuests => QuestTree.Where((Quest q) => q.CanComplete).ToList();
+        public List<Quest> CompletedQuests
+        {
+            get
+            {
+                return QuestTree.Where((Quest q) => q.CanComplete).ToList();
+            }
+        }
 
-        public List<Quest> LoadedQuests { get; set; } = new List<Quest>();
+        public List<Quest> LoadedQuests
+        {
+            get;
+            set;
+        } = new List<Quest>();
 
         public event Action<List<Quest>> QuestsLoaded;
 

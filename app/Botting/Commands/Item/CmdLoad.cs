@@ -6,7 +6,11 @@ namespace Grimoire.Botting.Commands.Item
 {
     public class CmdLoad : IBotCommand
     {
-        public int ShopId { get; set; }
+        public int ShopId
+        {
+            get;
+            set;
+        }
 
         public async Task Execute(IBotEngine instance)
         {
@@ -22,7 +26,11 @@ namespace Grimoire.Botting.Commands.Item
 
     public class CmdLoad2 : IBotCommand
     {
-        public string ShopId { get; set; }
+        public string ShopId
+        {
+            get;
+            set;
+        }
 
         public async Task Execute(IBotEngine instance)
         {

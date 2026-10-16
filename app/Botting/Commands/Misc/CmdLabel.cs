@@ -4,7 +4,11 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdLabel : IBotCommand
     {
-        public string Name { get; set; }
+        public string Name
+        {
+            get;
+            set;
+        }
 
         public Task Execute(IBotEngine instance)
         {

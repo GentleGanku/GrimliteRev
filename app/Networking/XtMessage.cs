@@ -2,7 +2,11 @@ namespace Grimoire.Networking
 {
     public class XtMessage : Message
     {
-        public string[] Arguments { get; set; }
+        public string[] Arguments
+        {
+            get;
+            set;
+        }
 
         public XtMessage(string raw)
         {

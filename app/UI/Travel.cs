@@ -66,7 +66,10 @@ namespace Grimoire.UI
         public DarkCheckBox chkCustomChatTrigger;
         private DarkButton btnBinky;
 
-        public static Travel Instance { get; }
+        public static Travel Instance
+        {
+            get;
+        }
 
         private Travel()
         {
@@ -1127,8 +1130,16 @@ namespace Grimoire.UI
             }
         }
 
-        public List<string> travels { get; set; } = new List<string>();
-        private List<string> travelNames { get; set; } = new List<string>();
+        public List<string> travels
+        {
+            get;
+            set;
+        } = new List<string>();
+        private List<string> travelNames
+        {
+            get;
+            set;
+        } = new List<string>();
 
         private void cbCustomTravels_Click(object sender, EventArgs e)
         {

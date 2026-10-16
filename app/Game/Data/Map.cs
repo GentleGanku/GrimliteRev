@@ -12,19 +12,31 @@ namespace Grimoire.Game.Data
         /// The ID of the map area.
         /// </summary>
         [JsonProperty("areaId")]
-        public static int ID { get; set; }
+        public static int ID
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// The name of the map.
         /// </summary>
         [JsonProperty("strMapName")]
-        public string Name { get; set; }
+        public string Name
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// The name of the map area.
         /// </summary>
         [JsonProperty("areaName")]
-        public static string Area { get; set; }
+        public static string Area
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// The instance of the map area.
@@ -41,7 +53,11 @@ namespace Grimoire.Game.Data
         /// The file path of the map.
         /// </summary>
         [JsonProperty("strMapFileName")]
-        public string FilePath { get; set; }
+        public string FilePath
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// The entire file path for the map.
@@ -58,17 +74,29 @@ namespace Grimoire.Game.Data
         /// The type of the map.
         /// </summary>
         [JsonProperty("intType")]
-        public int Type { get; set; }
+        public int Type
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// The list of monsters in the map.
         /// </summary>
-        public List<Monster> Monsters { get; set; }
+        public List<Monster> Monsters
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// The list of cells in the map.
         /// </summary>
-        public List<Cell> Cells { get; set; } = new List<Cell>();
+        public List<Cell> Cells
+        {
+            get;
+            set;
+        } = new List<Cell>();
 
         /// <summary>
         /// The list of empty cells in the map, excluding the Wait and Blank cells.
@@ -118,19 +146,31 @@ namespace Grimoire.Game.Data
         /// The name of the cell.
         /// </summary>
         [JsonProperty("name")]
-        public string Name { get; set; }
+        public string Name
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// The list of pads in the cell.
         /// </summary>
         [JsonProperty("pads")]
-        public List<string> Pads { get; set; }
+        public List<string> Pads
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// The list of map items in the cell.
         /// </summary>
         [JsonProperty("mapItems")]
-        public List<MapItem> MapItems { get; set; }
+        public List<MapItem> MapItems
+        {
+            get;
+            set;
+        }
 
     }
 
@@ -140,31 +180,51 @@ namespace Grimoire.Game.Data
         /// The ID of the map item.
         /// </summary>
         [JsonProperty("ID")]
-        public int ID { get; set; }
+        public int ID
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// The name of the map item.
         /// </summary>
         [JsonProperty("name")]
-        public string Name { get; set; }
+        public string Name
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// The quest ID for the map item.
         /// </summary>
         [JsonProperty("qID")]
-        public int QuestID { get; set; }
+        public int QuestID
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// The process message for the map item.
         /// </summary>
         [JsonProperty("itemName")]
-        public string ProcessMsg { get; set; }
+        public string ProcessMsg
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// The collect message for the map item.
         /// </summary>
         [JsonProperty("collectMsg")]
-        public string CollectMsg { get; set; }
+        public string CollectMsg
+        {
+            get;
+            set;
+        }
 
     }
 }

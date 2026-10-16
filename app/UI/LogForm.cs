@@ -87,7 +87,10 @@ namespace Grimoire.UI
             }
         }
 
-        public static LogForm Instance { get; }
+        public static LogForm Instance
+        {
+            get;
+        }
 
         public LogForm()
         {

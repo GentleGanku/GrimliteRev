@@ -14,17 +14,39 @@ namespace Grimoire.Game.Data
         public static Shop Instance = new Shop();
 
         [JsonProperty("sName")]
-        public string Name { get; set; }
+        public string Name
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("ShopID")]
-        public int Id { get; set; }
+        public int Id
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("items")]
-        public List<InventoryItem> Items { get; set; }
+        public List<InventoryItem> Items
+        {
+            get;
+            set;
+        }
 
-        public string Location { get; set; }
+        public string Location
+        {
+            get;
+            set;
+        }
 
-        public static bool IsShopLoaded => Flash.Call<bool>("IsShopLoaded", new string[0]);
+        public static bool IsShopLoaded
+        {
+            get
+            {
+                return Flash.Call<bool>("IsShopLoaded", new string[0]);
+            }
+        }
 
         public static bool CanBuyItem(string name) => Flash.Call<bool>("CanBuyItem", name);
 

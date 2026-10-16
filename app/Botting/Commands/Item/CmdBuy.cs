@@ -6,9 +6,17 @@ namespace Grimoire.Botting.Commands.Item
 {
     public class CmdBuy : IBotCommand
     {
-        public int ShopId { get; set; }
+        public int ShopId
+        {
+            get;
+            set;
+        }
 
-        public string ItemName { get; set; }
+        public string ItemName
+        {
+            get;
+            set;
+        }
 
         public async Task Execute(IBotEngine instance)
         {
@@ -29,11 +37,23 @@ namespace Grimoire.Botting.Commands.Item
 
     public class CmdBuy2 : IBotCommand
     {
-        public string ShopId { get; set; }
+        public string ShopId
+        {
+            get;
+            set;
+        }
 
-        public string ItemName { get; set; }
+        public string ItemName
+        {
+            get;
+            set;
+        }
 
-        public bool Manual { get; set; } = false;
+        public bool Manual
+        {
+            get;
+            set;
+        } = false;
 
         public async Task Execute(IBotEngine instance)
         {

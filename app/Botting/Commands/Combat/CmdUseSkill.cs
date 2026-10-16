@@ -5,15 +5,35 @@ namespace Grimoire.Botting.Commands.Combat
 {
     public class CmdUseSkill : IBotCommand
     {
-        public string Skill { get; set; }
+        public string Skill
+        {
+            get;
+            set;
+        }
 
-        public string Index { get; set; }
+        public string Index
+        {
+            get;
+            set;
+        }
 
-        public int SafeHp { get; set; }
+        public int SafeHp
+        {
+            get;
+            set;
+        }
 
-        public int SafeMp { get; set; }
+        public int SafeMp
+        {
+            get;
+            set;
+        }
 
-        public bool Wait { get; set; }
+        public bool Wait
+        {
+            get;
+            set;
+        }
 
         public async Task Execute(IBotEngine instance)
         {
@@ -44,17 +64,41 @@ namespace Grimoire.Botting.Commands.Combat
 
     public class CmdUseSkill2 : IBotCommand
     {
-        public string Monster { get; set; }
+        public string Monster
+        {
+            get;
+            set;
+        }
 
-        public string Skill { get; set; }
+        public string Skill
+        {
+            get;
+            set;
+        }
 
-        public string Index { get; set; }
+        public string Index
+        {
+            get;
+            set;
+        }
 
-        public int SafeHp { get; set; }
+        public int SafeHp
+        {
+            get;
+            set;
+        }
 
-        public int SafeMp { get; set; }
+        public int SafeMp
+        {
+            get;
+            set;
+        }
 
-        public bool Wait { get; set; }
+        public bool Wait
+        {
+            get;
+            set;
+        }
 
         public async Task Execute(IBotEngine instance)
         {

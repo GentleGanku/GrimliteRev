@@ -17,11 +17,25 @@ namespace Grimoire.Game
 
         private readonly List<KeyValuePair<int, Stopwatch>> _cooldown = new List<KeyValuePair<int, Stopwatch>>();
 
-        public List<string> MarkedDrops { get; set; } = new List<string>();
+        public List<string> MarkedDrops
+        {
+            get;
+            set;
+        } = new List<string>();
 
-        public bool InProcess { get; set; } = false;
+        public bool InProcess
+        {
+            get;
+            set;
+        } = false;
 
-        public int Count => _drops.Count;
+        public int Count
+        {
+            get
+            {
+                return _drops.Count;
+            }
+        }
 
         public InventoryItem this[int index]
         {

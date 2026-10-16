@@ -14,7 +14,11 @@ namespace Grimoire.UI
 
         public Point previousPosition;
 
-        public Control activeControl { get; set; }
+        public Control activeControl
+        {
+            get;
+            set;
+        }
 
         private void CommandNode_MouseDown(object sender, MouseEventArgs e)
         {
@@ -92,15 +96,63 @@ namespace Grimoire.UI
             HTBOTTOMRIGHT = 17;
 
         const int _ = 6;
-        Rectangle Top { get { return new Rectangle(0, 0, this.ClientSize.Width, _); } }
-        Rectangle Left { get { return new Rectangle(0, 0, _, this.ClientSize.Height); } }
-        Rectangle Bottom { get { return new Rectangle(0, this.ClientSize.Height - _, this.ClientSize.Width, _); } }
-        Rectangle Right { get { return new Rectangle(this.ClientSize.Width - _, 0, _, this.ClientSize.Height); } }
+        Rectangle Top
+        {
+            get
+            {
+                return new Rectangle(0, 0, this.ClientSize.Width, _);
+            }
+        }
+        Rectangle Left
+        {
+            get
+            {
+                return new Rectangle(0, 0, _, this.ClientSize.Height);
+            }
+        }
+        Rectangle Bottom
+        {
+            get
+            {
+                return new Rectangle(0, this.ClientSize.Height - _, this.ClientSize.Width, _);
+            }
+        }
+        Rectangle Right
+        {
+            get
+            {
+                return new Rectangle(this.ClientSize.Width - _, 0, _, this.ClientSize.Height);
+            }
+        }
 
-        Rectangle TopLeft { get { return new Rectangle(0, 0, _, _); } }
-        Rectangle TopRight { get { return new Rectangle(this.ClientSize.Width - _, 0, _, _); } }
-        Rectangle BottomLeft { get { return new Rectangle(0, this.ClientSize.Height - _, _, _); } }
-        Rectangle BottomRight { get { return new Rectangle(this.ClientSize.Width - _, this.ClientSize.Height - _, _, _); } }
+        Rectangle TopLeft
+        {
+            get
+            {
+                return new Rectangle(0, 0, _, _);
+            }
+        }
+        Rectangle TopRight
+        {
+            get
+            {
+                return new Rectangle(this.ClientSize.Width - _, 0, _, _);
+            }
+        }
+        Rectangle BottomLeft
+        {
+            get
+            {
+                return new Rectangle(0, this.ClientSize.Height - _, _, _);
+            }
+        }
+        Rectangle BottomRight
+        {
+            get
+            {
+                return new Rectangle(this.ClientSize.Width - _, this.ClientSize.Height - _, _, _);
+            }
+        }
 
 
         protected override void WndProc(ref Message message)

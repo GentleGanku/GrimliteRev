@@ -21,7 +21,10 @@ namespace Grimoire.UI
         private TableLayoutPanel tableLayoutPanel1;
         private DarkButton btnClear;
 
-        public static PacketLogger Instance { get; } = new PacketLogger();
+        public static PacketLogger Instance
+        {
+            get;
+        } = new PacketLogger();
 
         private PacketLogger()
         {

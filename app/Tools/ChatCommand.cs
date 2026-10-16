@@ -110,9 +110,19 @@ namespace Grimoire.Tools
             }
         }
 
-        private static IBotEngine Engine => BotManager.Instance.ActiveBotEngine;
+        private static IBotEngine Engine
+        {
+            get
+            {
+                return BotManager.Instance.ActiveBotEngine;
+            }
+        }
 
-        private static CmdKill cmdCombat { get; set; }
+        private static CmdKill cmdCombat
+        {
+            get;
+            set;
+        }
 
         private static bool ShouldCombat = false;
 

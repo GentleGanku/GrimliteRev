@@ -7,13 +7,25 @@ namespace Grimoire.Botting
 {
     public class Config
     {
-        public string file { get; set; }
+        public string file
+        {
+            get;
+            set;
+        }
 
-        public Dictionary<string, string> Contents { get; set; } = new Dictionary<string, string>();
+        public Dictionary<string, string> Contents
+        {
+            get;
+            set;
+        } = new Dictionary<string, string>();
 
         public Config() { }
 
-        public static Config Instance { get; set; } = Config.Load(Application.StartupPath + "\\config.cfg");
+        public static Config Instance
+        {
+            get;
+            set;
+        } = Config.Load(Application.StartupPath + "\\config.cfg");
 
         public string Get(string key)
         {

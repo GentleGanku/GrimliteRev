@@ -39,7 +39,10 @@ namespace Grimoire.UI
 
         public DarkButton btnRemove;
 
-        public static PacketSpammer Instance { get; } = new PacketSpammer();
+        public static PacketSpammer Instance
+        {
+            get;
+        } = new PacketSpammer();
 
         public PacketSpammer()
         {

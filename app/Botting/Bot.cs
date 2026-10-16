@@ -79,7 +79,11 @@ namespace Grimoire.Botting
                 { "Vath"          , "Stalagbite"},
         };
 
-        public int CurrentConfiguration { get; set; } = 0;
+        public int CurrentConfiguration
+        {
+            get;
+            set;
+        } = 0;
 
         public bool IsRunning
         {
@@ -100,7 +104,11 @@ namespace Grimoire.Botting
 
         public event Action<Configuration> ConfigurationChanged;
 
-        public int selectedIndex { get; set; }
+        public int selectedIndex
+        {
+            get;
+            set;
+        }
 
         public void Start(Configuration config)
         {
@@ -331,7 +339,11 @@ namespace Grimoire.Botting
             }
         }
 
-        public int DropDelay { get; set; } = 0;
+        public int DropDelay
+        {
+            get;
+            set;
+        } = 0;
 
         public async void OnItemDropped(InventoryItem drop)
         {
@@ -394,7 +406,11 @@ namespace Grimoire.Botting
             configQuest.Accept();
         }
 
-        public static List<string> DropsInInventory { get; set; } = new List<string>();
+        public static List<string> DropsInInventory
+        {
+            get;
+            set;
+        } = new List<string>();
 
         public bool HasDropInInventory(string item)
         {

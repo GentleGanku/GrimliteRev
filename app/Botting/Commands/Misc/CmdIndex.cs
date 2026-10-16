@@ -11,9 +11,17 @@ namespace Grimoire.Botting.Commands.Misc
             Goto
         }
 
-        public IndexCommand Type { get; set; }
+        public IndexCommand Type
+        {
+            get;
+            set;
+        }
 
-        public int Index { get; set; }
+        public int Index
+        {
+            get;
+            set;
+        }
 
         public Task Execute(IBotEngine instance)
         {

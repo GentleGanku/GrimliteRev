@@ -4,7 +4,10 @@ namespace Grimoire.Networking
 {
     public class XmlMessage : Message
     {
-        public XmlDocument Body { get; }
+        public XmlDocument Body
+        {
+            get;
+        }
 
         public XmlMessage(string raw)
         {

@@ -10,15 +10,39 @@ namespace Grimoire.Game.Data
 {
     public class Bank
     {
-        public List<InventoryItem> Items => Flash.Call<List<InventoryItem>>("GetBankItems", new string[0]);
+        public List<InventoryItem> Items
+        {
+            get
+            {
+                return Flash.Call<List<InventoryItem>>("GetBankItems", new string[0]);
+            }
+        }
 
         public List<InventoryItem> SavedItems;
 
-        public int AvailableSlots => TotalSlots - UsedSlots;
+        public int AvailableSlots
+        {
+            get
+            {
+                return TotalSlots - UsedSlots;
+            }
+        }
 
-        public int UsedSlots => Flash.Call<int>("UsedBankSlots", new string[0]);
+        public int UsedSlots
+        {
+            get
+            {
+                return Flash.Call<int>("UsedBankSlots", new string[0]);
+            }
+        }
 
-        public int TotalSlots => Flash.Call<int>("BankSlots", new string[0]);
+        public int TotalSlots
+        {
+            get
+            {
+                return Flash.Call<int>("BankSlots", new string[0]);
+            }
+        }
 
         public async Task TransferToBank(string itemName)
         {
@@ -83,9 +107,21 @@ namespace Grimoire.Game.Data
 
         public bool CanBankSwap(string invItemName, string bankItemName) => Flash.Call<bool>("CanBankSwap", invItemName, bankItemName);
 
-        public bool HasBankOpen => Flash.Call<bool>("HasBankOpen", new bool[0]);
+        public bool HasBankOpen
+        {
+            get
+            {
+                return Flash.Call<bool>("HasBankOpen", new bool[0]);
+            }
+        }
 
-        public bool IsBankLoaded => Flash.Call<bool>("IsBankLoaded", new string[0]);
+        public bool IsBankLoaded
+        {
+            get
+            {
+                return Flash.Call<bool>("IsBankLoaded", new string[0]);
+            }
+        }
 
     }
 }

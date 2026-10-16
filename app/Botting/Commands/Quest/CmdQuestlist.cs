@@ -13,15 +13,39 @@ namespace Grimoire.Botting.Commands.Quest
             Clear
         }
 
-        public string QuestID { get; set; }
+        public string QuestID
+        {
+            get;
+            set;
+        }
 
-        public string ItemID { get; set; }
+        public string ItemID
+        {
+            get;
+            set;
+        }
 
-        public State state { get; set; }
+        public State state
+        {
+            get;
+            set;
+        }
 
-        private int _questID => int.Parse(BotManager.Instance.ActiveBotEngine.Value(QuestID));
+        private int _questID
+        {
+            get
+            {
+                return int.Parse(BotManager.Instance.ActiveBotEngine.Value(QuestID));
+            }
+        }
 
-        private string _itemID => (!string.IsNullOrEmpty(ItemID)) ? BotManager.Instance.ActiveBotEngine.Value(ItemID) : null;
+        private string _itemID
+        {
+            get
+            {
+                return (!string.IsNullOrEmpty(ItemID)) ? BotManager.Instance.ActiveBotEngine.Value(ItemID) : null;
+            }
+        }
 
         public async Task Execute(IBotEngine instance)
         {

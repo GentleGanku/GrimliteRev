@@ -7,9 +7,21 @@ namespace Grimoire.Game.Data
 {
     public class House
     {
-        public List<InventoryItem> Items => Flash.Call<List<InventoryItem>>("GetHouseItems", new string[0]);
+        public List<InventoryItem> Items
+        {
+            get
+            {
+                return Flash.Call<List<InventoryItem>>("GetHouseItems", new string[0]);
+            }
+        }
 
-        public int TotalSlots => Flash.Call<int>("HouseSlots", new string[0]);
+        public int TotalSlots
+        {
+            get
+            {
+                return Flash.Call<int>("HouseSlots", new string[0]);
+            }
+        }
 
         public bool ContainsItem(string itemName, string quantity = "*")
         {

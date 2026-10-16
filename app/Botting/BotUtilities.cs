@@ -18,12 +18,28 @@ namespace Grimoire.Botting
 
         public static AxShockwaveFlash flash;
 
-        public static bool ActiveBot { get; set; } = false;
+        public static bool ActiveBot
+        {
+            get;
+            set;
+        } = false;
 
-        public static bool BusyClient { get; set; } = false;
+        public static bool BusyClient
+        {
+            get;
+            set;
+        } = false;
 
-        public static bool HasLoadedQuests { get; set; }
-        public static bool ShouldUseSkill { get; set; }
+        public static bool HasLoadedQuests
+        {
+            get;
+            set;
+        }
+        public static bool ShouldUseSkill
+        {
+            get;
+            set;
+        }
 
         public static async Task WaitUntil(this IBotEngine instance, Func<bool> condition, Func<bool> prerequisite = null, int timeout = 15, int delay = 1000, int finalDelay = 0)
         {

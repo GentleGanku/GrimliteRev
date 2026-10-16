@@ -20,22 +20,46 @@ namespace Grimoire.Botting
 
         private static Dictionary<string, EquipType> _backMap = _cosMap.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);
 
-        public EquipType Slot { get; set; }
+        public EquipType Slot
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("ItemID")]
-        public int ID { get; set; }
+        public int ID
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("sLink")]
-        public string Link { get; set; }
+        public string Link
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("sMeta")]
-        public string Meta { get; set; }
+        public string Meta
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("sFile")]
-        public string SWFFile { get; set; }
+        public string SWFFile
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("sType")]
-        public string Type { get; set; }
+        public string Type
+        {
+            get;
+            set;
+        }
 
         public void Equip()
         {

@@ -5,9 +5,17 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdChange : IBotCommand
     {
-        public bool Guild { get; set; }
+        public bool Guild
+        {
+            get;
+            set;
+        }
 
-        public string Text { get; set; }
+        public string Text
+        {
+            get;
+            set;
+        }
 
         public async Task Execute(IBotEngine instance)
         {

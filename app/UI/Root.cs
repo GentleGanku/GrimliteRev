@@ -85,19 +85,45 @@ namespace Grimoire.UI
         private System.Threading.CancellationTokenSource _cts;
         private DarkPanel GamePanel;
 
-        public static Root Instance { get; private set; }
+        public static Root Instance
+        {
+            get;
+            private set;
+        }
 
-        public AxShockwaveFlash Client => Game;
+        public AxShockwaveFlash Client
+        {
+            get
+            {
+                return Game;
+            }
+        }
 
         private AxShockwaveFlash Game;
 
-        public static string PluginsPath { get; private set; } = Path.Combine(System.Windows.Forms.Application.StartupPath, "Plugins");
+        public static string PluginsPath
+        {
+            get;
+            private set;
+        } = Path.Combine(System.Windows.Forms.Application.StartupPath, "Plugins");
 
-        public static PluginManager PreloadedPlugins { get; private set; }
+        public static PluginManager PreloadedPlugins
+        {
+            get;
+            private set;
+        }
 
-        public static bool LightMode { get; set; } = false;
+        public static bool LightMode
+        {
+            get;
+            set;
+        } = false;
 
-        public static bool LeanMode { get; set; } = false;
+        public static bool LeanMode
+        {
+            get;
+            set;
+        } = false;
 
         public Root()
         {
@@ -1505,8 +1531,16 @@ namespace Grimoire.UI
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        private bool customTravel { get; set; } = true;
-        private bool travelInProgress { get; set; } = false;
+        private bool customTravel
+        {
+            get;
+            set;
+        } = true;
+        private bool travelInProgress
+        {
+            get;
+            set;
+        } = false;
 
         private async void customTravel_KeyPress(object sender, KeyEventArgs e)
         {

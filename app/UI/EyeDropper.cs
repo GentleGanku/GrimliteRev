@@ -13,7 +13,10 @@ namespace Grimoire.UI
             InitializeComponent();
         }
 
-        public static EyeDropper Instance { get; } = new EyeDropper();
+        public static EyeDropper Instance
+        {
+            get;
+        } = new EyeDropper();
 
         private void EyeDropper_FormClosing(object sender, FormClosingEventArgs e)
         {

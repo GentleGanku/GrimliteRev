@@ -11,19 +11,55 @@ namespace Grimoire.Tools
 {
     public static class AutoRelogin
     {
-        public static bool IsTemporarilyKicked => Flash.Call<bool>("IsTemporarilyKicked", new string[0]);
+        public static bool IsTemporarilyKicked
+        {
+            get
+            {
+                return Flash.Call<bool>("IsTemporarilyKicked", new string[0]);
+            }
+        }
 
-        public static bool AreServersLoaded => Flash.Call<bool>("AreServersLoaded", new string[0]);
+        public static bool AreServersLoaded
+        {
+            get
+            {
+                return Flash.Call<bool>("AreServersLoaded", new string[0]);
+            }
+        }
 
         public static bool IsClientLoading(string Type) => Flash.Call<bool>("IsClientLoading", Type);
 
-        public static bool LoginLabel => Flash.Call<bool>("LoginLabel", new string[0]);
+        public static bool LoginLabel
+        {
+            get
+            {
+                return Flash.Call<bool>("LoginLabel", new string[0]);
+            }
+        }
 
-        public static bool ServerLabel => Flash.Call<bool>("ServerLabel", new string[0]);
+        public static bool ServerLabel
+        {
+            get
+            {
+                return Flash.Call<bool>("ServerLabel", new string[0]);
+            }
+        }
 
-        public static string ServerIP => Flash.Call<string>("ServerIP", new string[0]);
+        public static string ServerIP
+        {
+            get
+            {
+                return Flash.Call<string>("ServerIP", new string[0]);
+            }
+        }
 
-        public static bool GameLabel => Flash.Call<bool>("GameLabel", new string[0]);
+        public static bool GameLabel
+        {
+            get
+            {
+                return Flash.Call<bool>("GameLabel", new string[0]);
+            }
+        }
 
         public static void Login()
         {

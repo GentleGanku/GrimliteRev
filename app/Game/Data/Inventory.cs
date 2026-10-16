@@ -7,17 +7,53 @@ namespace Grimoire.Game.Data
 {
     public class Inventory
     {
-        public List<InventoryItem> Items => Flash.Call<List<InventoryItem>>("GetInventoryItems", new string[0]);
+        public List<InventoryItem> Items
+        {
+            get
+            {
+                return Flash.Call<List<InventoryItem>>("GetInventoryItems", new string[0]);
+            }
+        }
 
-        public int MaxSlots => Flash.Call<int>("InventorySlots", new string[0]);
+        public int MaxSlots
+        {
+            get
+            {
+                return Flash.Call<int>("InventorySlots", new string[0]);
+            }
+        }
 
-        public int UsedSlots => Flash.Call<int>("UsedInventorySlots", new string[0]);
+        public int UsedSlots
+        {
+            get
+            {
+                return Flash.Call<int>("UsedInventorySlots", new string[0]);
+            }
+        }
 
-        public int AvailableSlots => MaxSlots - UsedSlots;
+        public int AvailableSlots
+        {
+            get
+            {
+                return MaxSlots - UsedSlots;
+            }
+        }
 
-        public int UsedMiscSlots => Flash.Call<int>("UsedMiscSlots", new string[0]);
+        public int UsedMiscSlots
+        {
+            get
+            {
+                return Flash.Call<int>("UsedMiscSlots", new string[0]);
+            }
+        }
 
-        public int AvailableMiscSlots => MaxSlots - UsedMiscSlots;
+        public int AvailableMiscSlots
+        {
+            get
+            {
+                return MaxSlots - UsedMiscSlots;
+            }
+        }
 
         public bool ContainsItem(string name, string quantity = "*")
         {

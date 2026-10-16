@@ -6,13 +6,33 @@ namespace Grimoire.Botting.Commands.Map
 {
     public class CmdMoveToCell : IBotCommand
     {
-        public string Cell { get; set; }
+        public string Cell
+        {
+            get;
+            set;
+        }
 
-        public string Pad { get; set; }
+        public string Pad
+        {
+            get;
+            set;
+        }
 
-        private string _cell => BotManager.Instance.ActiveBotEngine.Value(Cell);
+        private string _cell
+        {
+            get
+            {
+                return BotManager.Instance.ActiveBotEngine.Value(Cell);
+            }
+        }
 
-        private string _pad => BotManager.Instance.ActiveBotEngine.Value(Pad);
+        private string _pad
+        {
+            get
+            {
+                return BotManager.Instance.ActiveBotEngine.Value(Pad);
+            }
+        }
 
         public async Task Execute(IBotEngine instance)
         {

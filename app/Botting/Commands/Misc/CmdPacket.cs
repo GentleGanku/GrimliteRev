@@ -8,9 +8,17 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdPacket : RegularExpression, IBotCommand
     {
-        public string Packet { get; set; }
+        public string Packet
+        {
+            get;
+            set;
+        }
 
-        public bool Client { get; set; } = false;
+        public bool Client
+        {
+            get;
+            set;
+        } = false;
 
         public async Task Execute(IBotEngine instance)
         {
@@ -57,11 +65,23 @@ namespace Grimoire.Botting.Commands.Misc
 
     public class CmdPacket2 : RegularExpression, IBotCommand
     {
-        public string Packet { get; set; }
+        public string Packet
+        {
+            get;
+            set;
+        }
 
-        public int Delay { get; set; }
+        public int Delay
+        {
+            get;
+            set;
+        }
 
-        public bool Client { get; set; }
+        public bool Client
+        {
+            get;
+            set;
+        }
 
         private string _packet;
 

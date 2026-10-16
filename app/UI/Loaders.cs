@@ -55,9 +55,16 @@ namespace Grimoire.UI
 
         private TreeView treeGrabbed;
 
-        public static Loaders Instance { get; } = new Loaders();
+        public static Loaders Instance
+        {
+            get;
+        } = new Loaders();
 
-        public static Type TreeType { get; set; }
+        public static Type TreeType
+        {
+            get;
+            set;
+        }
 
         private Loaders()
         {

@@ -8,7 +8,11 @@ namespace Grimoire.Botting.Commands.Quest
 {
     public class CmdCompleteQuest : IBotCommand
     {
-        public Game.Data.Quest Quest { get; set; }
+        public Game.Data.Quest Quest
+        {
+            get;
+            set;
+        }
 
         public async Task Execute(IBotEngine instance)
         {
@@ -46,13 +50,33 @@ namespace Grimoire.Botting.Commands.Quest
 
     public class CmdCompleteQuest2 : IBotCommand
     {
-        public string QuestID { get; set; }
+        public string QuestID
+        {
+            get;
+            set;
+        }
 
-        public string ItemID { get; set; }
+        public string ItemID
+        {
+            get;
+            set;
+        }
 
-        private int _questID => int.Parse(BotManager.Instance.ActiveBotEngine.Value(QuestID));
+        private int _questID
+        {
+            get
+            {
+                return int.Parse(BotManager.Instance.ActiveBotEngine.Value(QuestID));
+            }
+        }
 
-        private string _itemID => (!string.IsNullOrEmpty(ItemID)) ? BotManager.Instance.ActiveBotEngine.Value(ItemID) : null;
+        private string _itemID
+        {
+            get
+            {
+                return (!string.IsNullOrEmpty(ItemID)) ? BotManager.Instance.ActiveBotEngine.Value(ItemID) : null;
+            }
+        }
 
         public async Task Execute(IBotEngine instance)
         {

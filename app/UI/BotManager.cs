@@ -419,7 +419,10 @@ namespace Grimoire.UI
         public DarkCheckBox chkRelogUponFailBuy;
         private DarkLabel darkLabel11;
 
-        public static BotManager Instance { get; }
+        public static BotManager Instance
+        {
+            get;
+        }
 
         public IBotEngine ActiveBotEngine
         {
@@ -467,7 +470,10 @@ namespace Grimoire.UI
 
         public string CustomName
         {
-            get => _customName;
+            get
+            {
+                return _customName;
+            }
 
             set
             {
@@ -478,7 +484,10 @@ namespace Grimoire.UI
 
         public string CustomGuild
         {
-            get => _customGuild;
+            get
+            {
+                return _customGuild;
+            }
             set
             {
                 _customGuild = value;
@@ -488,7 +497,10 @@ namespace Grimoire.UI
 
         public string CustomClassName
         {
-            get => _customClassName;
+            get
+            {
+                return _customClassName;
+            }
 
             set
             {
@@ -8603,7 +8615,10 @@ namespace Grimoire.UI
         // Draws the command list with the custom command colors when enabled; the link is green when on, grey when off.
         public bool CustomCommandsEnabled
         {
-            get => customCommandsEnabled;
+            get
+            {
+                return customCommandsEnabled;
+            }
             set
             {
                 customCommandsEnabled = value;

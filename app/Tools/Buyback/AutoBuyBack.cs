@@ -13,9 +13,21 @@ namespace Grimoire.Tools.Buyback
 
         private readonly HttpClient _client;
 
-        protected internal string Username => Flash.Call<string>("Username", new string[0]);
+        protected internal string Username
+        {
+            get
+            {
+                return Flash.Call<string>("Username", new string[0]);
+            }
+        }
 
-        protected internal string Password => Flash.Call<string>("Password", new string[0]);
+        protected internal string Password
+        {
+            get
+            {
+                return Flash.Call<string>("Password", new string[0]);
+            }
+        }
 
         public AutoBuyBack()
         {

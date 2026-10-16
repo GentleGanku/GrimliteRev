@@ -13,160 +13,352 @@ namespace Grimoire.Game.Data
     public class itemsS
     {
         [JsonProperty("sIcon")]
-        public string Icon { get; set; }
+        public string Icon
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("ItemID")]
-        public int ItemId { get; set; }
+        public int ItemId
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("iLvl")]
-        public int Level { get; set; }
+        public int Level
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("sLink")]
-        public string Link { get; set; }
+        public string Link
+        {
+            get;
+            set;
+        }
 
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bTemp")]
-        public bool Temp { get; set; }
+        public bool Temp
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("sElmt")]
-        public string sElmt { get; set; }
+        public string sElmt
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("bStaff")]
-        public bool Staff { get; set; }
+        public bool Staff
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("iRng")]
-        public int iRng { get; set; }
+        public int iRng
+        {
+            get;
+            set;
+        }
 
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bCoins")]
-        public bool Coins { get; set; }
+        public bool Coins
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("iDPS")]
-        public int iDPS { get; set; }
+        public int iDPS
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("sES")]
-        public string sES { get; set; }
+        public string sES
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("bPTR")]
-        public int bPTR { get; set; }
+        public int bPTR
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("iQSIndex")]
-        public int iQSIndex { get; set; }
+        public int iQSIndex
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("sType")]
-        public string Category { get; set; }
+        public string Category
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("sDesc")]
-        public string Description { get; set; }
+        public string Description
+        {
+            get;
+            set;
+        }
 
 
         [JsonProperty("iStk")]
-        public int MaxStack { get; set; }
+        public int MaxStack
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("iCost")]
-        public int Cost { get; set; }
+        public int Cost
+        {
+            get;
+            set;
+        }
 
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bUpg")]
-        public bool Upgrade { get; set; }
+        public bool Upgrade
+        {
+            get;
+            set;
+        }
 
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bHouse")]
-        public bool HouseItem { get; set; }
+        public bool HouseItem
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("iRty")]
-        public int iRty { get; set; }
+        public int iRty
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("bQuest")]
-        public int Quest { get; set; }
+        public int Quest
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("sName")]
-        public string Name { get; set; }
+        public string Name
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("iQSValue")]
-        public int iQSValue { get; set; }
+        public int iQSValue
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("sReqQuests")]
-        public int RequiredQuest { get; set; }
+        public int RequiredQuest
+        {
+            get;
+            set;
+        }
     }
 
     public class itemsR
     {
         [JsonProperty("sIcon")]
-        public string Icon { get; set; }
+        public string Icon
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("ItemID")]
-        public int ItemId { get; set; }
+        public int ItemId
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("iLvl")]
-        public int Level { get; set; }
+        public int Level
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("sLink")]
-        public string Link { get; set; }
+        public string Link
+        {
+            get;
+            set;
+        }
 
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bTemp")]
-        public bool Temp { get; set; }
+        public bool Temp
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("sElmt")]
-        public string sElmt { get; set; }
+        public string sElmt
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("bStaff")]
-        public bool Staff { get; set; }
+        public bool Staff
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("iRng")]
-        public int iRng { get; set; }
+        public int iRng
+        {
+            get;
+            set;
+        }
 
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bCoins")]
-        public bool Coins { get; set; }
+        public bool Coins
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("iDPS")]
-        public int iDPS { get; set; }
+        public int iDPS
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("sES")]
-        public string sES { get; set; }
+        public string sES
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("bPTR")]
-        public int bPTR { get; set; }
+        public int bPTR
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("iQSIndex")]
-        public int iQSIndex { get; set; }
+        public int iQSIndex
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("sType")]
-        public string Category { get; set; }
+        public string Category
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("sDesc")]
-        public string Description { get; set; }
+        public string Description
+        {
+            get;
+            set;
+        }
 
 
         [JsonProperty("iStk")]
-        public int MaxStack { get; set; }
+        public int MaxStack
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("iCost")]
-        public int Cost { get; set; }
+        public int Cost
+        {
+            get;
+            set;
+        }
 
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bUpg")]
-        public bool Upgrade { get; set; }
+        public bool Upgrade
+        {
+            get;
+            set;
+        }
 
         [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("bHouse")]
-        public bool HouseItem { get; set; }
+        public bool HouseItem
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("iRty")]
-        public int iRty { get; set; }
+        public int iRty
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("bQuest")]
-        public int Quest { get; set; }
+        public int Quest
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("sName")]
-        public string Name { get; set; }
+        public string Name
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("iQSValue")]
-        public int iQSValue { get; set; }
+        public int iQSValue
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("sReqQuests")]
-        public int RequiredQuest { get; set; }
+        public int RequiredQuest
+        {
+            get;
+            set;
+        }
     }
 }

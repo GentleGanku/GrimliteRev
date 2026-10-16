@@ -14,13 +14,32 @@ namespace Grimoire.Tools.Plugins
 
         private IGrimoirePlugin _plugin;
 
-        public string Name { get; }
+        public string Name
+        {
+            get;
+        }
 
-        public string Author => _plugin?.Author ?? string.Empty;
+        public string Author
+        {
+            get
+            {
+                return _plugin?.Author ?? string.Empty;
+            }
+        }
 
-        public string Description => _plugin?.Description ?? string.Empty;
+        public string Description
+        {
+            get
+            {
+                return _plugin?.Description ?? string.Empty;
+            }
+        }
 
-        public string LastError { get; private set; }
+        public string LastError
+        {
+            get;
+            private set;
+        }
 
         public GrimoirePlugin(string dllFilePath)
         {

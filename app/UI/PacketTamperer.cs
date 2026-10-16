@@ -25,7 +25,10 @@ namespace Grimoire.UI
         private DarkButton btnClearCaptured;
         private TableLayoutPanel tableLayoutPanel1;
 
-        public static PacketTamperer Instance { get; } = new PacketTamperer();
+        public static PacketTamperer Instance
+        {
+            get;
+        } = new PacketTamperer();
 
         private PacketTamperer()
         {

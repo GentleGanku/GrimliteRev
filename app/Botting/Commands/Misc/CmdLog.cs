@@ -9,11 +9,23 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdLog : IBotCommand
     {
-        public string Text { get; set; }
+        public string Text
+        {
+            get;
+            set;
+        }
 
-        public bool Debug { get; set; } = false;
+        public bool Debug
+        {
+            get;
+            set;
+        } = false;
 
-        private bool Clear { get; set; } = false;
+        private bool Clear
+        {
+            get;
+            set;
+        } = false;
 
         public async Task Execute(IBotEngine instance)
         {

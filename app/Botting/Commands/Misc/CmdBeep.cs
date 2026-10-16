@@ -5,7 +5,11 @@ namespace Grimoire.Botting.Commands.Misc
 {
     public class CmdBeep : IBotCommand
     {
-        public int Times { get; set; }
+        public int Times
+        {
+            get;
+            set;
+        }
 
         public async Task Execute(IBotEngine instance)
         {
