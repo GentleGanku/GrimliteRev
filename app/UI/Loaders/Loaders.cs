@@ -4,6 +4,7 @@ using Grimoire.Game;
 using Grimoire.Game.Data;
 using Grimoire.Networking;
 using Grimoire.Tools;
+using Grimoire.Utils;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -262,7 +263,10 @@ namespace Grimoire.UI
                     await BotManager.Instance.ActiveBotEngine.WaitUntil(() => World.IsActionAvailable(LockActions.AcceptQuest), () => Player.IsLoggedIn, 10, 500);
                     Player.AcceptQuest(questID);
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    ErrorReporter.Log("force-accepting a quest", ex);
+                }
             }
         }
 

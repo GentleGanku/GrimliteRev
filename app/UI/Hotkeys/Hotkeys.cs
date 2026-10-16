@@ -195,23 +195,33 @@ namespace Grimoire.UI
 
         public static async void ForceLogin(CancellationTokenSource cts)
         {
-            if (!AutoRelogin.IsTemporarilyKicked)
+            try
             {
-                Root.Instance.loginBoxToggle(false);
-                if (Player.IsLoggedIn)
+                if (!AutoRelogin.IsTemporarilyKicked)
                 {
-                    Player.Logout();
-                    await BotManager.Instance.ActiveBotEngine.WaitUntil(() => AutoRelogin.LoginLabel, () => !cts.IsCancellationRequested, 5, 1500);
+                    Root.Instance.loginBoxToggle(false);
+                    if (Player.IsLoggedIn)
+                    {
+                        Player.Logout();
+                        await BotManager.Instance.ActiveBotEngine.WaitUntil(() => AutoRelogin.LoginLabel, () => !cts.IsCancellationRequested, 5, 1500);
+                    }
+                    AutoRelogin.LoginExecute();
+                    await BotManager.Instance.ActiveBotEngine.WaitUntil(() => !AutoRelogin.IsClientLoading("Account"), () => !cts.IsCancellationRequested, 10, 500);
+                    Root.Instance.serverCatch();
+                    try
+                    {
+                        await AutoRelogin.ForceLogin((Server)Root.Instance.toolStripComboBoxLoginServer.SelectedItem, cts);
+                    }
+                    catch (Exception ex)
+                    {
+                        ErrorReporter.Log("logging in from the hotkey", ex);
+                    }
+                    Root.Instance.loginBoxToggle(true);
                 }
-                AutoRelogin.LoginExecute();
-                await BotManager.Instance.ActiveBotEngine.WaitUntil(() => !AutoRelogin.IsClientLoading("Account"), () => !cts.IsCancellationRequested, 10, 500);
-                Root.Instance.serverCatch();
-                try
-                {
-                    await AutoRelogin.ForceLogin((Server)Root.Instance.toolStripComboBoxLoginServer.SelectedItem, cts);
-                }
-                catch { }
-                Root.Instance.loginBoxToggle(true);
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.Log("running Hotkeys.ForceLogin", ex);
             }
         }
 
@@ -277,35 +287,42 @@ namespace Grimoire.UI
 
         private static async void BotToggleAsync()
         {
-            if (Player.IsAlive && Player.IsLoggedIn && BotManager.Instance.lstCommands.Items.Count > 0 && (!BotManager.Instance.ActiveBotEngine.IsRunning))
+            try
             {
-                if (!BotManager.Instance.IsHandleCreated)
+                if (Player.IsAlive && Player.IsLoggedIn && BotManager.Instance.lstCommands.Items.Count > 0 && (!BotManager.Instance.ActiveBotEngine.IsRunning))
                 {
-                    Instance.ShowForm(BotManager.Instance);
-                    await Task.Delay(10);
-                    BotManager.Instance.Hide();
+                    if (!BotManager.Instance.IsHandleCreated)
+                    {
+                        Instance.ShowForm(BotManager.Instance);
+                        await Task.Delay(10);
+                        BotManager.Instance.Hide();
+                    }
+                    BotManager.Instance.btnBotStop.Enabled = false;
+                    BotManager.Instance.btnBotPause.Enabled = false;
+                    BotManager.Instance.CustomCommandToggle(false);
+                    BotManager.Instance.SelectionModeToggle(false);
+                    BotManager.Instance.OnBotExecute(true);
+                    BotManager.Instance.BotStateChanged(IsRunning: true);
+                    await Task.Delay(2000);
+                    Root.Instance.BotStateChanged(IsRunning: true);
+                    BotManager.Instance.btnBotPause.Enabled = true;
+                    BotManager.Instance.btnBotStop.Enabled = true;
                 }
-                BotManager.Instance.btnBotStop.Enabled = false;
-                BotManager.Instance.btnBotPause.Enabled = false;
-                BotManager.Instance.CustomCommandToggle(false);
-                BotManager.Instance.SelectionModeToggle(false);
-                BotManager.Instance.OnBotExecute(true);
-                BotManager.Instance.BotStateChanged(IsRunning: true);
-                await Task.Delay(2000);
-                Root.Instance.BotStateChanged(IsRunning: true);
-                BotManager.Instance.btnBotPause.Enabled = true;
-                BotManager.Instance.btnBotStop.Enabled = true;
+                else if (BotManager.Instance.ActiveBotEngine.IsRunning)
+                {
+                    BotManager.Instance.btnBotStart.Enabled = false;
+                    BotManager.Instance.ActiveBotEngine.Stop();
+                    BotManager.Instance.CustomCommandToggle(true);
+                    BotManager.Instance.SelectionModeToggle(true);
+                    BotManager.Instance.BotStateChanged(IsRunning: false);
+                    await Task.Delay(2000);
+                    Root.Instance.BotStateChanged(IsRunning: false);
+                    BotManager.Instance.btnBotStart.Enabled = true;
+                }
             }
-            else if (BotManager.Instance.ActiveBotEngine.IsRunning)
+            catch (Exception ex)
             {
-                BotManager.Instance.btnBotStart.Enabled = false;
-                BotManager.Instance.ActiveBotEngine.Stop();
-                BotManager.Instance.CustomCommandToggle(true);
-                BotManager.Instance.SelectionModeToggle(true);
-                BotManager.Instance.BotStateChanged(IsRunning: false);
-                await Task.Delay(2000);
-                Root.Instance.BotStateChanged(IsRunning: false);
-                BotManager.Instance.btnBotStart.Enabled = true;
+                ErrorReporter.Log("running Hotkeys.BotToggleAsync", ex);
             }
         }
 
@@ -328,10 +345,17 @@ namespace Grimoire.UI
 
         private static async void ExecuteTravel(List<IBotCommand> cmds)
         {
-            foreach (IBotCommand cmd in cmds)
+            try
             {
-                await cmd.Execute(null);
-                await Task.Delay(1000);
+                foreach (IBotCommand cmd in cmds)
+                {
+                    await cmd.Execute(null);
+                    await Task.Delay(1000);
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.Log("running Hotkeys.ExecuteTravel", ex);
             }
         }
 
@@ -350,6 +374,10 @@ namespace Grimoire.UI
 
         private void btnRemove_Click(object sender, EventArgs e)
         {
+            if (lstKeys.SelectedIndex < 0)
+            {
+                return;
+            }
             string hotkeyText = lstKeys.SelectedItem.ToString();
             int hotkeyIndex = lstKeys.Items.IndexOf($"{hotkeyText}");
             if (lstKeys.SelectedIndex > -1)

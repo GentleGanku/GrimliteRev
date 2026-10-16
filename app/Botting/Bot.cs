@@ -2,6 +2,7 @@ using Grimoire.Game;
 using Grimoire.Game.Data;
 using Grimoire.Tools;
 using Grimoire.UI;
+using Grimoire.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -173,52 +174,73 @@ namespace Grimoire.Botting
 
         public async void OnItemDropped(InventoryItem drop)
         {
-            NotifyDrop(drop);
-            if (Configuration.EnablePickupAll)
+            try
             {
-                await Task.Delay(DropDelay);
-                World.DropStack.GetDrop(drop.Id);
-            }
-            else if (Configuration.EnablePickup && Configuration.Drops.Any((string d) => d.Equals(drop.Name, StringComparison.OrdinalIgnoreCase)))
-            {
-                await Task.Delay(DropDelay);
-                World.DropStack.GetDrop(drop.Id);
-            }
-            else if (Configuration.EnablePickupAcTagged)
-            {
-                if (drop.IsAcItem)
+                NotifyDrop(drop);
+                if (Configuration.EnablePickupAll)
                 {
                     await Task.Delay(DropDelay);
                     World.DropStack.GetDrop(drop.Id);
                 }
+                else if (Configuration.EnablePickup && Configuration.Drops.Any((string d) => d.Equals(drop.Name, StringComparison.OrdinalIgnoreCase)))
+                {
+                    await Task.Delay(DropDelay);
+                    World.DropStack.GetDrop(drop.Id);
+                }
+                else if (Configuration.EnablePickupAcTagged)
+                {
+                    if (drop.IsAcItem)
+                    {
+                        await Task.Delay(DropDelay);
+                        World.DropStack.GetDrop(drop.Id);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.Log("running Bot.OnItemDropped", ex);
             }
         }
 
         public async void OnQuestsLoaded(List<Quest> quests)
         {
-            await Task.Delay(10);
-            List<Quest> configQuests = quests.Where(q => Configuration.Quests.Any((Quest cq) => cq.Id == q.Id)).ToList();
-            if (configQuests.Count == 0)
+            try
             {
-                return;
+                await Task.Delay(10);
+                List<Quest> configQuests = quests.Where(q => Configuration.Quests.Any((Quest cq) => cq.Id == q.Id)).ToList();
+                if (configQuests.Count == 0)
+                {
+                    return;
+                }
+                for (int i = 0; i < configQuests.Count; i++)
+                {
+                    await this.WaitUntil(() => World.IsActionAvailable(LockActions.AcceptQuest), () => IsRunning, 10, 500);
+                    configQuests[i].Accept();
+                }
             }
-            for (int i = 0; i < configQuests.Count; i++)
+            catch (Exception ex)
             {
-                await this.WaitUntil(() => World.IsActionAvailable(LockActions.AcceptQuest), () => IsRunning, 10, 500);
-                configQuests[i].Accept();
+                ErrorReporter.Log("running Bot.OnQuestsLoaded", ex);
             }
         }
 
         public async void OnQuestCompleted(CompletedQuest quest)
         {
-            await Task.Delay(10);
-            Quest configQuest = Configuration.Quests.Find(q => q.Id == quest.Id);
-            if (configQuest == null)
+            try
             {
-                return;
+                await Task.Delay(10);
+                Quest configQuest = Configuration.Quests.Find(q => q.Id == quest.Id);
+                if (configQuest == null)
+                {
+                    return;
+                }
+                await this.WaitUntil(() => World.IsActionAvailable(LockActions.AcceptQuest), () => IsRunning, 10, 500);
+                configQuest.Accept();
             }
-            await this.WaitUntil(() => World.IsActionAvailable(LockActions.AcceptQuest), () => IsRunning, 10, 500);
-            configQuest.Accept();
+            catch (Exception ex)
+            {
+                ErrorReporter.Log("running Bot.OnQuestCompleted", ex);
+            }
         }
 
         public bool HasDropInInventory(string item)
@@ -233,43 +255,69 @@ namespace Grimoire.Botting
 
         public async void ReloginOnQuestFailure()
         {
-            if (questFailureCounter.ElapsedMilliseconds <= 15000 && questCompletionFailure >= 3)
+            try
             {
-                questFailureCounter.Stop();
-                questCompletionFailure = 0;
-                Server server = Server.List.Find((Server s) => s.Name.Equals(World.ServerName(), StringComparison.OrdinalIgnoreCase));
-                Player.Logout();
-                if (!BotManager.Instance.chkRelog.Checked)
+                if (questFailureCounter.ElapsedMilliseconds <= 15000 && questCompletionFailure >= 3)
                 {
-                    Root.Instance.login_cts = new CancellationTokenSource();
-                    await BotManager.Instance.ActiveBotEngine.WaitUntil(() => AutoRelogin.LoginLabel, () => !Root.Instance.login_cts.IsCancellationRequested, 5, 1500);
-                    AutoRelogin.LoginExecute();
-                    await BotManager.Instance.ActiveBotEngine.WaitUntil(() => !AutoRelogin.IsClientLoading("Account"), () => !Root.Instance.login_cts.IsCancellationRequested, 10, 500);
-                    AutoRelogin.ForceLogin(server, Root.Instance.login_cts);
+                    questFailureCounter.Stop();
+                    questCompletionFailure = 0;
+                    Server server = Server.List.Find((Server s) => s.Name.Equals(World.ServerName(), StringComparison.OrdinalIgnoreCase));
+                    Player.Logout();
+                    if (!BotManager.Instance.chkRelog.Checked)
+                    {
+                        Root.Instance.login_cts = new CancellationTokenSource();
+                        await BotManager.Instance.ActiveBotEngine.WaitUntil(() => AutoRelogin.LoginLabel, () => !Root.Instance.login_cts.IsCancellationRequested, 5, 1500);
+                        AutoRelogin.LoginExecute();
+                        await BotManager.Instance.ActiveBotEngine.WaitUntil(() => !AutoRelogin.IsClientLoading("Account"), () => !Root.Instance.login_cts.IsCancellationRequested, 10, 500);
+                        AutoRelogin.ForceLogin(server, Root.Instance.login_cts);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.Log("running Bot.ReloginOnQuestFailure", ex);
             }
         }
 
         public async void ReloginOnItemBuyFailure()
         {
-            if (buyFailureCounter.ElapsedMilliseconds <= 15000 && itemBuyFailure >= 3)
+            try
             {
-                buyFailureCounter.Stop();
-                itemBuyFailure = 0;
-                Server server = Server.List.Find((Server s) => s.Name.Equals(World.ServerName(), StringComparison.OrdinalIgnoreCase));
-                Player.Logout();
-                if (!BotManager.Instance.chkRelog.Checked)
+                if (buyFailureCounter.ElapsedMilliseconds <= 15000 && itemBuyFailure >= 3)
                 {
-                    Root.Instance.login_cts = new CancellationTokenSource();
-                    await BotManager.Instance.ActiveBotEngine.WaitUntil(() => AutoRelogin.LoginLabel, () => !Root.Instance.login_cts.IsCancellationRequested, 5, 1500);
-                    AutoRelogin.LoginExecute();
-                    await BotManager.Instance.ActiveBotEngine.WaitUntil(() => !AutoRelogin.IsClientLoading("Account"), () => !Root.Instance.login_cts.IsCancellationRequested, 10, 500);
-                    AutoRelogin.ForceLogin(server, Root.Instance.login_cts);
+                    buyFailureCounter.Stop();
+                    itemBuyFailure = 0;
+                    Server server = Server.List.Find((Server s) => s.Name.Equals(World.ServerName(), StringComparison.OrdinalIgnoreCase));
+                    Player.Logout();
+                    if (!BotManager.Instance.chkRelog.Checked)
+                    {
+                        Root.Instance.login_cts = new CancellationTokenSource();
+                        await BotManager.Instance.ActiveBotEngine.WaitUntil(() => AutoRelogin.LoginLabel, () => !Root.Instance.login_cts.IsCancellationRequested, 5, 1500);
+                        AutoRelogin.LoginExecute();
+                        await BotManager.Instance.ActiveBotEngine.WaitUntil(() => !AutoRelogin.IsClientLoading("Account"), () => !Root.Instance.login_cts.IsCancellationRequested, 10, 500);
+                        AutoRelogin.ForceLogin(server, Root.Instance.login_cts);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.Log("running Bot.ReloginOnItemBuyFailure", ex);
             }
         }
 
         private async void OnExecute(Configuration config)
+        {
+            try
+            {
+                await StartRunning(config);
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.BotFailed("while starting", ex);
+            }
+        }
+
+        private async Task StartRunning(Configuration config)
         {
             IsRunning = true;
             Player.CancelTarget();
@@ -308,34 +356,58 @@ namespace Grimoire.Botting
 
         private async void OnCancel()
         {
-            _ctsBot?.Cancel(throwOnFirstException: false);
-            Player.CancelTarget();
-            if (BotManager.Instance.chkExitCombatUponStop.Checked)
+            try
             {
-                BotUtilities.MoveOutOfCombat();
-            }
-            BotUtilities.ActiveBot = false;
-            BotUtilities.HasLoadedQuests = false;
-            World.ItemDropped -= OnItemDropped;
-            Player.Quests.QuestsLoaded -= OnQuestsLoaded;
-            Player.Quests.QuestCompleted -= OnQuestCompleted;
-            OptionsManager.Stop();
-            BotData.BotState = BotData.State.Others;
-            if (BotManager.Instance.lstItems.Items.Count > 0 && BotManager.Instance.chkBankOnStop.Checked)
-            {
-                foreach (InventoryItem item in Player.Inventory.Items)
+                _ctsBot?.Cancel(throwOnFirstException: false);
+                Player.CancelTarget();
+                if (BotManager.Instance.chkExitCombatUponStop.Checked)
                 {
-                    if (!item.IsEquipped && item.Category != "Class" && item.Name != "Treasure Potion" && BotManager.Instance.lstItems.Items.Contains(item.Name))
+                    BotUtilities.MoveOutOfCombat();
+                }
+                BotUtilities.ActiveBot = false;
+                BotUtilities.HasLoadedQuests = false;
+                World.ItemDropped -= OnItemDropped;
+                Player.Quests.QuestsLoaded -= OnQuestsLoaded;
+                Player.Quests.QuestCompleted -= OnQuestCompleted;
+                OptionsManager.Stop();
+                BotData.BotState = BotData.State.Others;
+                if (BotManager.Instance.lstItems.Items.Count > 0 && BotManager.Instance.chkBankOnStop.Checked)
+                {
+                    foreach (InventoryItem item in Player.Inventory.Items.ToList())
                     {
-                        Player.Bank.TransferToBank(item.Name);
-                        await Task.Delay(70);
-                        LogForm.Instance.AppendBot($"[{DateTime.Now:hh:mm:ss}] Items List - Item transferred to Bank: {item.Name}.\r\n");
+                        if (!item.IsEquipped && item.Category != "Class" && item.Name != "Treasure Potion" && BotManager.Instance.lstItems.Items.Contains(item.Name))
+                        {
+                            Player.Bank.TransferToBank(item.Name);
+                            await Task.Delay(70);
+                            LogForm.Instance.AppendBot($"[{DateTime.Now:hh:mm:ss}] Items List - Item transferred to Bank: {item.Name}.\r\n");
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.Log("running Bot.OnCancel", ex);
             }
         }
 
         private async Task Activate()
+        {
+            try
+            {
+                await RunCommands();
+            }
+            catch (OperationCanceledException) when (_ctsBot.IsCancellationRequested)
+            {
+                // Stop or Pause cancelled the command that was running.
+            }
+            catch (Exception ex)
+            {
+                bool known = Configuration != null && Index >= 0 && Index < Configuration.Commands.Count;
+                ErrorReporter.BotFailed(known ? $"at index {Index} ({Configuration.Commands[Index]})" : $"at index {Index}", ex);
+            }
+        }
+
+        private async Task RunCommands()
         {
             while (IsRunning)
             {
@@ -427,15 +499,22 @@ namespace Grimoire.Botting
 
         private async void CheckBoosts()
         {
-            List<InventoryItem> boosts = Configuration.Boosts.FindAll((InventoryItem b) => !Player.HasActiveBoost(b.Name));
-            if (boosts.Count == 0)
+            try
             {
-                return;
+                List<InventoryItem> boosts = Configuration.Boosts.FindAll((InventoryItem b) => !Player.HasActiveBoost(b.Name));
+                if (boosts.Count == 0)
+                {
+                    return;
+                }
+                foreach (InventoryItem boost in boosts)
+                {
+                    Player.UseBoost(boost.Id);
+                    await this.WaitUntil(() => Player.HasActiveBoost(boost.Name), null, 6, 500);
+                }
             }
-            foreach (InventoryItem boost in boosts)
+            catch (Exception ex)
             {
-                Player.UseBoost(boost.Id);
-                await this.WaitUntil(() => Player.HasActiveBoost(boost.Name), null, 6, 500);
+                ErrorReporter.Log("running Bot.CheckBoosts", ex);
             }
         }
 

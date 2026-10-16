@@ -38,7 +38,7 @@ namespace Grimoire.Tools
             }
             else
             {
-                SwfLoadProgress?.Invoke(int.Parse(callArgs));
+                SwfLoadProgress?.Invoke(int.TryParse(callArgs, out int progress) ? progress : 0);
             }
         }
 
@@ -74,13 +74,13 @@ namespace Grimoire.Tools
                 parsedServers[i] = new Server
                 {
                     IsChatRestricted = server.GetValue("iChat")?.ToString() == "0",
-                    PlayerCount = int.Parse(server.GetValue("iCount")?.ToString()),
-                    MaxCount = int.Parse(server.GetValue("iMax")?.ToString()),
+                    PlayerCount = ParseInt(server.GetValue("iCount")),
+                    MaxCount = ParseInt(server.GetValue("iMax")),
                     IsMemberOnly = server.GetValue("bUpg")?.ToString() == "1",
                     IsOnline = server.GetValue("bOnline")?.ToString() == "1",
                     Name = server.GetValue("sName")?.ToString(),
                     Language = server.GetValue("sLang")?.ToString(),
-                    Port = int.Parse(server.GetValue("iPort")?.ToString()),
+                    Port = ParseInt(server.GetValue("iPort")),
                     Ip = server.GetValue("sIP")?.ToString()
                 };
             }
@@ -92,7 +92,13 @@ namespace Grimoire.Tools
         private static void ParseAvatarDatas(JObject loginResponse)
         {
             Player.Username = loginResponse["unm"].ToString();
-            Player.CharUserID = int.Parse(loginResponse["userid"].ToString());
+            Player.CharUserID = ParseInt(loginResponse["userid"]);
+        }
+
+        // Server-list and login fields come from the game; a missing or non-numeric one reads as 0 instead of breaking the list.
+        private static int ParseInt(JToken value)
+        {
+            return int.TryParse(value?.ToString(), out int result) ? result : 0;
         }
 
         #endregion

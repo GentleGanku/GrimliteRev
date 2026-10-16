@@ -46,7 +46,7 @@ namespace Grimoire.Botting
             return new BotClientConfig()
             {
                 file = path,
-                Contents = File.ReadLines(path).Select(l => l.Split('=')).ToDictionary(a => a[0], a => a[1])
+                Contents = Config.Parse(File.ReadLines(path))
             };
         }
 

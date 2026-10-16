@@ -2,6 +2,7 @@ using DarkUI.Forms;
 using Grimoire.Botting;
 using Grimoire.Botting.Commands.Misc;
 using Grimoire.Game.Data;
+using Grimoire.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -109,7 +110,10 @@ namespace Grimoire.UI
                         lstCommands.Items.Remove(command);
                         lstCommands.Items.Insert(selectedIndex, item);
                     }
-                    catch {}
+                    catch (Exception ex)
+                    {
+                        ErrorReporter.Log("applying an edited command", ex);
+                    }
                 }
             }
         }

@@ -242,6 +242,7 @@ namespace Grimoire.UI
             }
             catch
             {
+                // Not a valid set file; returning false lets the caller report it.
             }
             config = null;
             return false;

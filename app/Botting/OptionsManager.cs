@@ -3,6 +3,7 @@ using Grimoire.Networking;
 using Grimoire.Networking.Handlers;
 using Grimoire.Tools;
 using Grimoire.UI;
+using Grimoire.Utils;
 using System;
 using System.Threading.Tasks;
 
@@ -312,20 +313,34 @@ namespace Grimoire.Botting
 
         public static async void SetPacketSpam()
         {
-            Proxy.Instance.SendToServer($"{SpamPacket}");
-            await Task.Delay(PacketDelay);
+            try
+            {
+                Proxy.Instance.SendToServer($"{SpamPacket}");
+                await Task.Delay(PacketDelay);
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.Log("running OptionsManager.SetPacketSpam", ex);
+            }
         }
 
         public static async void AntiAfk()
         {
-            if (!_antiAfk)
+            try
             {
-                return;
+                if (!_antiAfk)
+                {
+                    return;
+                }
+                while (Player.IsLoggedIn && _antiAfk)
+                {
+                    Player.cancelAfk();
+                    await Task.Delay(60000);
+                }
             }
-            while (Player.IsLoggedIn && _antiAfk)
+            catch (Exception ex)
             {
-                Player.cancelAfk();
-                await Task.Delay(60000);
+                ErrorReporter.Log("running OptionsManager.AntiAfk", ex);
             }
         }
 

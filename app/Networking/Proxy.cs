@@ -79,22 +79,36 @@ namespace Grimoire.Networking
 
         public static async void DisableBotSkill()
         {
-            if (BotUtilities.ShouldUseSkill)
+            try
             {
-                await Task.Delay(10);
-                BotUtilities.ShouldUseSkill = false;
-                Player.CancelAutoAttack();
-                World.GamePopup("Disabled the bot's ability to attack.");
+                if (BotUtilities.ShouldUseSkill)
+                {
+                    await Task.Delay(10);
+                    BotUtilities.ShouldUseSkill = false;
+                    Player.CancelAutoAttack();
+                    World.GamePopup("Disabled the bot's ability to attack.");
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.Log("running Proxy.DisableBotSkill", ex);
             }
         }
 
         public static async void EnableBotSkill()
         {
-            if (!BotUtilities.ShouldUseSkill)
+            try
             {
-                await Task.Delay(10);
-                BotUtilities.ShouldUseSkill = true;
-                World.GamePopup("Enabled the bot's ability to attack.");
+                if (!BotUtilities.ShouldUseSkill)
+                {
+                    await Task.Delay(10);
+                    BotUtilities.ShouldUseSkill = true;
+                    World.GamePopup("Enabled the bot's ability to attack.");
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.Log("running Proxy.EnableBotSkill", ex);
             }
         }
 
@@ -209,7 +223,10 @@ namespace Grimoire.Networking
                     }
                     break;
                 case "ping":
-                    OnPingLatency(int.Parse(text2));
+                    if (int.TryParse(text2, out int latency))
+                    {
+                        OnPingLatency(latency);
+                    }
                     break;
                 case "chatCommand":
                     ChatCommand.ExecuteCommand(text2);
@@ -259,35 +276,45 @@ namespace Grimoire.Networking
             }
         }
 
+        // Each handler runs on its own so one failure doesn't skip the handlers after it (plugins included), and the
+        // lists are copied first because options and plugins register and unregister handlers at runtime.
         private void ProcessMessage(Message message)
+        {
+            switch (message)
+            {
+                case XtMessage xtMessage:
+                    foreach (IXtMessageHandler item in Instance._handlersXt.ToArray().Where(h => h != null && h.HandledCommands.Contains(xtMessage.Command)))
+                    {
+                        Dispatch(item, xtMessage.Command, () => item.Handle(xtMessage));
+                    }
+                    break;
+
+                case JsonMessage jsonMessage:
+                    foreach (IJsonMessageHandler item in Instance._handlersJson.ToArray().Where(h => h != null && h.HandledCommands.Contains(jsonMessage.Command)))
+                    {
+                        Dispatch(item, jsonMessage.Command, () => item.Handle(jsonMessage));
+                    }
+                    break;
+
+                case XmlMessage xmlMessage:
+                    foreach (IXmlMessageHandler item in Instance._handlersXml.ToArray().Where(h => h != null && h.HandledCommands.Contains(xmlMessage.Command)))
+                    {
+                        Dispatch(item, xmlMessage.Command, () => item.Handle(xmlMessage));
+                    }
+                    break;
+            }
+        }
+
+        private static void Dispatch(object handler, string command, Action handle)
         {
             try
             {
-                switch (message)
-                {
-                    case XtMessage xtMessage:
-                        foreach (IXtMessageHandler item in Instance._handlersXt.Where((IXtMessageHandler h) => h.HandledCommands.Contains(xtMessage.Command)))
-                        {
-                            item.Handle(xtMessage);
-                        }
-                        break;
-
-                    case JsonMessage jsonMessage:
-                        foreach (IJsonMessageHandler item in Instance._handlersJson.Where((IJsonMessageHandler h) => h.HandledCommands.Contains(jsonMessage.Command)))
-                        {
-                            item.Handle(jsonMessage);
-                        }
-                        break;
-
-                    case XmlMessage xmlMessage:
-                        foreach (IXmlMessageHandler item in Instance._handlersXml.Where((IXmlMessageHandler h) => h.HandledCommands.Contains(xmlMessage.Command)))
-                        {
-                            item.Handle(xmlMessage);
-                        }
-                        break;
-                }
+                handle();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                ErrorReporter.Log($"handling the '{command}' packet in {handler.GetType().Name}", ex);
+            }
         }
 
         private Message CreateMessage(string raw)

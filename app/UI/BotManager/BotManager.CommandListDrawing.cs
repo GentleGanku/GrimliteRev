@@ -1,6 +1,7 @@
 using DarkUI.Forms;
 using Grimoire.Botting;
 using Grimoire.Botting.Commands.Misc;
+using Grimoire.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Drawing;
@@ -31,9 +32,16 @@ namespace Grimoire.UI
 
         public async void CustomCommandToggle(bool Type)
         {
-            if (BotClientConfig.Instance.GetValue<bool>("customCommandToggle"))
+            try
             {
-                CustomCommandsEnabled = Type;
+                if (BotClientConfig.Instance.GetValue<bool>("customCommandToggle"))
+                {
+                    CustomCommandsEnabled = Type;
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.Log("running BotManager.CustomCommandToggle", ex);
             }
         }
 
@@ -171,7 +179,10 @@ namespace Grimoire.UI
                         else
                             e.Graphics.DrawString(txt, cmdFont, b2b, e.Bounds, centered);
                     }
-                    catch { }
+                    catch
+                    {
+                        // Painting must not throw; an item with a bad custom color is drawn without it.
+                    }
                 }
                 else if (cmd is CmdBlank3)
                 {
@@ -181,7 +192,10 @@ namespace Grimoire.UI
                         SolidBrush colorBrush = new SolidBrush(jsonObj.Argb());
                         e.Graphics.DrawString(txt, cmdFont, colorBrush, e.Bounds, centered);
                     }
-                    catch { }
+                    catch
+                    {
+                        // Painting must not throw; an item with a bad custom color is drawn without it.
+                    }
                 }
                 else if (txt.Contains("(TROLL)"))
                     e.Graphics.DrawString(txt.Replace("(TROLL)", ""), e.Font, new SolidBrush(Color.White), e.Bounds, StringFormat.GenericDefault);

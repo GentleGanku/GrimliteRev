@@ -1,5 +1,7 @@
 ﻿using Grimoire.Game;
 using Grimoire.UI;
+using Grimoire.Utils;
+using System;
 
 namespace Grimoire.Networking.Handlers
 {
@@ -21,14 +23,21 @@ namespace Grimoire.Networking.Handlers
 
         public async void Handle(XtMessage message)
         {
-            switch (message.Arguments[5])
+            try
             {
-                case "true":
-                    if (BotManager.Instance.ActiveBotEngine.IsRunning && BotManager.Instance.ActiveBotEngine.Configuration.AutoRelogin && BotManager.Instance.ActiveBotEngine.Configuration.AFK)
-                    {
-                        Player.Logout();
-                    }
-                    break;
+                switch (message.Arguments[5])
+                {
+                    case "true":
+                        if (BotManager.Instance.ActiveBotEngine.IsRunning && BotManager.Instance.ActiveBotEngine.Configuration.AutoRelogin && BotManager.Instance.ActiveBotEngine.Configuration.AFK)
+                        {
+                            Player.Logout();
+                        }
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.Log("running HandlerAFK.Handle", ex);
             }
         }
 

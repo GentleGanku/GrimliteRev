@@ -1,6 +1,8 @@
 using Grimoire.Botting;
 using Grimoire.Game;
 using Grimoire.Tools;
+using Grimoire.Utils;
+using System;
 using System.Threading.Tasks;
 
 namespace Grimoire.Networking.Handlers
@@ -32,8 +34,15 @@ namespace Grimoire.Networking.Handlers
 
         public async void HideRoom()
         {
-            await Task.Delay(10);
-            Flash.Call("ChangeAreaName", BotClientConfig.Instance.GetValue<string>("areaName") ?? "discord.io/aqwbots");
+            try
+            {
+                await Task.Delay(10);
+                Flash.Call("ChangeAreaName", BotClientConfig.Instance.GetValue<string>("areaName") ?? "discord.io/aqwbots");
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.Log("running HandlerMapJoin.HideRoom", ex);
+            }
         }
 
         #endregion

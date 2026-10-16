@@ -1,3 +1,5 @@
+using Grimoire.Utils;
+using System;
 using System.Threading.Tasks;
 
 namespace Grimoire.Networking.Handlers
@@ -23,7 +25,14 @@ namespace Grimoire.Networking.Handlers
 
         public async void Handle(JsonMessage message)
         {
-            await ParseInfo(message, message.Command);
+            try
+            {
+                await ParseInfo(message, message.Command);
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.Log("running HandlerInfo.Handle", ex);
+            }
         }
 
         public async Task ParseInfo(JsonMessage message, string command)

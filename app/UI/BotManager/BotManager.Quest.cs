@@ -50,7 +50,12 @@ namespace Grimoire.UI
                 DarkMessageBox.Show(new Form { TopMost = true, StartPosition = FormStartPosition.CenterScreen }, "You cannot add a Variable value to the Quest List.", $"Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            AddQuest(int.Parse(numQuestID.Text), chkQuestItem.Checked ? numQuestItem.Text : null);
+            if (!int.TryParse(numQuestID.Text, out int questId))
+            {
+                DarkMessageBox.Show(new Form { TopMost = true, StartPosition = FormStartPosition.CenterScreen }, "The quest ID must be a number.", $"Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            AddQuest(questId, chkQuestItem.Checked ? numQuestItem.Text : null);
         }
 
         private void btnQuestComplete_Click(object sender, EventArgs e)

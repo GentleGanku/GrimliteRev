@@ -1,5 +1,6 @@
 ﻿using DarkUI.Forms;
 using Grimoire.Botting;
+using Grimoire.Utils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -69,7 +70,10 @@ namespace Grimoire.UI
             {
                 return int.Parse(Config.Instance.GetValue<string>(ctrName) ?? WindowText, System.Globalization.NumberStyles.HexNumber);
             }
-            catch { }
+            catch
+            {
+                // No valid saved color: fall back to the window text color below.
+            }
             return int.Parse(SystemColors.WindowText.ToString());
         }
 
@@ -80,7 +84,10 @@ namespace Grimoire.UI
             {
                 return int.Parse(Config.Instance.GetValue<string>(ctr) ?? WindowText, System.Globalization.NumberStyles.HexNumber);
             }
-            catch { }
+            catch
+            {
+                // No valid saved color: fall back to the window text color below.
+            }
             return int.Parse(SystemColors.WindowText.ToString());
         }
 
@@ -133,7 +140,10 @@ namespace Grimoire.UI
                 SolidBrush color = new SolidBrush(BotManager.Instance.GetCurrentColor(comboBox1.Items[Index].ToString().Replace("Cmd", "") + "Color"));
                 e.Graphics.DrawString(comboBox1.Items[Index].ToString(), this.Font, color, e.Bounds);
             }
-            catch {}
+            catch
+            {
+                // Painting must not throw; the item is drawn without its custom color.
+            }
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -142,7 +152,10 @@ namespace Grimoire.UI
             {
                 checkBox1.Checked = GetChecked(comboBox1.Items[comboBox1.SelectedIndex].ToString().Replace("Cmd", ""));
             }
-            catch {}
+            catch (Exception ex)
+            {
+                ErrorReporter.Log("reading the saved command color setting", ex);
+            }
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -163,7 +176,10 @@ namespace Grimoire.UI
                 BotManager.Instance.lstCommands.ItemHeight = trackBar1.Value / 4;
                 BotManager.Instance.lstCommands.Font = new Font(BotManager.Instance.lstCommands.Font.FontFamily, BotManager.Instance.lstCommands.ItemHeight - (float)6.5, FontStyle.Regular);
             }
-            catch {}
+            catch (Exception ex)
+            {
+                ErrorReporter.Log("resizing the command list", ex);
+            }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -206,13 +222,13 @@ namespace Grimoire.UI
                     }
                     catch
                     {
-
+                        // Fewer than three values: the missing ones stay at 255.
                     }
                 }
             }
             catch (Exception E)
             {
-
+                // Not a valid color: the mix stays white.
             }
             foreach (var t in typeList)
             {

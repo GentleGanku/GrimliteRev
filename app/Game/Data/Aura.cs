@@ -1,3 +1,4 @@
+using Grimoire.Utils;
 using System;
 using System.Threading.Tasks;
 
@@ -64,10 +65,17 @@ namespace Grimoire.Game.Data
 
         public async void countdown(Aura aura)
         {
-            await Task.Delay(durationSpan + 000);
-            World.PlayerAuras.Remove(aura);
-            World.EnemyAuras.Remove(aura);
-            World.auraCountdown -= aura.countdown;
+            try
+            {
+                await Task.Delay(durationSpan + 000);
+                World.PlayerAuras.Remove(aura);
+                World.EnemyAuras.Remove(aura);
+                World.auraCountdown -= aura.countdown;
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.Log("running Aura.countdown", ex);
+            }
         }
 
         #endregion

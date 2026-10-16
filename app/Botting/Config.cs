@@ -46,8 +46,26 @@ namespace Grimoire.Botting
             return new Config()
             {
                 file = path,
-                Contents = File.ReadLines(path).Select(l => l.Split('=')).ToDictionary(a => a[0], a => a[1])
+                Contents = Parse(File.ReadLines(path))
             };
+        }
+
+        /// <summary>
+        /// Reads <c>key=value</c> lines. Only the first <c>=</c> separates, so values may contain <c>=</c> (Base64, URLs);
+        /// lines without a key are skipped, and a repeated key keeps its last value.
+        /// </summary>
+        public static Dictionary<string, string> Parse(IEnumerable<string> lines)
+        {
+            var contents = new Dictionary<string, string>();
+            foreach (string line in lines)
+            {
+                int separator = line.IndexOf('=');
+                if (separator > 0)
+                {
+                    contents[line.Substring(0, separator)] = line.Substring(separator + 1);
+                }
+            }
+            return contents;
         }
 
         public string Get(string key)

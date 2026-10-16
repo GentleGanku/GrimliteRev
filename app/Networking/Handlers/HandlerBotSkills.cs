@@ -1,4 +1,5 @@
 using Grimoire.Game;
+using Grimoire.Utils;
 using System;
 using System.Linq;
 using Newtonsoft.Json.Linq;
@@ -23,20 +24,27 @@ namespace Grimoire.Networking.Handlers
 
         public async void Handle(JsonMessage message)
         {
-            if (message.RawContent.IndexOf("\"msg\":", StringComparison.OrdinalIgnoreCase) > -1 && message.RawContent.IndexOf("counter attack", StringComparison.OrdinalIgnoreCase) > -1 && message.RawContent.Contains($"\"strFrame\":\"{Player.Cell}\""))
+            try
             {
-                Proxy.DisableBotSkill();
-            }
-            else if (message.RawContent.IndexOf("\"nam\":\"Counter Attack\"", StringComparison.OrdinalIgnoreCase) != -1)
-            {
-                JArray auraEvents = (JArray)message.DataObject?["a"];
-                if (auraEvents != null)
+                if (message.RawContent.IndexOf("\"msg\":", StringComparison.OrdinalIgnoreCase) > -1 && message.RawContent.IndexOf("counter attack", StringComparison.OrdinalIgnoreCase) > -1 && message.RawContent.Contains($"\"strFrame\":\"{Player.Cell}\""))
                 {
-                    if (auraEvents.Any(a => ((a["cmd"].ToString() == "aura-") || (a["cmd"].ToString() == "aura--")) && a["aura"]["nam"].ToString().Equals("Counter Attack", StringComparison.OrdinalIgnoreCase)))
+                    Proxy.DisableBotSkill();
+                }
+                else if (message.RawContent.IndexOf("\"nam\":\"Counter Attack\"", StringComparison.OrdinalIgnoreCase) != -1)
+                {
+                    JArray auraEvents = (JArray)message.DataObject?["a"];
+                    if (auraEvents != null)
                     {
-                        Proxy.EnableBotSkill();
+                        if (auraEvents.Any(a => ((a["cmd"].ToString() == "aura-") || (a["cmd"].ToString() == "aura--")) && a["aura"]["nam"].ToString().Equals("Counter Attack", StringComparison.OrdinalIgnoreCase)))
+                        {
+                            Proxy.EnableBotSkill();
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.Log("running HandlerBotSkills.Handle", ex);
             }
         }
 

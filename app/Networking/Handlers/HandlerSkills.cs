@@ -1,5 +1,7 @@
 using Grimoire.Botting;
 using Grimoire.Tools;
+using Grimoire.Utils;
+using System;
 using System.Threading.Tasks;
 
 namespace Grimoire.Networking.Handlers
@@ -22,9 +24,16 @@ namespace Grimoire.Networking.Handlers
 
         public async void Handle(JsonMessage message)
         {
-            await Task.Delay(10);
-            Flash.Call("getRange", new string[0]);
-            OptionsManager.SetInfiniteRange(OptionsManager.InfiniteRange);
+            try
+            {
+                await Task.Delay(10);
+                Flash.Call("getRange", new string[0]);
+                OptionsManager.SetInfiniteRange(OptionsManager.InfiniteRange);
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.Log("running HandlerSkills.Handle", ex);
+            }
         }
 
         #endregion

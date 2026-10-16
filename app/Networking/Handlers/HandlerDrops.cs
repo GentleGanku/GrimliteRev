@@ -2,6 +2,7 @@ using Grimoire.Botting;
 using Grimoire.Game;
 using Grimoire.Game.Data;
 using Grimoire.UI;
+using Grimoire.Utils;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -37,22 +38,29 @@ namespace Grimoire.Networking.Handlers
 
         public async void Handle(JsonMessage message)
         {
-            switch (message.Command)
+            try
             {
-                case "dropItem":
-                    items = message.DataObject?["items"];
-                    if (items == null)
-                        return;
-                    drop = items.ToObject<Dictionary<int, InventoryItem>>().First().Value;
-                    World.OnItemDropped(drop);
-                    break;
-                case "getDrop":
-                    await Task.Delay(10);
-                    ParseLog(message, true);
-                    break;
-                case "addItems":
-                    ParseLog(message, false);
-                    break;
+                switch (message.Command)
+                {
+                    case "dropItem":
+                        items = message.DataObject?["items"];
+                        if (items == null)
+                            return;
+                        drop = items.ToObject<Dictionary<int, InventoryItem>>().First().Value;
+                        World.OnItemDropped(drop);
+                        break;
+                    case "getDrop":
+                        await Task.Delay(10);
+                        ParseLog(message, true);
+                        break;
+                    case "addItems":
+                        ParseLog(message, false);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.Log("running HandlerDrops.Handle", ex);
             }
         }
 

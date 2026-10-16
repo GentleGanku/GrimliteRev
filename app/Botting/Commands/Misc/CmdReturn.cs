@@ -1,3 +1,5 @@
+using Grimoire.Utils;
+using System;
 using System.Threading.Tasks;
 
 namespace Grimoire.Botting.Commands.Misc
@@ -20,7 +22,10 @@ namespace Grimoire.Botting.Commands.Misc
                     await instance.LoadBotQuests();
                 }
             }
-            catch {}
+            catch (Exception ex)
+            {
+                ErrorReporter.Log("returning to the previous bot", ex);
+            }
         }
 
         public override string ToString()

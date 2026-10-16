@@ -4,6 +4,7 @@ using Grimoire.Botting.Commands.Item;
 using Grimoire.Botting.Commands.Map;
 using Grimoire.Game;
 using Grimoire.Tools;
+using Grimoire.Utils;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -240,25 +241,32 @@ namespace Grimoire.UI
 
         private async void ExecuteTravel(List<IBotCommand> cmds)
         {
-            grpTravel.Enabled = false;
-            aweGroup.Enabled = false;
-            foreach (IBotCommand cmd in cmds)
+            try
             {
-                await cmd.Execute(BotManager.Instance.ActiveBotEngine);
-                await Task.Delay(1000);
-            }
-            if (InvokeRequired)
-            {
-                Invoke((Action)delegate
+                grpTravel.Enabled = false;
+                aweGroup.Enabled = false;
+                foreach (IBotCommand cmd in cmds)
+                {
+                    await cmd.Execute(BotManager.Instance.ActiveBotEngine);
+                    await Task.Delay(1000);
+                }
+                if (InvokeRequired)
+                {
+                    Invoke((Action)delegate
+                    {
+                        grpTravel.Enabled = true;
+                        aweGroup.Enabled = true;
+                    });
+                }
+                else
                 {
                     grpTravel.Enabled = true;
                     aweGroup.Enabled = true;
-                });
+                }
             }
-            else
+            catch (Exception ex)
             {
-                grpTravel.Enabled = true;
-                aweGroup.Enabled = true;
+                ErrorReporter.Log("running Travel.ExecuteTravel", ex);
             }
         }
 

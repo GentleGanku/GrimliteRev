@@ -50,7 +50,6 @@ namespace Grimoire.UI
                 grimoirePlugin = new GrimoirePlugin(path);
                 if (grimoirePlugin.Load())
                 {
-                    GrimoirePlugin.LoadedPlugins.Add(grimoirePlugin);
                     return true;
                 }
             }
@@ -58,9 +57,19 @@ namespace Grimoire.UI
             return false;
         }
 
+        /// <summary>Loads every DLL in <paramref name="paths"/>; one that fails is logged and doesn't stop the rest.</summary>
         public bool LoadRange(string[] paths)
         {
-            return paths.All(LoadPlugins);
+            bool allLoaded = true;
+            foreach (string path in paths.Where(p => p.EndsWith(".dll", StringComparison.OrdinalIgnoreCase)))
+            {
+                if (!LoadPlugins(path))
+                {
+                    allLoaded = false;
+                    LogForm.Instance.AppendDebug($"[{DateTime.Now:hh:mm:ss}] Couldn't load the plugin {Path.GetFileName(path)}: {LastError}\r\n");
+                }
+            }
+            return allLoaded;
         }
 
         private void PluginManager_Load(object sender, EventArgs e)

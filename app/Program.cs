@@ -1,5 +1,6 @@
 using DarkUI.Forms;
 using Grimoire.UI;
+using Grimoire.Utils;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -72,6 +73,14 @@ namespace Grimoire
         [STAThread]
         private static void Main()
         {
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+            Application.ThreadException += (sender, e) => ErrorReporter.Report("handling a window action", e.Exception);
+            AppDomain.CurrentDomain.UnhandledException += (sender, e) => ErrorReporter.Report("running a background task", e.ExceptionObject as Exception);
+            TaskScheduler.UnobservedTaskException += (sender, e) =>
+            {
+                ErrorReporter.Log("running a background task", e.Exception);
+                e.SetObserved();
+            };
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(defaultValue: false);
             Application.Run(new Root());

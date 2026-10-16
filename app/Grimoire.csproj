@@ -562,6 +562,7 @@
     </Compile>
     <Compile Include="Utils\ControlUtils.cs" />
     <Compile Include="Utils\EnumerableUtils.cs" />
+    <Compile Include="Utils\ErrorReporter.cs" />
     <Compile Include="Utils\Consumer.cs" />
     <Compile Include="Utils\NetworkUtils.cs" />
     <Compile Include="Utils\ReflectUtils.cs" />

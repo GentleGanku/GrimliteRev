@@ -5,6 +5,7 @@ using Grimoire.Botting.Commands.Misc.Statements;
 using Grimoire.Game;
 using Grimoire.UI;
 using Grimoire.Game.Data;
+using Grimoire.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -145,7 +146,15 @@ namespace Grimoire.Botting
                 {
                     if (config.Skills[i].Type == Skill.SkillType.Label)
                     {
-                        BotData.SkillSet.Add(config.Skills[i].Text.ToUpper(), i);
+                        string label = config.Skills[i].Text.ToUpper();
+                        if (BotData.SkillSet.ContainsKey(label))
+                        {
+                            LogForm.Instance.AppendDebug($"[{DateTime.Now:hh:mm:ss}] The skill set label {config.Skills[i].Text} appears more than once; the first one is used.\r\n");
+                        }
+                        else
+                        {
+                            BotData.SkillSet.Add(label, i);
+                        }
                     }
                 }
             }
@@ -158,9 +167,16 @@ namespace Grimoire.Botting
 
         public async static void MoveToBotCell()
         {
-            if (BotData.BotCell != null && !Player.Cell.Equals(BotData.BotCell, StringComparison.OrdinalIgnoreCase))
+            try
             {
-                Player.MoveToCell(BotData.BotCell, BotData.BotPad);
+                if (BotData.BotCell != null && !Player.Cell.Equals(BotData.BotCell, StringComparison.OrdinalIgnoreCase))
+                {
+                    Player.MoveToCell(BotData.BotCell, BotData.BotPad);
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.Log("running BotUtilities.MoveToBotCell", ex);
             }
         }
 

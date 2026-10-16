@@ -177,7 +177,10 @@ namespace Grimoire.Tools
                                     Monster_Drops(treeNode2, item);
                             }
                         }
-                        catch { }
+                        catch (Exception ex)
+                        {
+                            ErrorReporter.Log("loading monster drops in the Grabber", ex);
+                        }
                     };
                 }
             }
@@ -209,101 +212,108 @@ namespace Grimoire.Tools
 
         private static async void Monster_Drops(TreeNode treeNode2, Monster item)
         {
-            treeNode2.ForeColor = Color.Gray;
             try
             {
-                var web = new HtmlWeb();
-                web.UserAgent = "Mozilla/5.0 (Windows; U; MSIE 9.0; Windows NT 9.0; en-US)";
-                var doc = await web.LoadFromWebAsync("https://aqwwiki.wikidot.com/" + item.Name);
-                HtmlNodeCollection targeted = doc.DocumentNode.SelectNodes("//div[@id='page-content']");
-                bool isTabbed = false;
-                if (doc.ParsedText.Contains("usually refers to"))
+                treeNode2.ForeColor = Color.Gray;
+                try
                 {
-                    foreach (var docLink in doc.DocumentNode.SelectNodes("//div[@id='page-content']//p//a[@href]"))
+                    var web = new HtmlWeb();
+                    web.UserAgent = "Mozilla/5.0 (Windows; U; MSIE 9.0; Windows NT 9.0; en-US)";
+                    var doc = await web.LoadFromWebAsync("https://aqwwiki.wikidot.com/" + item.Name);
+                    HtmlNodeCollection targeted = doc.DocumentNode.SelectNodes("//div[@id='page-content']");
+                    bool isTabbed = false;
+                    if (doc.ParsedText.Contains("usually refers to"))
                     {
-                        doc = await web.LoadFromWebAsync("https://aqwwiki.wikidot.com/" + docLink.Attributes["href"].Value);
-                        var pageContent = doc.DocumentNode.SelectSingleNode("//div[@id='page-content']");
-                        if (pageContent.InnerText.Contains($"Level: {item.Level}") && pageContent.InnerText.Contains($"Total HP:") && pageContent.InnerText.Contains($" {item.MaxHealth.ToString("N", new CultureInfo("en-US")).Split('.')[0]}"))
+                        foreach (var docLink in doc.DocumentNode.SelectNodes("//div[@id='page-content']//p//a[@href]"))
                         {
-                            targeted = doc.DocumentNode.SelectNodes("//div[@id='page-content']");
-                            break;
+                            doc = await web.LoadFromWebAsync("https://aqwwiki.wikidot.com/" + docLink.Attributes["href"].Value);
+                            var pageContent = doc.DocumentNode.SelectSingleNode("//div[@id='page-content']");
+                            if (pageContent.InnerText.Contains($"Level: {item.Level}") && pageContent.InnerText.Contains($"Total HP:") && pageContent.InnerText.Contains($" {item.MaxHealth.ToString("N", new CultureInfo("en-US")).Split('.')[0]}"))
+                            {
+                                targeted = doc.DocumentNode.SelectNodes("//div[@id='page-content']");
+                                break;
+                            }
                         }
                     }
-                }
-                if (targeted[0].SelectSingleNode("div").SelectNodes("div[@class='yui-content']") != null)
-                {
-                    foreach (var monTab in targeted[0].SelectSingleNode("div").SelectNodes("div[@class='yui-content']")[0].ChildNodes)
+                    if (targeted[0].SelectSingleNode("div").SelectNodes("div[@class='yui-content']") != null)
                     {
-                        if (monTab.InnerText.Contains(Player.Map.Substring(0, 1).ToUpper() + Player.Map.Substring(1, 2)) && monTab.InnerText.Contains($"Level: {item.Level}") && monTab.InnerText.Contains($"Total HP:") && monTab.InnerText.Contains($" {item.MaxHealth.ToString("N", new CultureInfo("en-US")).Split('.')[0]}"))
+                        foreach (var monTab in targeted[0].SelectSingleNode("div").SelectNodes("div[@class='yui-content']")[0].ChildNodes)
                         {
-                            targeted = monTab.ChildNodes;
-                            isTabbed = true;
-                            break;
+                            if (monTab.InnerText.Contains(Player.Map.Substring(0, 1).ToUpper() + Player.Map.Substring(1, 2)) && monTab.InnerText.Contains($"Level: {item.Level}") && monTab.InnerText.Contains($"Total HP:") && monTab.InnerText.Contains($" {item.MaxHealth.ToString("N", new CultureInfo("en-US")).Split('.')[0]}"))
+                            {
+                                targeted = monTab.ChildNodes;
+                                isTabbed = true;
+                                break;
+                            }
                         }
                     }
-                }
-                int indTemp = isTabbed ? targeted.GetNodeIndex(targeted.FirstOrDefault((HtmlNode n) => n.InnerText.Equals("Temporary Items Dropped:", StringComparison.OrdinalIgnoreCase))) : targeted[0].ChildNodes.GetNodeIndex(targeted[0].ChildNodes.FirstOrDefault((HtmlNode n) => n.InnerText.Equals("Temporary Items Dropped:", StringComparison.OrdinalIgnoreCase)));
-                if (indTemp > -1)
-                {
-                    TreeNode treeNodeTemp = treeNode2.Nodes.Add("Temporary Items");
-                    HtmlNodeCollection targetedChildNodes = isTabbed ? targeted[indTemp + 2].ChildNodes : targeted[0].ChildNodes[indTemp + 2].ChildNodes;
-                    foreach (var node in targetedChildNodes)
+                    int indTemp = isTabbed ? targeted.GetNodeIndex(targeted.FirstOrDefault((HtmlNode n) => n.InnerText.Equals("Temporary Items Dropped:", StringComparison.OrdinalIgnoreCase))) : targeted[0].ChildNodes.GetNodeIndex(targeted[0].ChildNodes.FirstOrDefault((HtmlNode n) => n.InnerText.Equals("Temporary Items Dropped:", StringComparison.OrdinalIgnoreCase)));
+                    if (indTemp > -1)
                     {
-                        if ((targetedChildNodes.Count == 0) || (node.InnerText.Equals("N/A", StringComparison.OrdinalIgnoreCase)) || (node.InnerText.Equals("Items Dropped:", StringComparison.OrdinalIgnoreCase)))
+                        TreeNode treeNodeTemp = treeNode2.Nodes.Add("Temporary Items");
+                        HtmlNodeCollection targetedChildNodes = isTabbed ? targeted[indTemp + 2].ChildNodes : targeted[0].ChildNodes[indTemp + 2].ChildNodes;
+                        foreach (var node in targetedChildNodes)
                         {
-                            treeNodeTemp.Nodes.Add("N/A");
-                            break;
-                        }
-                        if (!string.IsNullOrWhiteSpace(node.InnerText) && !node.OuterHtml.Contains("raresmall.png") && !node.OuterHtml.Contains("text-decoration: line-through"))
-                        {
-                            string nodeText = node.InnerText.Split(new string[] { node.InnerText.Contains(" (Dropped") ? " (Dropped" : node.InnerText.Contains(" (dropped") ? " (dropped" : " (During" }, StringSplitOptions.None)[0];
-                            nodeText = nodeText.Split(new string[] { " x" }, StringSplitOptions.None)[0];
-                            int lastInd = nodeText.LastIndexOf(' ');
-                            TreeNode treeNodeTempItem = treeNodeTemp.Nodes.Add(nodeText.EndsWith(" ") ? nodeText.Remove(lastInd) : nodeText);
-                            treeNodeTempItem.Nodes.Add($"Legend-tagged: " + (node.OuterHtml.Contains("legendsmall.png") ? "True" : "False"));
-                            treeNodeTempItem.Nodes.Add($"Seasonal-tagged: " + (node.OuterHtml.Contains("seasonalsmall.png") ? "True" : "False"));
-                            if (node.InnerText.Contains(" (Dropped") || node.InnerText.Contains(" (dropped") || node.InnerText.Contains(" (During"))
-                                treeNodeTempItem.Nodes.Add($"Note: Dropped during the '{node.ChildNodes["a"].LastChild.InnerText}' quest.");
+                            if ((targetedChildNodes.Count == 0) || (node.InnerText.Equals("N/A", StringComparison.OrdinalIgnoreCase)) || (node.InnerText.Equals("Items Dropped:", StringComparison.OrdinalIgnoreCase)))
+                            {
+                                treeNodeTemp.Nodes.Add("N/A");
+                                break;
+                            }
+                            if (!string.IsNullOrWhiteSpace(node.InnerText) && !node.OuterHtml.Contains("raresmall.png") && !node.OuterHtml.Contains("text-decoration: line-through"))
+                            {
+                                string nodeText = node.InnerText.Split(new string[] { node.InnerText.Contains(" (Dropped") ? " (Dropped" : node.InnerText.Contains(" (dropped") ? " (dropped" : " (During" }, StringSplitOptions.None)[0];
+                                nodeText = nodeText.Split(new string[] { " x" }, StringSplitOptions.None)[0];
+                                int lastInd = nodeText.LastIndexOf(' ');
+                                TreeNode treeNodeTempItem = treeNodeTemp.Nodes.Add(nodeText.EndsWith(" ") ? nodeText.Remove(lastInd) : nodeText);
+                                treeNodeTempItem.Nodes.Add($"Legend-tagged: " + (node.OuterHtml.Contains("legendsmall.png") ? "True" : "False"));
+                                treeNodeTempItem.Nodes.Add($"Seasonal-tagged: " + (node.OuterHtml.Contains("seasonalsmall.png") ? "True" : "False"));
+                                if (node.InnerText.Contains(" (Dropped") || node.InnerText.Contains(" (dropped") || node.InnerText.Contains(" (During"))
+                                    treeNodeTempItem.Nodes.Add($"Note: Dropped during the '{node.ChildNodes["a"].LastChild.InnerText}' quest.");
+                            }
                         }
                     }
-                }
-                int indItem = isTabbed ? targeted.GetNodeIndex(targeted.FirstOrDefault((HtmlNode n) => n.InnerText.Equals("Items Dropped:", StringComparison.OrdinalIgnoreCase))) : targeted[0].ChildNodes.GetNodeIndex(targeted[0].ChildNodes.FirstOrDefault((HtmlNode n) => n.InnerText.Equals("Items Dropped:", StringComparison.OrdinalIgnoreCase)));
-                if (indItem > -1)
-                {
-                    TreeNode treeNodeI = treeNode2.Nodes.Add("Items");
-                    HtmlNodeCollection targetedChildNodes = isTabbed ? targeted[indItem + 2].ChildNodes : targeted[0].ChildNodes[indItem + 2].ChildNodes;
-                    foreach (var node in targetedChildNodes)
+                    int indItem = isTabbed ? targeted.GetNodeIndex(targeted.FirstOrDefault((HtmlNode n) => n.InnerText.Equals("Items Dropped:", StringComparison.OrdinalIgnoreCase))) : targeted[0].ChildNodes.GetNodeIndex(targeted[0].ChildNodes.FirstOrDefault((HtmlNode n) => n.InnerText.Equals("Items Dropped:", StringComparison.OrdinalIgnoreCase)));
+                    if (indItem > -1)
                     {
-                        if ((targetedChildNodes.Count == 0) || (node.InnerText.Equals("N/A", StringComparison.OrdinalIgnoreCase)))
+                        TreeNode treeNodeI = treeNode2.Nodes.Add("Items");
+                        HtmlNodeCollection targetedChildNodes = isTabbed ? targeted[indItem + 2].ChildNodes : targeted[0].ChildNodes[indItem + 2].ChildNodes;
+                        foreach (var node in targetedChildNodes)
                         {
-                            treeNodeI.Nodes.Add("N/A");
-                            break;
-                        }
-                        if (!string.IsNullOrWhiteSpace(node.InnerText) && !node.OuterHtml.Contains("raresmall.png") && !node.OuterHtml.Contains("text-decoration: line-through"))
-                        {
-                            string nodeText = node.ChildNodes["a"].FirstChild.InnerText;
-                            int lastInd = nodeText.LastIndexOf(' ');
-                            TreeNode treeNodeItem = treeNodeI.Nodes.Add(nodeText.EndsWith(" ") ? nodeText.Remove(lastInd) : nodeText);
-                            treeNodeItem.ContextMenuStrip = Wiki(nodeText.EndsWith(" ") ? nodeText.Remove(lastInd) : nodeText);
-                            treeNodeItem.ContextMenuStrip = MenuItem(new InventoryItem { Name = nodeText.EndsWith(" ") ? nodeText.Remove(lastInd) : nodeText });
-                            treeNodeItem.Nodes.Add($"AC-tagged: " + (node.OuterHtml.Contains("acsmall.png") ? "True" : "False"));
-                            treeNodeItem.Nodes.Add($"Legend-tagged: " + (node.OuterHtml.Contains("legendsmall.png") ? "True" : "False"));
-                            treeNodeItem.Nodes.Add($"Seasonal-tagged: " + (node.OuterHtml.Contains("seasonalsmall.png") ? "True" : "False"));
-                            if (node.InnerText.Contains(" (Dropped") || node.InnerText.Contains(" (dropped") || node.InnerText.Contains(" (During"))
-                                treeNodeItem.Nodes.Add($"Note: Dropped during the '{node.ChildNodes["a"].LastChild.InnerText}' quest.");
+                            if ((targetedChildNodes.Count == 0) || (node.InnerText.Equals("N/A", StringComparison.OrdinalIgnoreCase)))
+                            {
+                                treeNodeI.Nodes.Add("N/A");
+                                break;
+                            }
+                            if (!string.IsNullOrWhiteSpace(node.InnerText) && !node.OuterHtml.Contains("raresmall.png") && !node.OuterHtml.Contains("text-decoration: line-through"))
+                            {
+                                string nodeText = node.ChildNodes["a"].FirstChild.InnerText;
+                                int lastInd = nodeText.LastIndexOf(' ');
+                                TreeNode treeNodeItem = treeNodeI.Nodes.Add(nodeText.EndsWith(" ") ? nodeText.Remove(lastInd) : nodeText);
+                                treeNodeItem.ContextMenuStrip = Wiki(nodeText.EndsWith(" ") ? nodeText.Remove(lastInd) : nodeText);
+                                treeNodeItem.ContextMenuStrip = MenuItem(new InventoryItem { Name = nodeText.EndsWith(" ") ? nodeText.Remove(lastInd) : nodeText });
+                                treeNodeItem.Nodes.Add($"AC-tagged: " + (node.OuterHtml.Contains("acsmall.png") ? "True" : "False"));
+                                treeNodeItem.Nodes.Add($"Legend-tagged: " + (node.OuterHtml.Contains("legendsmall.png") ? "True" : "False"));
+                                treeNodeItem.Nodes.Add($"Seasonal-tagged: " + (node.OuterHtml.Contains("seasonalsmall.png") ? "True" : "False"));
+                                if (node.InnerText.Contains(" (Dropped") || node.InnerText.Contains(" (dropped") || node.InnerText.Contains(" (During"))
+                                    treeNodeItem.Nodes.Add($"Note: Dropped during the '{node.ChildNodes["a"].LastChild.InnerText}' quest.");
+                            }
                         }
                     }
+                    if (treeNode2.Nodes.Count == 0)
+                        treeNode2.Nodes.Add("N/A");
                 }
-                if (treeNode2.Nodes.Count == 0)
-                    treeNode2.Nodes.Add("N/A");
+                catch (Exception ex)
+                {
+                    treeNode2.Nodes.Clear();
+                    treeNode2.Nodes.Add("The Wiki is not available at the moment.");
+                }
+                treeNode2.Nodes.RemoveAt(0);
+                treeNode2.ForeColor = Color.Gainsboro;
             }
             catch (Exception ex)
             {
-                treeNode2.Nodes.Clear();
-                treeNode2.Nodes.Add("The Wiki is not available at the moment.");
+                ErrorReporter.Log("running Grabber.Monster_Drops", ex);
             }
-            treeNode2.Nodes.RemoveAt(0);
-            treeNode2.ForeColor = Color.Gainsboro;
         }
 
         private static ContextMenuStrip Wiki(string item)

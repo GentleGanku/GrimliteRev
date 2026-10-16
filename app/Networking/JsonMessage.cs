@@ -17,6 +17,7 @@ namespace Grimoire.Networking
             }
             catch (JsonReaderException)
             {
+                // Not JSON: Command stays null, so no JSON handler matches this message.
             }
         }
 

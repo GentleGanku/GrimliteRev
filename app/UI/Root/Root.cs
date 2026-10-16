@@ -5,6 +5,7 @@ using Grimoire.Game;
 using Grimoire.Game.Data;
 using Grimoire.Networking;
 using Grimoire.Tools;
+using Grimoire.Utils;
 using System;
 using System.Drawing;
 using System.Reflection;
@@ -305,6 +306,7 @@ namespace Grimoire.UI
             this.Show();
             this.WindowState = FormWindowState.Normal;
             Hotkeys.Instance.LoadHotkeys();
+            Directory.CreateDirectory(PluginsPath);
             PreloadedPlugins.LoadRange(Directory.GetFiles(PluginsPath));
             InitializeGame();
             Proxy.InitializeProxyHandlers();
@@ -791,7 +793,10 @@ namespace Grimoire.UI
                 {
                     await AutoRelogin.ForceLogin((Server)toolStripComboBoxLoginServer.SelectedItem, login_cts);
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    ErrorReporter.Log("logging in to the selected server", ex);
+                }
                 loginBoxToggle(true);
             }
         }

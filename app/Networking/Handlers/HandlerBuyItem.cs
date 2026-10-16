@@ -1,6 +1,8 @@
 using Grimoire.UI;
 using Grimoire.Botting;
+using Grimoire.Utils;
 using Newtonsoft.Json.Linq;
+using System;
 
 namespace Grimoire.Networking.Handlers
 {
@@ -22,26 +24,33 @@ namespace Grimoire.Networking.Handlers
 
         public async void Handle(JsonMessage message)
         {
-            if (message.DataObject["bitSuccess"].Value<int>() == 1)
+            try
             {
-                if (Bot.Instance.buyFailureCounter.IsRunning)
+                if (message.DataObject["bitSuccess"].Value<int>() == 1)
                 {
-                    Bot.Instance.buyFailureCounter.Stop();
+                    if (Bot.Instance.buyFailureCounter.IsRunning)
+                    {
+                        Bot.Instance.buyFailureCounter.Stop();
+                    }
+                }
+                else if (BotManager.Instance.chkRelogUponFailBuy.Checked && BotManager.Instance.ActiveBotEngine.IsRunning)
+                {
+                    if (!Bot.Instance.buyFailureCounter.IsRunning)
+                    {
+                        Bot.Instance.buyFailureCounter.Start();
+                    }
+                    if (Bot.Instance.buyFailureCounter.ElapsedMilliseconds > 15000)
+                    {
+                        Bot.Instance.buyFailureCounter.Stop();
+                        return;
+                    }
+                    Bot.Instance.itemBuyFailure++;
+                    Bot.Instance.ReloginOnItemBuyFailure();
                 }
             }
-            else if (BotManager.Instance.chkRelogUponFailBuy.Checked && BotManager.Instance.ActiveBotEngine.IsRunning)
+            catch (Exception ex)
             {
-                if (!Bot.Instance.buyFailureCounter.IsRunning)
-                {
-                    Bot.Instance.buyFailureCounter.Start();
-                }
-                if (Bot.Instance.buyFailureCounter.ElapsedMilliseconds > 15000)
-                {
-                    Bot.Instance.buyFailureCounter.Stop();
-                    return;
-                }
-                Bot.Instance.itemBuyFailure++;
-                Bot.Instance.ReloginOnItemBuyFailure();
+                ErrorReporter.Log("running HandlerBuyItem.Handle", ex);
             }
         }
 

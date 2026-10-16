@@ -49,18 +49,14 @@ namespace Grimoire.UI
             if (cbPlayer.SelectedIndex > -1)
                 try
                 {
-                    try
-                    {
-                        if (lbItems.Items[lbItems.Items.Count - 1].ToString() != " ")
-                            lbItems.Items.Add(" ");
-                    }
-                    catch { }
+                    if (lbItems.Items.Count > 0 && lbItems.Items[lbItems.Items.Count - 1].ToString() != " ")
+                        lbItems.Items.Add(" ");
                     lbItems.Items.AddRange(CosmeticEquipment.Get(((PlayerInfo)cbPlayer.SelectedItem).EntID).ToArray());
                     lbItems.Items.Add(" ");
                 }
-                catch
+                catch (Exception ex)
                 {
-
+                    ErrorReporter.Log("grabbing the player's cosmetics", ex);
                 }
         }
 
@@ -75,9 +71,9 @@ namespace Grimoire.UI
             {
                 lbItems.SelectedItems.Cast<CosmeticEquipment>().ForEach(x => x.Equip());
             }
-            catch
+            catch (Exception ex)
             {
-
+                ErrorReporter.Log("equipping the selected cosmetics", ex);
             }
         }
 
@@ -183,7 +179,10 @@ namespace Grimoire.UI
                             }
                         }
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    ErrorReporter.Log("grabbing a cosmetic slot", ex);
+                }
         }
 
         private void lbItems_KeyDown(object sender, KeyEventArgs e)
@@ -384,7 +383,10 @@ namespace Grimoire.UI
                     txtGround1.Text = s[22].Split(':')[1];
                     txtGround2.Text = s[23].Split(':')[1];
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    ErrorReporter.Log("loading a cosmetic set file", ex);
+                }
             }
         }
 
@@ -444,9 +446,9 @@ namespace Grimoire.UI
                     lbItems.Items.RemoveAt(idx);
                 }
             }
-            catch
+            catch (Exception ex)
             {
-
+                ErrorReporter.Log("removing cosmetics from the list", ex);
             }
         }
 

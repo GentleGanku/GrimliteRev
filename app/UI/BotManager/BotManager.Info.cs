@@ -36,7 +36,10 @@ namespace Grimoire.UI
                 Task.WaitAll(Task.Run(() => DocConvert.toRtf(tempDoc, target, out tempRtf)));
                 rtbInfo.Rtf = File.ReadAllText(tempRtf);
             }
-            catch { };
+            catch
+            {
+                // The description is invalid RTF while it's still being typed; the preview keeps its last valid content.
+            };
         }
 
         private void rtbInfo_LinkClicked(object sender, LinkClickedEventArgs e)

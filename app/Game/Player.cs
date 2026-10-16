@@ -423,7 +423,17 @@ namespace Grimoire.Game
         /// </summary>
         public static void SetSpawnPoint() => Flash.Call("SetSpawnPoint", new string[0]);
 
-        public static async void MoveToCell(string cell = "Enter", string pad = "Spawn") => Flash.Call("Jump", (cell != "Wait" && cell != "Blank") ? cell : "Enter", pad);
+        public static async void MoveToCell(string cell = "Enter", string pad = "Spawn")
+        {
+            try
+            {
+                Flash.Call("Jump", (cell != "Wait" && cell != "Blank") ? cell : "Enter", pad);
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.Log("running Player.MoveToCell", ex);
+            }
+        }
 
         public static void Rest() => Flash.Call("Rest", new string[0]);
 

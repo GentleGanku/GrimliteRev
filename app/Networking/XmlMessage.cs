@@ -17,6 +17,7 @@ namespace Grimoire.Networking
             }
             catch (XmlException)
             {
+                // Not XML: Command stays null, so no XML handler matches this message.
             }
         }
 

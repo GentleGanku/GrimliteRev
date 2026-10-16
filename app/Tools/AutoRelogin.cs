@@ -3,6 +3,7 @@ using Grimoire.Game;
 using Grimoire.Game.Data;
 using Grimoire.UI;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -81,12 +82,28 @@ namespace Grimoire.Tools
 
         public static void Connect(Server server)
         {
-            Server targeted = Server.List.Find(s => s.Name.Equals(server.Name));
-            if (targeted.PlayerCount > (targeted.MaxCount - 10))
+            Flash.Call("Connect", ChooseServer(server, Server.List).Name);
+        }
+
+        /// <summary>
+        /// The saved server if it's still listed and isn't within 10 players of full; otherwise the busiest online server
+        /// with room; otherwise the saved server anyway, so the login is still attempted.
+        /// </summary>
+        public static Server ChooseServer(Server saved, IEnumerable<Server> servers)
+        {
+            List<Server> list = servers?.ToList() ?? new List<Server>();
+            Server listed = list.Find(s => s.Name.Equals(saved?.Name));
+            if (listed != null && HasRoom(listed))
             {
-                targeted = Server.List.FindAll(s => !s.Name.Equals(targeted.Name) && s.PlayerCount <= (s.MaxCount - 10)).OrderByDescending(s => s.PlayerCount).ToList()[0];
+                return listed;
             }
-            Flash.Call("Connect", targeted.Name);
+            Server other = list.Where(s => s != listed && s.IsOnline && HasRoom(s)).OrderByDescending(s => s.PlayerCount).FirstOrDefault();
+            return other ?? listed ?? saved;
+        }
+
+        private static bool HasRoom(Server server)
+        {
+            return server.PlayerCount <= server.MaxCount - 10;
         }
 
         public static async Task Login(Server server, int relogDelay, CancellationTokenSource cts, bool ensureSuccess)
