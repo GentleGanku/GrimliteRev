@@ -317,16 +317,21 @@
     <Compile Include="Game\World.cs" />
     <Compile Include="Networking\Handlers\HandlerConnection.cs" />
     <Compile Include="Networking\Handlers\HandlerArea.cs" />
-    <Compile Include="Networking\Handlers\HandlerPlayer.cs" />
     <Compile Include="Networking\Handlers\HandlerWarningsXt.cs" />
     <Compile Include="Networking\Handlers\HandlerAFK.cs" />
     <Compile Include="Networking\Handlers\HandlerXtJoin.cs" />
+    <Compile Include="Networking\Handlers\HandlerXtCellJoin.cs" />
     <Compile Include="Networking\Handlers\HandlerChat.cs" />
     <Compile Include="Networking\Handlers\HandlerLogin.cs" />
     <Compile Include="Networking\Handlers\HandlerDrops.cs" />
     <Compile Include="Networking\Handlers\HandlerGetQuests.cs" />
     <Compile Include="Networking\Handlers\HandlerLoadShop.cs" />
+    <Compile Include="Networking\Handlers\HandlerBuyItem.cs" />
     <Compile Include="Networking\Handlers\HandlerMapJoin.cs" />
+    <Compile Include="Networking\Handlers\HandlerAura.cs" />
+    <Compile Include="Networking\Handlers\HandlerBotSkills.cs" />
+    <Compile Include="Networking\Handlers\HandlerInfo.cs" />
+    <Compile Include="Networking\Handlers\HandlerSkills.cs" />
     <Compile Include="Networking\Handlers\HandlerQuestComplete.cs" />
     <Compile Include="Networking\IJsonMessageHandler.cs" />
     <Compile Include="Networking\IXmlMessageHandler.cs" />
@@ -379,6 +384,11 @@
     <Compile Include="Tools\BoolConverter.cs" />
     <Compile Include="Tools\IntStringConverter.cs" />
     <Compile Include="Tools\Flash.cs" />
+    <Compile Include="Tools\Flash.Inbound.cs">
+      <DependentUpon>Flash.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\FlashCallHandler.cs" />
+    <Compile Include="Tools\FlashErrorHandler.cs" />
     <Compile Include="Tools\Grabber.cs" />
     <Compile Include="Tools\Hotkey.cs" />
     <Compile Include="Tools\KeyboardHook.cs" />

@@ -1,11 +1,7 @@
 using AxShockwaveFlashObjects;
-using Grimoire.Game;
-using Grimoire.Game.Data;
-using Grimoire.Networking;
 using Grimoire.UI;
 using Grimoire.Utils;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -17,11 +13,8 @@ using System.Xml.Linq;
 
 namespace Grimoire.Tools
 {
-    public delegate void FlashCallHandler(AxShockwaveFlash flash, string function, params object[] args);
 
-    public delegate void FlashErrorHandler(AxShockwaveFlash flash, Exception e, string function, params object[] args);
-
-    public class Flash
+    public partial class Flash
     {
         #region Fields
 
@@ -52,44 +45,22 @@ namespace Grimoire.Tools
 
         #region Methods
 
-        public static void ProcessFlashCall(object sender, _IShockwaveFlashEvents_FlashCallEvent e)
-        {
-            XElement xElement = XElement.Parse(e.request);
-            string callName = xElement.Attribute("name")?.Value;
-            string callArgs = xElement.Element("arguments")?.Value;
-            if (callName == null)
-            {
-                return;
-            }
-            if (!(callName == "progress"))
-            {
-                if (callName == "modifyServers")
-                {
-                    Root.Instance.Client.SetReturnValue("<string>" + ModifyServerList(callArgs.Trim()) + "</string>");
-                }
-                // -1 keeps the game's own backgrounds (Camouflage), 0 is the first custom background.
-                if (callName == "getBackgroundIndex")
-                {
-                    Root.Instance.Client.SetReturnValue(Root.Instance.camouflageToolStripMenuItem.Checked ? "<number>-1</number>" : "<number>0</number>");
-                }
-                Proxy.Instance.LogPackets(callName, callArgs);
-            }
-            else
-            {
-                SwfLoadProgress?.Invoke(int.Parse(callArgs));
-            }
-        }
-
+        /// <summary>
+        /// Calls a function on the live game by dotted path. With arguments it uses the typed family
+        /// (<see cref="Call(string, Type, object[])"/>); without, the string family, so the result is JSON-decoded.
+        /// </summary>
         public static string CallGameFunction(string path, params object[] args)
         {
             return args.Length > 0 ? Call("callGameFunction", new object[] { path }.Concat(args).ToArray()) : Call<string>("callGameFunction0", path);
         }
 
+        /// <summary>Typed family, see <see cref="Call(string, Type, object[])"/>.</summary>
         public static string Call(string function, params object[] args)
         {
             return Call<string>(function, args);
         }
 
+        /// <summary>Typed family, see <see cref="Call(string, Type, object[])"/>.</summary>
         public static T Call<T>(string function, params object[] args)
         {
             try
@@ -102,6 +73,16 @@ namespace Grimoire.Tools
             }
         }
 
+        /// <summary>
+        /// Typed family. Each argument is encoded by <see cref="ToFlashXml"/>, so numbers, booleans, arrays and objects
+        /// keep their types and strings are XML-escaped. The call goes through <see cref="flash"/>, and the first node of
+        /// the reply is converted with <see cref="Convert.ChangeType(object, Type)"/> as is (XML entities are not decoded).
+        /// On failure it raises <see cref="FlashError"/> and returns the default value.
+        /// </summary>
+        /// <remarks>
+        /// C# picks the string family (<see cref="Call{T}(string, string[])"/>) instead whenever every argument is a
+        /// string, including <c>new string[0]</c>. Pass <c>new object[0]</c> or a non-string argument to stay here.
+        /// </remarks>
         public static object Call(string function, Type type, params object[] args)
         {
             try
@@ -125,16 +106,24 @@ namespace Grimoire.Tools
             }
         }
 
+        /// <summary>
+        /// String family. Each argument is sent inside <c>&lt;string&gt;</c> without escaping, so callers escape XML
+        /// themselves. The call goes through <c>Root.Instance.Client</c>, and the reply is HTML-decoded and then
+        /// deserialized as JSON, so a string result must arrive JSON-quoted. On failure it returns the default value
+        /// without raising <see cref="FlashError"/>.
+        /// </summary>
         public static T Call<T>(string function, params string[] args)
         {
             return TryDeserialize<T>(GetResponse(BuildRequest(function, args)));
         }
 
+        /// <summary>Typed family, see <see cref="Call(string, Type, object[])"/>.</summary>
         public static string CallString(string function, params object[] args)
         {
             return Call<string>(function, args);
         }
 
+        /// <summary>String family, see <see cref="Call{T}(string, string[])"/>; the result is discarded.</summary>
         public static void Call(string function, params string[] args)
         {
             Call<string>(function, args);
@@ -196,14 +185,6 @@ namespace Grimoire.Tools
                 default:
                     return el.Value;
             }
-        }
-
-        public static void CallHandler(object sender, _IShockwaveFlashEvents_FlashCallEvent e)
-        {
-            XElement el = XElement.Parse(e.request);
-            string name = el.Attribute("name").Value;
-            object[] args = el.Elements().Select(x => FromFlashXml(x)).ToArray();
-            FlashCall?.Invoke(flash, name, args);
         }
 
         public string GetGameObject(string path)
@@ -272,51 +253,6 @@ namespace Grimoire.Tools
             {
                 return default;
             }
-        }
-
-        private static string ModifyServerList(string response)
-        {
-            if (response.StartsWith("{\"login\"") && response.EndsWith("}"))
-            {
-                return ServersFromJson(response);
-            }
-            return response;
-        }
-
-        private static string ServersFromJson(String json)
-        {
-            JObject packet = (JObject)JObject.Parse(json);
-            JObject login = (JObject)packet["login"];
-            JArray servers = (JArray)packet["servers"];
-            Server[] parsedServers = new Server[servers.Count];
-
-            login["iAge"] = 99;
-
-            for (int i = 0; i < servers.Count; i++)
-            {
-                JObject server = (JObject)servers[i];
-                parsedServers[i] = new Server
-                {
-                    IsChatRestricted = server.GetValue("iChat")?.ToString() == "0",
-                    PlayerCount = int.Parse(server.GetValue("iCount")?.ToString()),
-                    MaxCount = int.Parse(server.GetValue("iMax")?.ToString()),
-                    IsMemberOnly = server.GetValue("bUpg")?.ToString() == "1",
-                    IsOnline = server.GetValue("bOnline")?.ToString() == "1",
-                    Name = server.GetValue("sName")?.ToString(),
-                    Language = server.GetValue("sLang")?.ToString(),
-                    Port = int.Parse(server.GetValue("iPort")?.ToString()),
-                    Ip = server.GetValue("sIP")?.ToString()
-                };
-            }
-            BotManager.Instance.OnServersLoaded(parsedServers);
-            ParseAvatarDatas(login);
-            return packet.ToString(Newtonsoft.Json.Formatting.None);
-        }
-
-        private static void ParseAvatarDatas(JObject loginResponse)
-        {
-            Player.Username = loginResponse["unm"].ToString();
-            Player.CharUserID = int.Parse(loginResponse["userid"].ToString());
         }
 
         #endregion

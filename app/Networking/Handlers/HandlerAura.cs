@@ -1,7 +1,5 @@
-using Grimoire.Botting;
 using Grimoire.Game;
 using Grimoire.Game.Data;
-using Grimoire.Tools;
 using System.Threading.Tasks;
 using System;
 using System.Linq;
@@ -9,111 +7,6 @@ using Newtonsoft.Json.Linq;
 
 namespace Grimoire.Networking.Handlers
 {
-    public class HandlerSkills : IJsonMessageHandler
-    {
-        #region Properties
-
-        public string[] HandledCommands
-        {
-            get;
-        } = new string[1]
-        {
-            "sAct"
-        };
-
-        #endregion
-
-        #region Methods
-
-        public async void Handle(JsonMessage message)
-        {
-            await Task.Delay(10);
-            Flash.Call("getRange", new string[0]);
-            OptionsManager.SetInfiniteRange(OptionsManager.InfiniteRange);
-        }
-
-        #endregion
-    }
-
-    public class HandlerBotSkills : IJsonMessageHandler
-    {
-        #region Properties
-
-        public string[] HandledCommands
-        {
-            get;
-        } = new string[1]
-        {
-            "ct"
-        };
-
-        #endregion
-
-        #region Methods
-
-        public async void Handle(JsonMessage message)
-        {
-            if (message.RawContent.IndexOf("\"msg\":", StringComparison.OrdinalIgnoreCase) > -1 && message.RawContent.IndexOf("counter attack", StringComparison.OrdinalIgnoreCase) > -1 && message.RawContent.Contains($"\"strFrame\":\"{Player.Cell}\""))
-            {
-                Proxy.DisableBotSkill();
-            }
-            else if (message.RawContent.IndexOf("\"nam\":\"Counter Attack\"", StringComparison.OrdinalIgnoreCase) != -1)
-            {
-                JArray auraEvents = (JArray)message.DataObject?["a"];
-                if (auraEvents != null)
-                {
-                    if (auraEvents.Any(a => ((a["cmd"].ToString() == "aura-") || (a["cmd"].ToString() == "aura--")) && a["aura"]["nam"].ToString().Equals("Counter Attack", StringComparison.OrdinalIgnoreCase)))
-                    {
-                        Proxy.EnableBotSkill();
-                    }
-                }
-            }
-        }
-
-        #endregion
-    }
-
-        public class HandlerInfo : IJsonMessageHandler
-    {
-            #region Properties
-
-        public string[] HandledCommands
-        {
-            get;
-        } = new string[4]
-        {
-            "ct",
-            "cb",
-            "moveToArea",
-            "uotls"
-        };
-
-            #endregion
-
-            #region Methods
-
-        public async void Handle(JsonMessage message)
-        {
-            await ParseInfo(message, message.Command);
-        }
-
-        public async Task ParseInfo(JsonMessage message, string command)
-        {
-            switch (command)
-            {
-                case "ct":
-                case "cb":
-                    break;
-                case "moveToArea":
-                    break;
-                case "uotls":
-                    break;
-            }
-        }
-
-            #endregion
-        }
-
     public class HandlerAura : IJsonMessageHandler
     {
         #region Properties
