@@ -8,7 +8,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$solution = Join-Path $PSScriptRoot 'Project Grimlite.sln'
+$solution = Join-Path $PSScriptRoot 'GrimliteRev.sln'
 
 $Platform = @($Platform | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ })
 foreach ($p in $Platform) {

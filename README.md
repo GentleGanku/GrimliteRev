@@ -41,7 +41,7 @@ The repository has three parts:
 
 ### **App** 
 
-Open `app/Project Grimlite.sln` in Visual Studio, or run the build script which builds x86 and x64:
+Open `app/GrimliteRev.sln` in Visual Studio, or run the build script which builds x86 and x64:
 
 ```
 powershell -ExecutionPolicy Bypass -File app/build.ps1
