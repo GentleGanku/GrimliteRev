@@ -1,5 +1,6 @@
 using DarkUI.Forms;
 using Grimoire.Botting;
+using Grimoire.Utils;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -62,80 +63,48 @@ namespace Grimoire.UI
 
         public void AppendDebug(string text)
         {
-            if (text.Contains("{CLEAR}"))
-                txtLogDebug.Clear();
-            if (txtLogDebug.InvokeRequired)
-            {
-                txtLogDebug.Invoke((Action)delegate
-                {
-                    txtLogDebug.AppendText(text);
-                });
-            }
-            else
-                txtLogDebug.AppendText(text);
+            Append(txtLogDebug, text);
         }
 
         public void AppendDrops(string text)
         {
-            if (text.Contains("{CLEAR}"))
-                txtLogDrops.Clear();
-            if (txtLogDrops.InvokeRequired)
-            {
-                txtLogDrops.Invoke((Action)delegate
-                {
-                    txtLogDrops.AppendText(text);
-                });
-            }
-            else
-                txtLogDrops.AppendText(text);
+            Append(txtLogDrops, text);
         }
 
         public void AppendChat(string text)
         {
-            if (text.Contains("{CLEAR}"))
-                txtLogChat.Clear();
-            if (txtLogChat.InvokeRequired)
-            {
-                txtLogChat.Invoke((Action)delegate
-                {
-                    txtLogChat.AppendText(text);
-                });
-            }
-            else
-                txtLogChat.AppendText(text);
+            Append(txtLogChat, text);
         }
 
         public void AppendScript(string text, bool ignoreInvoke = false)
         {
-            if (text.Contains("{CLEAR}"))
-                txtLogScript.Clear();
-            if (txtLogScript.InvokeRequired)
-            {
-                txtLogScript.Invoke((Action)delegate
-                {
-                    txtLogScript.AppendText(text);
-                });
-            }
-            else
-                txtLogScript.AppendText(text);
+            Append(txtLogScript, text);
         }
 
-        /// <summary>
-        /// Append Bot
-        /// </summary>
         public void AppendBot(string text, bool ignoreInvoke = false)
         {
-            if (text.Contains("{CLEAR}"))
-                txtLogBot.Clear();
-            if (txtLogBot.InvokeRequired)
+            Append(txtLogBot, text);
+        }
+
+        // Callers include the bot's worker thread; Clear and the append both run on the UI thread, in call order.
+        private static void Append(TextBoxBase box, string text)
+        {
+            void Write()
             {
-                txtLogBot.Invoke((Action)delegate
+                if (text.Contains("{CLEAR}"))
                 {
-                    txtLogBot.AppendText(text);
-                });
+                    box.Clear();
+                }
+                box.AppendCapped(text);
+            }
+            if (box.InvokeRequired)
+            {
+                box.Invoke((Action)Write);
             }
             else
-                txtLogBot.AppendText(text);
+            {
+                Write();
+            }
         }
 
         private void LogForm_Load(object sender, EventArgs e)

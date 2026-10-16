@@ -365,7 +365,7 @@ namespace Grimoire.Tools
             };
             toolStripMenuItem2.Click += delegate (object S, EventArgs E)
             {
-                Shop.Load(item.Id);
+                Shop.Load(item.Id).Forget("loading a shop");
             };
             contextMenuStrip.Items.Add(toolStripMenuItem);
             contextMenuStrip.Items.Add(toolStripMenuItem1);

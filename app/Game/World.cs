@@ -355,6 +355,8 @@ namespace Grimoire.Game
         public static void OnShopLoaded(ShopInfo shopInfo)
         {
             ShopLoaded?.Invoke(shopInfo);
+            // Each visit loads the shop again; keep one entry per shop instead of one per visit.
+            LoadedShops.RemoveAll(s => s.Id == shopInfo.Id);
             LoadedShops.Add(shopInfo);
         }
 

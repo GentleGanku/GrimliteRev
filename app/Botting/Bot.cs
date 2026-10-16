@@ -180,19 +180,19 @@ namespace Grimoire.Botting
                 if (Configuration.EnablePickupAll)
                 {
                     await Task.Delay(DropDelay);
-                    World.DropStack.GetDrop(drop.Id);
+                    await World.DropStack.GetDrop(drop.Id);
                 }
                 else if (Configuration.EnablePickup && Configuration.Drops.Any((string d) => d.Equals(drop.Name, StringComparison.OrdinalIgnoreCase)))
                 {
                     await Task.Delay(DropDelay);
-                    World.DropStack.GetDrop(drop.Id);
+                    await World.DropStack.GetDrop(drop.Id);
                 }
                 else if (Configuration.EnablePickupAcTagged)
                 {
                     if (drop.IsAcItem)
                     {
                         await Task.Delay(DropDelay);
-                        World.DropStack.GetDrop(drop.Id);
+                        await World.DropStack.GetDrop(drop.Id);
                     }
                 }
             }
@@ -269,7 +269,7 @@ namespace Grimoire.Botting
                         await BotManager.Instance.ActiveBotEngine.WaitUntil(() => AutoRelogin.LoginLabel, () => !Root.Instance.login_cts.IsCancellationRequested, 5, 1500);
                         AutoRelogin.LoginExecute();
                         await BotManager.Instance.ActiveBotEngine.WaitUntil(() => !AutoRelogin.IsClientLoading("Account"), () => !Root.Instance.login_cts.IsCancellationRequested, 10, 500);
-                        AutoRelogin.ForceLogin(server, Root.Instance.login_cts);
+                        await AutoRelogin.ForceLogin(server, Root.Instance.login_cts);
                     }
                 }
             }
@@ -295,7 +295,7 @@ namespace Grimoire.Botting
                         await BotManager.Instance.ActiveBotEngine.WaitUntil(() => AutoRelogin.LoginLabel, () => !Root.Instance.login_cts.IsCancellationRequested, 5, 1500);
                         AutoRelogin.LoginExecute();
                         await BotManager.Instance.ActiveBotEngine.WaitUntil(() => !AutoRelogin.IsClientLoading("Account"), () => !Root.Instance.login_cts.IsCancellationRequested, 10, 500);
-                        AutoRelogin.ForceLogin(server, Root.Instance.login_cts);
+                        await AutoRelogin.ForceLogin(server, Root.Instance.login_cts);
                     }
                 }
             }
@@ -337,7 +337,7 @@ namespace Grimoire.Botting
                 {
                     if (!Player.Inventory.ContainsItem(item, "*") && Player.Bank.ContainsItem(item))
                     {
-                        Player.Bank.TransferFromBank(item);
+                        await Player.Bank.TransferFromBank(item);
                         await Task.Delay(70);
                         LogForm.Instance.AppendBot($"[{DateTime.Now:hh:mm:ss}] Items List - Item transferred to Inventory: {item}.\r\n");
                     }
@@ -348,10 +348,10 @@ namespace Grimoire.Botting
                 }
             }
             await this.LoadBotQuests();
-            CheckQuests(_ctsBot.Token);
-            World.DropStack.RejectDrops();
+            CheckQuests(_ctsBot.Token).Forget("completing the bot's quests");
+            World.DropStack.RejectDrops().Forget("rejecting drops");
             OptionsManager.Start();
-            Task.Factory.StartNew(Activate, _ctsBot.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+            _ = Task.Factory.StartNew(Activate, _ctsBot.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
         }
 
         private async void OnCancel()
@@ -362,7 +362,7 @@ namespace Grimoire.Botting
                 Player.CancelTarget();
                 if (BotManager.Instance.chkExitCombatUponStop.Checked)
                 {
-                    BotUtilities.MoveOutOfCombat();
+                    await BotUtilities.MoveOutOfCombat();
                 }
                 BotUtilities.ActiveBot = false;
                 BotUtilities.HasLoadedQuests = false;
@@ -377,7 +377,7 @@ namespace Grimoire.Botting
                     {
                         if (!item.IsEquipped && item.Category != "Class" && item.Name != "Treasure Potion" && BotManager.Instance.lstItems.Items.Contains(item.Name))
                         {
-                            Player.Bank.TransferToBank(item.Name);
+                            await Player.Bank.TransferToBank(item.Name);
                             await Task.Delay(70);
                             LogForm.Instance.AppendBot($"[{DateTime.Now:hh:mm:ss}] Items List - Item transferred to Bank: {item.Name}.\r\n");
                         }

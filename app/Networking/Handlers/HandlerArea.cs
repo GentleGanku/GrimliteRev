@@ -5,6 +5,7 @@ using Grimoire.UI;
 using Grimoire.Utils;
 using Newtonsoft.Json;
 using System;
+using System.Threading;
 
 namespace Grimoire.Networking.Handlers
 {
@@ -12,7 +13,7 @@ namespace Grimoire.Networking.Handlers
     {
         #region Fields
 
-        private static System.Threading.CancellationTokenSource _cts = new System.Threading.CancellationTokenSource();
+        private static CancellationTokenSource _cts = new CancellationTokenSource();
 
         #endregion
 
@@ -34,7 +35,14 @@ namespace Grimoire.Networking.Handlers
         {
             try
             {
-                await BotManager.Instance.ActiveBotEngine.WaitUntil(() => World.ActiveCutscene == 0 && !World.mapLoadInProgress && Player.IsLoggedIn, () => !_cts.IsCancellationRequested, -1, 500, 500);
+                // Only the newest map matters: a newer moveToArea cancels this wait, and a wait never outlives a minute.
+                var cts = new CancellationTokenSource();
+                Interlocked.Exchange(ref _cts, cts).Cancel();
+                await BotManager.Instance.ActiveBotEngine.WaitUntil(() => World.ActiveCutscene == 0 && !World.mapLoadInProgress && Player.IsLoggedIn, () => !cts.IsCancellationRequested, 120, 500, 500);
+                if (cts.IsCancellationRequested)
+                {
+                    return;
+                }
                 Map map = JsonConvert.DeserializeObject<Map>(message.DataObject.ToString());
                 World.CurrentMap = map;
             }

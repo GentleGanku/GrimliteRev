@@ -26,7 +26,7 @@ namespace Grimoire.Botting.Commands.Item
         public async Task Execute(IBotEngine instance)
         {
             BotData.BotState = BotData.State.Others;
-            Player.Bank.Swap(instance.Value(InventoryItemName), instance.Value(BankItemName));
+            await Player.Bank.Swap(instance.Value(InventoryItemName), instance.Value(BankItemName));
         }
 
         public override string ToString()

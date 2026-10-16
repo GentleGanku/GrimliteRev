@@ -34,16 +34,16 @@ namespace Grimoire.UI
             switch (s.Name)
             {
                 case "btnSetGood":
-                    Proxy.Instance.SendToServer("%xt%zm%updateQuest%218701%41%1%");
+                    _ = Proxy.Instance.SendToServer("%xt%zm%updateQuest%218701%41%1%");
                     break;
                 case "btnSetEvil":
-                    Proxy.Instance.SendToServer("%xt%zm%updateQuest%218701%41%2%");
+                    _ = Proxy.Instance.SendToServer("%xt%zm%updateQuest%218701%41%2%");
                     break;
                 case "btnSetChaos":
-                    Proxy.Instance.SendToServer("%xt%zm%updateQuest%218701%41%3%");
+                    _ = Proxy.Instance.SendToServer("%xt%zm%updateQuest%218701%41%3%");
                     break;
                 case "btnSetUndecided":
-                    Proxy.Instance.SendToServer("%xt%zm%updateQuest%218701%41%5%");
+                    _ = Proxy.Instance.SendToServer("%xt%zm%updateQuest%218701%41%5%");
                     break;
                 case "btnSetMem":
                     Player.ChangeAccessLevel("Member");
@@ -133,12 +133,12 @@ namespace Grimoire.UI
 
         private void btnAddClientGold_Click(object sender, EventArgs e)
         {
-            Proxy.Instance.SendToClient("{\"t\":\"xt\",\"b\":{\"r\":-1,\"o\":{\"id\":1,\"cmd\":\"addGoldExp\",\"intGold\":99999999,\"intExp\":0,\"typ\":\"m\"}}}");
+            _ = Proxy.Instance.SendToClient("{\"t\":\"xt\",\"b\":{\"r\":-1,\"o\":{\"id\":1,\"cmd\":\"addGoldExp\",\"intGold\":99999999,\"intExp\":0,\"typ\":\"m\"}}}");
         }
 
         private void btnAddClientACs_Click(object sender, EventArgs e)
         {
-            Proxy.Instance.SendToClient("{\"t\":\"xt\",\"b\":{\"r\":-1,\"o\":{\"cmd\":\"sellItem\",\"intAmount\":999999,\"CharItemID\":1,\"bCoins\":1}}}");
+            _ = Proxy.Instance.SendToClient("{\"t\":\"xt\",\"b\":{\"r\":-1,\"o\":{\"cmd\":\"sellItem\",\"intAmount\":999999,\"CharItemID\":1,\"bCoins\":1}}}");
         }
 
         private void chkHideYulgarPlayers_CheckedChanged(object sender, EventArgs e)

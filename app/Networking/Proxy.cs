@@ -214,13 +214,13 @@ namespace Grimoire.Networking
                     }
                     if (_catchAllPackets)
                     {
-                        PacketTamperer.Instance.txtReceive.AppendText((text2.StartsWith("%xt%zm%") ? "From client: " : "From server: ") + text2 + "\r\n" + (text2.StartsWith("%xt%zm%") ? "" : "\r\n"));
+                        PacketTamperer.Instance.txtReceive.AppendCapped((text2.StartsWith("%xt%zm%") ? "From client: " : "From server: ") + text2 + "\r\n" + (text2.StartsWith("%xt%zm%") ? "" : "\r\n"));
                     }
                     break;
                 case "xtPacket":
                     if (_catchXtPackets)
                     {
-                        PacketLogger.Instance.txtPackets.AppendText(text2 + "\r\n");
+                        PacketLogger.Instance.txtPackets.AppendCapped(text2 + "\r\n");
                     }
                     break;
                 case "ping":

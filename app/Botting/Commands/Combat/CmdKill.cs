@@ -1,6 +1,7 @@
 using Grimoire.Game;
 using Grimoire.Game.Data;
 using Grimoire.UI;
+using Grimoire.Utils;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -48,7 +49,7 @@ namespace Grimoire.Botting.Commands.Combat
                 await Task.Delay(Player.AllSkillsAvailable);
             }
             Player.AttackMonster(instance.Value(Monster));
-            Task.Run(() => UseSkills(instance, cts.Token));
+            Task.Run(() => UseSkills(instance, cts.Token)).Forget("using skills");
             await instance.WaitUntil(() => !Player.HasTarget, () => instance.IsRunning && !cts.IsCancellationRequested, -1, 500);
             cts.Cancel();
             Player.CancelTarget();

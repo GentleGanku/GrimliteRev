@@ -30,7 +30,7 @@ namespace Grimoire.Botting.Commands.Item
             await instance.WaitUntil(() => World.IsActionAvailable(LockActions.BuyItem), null, 10, 500);
             await BotUtilities.MoveOutOfCombat();
             Shop.ResetShopInfo();
-            Shop.Load(ShopId);
+            await Shop.Load(ShopId);
             await instance.WaitUntil(() => Shop.IsShopLoaded);
             await Shop.BuyItem(instance.Value(ItemName));
         }

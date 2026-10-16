@@ -2,6 +2,7 @@ using Grimoire.Botting;
 using Grimoire.Game;
 using Grimoire.Game.Data;
 using Grimoire.UI;
+using Grimoire.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -125,7 +126,7 @@ namespace Grimoire.Tools
             await Task.Delay(relogDelay);
             if (ensureSuccess)
             {
-                Task.Run(() => EnsureLoginSuccess(cts));
+                Task.Run(() => EnsureLoginSuccess(cts)).Forget("checking that the login succeeded");
             }
             OptionsCheck(true);
         }

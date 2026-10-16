@@ -6,6 +6,7 @@ using Grimoire.UI;
 using Grimoire.Utils;
 using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Grimoire.Botting
@@ -23,6 +24,7 @@ namespace Grimoire.Botting
         private static bool _hideYulgar;
         private static bool _hideRoom;
         private static bool _afk;
+        private static int _loopGeneration;
         private static readonly Stopwatch _packetSpamTimer = new Stopwatch();
 
         #endregion
@@ -277,7 +279,7 @@ namespace Grimoire.Botting
 
         public static void Start()
         {
-            ApplySettings();
+            ApplySettings().Forget("applying the client options");
             if (BotManager.Instance.chkLag.Checked)
             {
                 LagKiller = true;
@@ -307,7 +309,7 @@ namespace Grimoire.Botting
 
         public static void SetClientLevel()
         {
-            Proxy.Instance.SendToClient("{\"t\":\"xt\",\"b\":{\"r\":-1,\"o\":{\"cmd\":\"levelUp\",\"intExpToLevel\":\"0\",\"intLevel\":" + Player.levelCap + "}}}");
+            _ = Proxy.Instance.SendToClient("{\"t\":\"xt\",\"b\":{\"r\":-1,\"o\":{\"cmd\":\"levelUp\",\"intExpToLevel\":\"0\",\"intLevel\":" + Player.levelCap + "}}}");
         }
 
         public static async void SetPacketSpam()
@@ -350,12 +352,16 @@ namespace Grimoire.Botting
 
         public static async Task ApplySettings()
         {
+            // Each call starts a new loop; an older one sees a newer generation and exits, so a quick Stop and Start
+            // (as auto-relogin does) doesn't leave two loops sending everything twice.
+            int generation = Interlocked.Increment(ref _loopGeneration);
             IsRunning = true;
-            while (IsRunning && Player.IsLoggedIn)
+            while (IsRunning && generation == _loopGeneration && Player.IsLoggedIn)
             {
-                if (PacketSpam && Player.IsAlive)
+                bool alive = (PacketSpam || EnemyMagnet) && Player.IsAlive;
+                if (PacketSpam && alive)
                     SetPacketSpam();
-                if (EnemyMagnet && Player.IsAlive)
+                if (EnemyMagnet && alive)
                     SetEnemyMagnet();
                 if (Untarget && Player.targetOnSelf)
                     Player.CancelTargetSelf();

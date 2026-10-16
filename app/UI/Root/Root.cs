@@ -565,7 +565,7 @@ namespace Grimoire.UI
             BotManager.Instance.chkProvoke.Checked = provokeToolStripMenuItem1.Checked;
             if (provokeToolStripMenuItem1.Checked && !OptionsManager.IsRunning)
             {
-                OptionsManager.ApplySettings();
+                OptionsManager.ApplySettings().Forget("applying the client options");
             }
         }
 
@@ -583,7 +583,7 @@ namespace Grimoire.UI
             BotManager.Instance.chkMagnet.Checked = enemyMagnetToolStripMenuItem.Checked;
             if (enemyMagnetToolStripMenuItem.Checked && !OptionsManager.IsRunning)
             {
-                OptionsManager.ApplySettings();
+                OptionsManager.ApplySettings().Forget("applying the client options");
             }
         }
 
@@ -605,7 +605,7 @@ namespace Grimoire.UI
             BotManager.Instance.chkSkipCutscenes.Checked = skipCutscenesToolStripMenuItem.Checked;
             if (skipCutscenesToolStripMenuItem.Checked && !OptionsManager.IsRunning)
             {
-                OptionsManager.ApplySettings();
+                OptionsManager.ApplySettings().Forget("applying the client options");
             }
         }
 
@@ -621,7 +621,7 @@ namespace Grimoire.UI
             BotManager.Instance.chkUntarget.Checked = untargetSelfToolStripMenuItem.Checked;
             if (untargetSelfToolStripMenuItem.Checked && !OptionsManager.IsRunning)
             {
-                OptionsManager.ApplySettings();
+                OptionsManager.ApplySettings().Forget("applying the client options");
             }
         }
 
@@ -630,7 +630,7 @@ namespace Grimoire.UI
             OptionsManager.WalkSpeed = walkSpeedToolStripMenuItem.Checked ? 40 : 8;
             if (walkSpeedToolStripMenuItem.Checked && !OptionsManager.IsRunning)
             {
-                OptionsManager.ApplySettings();
+                OptionsManager.ApplySettings().Forget("applying the client options");
             }
         }
 

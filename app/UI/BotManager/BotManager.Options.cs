@@ -21,7 +21,7 @@ namespace Grimoire.UI
             string gender = Flash.Call<string>("Gender", new string[0]);
             gender = (!gender.Contains("M")) ? "M" : "F";
             string data = $"{{\"t\":\"xt\",\"b\":{{\"r\":-1,\"o\":{{\"cmd\":\"genderSwap\",\"bitSuccess\":1,\"gender\":\"{gender}\",\"intCoins\":0,\"uid\":\"{Flash.Call<int>("UserID", new string[0])}\",\"strHairFileName\":\"\",\"HairID\":\"\",\"strHairName\":\"\"}}}}}}";
-            Proxy.Instance.SendToClient(data);
+            _ = Proxy.Instance.SendToClient(data);
         }
 
         private void btnSoundAdd_Click(object sender, EventArgs e)

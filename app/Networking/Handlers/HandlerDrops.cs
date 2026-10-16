@@ -74,7 +74,7 @@ namespace Grimoire.Networking.Handlers
                         return;
                     }
                     int id = content.DataObject["ItemID"].Value<int>();
-                    World.DropStack.RemoveAll(id);
+                    World.DropStack.RemoveAll(id).Forget("removing an accepted drop");
                     if (BotManager.Instance.ActiveBotEngine.IsRunning)
                     {
                         bool inBank = content.DataObject["bBank"].Value<int>() != 0;

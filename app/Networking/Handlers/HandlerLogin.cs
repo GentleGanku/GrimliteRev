@@ -43,7 +43,7 @@ namespace Grimoire.Networking.Handlers
                     LogForm.Instance.AppendDebug($"[{DateTime.Now:hh:mm:ss}] Logged in to {World.ServerName()} server.\r\n");
                     await BotManager.Instance.ActiveBotEngine.WaitUntil(() => AutoRelogin.GameLabel, () => !_cts.IsCancellationRequested, 10, 1000);
                     Player.Quests.LoadedQuests.Clear();
-                    await BotManager.Instance.ActiveBotEngine.WaitUntil(() => !World.uiLock, () => !_cts.IsCancellationRequested, -1, 500);
+                    await BotManager.Instance.ActiveBotEngine.WaitUntil(() => !World.uiLock, () => !_cts.IsCancellationRequested, 120, 500);
                     Player.Bank.Load();
                     World.SendClientPacket("%xt%server%-1%Type \"/help\" without the quotation marks to bring information about Chat Commands into the chat.%");
                     InstallSettings();

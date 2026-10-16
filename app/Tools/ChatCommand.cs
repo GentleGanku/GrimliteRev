@@ -94,7 +94,7 @@ namespace Grimoire.Tools
                     case "shop":
                         if (!string.IsNullOrEmpty(parameter))
                         {
-                            Shop.Load(int.Parse(parameter));
+                            await Shop.Load(int.Parse(parameter));
                         }
                         break;
                     case "mapitem":
@@ -263,7 +263,7 @@ namespace Grimoire.Tools
                 await BotManager.Instance.ActiveBotEngine.WaitUntil(() => AutoRelogin.LoginLabel, () => !Root.Instance.login_cts.IsCancellationRequested, 10, 1000);
                 AutoRelogin.LoginExecute();
                 await BotManager.Instance.ActiveBotEngine.WaitUntil(() => !AutoRelogin.IsClientLoading("Account"), () => !Root.Instance.login_cts.IsCancellationRequested, 10, 500);
-                AutoRelogin.ForceLogin(server, Root.Instance.login_cts);
+                await AutoRelogin.ForceLogin(server, Root.Instance.login_cts);
             }
             catch (Exception ex)
             {
@@ -384,13 +384,13 @@ namespace Grimoire.Tools
             {
                 if (!string.IsNullOrEmpty(parameter))
                 {
-                    World.DropStack.GetDrop(parameter);
+                    await World.DropStack.GetDrop(parameter);
                 }
                 else
                 {
                     foreach (InventoryItem drop in World.DropStack)
                     {
-                        World.DropStack.GetDrop(parameter);
+                        await World.DropStack.GetDrop(parameter);
                         await Task.Delay(10);
                     }
                 }

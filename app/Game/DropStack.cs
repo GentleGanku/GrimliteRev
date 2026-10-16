@@ -47,7 +47,10 @@ namespace Grimoire.Game
         {
             get
             {
-                return _drops.Count;
+                lock (_drops)
+                {
+                    return _drops.Count;
+                }
             }
         }
 
@@ -59,11 +62,10 @@ namespace Grimoire.Game
         {
             get
             {
-                if (index >= _drops.Count)
+                lock (_drops)
                 {
-                    return null;
+                    return index >= 0 && index < _drops.Count ? _drops[index] : null;
                 }
-                return _drops[index];
             }
         }
 
@@ -73,7 +75,11 @@ namespace Grimoire.Game
 
         public IEnumerator<InventoryItem> GetEnumerator()
         {
-            return _drops.GetEnumerator();
+            // Packet handlers add drops on the UI thread while the bot reads them on a worker thread; enumerate a copy.
+            lock (_drops)
+            {
+                return _drops.ToList().GetEnumerator();
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -83,7 +89,11 @@ namespace Grimoire.Game
 
         public async Task<bool> GetDrop(string itemName)
         {
-            InventoryItem inventoryItem = _drops.FirstOrDefault((InventoryItem d) => d.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
+            InventoryItem inventoryItem;
+            lock (_drops)
+            {
+                inventoryItem = _drops.FirstOrDefault((InventoryItem d) => d.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
+            }
             bool success = inventoryItem != null;
             if (success)
             {
@@ -94,19 +104,21 @@ namespace Grimoire.Game
 
         public async Task<bool> RemoveAll(int itemId)
         {
-            if (Contains(itemId))
+            lock (_drops)
             {
-                _drops.RemoveAll((InventoryItem d) => d.Id == itemId);
-                return true;
+                return _drops.RemoveAll((InventoryItem d) => d.Id == itemId) > 0;
             }
-            return false;
         }
 
         public async Task<bool> GetDrop(int itemId)
         {
             if (Contains(itemId) && Player.CanAcceptDrop(itemId))
             {
-                InventoryItem drop = _drops.FirstOrDefault((InventoryItem d) => d.Id == itemId);
+                InventoryItem drop;
+                lock (_drops)
+                {
+                    drop = _drops.FirstOrDefault((InventoryItem d) => d.Id == itemId);
+                }
                 InProcess = true;
                 Player.AcceptDrop(itemId);
                 await BotManager.Instance.ActiveBotEngine.WaitUntil(() => !World.DropStack.Contains(drop.Name), null, 6, 500);
@@ -118,12 +130,20 @@ namespace Grimoire.Game
 
         public bool Contains(int itemId)
         {
-            return _drops.FirstOrDefault((InventoryItem d) => d.Id == itemId) != null;
+            lock (_drops)
+            {
+                return _drops.Any((InventoryItem d) => d.Id == itemId);
+            }
         }
 
         public bool Contains(string itemName)
         {
-            return ((_drops.FirstOrDefault((InventoryItem d) => d.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase)) != null) || (Bot.Instance.HasDropInInventory(itemName)));
+            bool shown;
+            lock (_drops)
+            {
+                shown = _drops.Any((InventoryItem d) => d.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
+            }
+            return shown || Bot.Instance.HasDropInInventory(itemName);
         }
 
         public async Task RejectDrops()
@@ -146,9 +166,12 @@ namespace Grimoire.Game
 
         private void OnItemDropped(InventoryItem item)
         {
-            if (_drops.All((InventoryItem d) => d.Id != item.Id))
+            lock (_drops)
             {
-                _drops.Add(item);
+                if (_drops.All((InventoryItem d) => d.Id != item.Id))
+                {
+                    _drops.Add(item);
+                }
             }
         }
 
