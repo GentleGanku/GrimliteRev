@@ -31,7 +31,7 @@ namespace Grimoire.Botting
         public int questCompletionFailure = 0;
         public Stopwatch buyFailureCounter = new Stopwatch();
         public int itemBuyFailure = 0;
-        private IBotCommand cmd;
+        private IBotCommand _currentCommand;
         private int _index;
         private Configuration _config;
         private bool _isRunning;
@@ -379,11 +379,11 @@ namespace Grimoire.Botting
                         await RestMana();
                     }
                     IndexChanged?.Invoke(Index);
-                    cmd = Configuration.Commands[Index];
-                    if (cmd.ShouldLog())
-                        LogForm.Instance.AppendBot($"[{DateTime.Now:hh:mm:ss}] (Index {Index}) {cmd.LogSpecificCmd()}{cmd.ToString()}.\r\n");
-                    await cmd.Execute(this);
-                    if (Configuration.BotDelay > 0 && (!Configuration.SkipDelayIndexIf || (Configuration.SkipDelayIndexIf && cmd.RequiresDelay())))
+                    _currentCommand = Configuration.Commands[Index];
+                    if (_currentCommand.ShouldLog())
+                        LogForm.Instance.AppendBot($"[{DateTime.Now:hh:mm:ss}] (Index {Index}) {_currentCommand.LogSpecificCmd()}{_currentCommand.ToString()}.\r\n");
+                    await _currentCommand.Execute(this);
+                    if (Configuration.BotDelay > 0 && (!Configuration.SkipDelayIndexIf || (Configuration.SkipDelayIndexIf && _currentCommand.RequiresDelay())))
                     {
                         await Task.Delay(_config.BotDelay);
                     }

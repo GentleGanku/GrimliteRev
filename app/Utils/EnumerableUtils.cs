@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace Grimoire.Utils
 {
-    public delegate void Consumer<T>(T arg);
 
     public static class EnumerableUtils
     {

@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Grimoire.Botting.Commands.Misc
 {
@@ -14,87 +13,6 @@ namespace Grimoire.Botting.Commands.Misc
         public override string ToString()
         {
             return "";
-        }
-
-        #endregion
-    }
-
-    public class CmdBlank2 : IBotCommand
-    {
-        #region Properties
-
-        public string Text
-        {
-            get;
-            set;
-        }
-
-        #endregion
-
-        #region Methods
-
-        public async Task Execute(IBotEngine instance)
-        {
-        }
-
-        public override string ToString()
-        {
-            return $"{Text}";
-        }
-
-        #endregion
-    }
-
-    public class CmdBlank3 : IBotCommand
-    {
-        #region Properties
-
-        public string Text
-        {
-            get;
-            set;
-        }
-
-        public int Alpha
-        {
-            get;
-            set;
-        }
-
-        public int R
-        {
-            get;
-            set;
-        }
-
-        public int G
-        {
-            get;
-            set;
-        }
-
-        public int B
-        {
-            get;
-            set;
-        }
-
-        #endregion
-
-        #region Methods
-
-        public async Task Execute(IBotEngine instance)
-        {
-        }
-
-        public Color Argb()
-        {
-            return Color.FromArgb(Alpha, R, G, B);
-        }
-
-        public override string ToString()
-        {
-            return $"{Text}";
         }
 
         #endregion

@@ -111,6 +111,7 @@
     <Compile Include="Botting\Commands\Combat\CmdKillFor.cs" />
     <Compile Include="Botting\Commands\Combat\CmdRest.cs" />
     <Compile Include="Botting\Commands\Combat\CmdUseSkill.cs" />
+    <Compile Include="Botting\Commands\Combat\CmdUseSkill2.cs" />
     <Compile Include="Botting\Commands\Combat\CmdSkillSet.cs" />
     <Compile Include="Botting\Commands\Item\CmdBuyFastByID.cs" />
     <Compile Include="Botting\Commands\Item\CmdBuyByID.cs" />
@@ -119,15 +120,19 @@
     <Compile Include="Botting\Commands\Item\CmdBankSwap.cs" />
     <Compile Include="Botting\Commands\Item\CmdBankTransfer.cs" />
     <Compile Include="Botting\Commands\Item\CmdBuy.cs" />
+    <Compile Include="Botting\Commands\Item\CmdBuy2.cs" />
     <Compile Include="Botting\Commands\Item\CmdBuyBack.cs" />
     <Compile Include="Botting\Commands\Item\CmdBuyFast.cs" />
     <Compile Include="Botting\Commands\Item\CmdEquip.cs" />
     <Compile Include="Botting\Commands\Item\CmdEquipSet.cs" />
     <Compile Include="Botting\Commands\Item\CmdGetDrop.cs" />
     <Compile Include="Botting\Commands\Item\CmdLoad.cs" />
+    <Compile Include="Botting\Commands\Item\CmdLoad2.cs" />
     <Compile Include="Botting\Commands\Item\CmdMapItem.cs" />
+    <Compile Include="Botting\Commands\Item\CmdMapItem2.cs" />
     <Compile Include="Botting\Commands\Item\CmdSell.cs" />
     <Compile Include="Botting\Commands\Map\CmdJoin.cs" />
+    <Compile Include="Botting\Commands\Map\CmdJoin2.cs" />
     <Compile Include="Botting\Commands\Map\CmdMoveToCell.cs" />
     <Compile Include="Botting\Commands\Map\CmdSetSpawn.cs" />
     <Compile Include="Botting\Commands\Map\CmdWalk.cs" />
@@ -236,7 +241,10 @@
     <Compile Include="Botting\Commands\Misc\CmdClearTemp.cs" />
     <Compile Include="Botting\Commands\Misc\CmdBeep.cs" />
     <Compile Include="Botting\Commands\Misc\CmdBlank.cs" />
+    <Compile Include="Botting\Commands\Misc\CmdBlank2.cs" />
+    <Compile Include="Botting\Commands\Misc\CmdBlank3.cs" />
     <Compile Include="Botting\Commands\Misc\CmdBotDelay.cs" />
+    <Compile Include="Botting\Commands\Misc\CmdBotDelay2.cs" />
     <Compile Include="Botting\Commands\Misc\CmdChange.cs" />
     <Compile Include="Botting\Commands\Misc\CmdClientMessage.cs" />
     <Compile Include="Botting\Commands\Misc\CmdDelay.cs" />
@@ -250,13 +258,16 @@
     <Compile Include="Botting\Commands\Misc\CmdLog.cs" />
     <Compile Include="Botting\Commands\Misc\CmdLogout.cs" />
     <Compile Include="Botting\Commands\Misc\CmdPacket.cs" />
+    <Compile Include="Botting\Commands\Misc\CmdPacket2.cs" />
     <Compile Include="Botting\Commands\Misc\CmdRestart.cs" />
     <Compile Include="Botting\Commands\Misc\CmdStop.cs" />
     <Compile Include="Botting\Commands\Misc\CmdToggleProvoke.cs" />
     <Compile Include="Botting\Commands\Misc\RegularExpression.cs" />
     <Compile Include="Botting\Commands\Quest\CmdQuestlist.cs" />
     <Compile Include="Botting\Commands\Quest\CmdAcceptQuest.cs" />
+    <Compile Include="Botting\Commands\Quest\CmdAcceptQuest2.cs" />
     <Compile Include="Botting\Commands\Quest\CmdCompleteQuest.cs" />
+    <Compile Include="Botting\Commands\Quest\CmdCompleteQuest2.cs" />
     <Compile Include="Botting\Commands\ItemType.cs" />
     <Compile Include="Botting\Bot.cs" />
     <Compile Include="Botting\BotUtilities.cs" />
@@ -266,6 +277,7 @@
     <Compile Include="Botting\CosmeticEquipment.cs" />
     <Compile Include="Botting\EquipType.cs" />
     <Compile Include="Botting\Extensions.cs" />
+    <Compile Include="Botting\FontInfo.cs" />
     <Compile Include="Botting\IBotCommand.cs" />
     <Compile Include="Botting\IBotEngine.cs" />
     <Compile Include="Botting\OptionsManager.cs" />
@@ -273,6 +285,8 @@
     <Compile Include="Game\Data\Bank.cs" />
     <Compile Include="Game\Data\CompletedQuest.cs" />
     <Compile Include="Game\Data\Map.cs" />
+    <Compile Include="Game\Data\Cell.cs" />
+    <Compile Include="Game\Data\MapItem.cs" />
     <Compile Include="Game\Data\Faction.cs" />
     <Compile Include="Game\Data\House.cs" />
     <Compile Include="Game\Data\Inventory.cs" />
@@ -284,6 +298,8 @@
     <Compile Include="Game\Data\Avatar.cs" />
     <Compile Include="Game\Data\Quest.cs" />
     <Compile Include="Game\Data\QuestInfo.cs" />
+    <Compile Include="Game\Data\itemsR.cs" />
+    <Compile Include="Game\Data\itemsS.cs" />
     <Compile Include="Game\Data\QuestReward.cs" />
     <Compile Include="Game\Data\Quests.cs" />
     <Compile Include="Game\Data\Aura.cs" />
@@ -535,10 +551,13 @@
     </Compile>
     <Compile Include="Utils\ControlUtils.cs" />
     <Compile Include="Utils\EnumerableUtils.cs" />
+    <Compile Include="Utils\Consumer.cs" />
     <Compile Include="Utils\NetworkUtils.cs" />
     <Compile Include="Utils\ReflectUtils.cs" />
     <Compile Include="Utils\TimeLimiter.cs" />
     <Compile Include="Utils\TypedValueProvider.cs" />
+    <Compile Include="Utils\DefaultTypedValueProvider.cs" />
+    <Compile Include="Utils\EmptyListProvider.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
