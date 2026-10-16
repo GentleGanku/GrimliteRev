@@ -343,29 +343,29 @@
     <Compile Include="Networking\XtMessage.cs" />
     <Compile Include="Tools\ChatCommand.cs" />
     <Compile Include="Tools\DocConvert.cs" />
-    <Compile Include="UI\CommandNode.cs">
+    <Compile Include="UI\CommandNode\CommandNode.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\ResizableUserControl.cs" />
-    <Compile Include="UI\CommandNode.Designer.cs">
+    <Compile Include="UI\Controls\ResizableUserControl.cs" />
+    <Compile Include="UI\CommandNode\CommandNode.Designer.cs">
       <DependentUpon>CommandNode.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\CosmeticForm.cs">
+    <Compile Include="UI\CosmeticForm\CosmeticForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\CosmeticForm.Designer.cs">
+    <Compile Include="UI\CosmeticForm\CosmeticForm.Designer.cs">
       <DependentUpon>CosmeticForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\DPSForm.cs">
+    <Compile Include="UI\DPSForm\DPSForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\DPSForm.Designer.cs">
+    <Compile Include="UI\DPSForm\DPSForm.Designer.cs">
       <DependentUpon>DPSForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\NodeEditor.cs">
+    <Compile Include="UI\NodeEditor\NodeEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\NodeEditor.Designer.cs">
+    <Compile Include="UI\NodeEditor\NodeEditor.Designer.cs">
       <DependentUpon>NodeEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils\InputBox.cs" />
@@ -397,166 +397,166 @@
     <Compile Include="Tools\Spammer.cs" />
     <Compile Include="Tools\StringBoolConverter.cs" />
     <Compile Include="Tools\TrimConverter.cs" />
-    <Compile Include="UI\AboutForm.cs">
+    <Compile Include="UI\AboutForm\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\AboutForm.Designer.cs">
+    <Compile Include="UI\AboutForm\AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\BankForm.cs">
+    <Compile Include="UI\BankForm\BankForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\BankForm.Designer.cs">
+    <Compile Include="UI\BankForm\BankForm.Designer.cs">
       <DependentUpon>BankForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\BotManager.cs">
+    <Compile Include="UI\BotManager\BotManager.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\BotManager.Designer.cs">
+    <Compile Include="UI\BotManager\BotManager.Designer.cs">
       <DependentUpon>BotManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\BotManager.Info.cs">
-      <DependentUpon>BotManager.cs</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="UI\BotManager.Client.cs">
+    <Compile Include="UI\BotManager\BotManager.Info.cs">
       <DependentUpon>BotManager.cs</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\BotManager.Options.cs">
+    <Compile Include="UI\BotManager\BotManager.Client.cs">
       <DependentUpon>BotManager.cs</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\BotManager.Misc.cs">
+    <Compile Include="UI\BotManager\BotManager.Options.cs">
       <DependentUpon>BotManager.cs</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\BotManager.Quest.cs">
+    <Compile Include="UI\BotManager\BotManager.Misc.cs">
       <DependentUpon>BotManager.cs</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\BotManager.Map.cs">
+    <Compile Include="UI\BotManager\BotManager.Quest.cs">
       <DependentUpon>BotManager.cs</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\BotManager.Item.cs">
+    <Compile Include="UI\BotManager\BotManager.Map.cs">
       <DependentUpon>BotManager.cs</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\BotManager.Combat.cs">
+    <Compile Include="UI\BotManager\BotManager.Item.cs">
       <DependentUpon>BotManager.cs</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\BotManager.Bots.cs">
+    <Compile Include="UI\BotManager\BotManager.Combat.cs">
       <DependentUpon>BotManager.cs</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\BotManager.CommandListDrawing.cs">
+    <Compile Include="UI\BotManager\BotManager.Bots.cs">
       <DependentUpon>BotManager.cs</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\BotManager.CommandList.cs">
+    <Compile Include="UI\BotManager\BotManager.CommandListDrawing.cs">
       <DependentUpon>BotManager.cs</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\CommandColorForm.cs">
+    <Compile Include="UI\BotManager\BotManager.CommandList.cs">
+      <DependentUpon>BotManager.cs</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\CommandColorForm\CommandColorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\CommandColorForm.Designer.cs">
+    <Compile Include="UI\CommandColorForm\CommandColorForm.Designer.cs">
       <DependentUpon>CommandColorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\EyeDropper.cs">
+    <Compile Include="UI\EyeDropper\EyeDropper.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\EyeDropper.Designer.cs">
+    <Compile Include="UI\EyeDropper\EyeDropper.Designer.cs">
       <DependentUpon>EyeDropper.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Hotkeys.cs">
+    <Compile Include="UI\Hotkeys\Hotkeys.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Hotkeys.Designer.cs">
+    <Compile Include="UI\Hotkeys\Hotkeys.Designer.cs">
       <DependentUpon>Hotkeys.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Loaders.cs">
+    <Compile Include="UI\Loaders\Loaders.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Loaders.Designer.cs">
+    <Compile Include="UI\Loaders\Loaders.Designer.cs">
       <DependentUpon>Loaders.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\LogForm.cs">
+    <Compile Include="UI\LogForm\LogForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\LogForm.Designer.cs">
+    <Compile Include="UI\LogForm\LogForm.Designer.cs">
       <DependentUpon>LogForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\NewBadge.cs" />
-    <Compile Include="UI\Notepad.cs">
+    <Compile Include="UI\Controls\NewBadge.cs" />
+    <Compile Include="UI\Notepad\Notepad.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Notepad.Designer.cs">
+    <Compile Include="UI\Notepad\Notepad.Designer.cs">
       <DependentUpon>Notepad.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\PacketLogger.cs">
+    <Compile Include="UI\PacketLogger\PacketLogger.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\PacketLogger.Designer.cs">
+    <Compile Include="UI\PacketLogger\PacketLogger.Designer.cs">
       <DependentUpon>PacketLogger.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\PacketSpammer.cs">
+    <Compile Include="UI\PacketSpammer\PacketSpammer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\PacketSpammer.Designer.cs">
+    <Compile Include="UI\PacketSpammer\PacketSpammer.Designer.cs">
       <DependentUpon>PacketSpammer.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\PacketTamperer.cs">
+    <Compile Include="UI\PacketTamperer\PacketTamperer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\PacketTamperer.Designer.cs">
+    <Compile Include="UI\PacketTamperer\PacketTamperer.Designer.cs">
       <DependentUpon>PacketTamperer.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\PluginManager.cs">
+    <Compile Include="UI\PluginManager\PluginManager.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\PluginManager.Designer.cs">
+    <Compile Include="UI\PluginManager\PluginManager.Designer.cs">
       <DependentUpon>PluginManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\UserFriendlyCommandEditor.cs">
+    <Compile Include="UI\UserFriendlyCommandEditor\UserFriendlyCommandEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\UserFriendlyCommandEditor.Designer.cs">
+    <Compile Include="UI\UserFriendlyCommandEditor\UserFriendlyCommandEditor.Designer.cs">
       <DependentUpon>UserFriendlyCommandEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\RawCommandEditor.cs">
+    <Compile Include="UI\RawCommandEditor\RawCommandEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\RawCommandEditor.Designer.cs">
+    <Compile Include="UI\RawCommandEditor\RawCommandEditor.Designer.cs">
       <DependentUpon>RawCommandEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Root.cs">
+    <Compile Include="UI\Root\Root.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Root.Designer.cs">
+    <Compile Include="UI\Root\Root.Designer.cs">
       <DependentUpon>Root.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Set.cs">
+    <Compile Include="UI\Set\Set.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Item.cs" />
-    <Compile Include="UI\SetItem.cs" />
-    <Compile Include="UI\ISetInterface.cs" />
-    <Compile Include="UI\Set.Designer.cs">
+    <Compile Include="UI\Models\Item.cs" />
+    <Compile Include="UI\Models\SetItem.cs" />
+    <Compile Include="UI\Models\ISetInterface.cs" />
+    <Compile Include="UI\Set\Set.Designer.cs">
       <DependentUpon>Set.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\ShortcutsForm.cs">
+    <Compile Include="UI\ShortcutsForm\ShortcutsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\ShortcutsForm.Designer.cs">
+    <Compile Include="UI\ShortcutsForm\ShortcutsForm.Designer.cs">
       <DependentUpon>ShortcutsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Travel.cs">
+    <Compile Include="UI\Travel\Travel.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Travel.Designer.cs">
+    <Compile Include="UI\Travel\Travel.Designer.cs">
       <DependentUpon>Travel.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils\ControlUtils.cs" />
@@ -577,13 +577,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="UI\CommandNode.resx">
+    <EmbeddedResource Include="UI\CommandNode\CommandNode.resx">
       <DependentUpon>CommandNode.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\DPSForm.resx">
+    <EmbeddedResource Include="UI\DPSForm\DPSForm.resx">
       <DependentUpon>DPSForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\NodeEditor.resx">
+    <EmbeddedResource Include="UI\NodeEditor\NodeEditor.resx">
       <DependentUpon>NodeEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -594,42 +594,62 @@
       <LogicalName>Properties.Resources.resources</LogicalName>
       <CustomToolNamespace>Properties</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\AboutForm.resx">
+    <EmbeddedResource Include="UI\AboutForm\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\BankForm.resx">
+    <EmbeddedResource Include="UI\BankForm\BankForm.resx">
       <DependentUpon>BankForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\BotManager.resx" />
-    <EmbeddedResource Include="UI\CommandColorForm.resx">
+    <EmbeddedResource Include="UI\BotManager\BotManager.resx">
+      <DependentUpon>BotManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\CommandColorForm\CommandColorForm.resx">
       <DependentUpon>CommandColorForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\CosmeticForm.resx">
+    <EmbeddedResource Include="UI\CosmeticForm\CosmeticForm.resx">
       <DependentUpon>CosmeticForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\EyeDropper.resx">
+    <EmbeddedResource Include="UI\EyeDropper\EyeDropper.resx">
       <DependentUpon>EyeDropper.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Hotkeys.resx" />
-    <EmbeddedResource Include="UI\Loaders.resx">
+    <EmbeddedResource Include="UI\Hotkeys\Hotkeys.resx">
+      <DependentUpon>Hotkeys.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Loaders\Loaders.resx">
       <DependentUpon>Loaders.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\LogForm.resx" />
-    <EmbeddedResource Include="UI\Notepad.resx">
+    <EmbeddedResource Include="UI\LogForm\LogForm.resx">
+      <DependentUpon>LogForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Notepad\Notepad.resx">
       <DependentUpon>Notepad.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\PacketLogger.resx" />
-    <EmbeddedResource Include="UI\PacketSpammer.resx" />
-    <EmbeddedResource Include="UI\PacketTamperer.resx" />
-    <EmbeddedResource Include="UI\PluginManager.resx" />
-    <EmbeddedResource Include="UI\RawCommandEditor.resx" />
-    <EmbeddedResource Include="UI\Root.resx" />
-    <EmbeddedResource Include="UI\Set.resx">
+    <EmbeddedResource Include="UI\PacketLogger\PacketLogger.resx">
+      <DependentUpon>PacketLogger.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\PacketSpammer\PacketSpammer.resx">
+      <DependentUpon>PacketSpammer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\PacketTamperer\PacketTamperer.resx">
+      <DependentUpon>PacketTamperer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\PluginManager\PluginManager.resx">
+      <DependentUpon>PluginManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\RawCommandEditor\RawCommandEditor.resx">
+      <DependentUpon>RawCommandEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Root\Root.resx">
+      <DependentUpon>Root.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Set\Set.resx">
       <DependentUpon>Set.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Travel.resx" />
-    <EmbeddedResource Include="UI\UserFriendlyCommandEditor.resx">
+    <EmbeddedResource Include="UI\Travel\Travel.resx">
+      <DependentUpon>Travel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserFriendlyCommandEditor\UserFriendlyCommandEditor.resx">
       <DependentUpon>UserFriendlyCommandEditor.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
