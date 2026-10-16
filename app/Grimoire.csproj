@@ -272,6 +272,7 @@
     <Compile Include="Botting\Bot.cs" />
     <Compile Include="Botting\BotUtilities.cs" />
     <Compile Include="Botting\BotClientConfig.cs" />
+    <Compile Include="Botting\BotFileBinder.cs" />
     <Compile Include="Botting\Config.cs" />
     <Compile Include="Botting\Configuration.cs" />
     <Compile Include="Botting\CosmeticEquipment.cs" />
@@ -564,6 +565,7 @@
     <Compile Include="Utils\Consumer.cs" />
     <Compile Include="Utils\NetworkUtils.cs" />
     <Compile Include="Utils\ReflectUtils.cs" />
+    <Compile Include="Utils\SafeLinks.cs" />
     <Compile Include="Utils\TimeLimiter.cs" />
     <Compile Include="Utils\TypedValueProvider.cs" />
     <Compile Include="Utils\DefaultTypedValueProvider.cs" />

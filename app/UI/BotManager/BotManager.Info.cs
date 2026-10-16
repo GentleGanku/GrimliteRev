@@ -1,7 +1,7 @@
 using DarkUI.Forms;
 using Grimoire.Tools;
+using Grimoire.Utils;
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,7 +41,7 @@ namespace Grimoire.UI
 
         private void rtbInfo_LinkClicked(object sender, LinkClickedEventArgs e)
         {
-            Process.Start(e.LinkText);
+            SafeLinks.Open(e.LinkText);
         }
 
         private void lblGuideDescription_Click(object sender, EventArgs e)

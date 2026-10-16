@@ -1,4 +1,5 @@
 ﻿using DarkUI.Forms;
+using Grimoire.Botting;
 using Grimoire.Game;
 using Grimoire.Game.Data;
 using Newtonsoft.Json;
@@ -17,7 +18,8 @@ namespace Grimoire.UI
         private readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
         {
             DefaultValueHandling = DefaultValueHandling.Include,
-            TypeNameHandling = TypeNameHandling.All
+            TypeNameHandling = TypeNameHandling.All,
+            SerializationBinder = BotFileBinder.Instance
         };
 
         private string path = Application.StartupPath + "\\Sets";

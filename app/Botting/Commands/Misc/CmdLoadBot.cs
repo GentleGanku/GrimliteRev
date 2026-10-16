@@ -50,7 +50,8 @@ namespace Grimoire.Botting.Commands.Misc
                     JsonSerializerSettings serializerSettings = new JsonSerializerSettings
                     {
                         DefaultValueHandling = DefaultValueHandling.Include,
-                        TypeNameHandling = TypeNameHandling.All
+                        TypeNameHandling = TypeNameHandling.All,
+                        SerializationBinder = BotFileBinder.Instance
                     };
                     Configuration newConfiguration = JsonConvert.DeserializeObject<Configuration>(value, serializerSettings);
                     int i = instance.CurrentConfiguration;

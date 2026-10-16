@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Diagnostics;
 
 namespace Grimoire.Networking
 {
@@ -216,7 +215,7 @@ namespace Grimoire.Networking
                     ChatCommand.ExecuteCommand(text2);
                     break;
                 case "openWebsite":
-                    Process.Start(text2);
+                    SafeLinks.Open(text2);
                     break;
             }
         }

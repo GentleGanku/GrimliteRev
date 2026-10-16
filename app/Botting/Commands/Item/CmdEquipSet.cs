@@ -16,7 +16,8 @@ namespace Grimoire.Botting.Commands.Item
         private readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
         {
             DefaultValueHandling = DefaultValueHandling.Include,
-            TypeNameHandling = TypeNameHandling.All
+            TypeNameHandling = TypeNameHandling.All,
+            SerializationBinder = BotFileBinder.Instance
         };
 
         #endregion

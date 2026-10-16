@@ -1,6 +1,7 @@
 using Grimoire.Game;
 using Grimoire.Game.Data;
 using Grimoire.UI;
+using Grimoire.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -653,7 +654,7 @@ namespace Grimoire.Tools
 
         private static void Search(string Item)
         {
-            Process.Start(Item);
+            SafeLinks.Open(Item);
         }
 
         private static void AddDrop(object s, EventArgs e, InventoryItem Item)

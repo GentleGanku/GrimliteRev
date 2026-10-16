@@ -33,14 +33,16 @@ namespace Grimoire.UI
         {
             DefaultValueHandling = DefaultValueHandling.Ignore,
             NullValueHandling = NullValueHandling.Ignore,
-            TypeNameHandling = TypeNameHandling.All
+            TypeNameHandling = TypeNameHandling.All,
+            SerializationBinder = BotFileBinder.Instance
         };
 
         private readonly JsonSerializerSettings _saveSerializerSettings = new JsonSerializerSettings
         {
             DefaultValueHandling = DefaultValueHandling.Ignore,
             NullValueHandling = NullValueHandling.Ignore,
-            TypeNameHandling = TypeNameHandling.All
+            TypeNameHandling = TypeNameHandling.All,
+            SerializationBinder = BotFileBinder.Instance
         };
 
         private IBotEngine _activeBotEngine = new Bot();

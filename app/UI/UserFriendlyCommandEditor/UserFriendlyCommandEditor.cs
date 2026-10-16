@@ -1,5 +1,6 @@
 using DarkUI.Controls;
 using DarkUI.Forms;
+using Grimoire.Botting;
 using Grimoire.Botting.Commands.Misc.Statements;
 using Grimoire.Botting.Commands.Quest;
 using Grimoire.Game.Data;
@@ -23,14 +24,16 @@ namespace Grimoire.UI
         {
             DefaultValueHandling = DefaultValueHandling.Ignore,
             NullValueHandling = NullValueHandling.Include,
-            TypeNameHandling = TypeNameHandling.All
+            TypeNameHandling = TypeNameHandling.All,
+            SerializationBinder = BotFileBinder.Instance
         };
 
         private static readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
         {
             DefaultValueHandling = DefaultValueHandling.Include,
             NullValueHandling = NullValueHandling.Include,
-            TypeNameHandling = TypeNameHandling.All
+            TypeNameHandling = TypeNameHandling.All,
+            SerializationBinder = BotFileBinder.Instance
         };
 
         private DarkListBox listContainer1;
