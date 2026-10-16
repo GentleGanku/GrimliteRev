@@ -521,6 +521,7 @@
     <None Include="packages.config" />
     <None Include="Defaults\BotClientConfig.cfg" />
     <None Include="Defaults\config.cfg" />
+    <None Include="Defaults\*.dll" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -538,7 +539,10 @@
     <None Include="Resources\big.Ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- Output layout: Grimoire.exe, its config, the SWF and the .cfg files (copied from Defaults only when missing, so user settings survive rebuilds) at the top; every referenced DLL in Libs\ (found through <probing> in app.config). -->
+  <!-- Output layout: Grimoire.exe, its config, the SWF and the .cfg files (copied from Defaults only when missing, so user settings survive rebuilds) at the top; every referenced DLL in Libs\ (found through <probing> in app.config); the bundled plugins (Defaults\*.dll) in Plugins\. -->
+  <ItemGroup>
+    <DefaultPlugin Include="Defaults\*.dll" />
+  </ItemGroup>
   <Target Name="PlaceReferencesInLibs" AfterTargets="ResolveAssemblyReferences">
     <ItemGroup>
       <ReferenceCopyLocalPaths>
@@ -550,8 +554,9 @@
     <MakeDir Directories="$(OutDir)Bots;$(OutDir)Plugins" />
     <Copy SourceFiles="Defaults\config.cfg" DestinationFolder="$(OutDir)" Condition="!Exists('$(OutDir)config.cfg')" />
     <Copy SourceFiles="Defaults\BotClientConfig.cfg" DestinationFolder="$(OutDir)" Condition="!Exists('$(OutDir)BotClientConfig.cfg')" />
+    <Copy SourceFiles="@(DefaultPlugin)" DestinationFolder="$(OutDir)Plugins" SkipUnchangedFiles="true" />
   </Target>
-  <!-- Release builds produce bin\Packages\Grimlite.Rev-v<version>-<platform>.zip. It is staged from an explicit file list, with the .cfg presets from Defaults\, so settings, bots and plugins from local testing never ship. -->
+  <!-- Release builds produce bin\Packages\Grimlite.Rev-v<version>-<platform>.zip. It is staged from an explicit file list, with the .cfg presets and bundled plugins from Defaults\, so settings, bots and plugins from local testing never ship. -->
   <Target Name="PackageRelease" AfterTargets="CreateRuntimeLayout" Condition="'$(Configuration)' == 'Release'">
     <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
       <Output TaskParameter="Assemblies" ItemName="_GrimoireIdentity" />
@@ -571,6 +576,7 @@
     <RemoveDir Directories="$(_PackageStage)" />
     <Copy SourceFiles="@(_PackageFiles)" DestinationFolder="$(_PackageRoot)" />
     <Copy SourceFiles="@(_PackageLibs)" DestinationFolder="$(_PackageRoot)Libs" />
+    <Copy SourceFiles="@(DefaultPlugin)" DestinationFolder="$(_PackageRoot)Plugins" />
     <MakeDir Directories="$(_PackageRoot)Bots;$(_PackageRoot)Plugins;$(_PackageDir)" />
     <ZipDirectory SourceDirectory="$(_PackageStage)" DestinationFile="$(_PackageFile)" Overwrite="true" />
     <Message Importance="high" Text="Grimoire -> $(_PackageFile)" />
