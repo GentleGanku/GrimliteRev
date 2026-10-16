@@ -45,7 +45,8 @@ namespace Grimoire.UI
             SerializationBinder = BotFileBinder.Instance
         };
 
-        private IBotEngine _activeBotEngine = new Bot();
+        // The same object as Bot.Instance, so settings and counters written through either one reach the running bot.
+        private IBotEngine _activeBotEngine = Bot.Instance;
         private List<StatementCommand> _statementCommands;
         private Dictionary<string, string> _defaultControlText;
         private Panel[] _panels;

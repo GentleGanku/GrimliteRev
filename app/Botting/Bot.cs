@@ -140,7 +140,7 @@ namespace Grimoire.Botting
             BotData.BotCell = null;
             BotData.BotPad = null;
             BotData.BotSkill = null;
-            Flash.Call("advancedOpt", OptionsManager.Untarget ? true : false);
+            Flash.Call("advancedOpt", OptionsManager.Untarget);
             OnExecute(config);
             Index = 0;
             LogForm.Instance.AppendDebug($"[{DateTime.Now:hh:mm:ss}] The bot has been started.\r\n");
@@ -149,7 +149,7 @@ namespace Grimoire.Botting
         public void Stop()
         {
             LogForm.Instance.AppendBot($"[{DateTime.Now:hh:mm:ss}] Stopping the bot.\r\n");
-            Flash.Call("advancedOpt", OptionsManager.Untarget ? true : false);
+            Flash.Call("advancedOpt", OptionsManager.Untarget);
             Flash.Call("dropUIOpt", true);
             OnCancel();
             IsRunning = false;
@@ -338,7 +338,7 @@ namespace Grimoire.Botting
                     if (!Player.Inventory.ContainsItem(item, "*") && Player.Bank.ContainsItem(item))
                     {
                         Player.Bank.TransferFromBank(item);
-                        Task.Delay(70);
+                        await Task.Delay(70);
                         LogForm.Instance.AppendBot($"[{DateTime.Now:hh:mm:ss}] Items List - Item transferred to Inventory: {item}.\r\n");
                     }
                     else if (Player.Inventory.ContainsItem(item, "*"))
@@ -348,7 +348,7 @@ namespace Grimoire.Botting
                 }
             }
             await this.LoadBotQuests();
-            CheckQuests();
+            CheckQuests(_ctsBot.Token);
             World.DropStack.RejectDrops();
             OptionsManager.Start();
             Task.Factory.StartNew(Activate, _ctsBot.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
@@ -436,11 +436,11 @@ namespace Grimoire.Botting
                         await this.WaitUntil(() => Player.IsAlive, () => IsRunning && Player.IsLoggedIn, -1);
                         await Task.Delay(1000);
                         BotUtilities.ShouldUseSkill = true;
-                        Index = (!Configuration.RestartUponDeath) ? (Index - 1) : 0;
+                        Index = (!Configuration.RestartUponDeath) ? Math.Max(0, Index - 1) : 0;
                     }
                     if (Configuration.Boosts.Count > 0)
                     {
-                        CheckBoosts();
+                        await CheckBoosts();
                     }
                     if (Configuration.RestIfHp)
                     {
@@ -497,7 +497,7 @@ namespace Grimoire.Botting
             }
         }
 
-        private async void CheckBoosts()
+        private async Task CheckBoosts()
         {
             try
             {
@@ -518,23 +518,30 @@ namespace Grimoire.Botting
             }
         }
 
-        private async Task CheckQuests() 
+        // Runs next to the command loop. The token belongs to this run, so a quick Stop and Start can't leave two loops.
+        private async Task CheckQuests(CancellationToken token)
         {
-            List<Quest> quests = new List<Quest>();
-            while (IsRunning)
+            try
             {
-                await Task.Delay(250);
-                quests = Configuration.Quests?.Where((Quest q) => q.CanComplete)?.ToList();
-                if (quests.Count == 0)
+                while (IsRunning && !token.IsCancellationRequested)
                 {
-                    continue;
+                    await Task.Delay(250);
+                    List<Quest> quests = Configuration.Quests?.Where((Quest q) => q.CanComplete).ToList();
+                    if (quests == null || quests.Count == 0)
+                    {
+                        continue;
+                    }
+                    foreach (Quest quest in quests)
+                    {
+                        await this.WaitUntil(() => World.IsActionAvailable(LockActions.TryQuestComplete), () => IsRunning && !token.IsCancellationRequested, 10, 500);
+                        quest.Complete();
+                        await this.WaitUntil(() => !Player.Quests.IsInProgress(quest.Id), () => IsRunning && !token.IsCancellationRequested, 10, 500);
+                    }
                 }
-                for (int i = 0; i < quests.Count; i++)
-                {
-                    await this.WaitUntil(() => World.IsActionAvailable(LockActions.TryQuestComplete), () => IsRunning, 10, 500);
-                    quests[i].Complete();
-                    await this.WaitUntil(() => !Player.Quests.IsInProgress(quests[i].Id), () => IsRunning, 10, 500);
-                }
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.Log("completing the bot's quests", ex);
             }
         }
 

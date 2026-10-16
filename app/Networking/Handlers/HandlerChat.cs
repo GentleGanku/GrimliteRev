@@ -1,6 +1,7 @@
 ﻿using Grimoire.Game;
 using Grimoire.UI;
 using System;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Grimoire.Networking.Handlers
@@ -48,11 +49,21 @@ namespace Grimoire.Networking.Handlers
                     playerMsg = message.Arguments[4];
                     break;
             }
-            playerMsg = playerMsg.Replace(Player.Username.ToLower(), "You");
+            playerMsg = ReplaceOwnName(playerMsg, Player.Username?.ToLower());
             if (!string.IsNullOrEmpty(playerMsg))
             {
                 LogForm.Instance.AppendChat($"[{DateTime.Now:hh:mm:ss}] {playerMsg}\r\n");
             }
+        }
+
+        /// <summary>Replaces <paramref name="username"/> with "You" where it stands as a whole name, not inside other words.</summary>
+        public static string ReplaceOwnName(string message, string username)
+        {
+            if (string.IsNullOrEmpty(message) || string.IsNullOrEmpty(username))
+            {
+                return message;
+            }
+            return Regex.Replace(message, $@"(?<![\w]){Regex.Escape(username)}(?![\w])", "You");
         }
 
         #endregion

@@ -349,7 +349,7 @@ namespace Grimoire.UI
             {
                 foreach (IBotCommand cmd in cmds)
                 {
-                    await cmd.Execute(null);
+                    await cmd.Execute(BotManager.Instance.ActiveBotEngine);
                     await Task.Delay(1000);
                 }
             }

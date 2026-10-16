@@ -102,7 +102,8 @@ namespace Grimoire.Botting
                 relativePath = relativePath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
             }
             string[] path = relativePath.Split(new string[1] { @"\" }, StringSplitOptions.RemoveEmptyEntries);
-            return relativePath.Replace(path[0] + @"\", "");
+            string prefix = path.Length > 0 ? path[0] + @"\" : null;
+            return prefix != null && relativePath.StartsWith(prefix) ? relativePath.Substring(prefix.Length) : relativePath;
         }
 
         public static string[] JtoArray(string result)

@@ -250,6 +250,13 @@ namespace Grimoire.UI
                     await cmd.Execute(BotManager.Instance.ActiveBotEngine);
                     await Task.Delay(1000);
                 }
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.Log("running Travel.ExecuteTravel", ex);
+            }
+            finally
+            {
                 if (InvokeRequired)
                 {
                     Invoke((Action)delegate
@@ -263,10 +270,6 @@ namespace Grimoire.UI
                     grpTravel.Enabled = true;
                     aweGroup.Enabled = true;
                 }
-            }
-            catch (Exception ex)
-            {
-                ErrorReporter.Log("running Travel.ExecuteTravel", ex);
             }
         }
 

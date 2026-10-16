@@ -55,8 +55,8 @@ namespace Grimoire.Botting.Commands.Combat
                 return;
             }
             BotData.BotState = BotData.State.Combat;
-            bool onSafeHp = (SafeHp == 100) ? false : true;
-            bool onSafeMp = (SafeMp == 100) ? false : true;
+            bool onSafeHp = SafeHp != 100;
+            bool onSafeMp = SafeMp != 100;
             bool use = onSafeHp ? (Player.Health / (double)Player.HealthMax * 100.0 <= SafeHp) : (onSafeMp ? (Player.Mana / (double)Player.ManaMax * 100.0 <= SafeMp) : false);
             if (Wait)
             {

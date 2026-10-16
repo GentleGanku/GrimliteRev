@@ -79,11 +79,18 @@ namespace Grimoire.Networking.Handlers
                     {
                         bool inBank = content.DataObject["bBank"].Value<int>() != 0;
                         int dropQty = content.DataObject["iQty"].Value<int>();
-                        if (inBank)
+                        InventoryItem saved = inBank ? Player.Bank.SavedItems.Find(i => i.Id.Equals(id)) : null;
+                        if (saved != null)
                         {
-                            Player.Bank.SavedItems.Find(i => i.Id.Equals(id)).Quantity += dropQty;
+                            saved.Quantity += dropQty;
                         }
                         drop = (inBank ? Player.Bank.SavedItems : Player.Inventory.Items).FirstOrDefault(i => i.Id.Equals(id)) ?? Player.House.Items.FirstOrDefault(i => i.Id.Equals(id));
+                        if (drop == null)
+                        {
+                            // Not in the cached bank, inventory or house lists yet; there is no name to log.
+                            LogForm.Instance.AppendBot($"[{DateTime.Now:hh:mm:ss}] Item accepted: ID {id} x {dropQty}.\r\n");
+                            break;
+                        }
                         LogForm.Instance.AppendBot($"[{DateTime.Now:hh:mm:ss}] Item accepted: {drop.Name} x {dropQty}.\r\n");
                         if (BotManager.Instance.chkNotifyItemOnPickup.Checked && BotManager.Instance.ActiveBotEngine.Configuration.Items.Any(i => i.Equals(drop.Name, StringComparison.OrdinalIgnoreCase)))
                         {

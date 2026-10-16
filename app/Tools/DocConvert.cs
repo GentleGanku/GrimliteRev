@@ -28,6 +28,27 @@ namespace Grimoire.Tools
 
         }
 
+        /// <summary>
+        /// True for text that <see cref="Zip"/> produced: Base64 of gzip data, which starts with the gzip header 1F 8B.
+        /// Plain words such as "Farm" are valid Base64 too, so the encoding alone can't tell them apart.
+        /// </summary>
+        public static bool IsCompressed(string str)
+        {
+            if (string.IsNullOrEmpty(str) || str.Length % 4 != 0)
+            {
+                return false;
+            }
+            try
+            {
+                byte[] data = Convert.FromBase64String(str);
+                return data.Length > 2 && data[0] == 0x1F && data[1] == 0x8B;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+        }
+
         public static void CopyTo(Stream src, Stream dest)
         {
             byte[] bytes = new byte[4096];

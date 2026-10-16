@@ -37,18 +37,20 @@ namespace Grimoire.Botting.Commands.Combat
 
         public async Task Execute(IBotEngine instance)
         {
-            _cts = new CancellationTokenSource();
+            // One source per run: a skill loop from an earlier run keeps its own (cancelled) token instead of reading a newer one.
+            CancellationTokenSource cts = new CancellationTokenSource();
+            _cts = cts;
             BotData.BotState = BotData.State.Combat;
             BotUtilities.MoveToBotCell();
-            await instance.WaitUntil(() => World.IsMonsterAvailable(instance.Value(Monster)), () => !_cts.IsCancellationRequested, 16, 500);
+            await instance.WaitUntil(() => World.IsMonsterAvailable(instance.Value(Monster)), () => instance.IsRunning && !cts.IsCancellationRequested, 16, 500);
             if (instance.Configuration.WaitForAllSkills)
             {
                 await Task.Delay(Player.AllSkillsAvailable);
             }
             Player.AttackMonster(instance.Value(Monster));
-            Task.Run(() => UseSkills(instance));
-            await instance.WaitUntil(() => !Player.HasTarget, () => !_cts.IsCancellationRequested, -1, 500);
-            _cts.Cancel();
+            Task.Run(() => UseSkills(instance, cts.Token));
+            await instance.WaitUntil(() => !Player.HasTarget, () => instance.IsRunning && !cts.IsCancellationRequested, -1, 500);
+            cts.Cancel();
             Player.CancelTarget();
         }
 
@@ -57,18 +59,18 @@ namespace Grimoire.Botting.Commands.Combat
             return "Kill: " + Monster;
         }
 
-        private async Task UseSkills(IBotEngine instance)
+        private async Task UseSkills(IBotEngine instance, CancellationToken token)
         {
             var monster = instance.Value(Monster);
             int ClassIndex = (BotData.SkillSet != null && BotData.SkillSet.ContainsKey("[" + BotData.BotSkill + "]")) ? (BotData.SkillSet["[" + BotData.BotSkill + "]"]) + 1 : -1;
             Count = instance.Configuration.Skills.Count - 1;
             Index = ClassIndex;
-            while (!_cts.IsCancellationRequested)
+            while (!token.IsCancellationRequested)
             {
                 if (!BotUtilities.ShouldUseSkill)
                 {
                     Player.CancelAutoAttack();
-                    await instance.WaitUntil(() => BotUtilities.ShouldUseSkill, () => !_cts.IsCancellationRequested, 30, 500);
+                    await instance.WaitUntil(() => BotUtilities.ShouldUseSkill, () => !token.IsCancellationRequested, 30, 500);
                 }
                 if (!Player.IsLoggedIn)
                 {

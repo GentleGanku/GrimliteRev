@@ -98,7 +98,7 @@ namespace Grimoire.Botting.Commands.Misc
         public override string ToString()
         {
             string typetxt = Debug ? "Debug" : "Script";
-            Clear = Text.Contains("{CLEAR}") ? true : false;
+            Clear = Text.Contains("{CLEAR}");
             return Clear ? $"Clear {typetxt}" : $"Log {typetxt}: {Text}";
         }
 

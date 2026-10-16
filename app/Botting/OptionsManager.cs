@@ -5,6 +5,7 @@ using Grimoire.Tools;
 using Grimoire.UI;
 using Grimoire.Utils;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Grimoire.Botting
@@ -22,7 +23,7 @@ namespace Grimoire.Botting
         private static bool _hideYulgar;
         private static bool _hideRoom;
         private static bool _afk;
-        private static bool _afk2;
+        private static readonly Stopwatch _packetSpamTimer = new Stopwatch();
 
         #endregion
 
@@ -250,7 +251,7 @@ namespace Grimoire.Botting
         private static IXtMessageHandler HandlerAFK1
         {
             get;
-        }
+        } = new HandlerAFK();
 
         #endregion
 
@@ -262,7 +263,7 @@ namespace Grimoire.Botting
 
         public static void SetEnemyMagnet() => Flash.Call("SetEnemyMagnet", empty);
 
-        public static void SetLagKiller() => Flash.Call("SetLagKiller", LagKiller ? false : true);
+        public static void SetLagKiller() => Flash.Call("SetLagKiller", !LagKiller);
 
         public static void DestroyPlayers(bool Enabled) => Flash.Call("DestroyPlayers", Enabled);
 
@@ -280,7 +281,6 @@ namespace Grimoire.Botting
             if (BotManager.Instance.chkLag.Checked)
             {
                 LagKiller = true;
-                SetLagKiller();
             }
             if (BotManager.Instance.chkProvoke.Checked)
             {
@@ -294,13 +294,12 @@ namespace Grimoire.Botting
             if (BotManager.Instance.chkLag.Checked)
             {
                 LagKiller = false;
-                SetLagKiller();
             }
             if (BotManager.Instance.chkProvoke.Checked)
             {
                 ProvokeMonsters = false;
             }
-            if (BotManager.Instance.chkProvoke.Checked || Configuration.Instance.ProvokeMonsters || ProvokeMonsters)
+            if (BotManager.Instance.chkProvoke.Checked || BotManager.Instance.ActiveBotEngine.Configuration?.ProvokeMonsters == true || ProvokeMonsters)
             {
                 BotUtilities.MoveToSelfCell();
             }
@@ -315,8 +314,13 @@ namespace Grimoire.Botting
         {
             try
             {
-                Proxy.Instance.SendToServer($"{SpamPacket}");
-                await Task.Delay(PacketDelay);
+                // Called on every options tick (250 ms); send only once PacketDelay has passed since the last packet.
+                if (_packetSpamTimer.IsRunning && _packetSpamTimer.ElapsedMilliseconds < PacketDelay)
+                {
+                    return;
+                }
+                _packetSpamTimer.Restart();
+                await Proxy.Instance.SendToServer($"{SpamPacket}");
             }
             catch (Exception ex)
             {

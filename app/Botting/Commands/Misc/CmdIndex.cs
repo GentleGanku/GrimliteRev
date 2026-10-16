@@ -42,7 +42,7 @@ namespace Grimoire.Botting.Commands.Misc
                         int offset = Index - 1;
                         if (offset > 0)
                         {
-                            int newIndex = instance.Index += offset;
+                            int newIndex = instance.Index + offset;
                             if (newIndex < instance.Configuration.Commands.Count)
                             {
                                 instance.Index = newIndex;
@@ -55,7 +55,7 @@ namespace Grimoire.Botting.Commands.Misc
                         int offset = Index + 1;
                         if (offset > 0)
                         {
-                            int newIndex = instance.Index -= offset;
+                            int newIndex = instance.Index - offset;
                             if (newIndex > -1)
                             {
                                 instance.Index = newIndex;

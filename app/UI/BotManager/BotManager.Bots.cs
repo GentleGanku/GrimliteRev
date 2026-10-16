@@ -137,7 +137,7 @@ namespace Grimoire.UI
                     lstSoundItems.Items.Clear();
                 }
                 txtSavedAuthor.Text = config.Author ?? "Author";
-                txtSavedDesc.Text = DocConvert.IsBase64Encoded(config.Description) ? DocConvert.Unzip(config.Description) : config.Description ?? "Description";
+                txtSavedDesc.Text = DocConvert.IsCompressed(config.Description) ? DocConvert.Unzip(config.Description) : config.Description ?? "Description";
                 List<IBotCommand> commands = config.Commands;
                 if (commands != null && commands.Count > 0)
                 {
@@ -217,7 +217,6 @@ namespace Grimoire.UI
                 numRest.Value = config.RestHp;
                 chkMP.Checked = config.RestIfMp;
                 chkHP.Checked = config.RestIfHp;
-                chkUntarget.Checked = config.Untarget;
                 chkUnbankOnStart.Checked = config.UnbankOnStart;
                 chkBankOnStop.Checked = config.BankOnStop;
                 chkNotifyItemOnPickup.Checked = config.NotifyItemOnPickup;

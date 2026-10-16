@@ -165,12 +165,13 @@ namespace Grimoire.Networking
 
         public async Task SendToServer(string data)
         {
-            string packet = data.Replace("{ROOM_ID}", World.RoomId.ToString());
-            if (packet != null && packet.Length > 0)
+            if (string.IsNullOrEmpty(data))
             {
-                bool json = data.StartsWith("{");
-                World.SendPacket(data, json ? "Json" : "String");
+                return;
             }
+            string packet = data.Replace("{ROOM_ID}", World.RoomId.ToString());
+            bool json = packet.StartsWith("{");
+            World.SendPacket(packet, json ? "Json" : "String");
         }
 
         public async Task SendToClient(string data)

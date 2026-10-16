@@ -107,8 +107,7 @@ namespace Grimoire.Tools
         }
 
         /// <summary>
-        /// String family. Each argument is sent inside <c>&lt;string&gt;</c> without escaping, so callers escape XML
-        /// themselves. The call goes through <c>Root.Instance.Client</c>, and the reply is HTML-decoded and then
+        /// String family. Each argument is sent XML-escaped inside <c>&lt;string&gt;</c>. The call goes through <c>Root.Instance.Client</c>, and the reply is HTML-decoded and then
         /// deserialized as JSON, so a string result must arrive JSON-quoted. On failure it returns the default value
         /// without raising <see cref="FlashError"/>.
         /// </summary>
@@ -223,7 +222,7 @@ namespace Grimoire.Tools
                 stringBuilder.Append("<arguments>");
                 foreach (string str in args)
                 {
-                    stringBuilder.Append("<string>" + str + "</string>");
+                    stringBuilder.Append("<string>" + SecurityElement.Escape(str) + "</string>");
                 }
                 stringBuilder.Append("</arguments>");
             }

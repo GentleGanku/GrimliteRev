@@ -109,7 +109,7 @@ namespace Grimoire.Tools
         public static async Task Login(Server server, int relogDelay, CancellationTokenSource cts, bool ensureSuccess)
         {
             OptionsCheck(false);
-            await BotManager.Instance.ActiveBotEngine.WaitUntil(() => !IsTemporarilyKicked, null, 65);
+            await BotManager.Instance.ActiveBotEngine.WaitUntil(() => !IsTemporarilyKicked, () => !cts.IsCancellationRequested, 65);
             ResetServers();
             await Task.Delay(1000);
             Login();

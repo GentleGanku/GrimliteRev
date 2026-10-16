@@ -113,6 +113,7 @@ namespace Grimoire.UI
                     catch (Exception ex)
                     {
                         ErrorReporter.Log("applying an edited command", ex);
+                        DarkMessageBox.Show(new Form { TopMost = true, StartPosition = FormStartPosition.CenterScreen }, $"The edited command isn't valid, so it wasn't changed.\r\n\r\n{ex.Message}", "Edit Command", MessageBoxIcon.Error);
                     }
                 }
             }
