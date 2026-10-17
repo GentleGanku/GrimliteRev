@@ -32,6 +32,9 @@
         public static var MainBackground:MovieClip;
         public static var StandbyBackground:MovieClip;
         public static var LoaderBackground:MovieClip;
+        private static const RECEIVED_PREFIX:String = "[ RECEIVED ]: ";
+        // Most traffic is received, so that prefix is tried first.
+        private static const DEBUG_PREFIXES:Array = [RECEIVED_PREFIX, "[Sending - STR]: ", "[Sending - JSON]: ", "[Sending]: "];
         private const sURL:String = "https://game.aq.com/game/";
         private const versionURL:String = (sURL + "api/data/gameversion");
         private static var _handler:*;
@@ -253,55 +256,41 @@
             return "true";
         }
 
-        public function onXtPacketResponse(e:*):void
+        // This function forwards each SmartFox debug message to C# once: extension messages (%xt%zm%, except the %hi% pings)
+        // as "xtPacket" first, then every message as "packet", after keeping the bridge's ping and login state. It replaces
+        // two listeners that each searched and filtered the same message.
+        public function onDebugMessage(e:*):void
         {
-            if ( (e.params.message.indexOf("%xt%zm%") > -1) && (e.params.message.indexOf("%hi%") < 0))
+            var message:String = e.params.message;
+            var packet:String = this.filter(message);
+            if ((message.indexOf("%xt%zm%") > -1) && (message.indexOf("%hi%") < 0))
             {
-                if (DebugMode)
-                {
-                    trace("DEBUG: " + this.filter(e.params.message));
-                }
-                else
-                {
-                    ExternalInterface.call("xtPacket", this.filter(e.params.message));
-                }
+                this.forward("xtPacket", packet);
             }
-        }
-
-        public function onPacketResponse(e:*):void
-        {
-            if (e.params.message.indexOf("%xt%zm%hi%") > -1)
+            if (message.indexOf("%xt%zm%hi%") > -1)
             {
                 return;
             }
-            if ((e.params.message.indexOf("%xt%hi%") > -1) || (e.params.message.indexOf("Please slow down. Last action was too soon!") > -1))
+            if ((message.indexOf("%xt%hi%") > -1) || (message.indexOf("Please slow down. Last action was too soon!") > -1))
             {
                 grimoire.game.Client.shouldPing = true;
                 return;
             }
-            else if (e.params.message.indexOf("%xt%loginResponse%") > -1)
+            else if (message.indexOf("%xt%loginResponse%") > -1)
             {
                 grimoire.game.Bank.loaded = false;
             }
-            else if (e.params.message.indexOf('"cmd":"loadInventoryBig"') > -1)
+            else if (message.indexOf('"cmd":"loadInventoryBig"') > -1)
             {
                 isLoggedIn = true;
                 grimoire.game.Client.shouldPing = true;
             }
-            else if (e.params.message.indexOf("<msg t='sys'><body action='logout' r='0'></body></msg>") > -1)
+            else if (message.indexOf("<msg t='sys'><body action='logout' r='0'></body></msg>") > -1)
             {
                 isLoggedIn = false;
                 grimoire.game.Client.shouldPing = false;
             }
-
-            if (DebugMode)
-            {
-                trace("DEBUG: " + this.filter(e.params.message));
-            }
-            else
-            {
-                ExternalInterface.call("packet", this.filter(e.params.message));
-            }
+            this.forward("packet", packet);
         }
 
         public function onExtensionResponse(packet:*):void
@@ -467,8 +456,7 @@
             Game.sfc.debug = true;
             Game.sfc.addEventListener(SFSEvent.onConnectionLost, this.onDisconnect);
             Game.sfc.addEventListener(SFSEvent.onExtensionResponse, this.onExtensionResponse);
-            Game.sfc.addEventListener(SFSEvent.onDebugMessage, this.onXtPacketResponse);
-            Game.sfc.addEventListener(SFSEvent.onDebugMessage, this.onPacketResponse);
+            Game.sfc.addEventListener(SFSEvent.onDebugMessage, this.onDebugMessage);
             gameDomain = LoaderInfo(e.target).applicationDomain;
             this.external = new Externalizer();
             this.external.init(this);
@@ -640,30 +628,44 @@
             }
         }
 
+        // This function strips the prefix that SmartFoxClient.debugMessage puts on a message ("[ RECEIVED ]: ",
+        // "[Sending - STR]: ", "[Sending - JSON]: " or "[Sending]: ") and the ", (len: n)" it adds after a received one.
+        // Only the start and the end are touched, so a packet whose text contains one of these markers, such as a chat
+        // line, arrives whole. lastIndexOf(prefix, 0) looks at position 0 only, where indexOf would scan the whole packet.
         private function filter(message:String):String
         {
-            if (message.indexOf("[Sending - STR]: ") > -1)
+            var prefix:String;
+            var end:int;
+            for each (prefix in DEBUG_PREFIXES)
             {
-                message = message.replace("[Sending - STR]: ", "");
-            }
-            if (message.indexOf("[Sending - JSON]: ") > -1)
-            {
-                message = message.replace("[Sending - JSON]: ", "");
-            }
-            if (message.indexOf("[ RECEIVED ]: ") > -1)
-            {
-                message = message.replace("[ RECEIVED ]: ", "");
-            }
-            if (message.indexOf("[Sending]: ") > -1)
-            {
-                message = message.replace("[Sending]: ", "");
-            }
-            if (message.indexOf(", (len: ") > -1)
-            {
-                var index:int = message.indexOf(", (len: ");
-                message = message.slice(0, index);
+                if (message.lastIndexOf(prefix, 0) == 0)
+                {
+                    message = message.substr(prefix.length);
+                    if (prefix == RECEIVED_PREFIX)
+                    {
+                        end = message.lastIndexOf(", (len: ");
+                        if (end > -1)
+                        {
+                            message = message.slice(0, end);
+                        }
+                    }
+                    return message;
+                }
             }
             return message;
+        }
+
+        // This function sends a packet to C# under the corresponding call name, or traces it in debug mode.
+        private function forward(name:String, packet:String):void
+        {
+            if (DebugMode)
+            {
+                trace("DEBUG: " + packet);
+            }
+            else
+            {
+                ExternalInterface.call(name, packet);
+            }
         }
 
         // #endregion
