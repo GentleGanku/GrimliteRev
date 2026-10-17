@@ -24,7 +24,7 @@
             var bool:String = Root.falseString;
             if (game.litePreference.data.bCustomDrops)
             {
-                source = ((game.cDropsUI.mcDraggable) ? game.cDropsUI.mcDraggable.menu : game.cDropsUI);
+                source = customDropList();
                 i = 0;
                 while (i < source.numChildren)
                 {
@@ -98,7 +98,7 @@
             var pickup:Array = list.split(",");
             if (game.litePreference.data.bCustomDrops)
             {
-                source = ((game.cDropsUI.mcDraggable) ? game.cDropsUI.mcDraggable.menu : game.cDropsUI);
+                source = customDropList();
                 i = 0;
                 while (i < source.numChildren)
                 {
@@ -130,6 +130,13 @@
                     }
                 }
             }
+        }
+
+        // This function returns the display list that holds the custom drops UI's items: the draggable window's menu when
+        // that window exists, otherwise the drops UI itself.
+        private static function customDropList():*
+        {
+            return (game.cDropsUI.mcDraggable) ? game.cDropsUI.mcDraggable.menu : game.cDropsUI;
         }
 
         // #endregion

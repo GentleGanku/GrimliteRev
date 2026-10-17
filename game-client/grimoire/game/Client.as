@@ -21,6 +21,18 @@
         public static var funcYes:Function;
         public static var funcNo:Function;
         public static var latency:Number;
+        // The connection screen text that each isClientLoading type looks for.
+        private static const loadingTexts:Object = {
+            Account: "Authenticating Account Info...",
+            Client: "Initializing Client...",
+            Lobby: "Joining Lobby..",
+            Server: "Connecting to game server...",
+            Character: "Loading Character Data...",
+            Communication: "Communication with server has been lost. Please check your internet connection and try again.",
+            MapLoading: "Loading Map Files...",
+            MapLoadingStuck: "Loading Map... 100%",
+            MapLoadingError: "Loading Map Files... Failed!"
+        };
         private static var game:* = Root.Game;
         private static var charPage:*;
         private static var officialStandby:DisplayObject;
@@ -33,28 +45,17 @@
         // This function returns a boolean for whether the client is loading on the corresponding type.
         public static function isClientLoading(type:String):String
         {
-            switch (type)
+            if (!loadingTexts.hasOwnProperty(type))
             {
-                case "Account":
-                    return ((game.mcConnDetail.txtDetail.text == "Authenticating Account Info...") && (game.mcConnDetail.stage != null)) ? Root.trueString : Root.falseString;
-                case "Client":
-                    return ((game.mcConnDetail.txtDetail.text == "Initializing Client...") && (game.mcConnDetail.stage != null)) ? Root.trueString : Root.falseString;
-                case "Lobby":
-                    return ((game.mcConnDetail.txtDetail.text == "Joining Lobby..") && (game.mcConnDetail.stage != null)) ? Root.trueString : Root.falseString;
-                case "Server":
-                    return ((game.mcConnDetail.txtDetail.text == "Connecting to game server...") && (game.mcConnDetail.stage != null)) ? Root.trueString : Root.falseString;
-                case "Character":
-                    return ((game.mcConnDetail.txtDetail.text == "Loading Character Data...") && (game.mcConnDetail.stage != null)) ? Root.trueString : Root.falseString;
-                case "Communication":
-                    return ((game.mcConnDetail.txtDetail.text == "Communication with server has been lost. Please check your internet connection and try again.") && (game.mcConnDetail.stage != null)) ? Root.trueString : Root.falseString;
-                case "MapLoading":
-                    return ((game.mcConnDetail.txtDetail.text == "Loading Map Files...") && (game.mcConnDetail.stage != null)) ? Root.trueString : Root.falseString;
-                case "MapLoadingStuck":
-                    return ((game.mcConnDetail.txtDetail.text == "Loading Map... 100%") && (game.mcConnDetail.btnBack.visible == Root.trueString) && (game.mcConnDetail.stage != null)) ? Root.trueString : Root.falseString;
-                case "MapLoadingError":
-                    return ((game.mcConnDetail.txtDetail.text == "Loading Map Files... Failed!") && (game.mcConnDetail.stage != null)) ? Root.trueString : Root.falseString;
+                return Root.falseString;
             }
-            return Root.falseString;
+            var detail:* = game.mcConnDetail;
+            // btnBack.visible is a Boolean and never equals the '"True"' string, so MapLoadingStuck is never reported
+            // (CR-43, fix phase). Kept as it was.
+            var loading:Boolean = ((detail.txtDetail.text == loadingTexts[type])
+                && ((type != "MapLoadingStuck") || (detail.btnBack.visible == Root.trueString))
+                && (detail.stage != null));
+            return loading ? Root.trueString : Root.falseString;
         }
 
         // This function returns a boolean for whether the client label is on the Login label or not.

@@ -55,22 +55,11 @@
         public static function getMonstersInCell():String
         {
             var key:* = null;
-            var monster:Object;
-            var info:Object;
             var monsters:Array = game.world.getMonstersByCell(Root.Game.world.strFrame);
             var list:Array = [];
             for (key in monsters)
             {
-                monster = monsters[key];
-                info = new Object();
-                info.sRace = monster.objData.sRace;
-                info.strMonName = monster.objData.strMonName;
-                info.MonID = monster.dataLeaf.MonID;
-                info.iLvl = monster.dataLeaf.iLvl;
-                info.intState = monster.dataLeaf.intState;
-                info.intHP = monster.dataLeaf.intHP;
-                info.intHPMax = monster.dataLeaf.intHPMax;
-                list.push(info);
+                list.push(monsterInfo(monsters[key]));
             }
             return JSON.stringify(list);
         }
@@ -80,7 +69,6 @@
         {
             var key:* = null;
             var monster:Object;
-            var info:Object;
             var monsters:Array = Root.Game.world.getMonstersByCell(Root.Game.world.strFrame);
             var list:Array = [];
             for (key in monsters)
@@ -88,15 +76,7 @@
                 monster = monsters[key];
                 if (!(((monster.pMC == null) || (!(monster.pMC.visible))) || (monster.dataLeaf.intState <= 0)))
                 {
-                    info = new Object();
-                    info.sRace = monster.objData.sRace;
-                    info.strMonName = monster.objData.strMonName;
-                    info.MonID = monster.dataLeaf.MonID;
-                    info.iLvl = monster.dataLeaf.iLvl;
-                    info.intState = monster.dataLeaf.intState;
-                    info.intHP = monster.dataLeaf.intHP;
-                    info.intHPMax = monster.dataLeaf.intHPMax;
-                    list.push(info);
+                    list.push(monsterInfo(monster));
                 }
             }
             return JSON.stringify(list);
@@ -117,7 +97,7 @@
         // This function returns the corresponding skill's name.
         public static function getSkillName(index:String):String
         {
-            return ('"' + Root.Game.world.actions.active[parseInt(index)].nam) + '"';
+            return Root.quote(Root.Game.world.actions.active[parseInt(index)].nam);
         }
 
         // This function returns the monster object of the corresponding monster name.
@@ -457,19 +437,10 @@
         public static function monstersInMap():String
         {
             var target:*;
-            var monster:Object;
             var monsterList:Array = [];
             for each (target in game.world.monsters)
             {
-                monster = new Object();
-                monster.sRace = target.objData.sRace;
-                monster.strMonName = target.objData.strMonName;
-                monster.MonID = target.dataLeaf.MonID;
-                monster.iLvl = target.dataLeaf.iLvl;
-                monster.intState = target.dataLeaf.intState;
-                monster.intHP = target.dataLeaf.intHP;
-                monster.intHPMax = target.dataLeaf.intHPMax;
-                monsterList.push(monster);
+                monsterList.push(monsterInfo(target));
             }
             return JSON.stringify(monsterList);
         }
@@ -493,6 +464,21 @@
                 }
             }
             return result;
+        }
+
+        // This function returns the monster's data in the shape the monster lists send to C#. The property order is the
+        // JSON key order.
+        private static function monsterInfo(monster:*):Object
+        {
+            var info:Object = new Object();
+            info.sRace = monster.objData.sRace;
+            info.strMonName = monster.objData.strMonName;
+            info.MonID = monster.dataLeaf.MonID;
+            info.iLvl = monster.dataLeaf.iLvl;
+            info.intState = monster.dataLeaf.intState;
+            info.intHP = monster.dataLeaf.intHP;
+            info.intHPMax = monster.dataLeaf.intHPMax;
+            return info;
         }
 
         // #endregion

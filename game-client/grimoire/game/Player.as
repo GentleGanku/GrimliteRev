@@ -22,7 +22,7 @@
         // This function returns the player's cell.
         public static function cell():String
         {
-            return ('"' + game.world.strFrame) + '"';
+            return Root.quote(game.world.strFrame);
         }
 
         // This function returns the player's faction datas.
@@ -34,7 +34,7 @@
         // This function returns the player's pad.
         public static function pad():String
         {
-            return ('"' + game.world.strPad) + '"';
+            return Root.quote(game.world.strPad);
         }
 
         // This function returns the player's state.
@@ -70,7 +70,7 @@
         // This function returns the name of the map where the player is currently in.
         public static function map():String
         {
-            return ('"' + game.world.strMapName) + '"';
+            return Root.quote(game.world.strMapName);
         }
 
         // This function returns the player's current level.
@@ -267,7 +267,7 @@
         // This function returns the player's class name.
         public static function className():String
         {
-            return ('"' + game.world.myAvatar.objData.strClassName.toUpperCase()) + '"';
+            return Root.quote(game.world.myAvatar.objData.strClassName.toUpperCase());
         }
 
         // This function returns the player's User ID.
@@ -285,7 +285,7 @@
         // This function returns the player's gender.
         public static function gender():String
         {
-            return ('"' + game.world.myAvatar.objData.strGender.toUpperCase()) + '"';
+            return Root.quote(game.world.myAvatar.objData.strGender.toUpperCase());
         }
 
         // This function returns the player's datas.

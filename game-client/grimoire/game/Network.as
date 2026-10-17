@@ -87,31 +87,31 @@
         // This function returns the real address (in string) of the current server.
         public static function realAddress():String
         {
-            return ('"' + game.objServerInfo.RealAddress) + '"';
+            return Root.quote(game.objServerInfo.RealAddress);
         }
 
         // This function returns the real port (in string) of the current server.
         public static function realPort():String
         {
-            return ('"' + game.objServerInfo.RealPort) + '"';
+            return Root.quote(game.objServerInfo.RealPort);
         }
 
         // This function returns the current server time.
         public static function serverTime():String
         {
-            return ('"' + game.date_server.toLocaleTimeString()) + '"';
+            return Root.quote(game.date_server.toLocaleTimeString());
         }
 
         // This function returns the name of the current server.
         public static function serverName():String
         {
-            return ('"' + game.objServerInfo.sName) + '"';
+            return Root.quote(game.objServerInfo.sName);
         }
 
         // This function returns the IP address of the current server.
         public static function serverIP():String
         {
-            return ('"' + game.objServerInfo.sIP) + '"';
+            return Root.quote(game.objServerInfo.sIP);
         }
 
         // #endregion

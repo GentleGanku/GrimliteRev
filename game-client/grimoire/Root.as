@@ -86,13 +86,20 @@
         // This function returns the username of the player.
         public static function Username():String
         {
-            return ('"' + username) + '"';
+            return quote(username);
         }
 
         // This function returns the password of the player.
         public static function Password():String
         {
-            return ('"' + password) + '"';
+            return quote(password);
+        }
+
+        // This function wraps a value in double quotes for the callbacks whose C# side reads a JSON string. The value is
+        // not escaped, so a quote or backslash in it still breaks that JSON (CR-44, fix phase).
+        public static function quote(value:*):String
+        {
+            return '"' + value + '"';
         }
 
         // This function sets the game's FPS to a corresponding number.
