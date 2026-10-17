@@ -8,7 +8,6 @@
         // #region Fields
 
         private static var game:* = Root.Game;
-        private static var pref:* = Root.Game.userPreference;
 
         // #endregion
 
@@ -17,7 +16,7 @@
         // This function returns a boolean for whether the corresponding quest is in progress or not.
         public static function isInProgress(questID:String):String
         {
-            return (!game.world.isQuestInProgress(parseInt(questID)) ? Root.falseString : Root.trueString);
+            return !game.world.isQuestInProgress(parseInt(questID)) ? Root.falseString : Root.trueString;
         }
 
         // This function executes by trying to complete the corresponding quest.
@@ -68,14 +67,14 @@
                 || (quest.FactionID > 1 && game.world.myAvatar.getRep(quest.FactionID) < quest.iReqRep))
             {
                 boolean = Root.falseString;
-            };
-            return (boolean);
+            }
+            return boolean;
         }
 
         // This function returns a boolean whether the corresponding quest can be completed or not.
         public static function canComplete(questID:String):String
         {
-            return ((game.world.canTurnInQuest(parseInt(questID)) && (getQuestValidation(parseInt(questID)) == "")) ? Root.trueString : Root.falseString);
+            return (game.world.canTurnInQuest(parseInt(questID)) && (getQuestValidation(parseInt(questID)) == "")) ? Root.trueString : Root.falseString;
         }
 
         // This function returns the quest tree of every quest available.
@@ -109,8 +108,8 @@
                         _loc7_.iQty = _loc6_.iQty;
                         _loc7_.bTemp = _loc8_.bTemp;
                         _loc4_.push(_loc7_);
-                    };
-                };
+                    }
+                }
                 _loc3_.RequiredItems = _loc4_;
                 if (((!(_loc2_.reward == null)) && (!(_loc2_.oRewards == null))))
                 {
@@ -128,15 +127,15 @@
                                     _loc12_.iQty = _loc9_.iQty;
                                     _loc12_.DropChance = (String(_loc9_.iRate) + "%");
                                     _loc5_.push(_loc12_);
-                                };
-                            };
-                        };
-                    };
-                };
+                                }
+                            }
+                        }
+                    }
+                }
                 _loc3_.Rewards = _loc5_;
                 _loc1_.push(_loc3_);
-            };
-            return (JSON.stringify(_loc1_));
+            }
+            return JSON.stringify(_loc1_);
         }
 
         // This function returns a boolean whether the player has the required items or not (for the quest).
@@ -155,11 +154,11 @@
                     _loc5_ = Root.Game.world.invTree[_loc3_];
                     if (((_loc5_ == null) || (_loc5_.iQty < _loc4_)))
                     {
-                        return (Root.falseString);
-                    };
-                };
-            };
-            return (Root.trueString);
+                        return Root.falseString;
+                    }
+                }
+            }
+            return Root.trueString;
         }
 
         // This function returns a string from the quest validation.
@@ -178,42 +177,42 @@
             {
                 if (_loc2_.sField == "im0")
                 {
-                    return ("Monthly Quests are only available once per month.");
-                };
-                return ("Daily Quests are only available once per day.");
-            };
+                    return "Monthly Quests are only available once per month.";
+                }
+                return "Daily Quests are only available once per day.";
+            }
             if (((_loc2_.bUpg == 1) && (!(Root.Game.world.myAvatar.isUpgraded()))))
             {
-                return ("Upgrade is required for this quest!");
-            };
+                return "Upgrade is required for this quest!";
+            }
             if (((_loc2_.iSlot >= 0) && (Root.Game.world.getQuestValue(_loc2_.iSlot) < (_loc2_.iValue - 1))))
             {
-                return ("Quest has not been unlocked!");
-            };
+                return "Quest has not been unlocked!";
+            }
             if (_loc2_.iLvl > Root.Game.world.myAvatar.objData.intLevel)
             {
-                return (("Unlocks at Level " + _loc2_.iLvl) + ".");
-            };
+                return ("Unlocks at Level " + _loc2_.iLvl) + ".";
+            }
             if (((_loc2_.iClass > 0) && (Root.Game.world.myAvatar.getCPByID(_loc2_.iClass) < _loc2_.iReqCP)))
             {
                 _loc3_ = Root.Game.getRankFromPoints(_loc2_.iReqCP);
                 _loc4_ = (_loc2_.iReqCP - Root.Game.arrRanks[(_loc3_ - 1)]);
                 if (_loc4_ > 0)
                 {
-                    return (((((("Requires " + _loc4_) + " Class Points on ") + _loc2_.sClass) + ", Rank ") + _loc3_) + ".");
-                };
-                return (((("Requires " + _loc2_.sClass) + ", Rank ") + _loc3_) + ".");
-            };
+                    return ((((("Requires " + _loc4_) + " Class Points on ") + _loc2_.sClass) + ", Rank ") + _loc3_) + ".";
+                }
+                return ((("Requires " + _loc2_.sClass) + ", Rank ") + _loc3_) + ".";
+            }
             if (((_loc2_.FactionID > 1) && (Root.Game.world.myAvatar.getRep(_loc2_.FactionID) < _loc2_.iReqRep)))
             {
                 _loc3_ = Root.Game.getRankFromPoints(_loc2_.iReqRep);
                 _loc5_ = (_loc2_.iReqRep - Root.Game.arrRanks[(_loc3_ - 1)]);
                 if (_loc5_ > 0)
                 {
-                    return (((((("Requires " + _loc5_) + " Reputation for ") + _loc2_.sFaction) + ", Rank ") + _loc3_) + ".");
-                };
-                return (((("Requires " + _loc2_.sFaction) + ", Rank ") + _loc3_) + ".");
-            };
+                    return ((((("Requires " + _loc5_) + " Reputation for ") + _loc2_.sFaction) + ", Rank ") + _loc3_) + ".";
+                }
+                return ((("Requires " + _loc2_.sFaction) + ", Rank ") + _loc3_) + ".";
+            }
             if (((!(_loc2_.reqd == null)) && (!(hasRequiredItems(_loc2_)))))
             {
                 _loc6_ = "Required Item(s): ";
@@ -229,7 +228,7 @@
                         if (_loc4_ > 0)
                         {
                             _loc6_ = ((_loc6_ + _loc4_) + " Class Points on ");
-                        };
+                        }
                         _loc6_ = (((_loc6_ + _loc10_.sName) + ", Rank ") + _loc3_);
                     }
                     else
@@ -238,14 +237,14 @@
                         if (_loc9_ > 1)
                         {
                             _loc6_ = ((_loc6_ + "x") + _loc9_);
-                        };
-                    };
+                        }
+                    }
                     _loc6_ = (_loc6_ + ", ");
-                };
+                }
                 _loc6_ = (_loc6_.substr(0, (_loc6_.length - 2)) + ".");
-                return (_loc6_);
-            };
-            return ("");
+                return _loc6_;
+            }
+            return "";
         }
 
         // This function clones an object from the corresponding target.
@@ -254,9 +253,9 @@
             var _loc2_:ByteArray = new ByteArray();
             _loc2_.writeObject(obj);
             _loc2_.position = 0;
-            return (_loc2_.readObject());
+            return _loc2_.readObject();
         }
 
         // #endregion
     }
-}//package grimoire.game
+}

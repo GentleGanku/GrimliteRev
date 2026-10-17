@@ -1,7 +1,6 @@
 ﻿package grimoire.game
 {
     import flash.ui.Keyboard;
-    import flash.sampler.Sample;
     import flash.display.MovieClip;
     import flash.display.DisplayObject;
     import flash.events.MouseEvent;
@@ -23,7 +22,6 @@
         public static var funcNo:Function;
         public static var latency:Number;
         private static var game:* = Root.Game;
-        private static var pref:* = Root.Game.userPreference;
         private static var charPage:*;
         private static var officialStandby:DisplayObject;
         private static var officialLoader:DisplayObject;
@@ -38,23 +36,23 @@
             switch (type)
             {
                 case "Account":
-                    return (((game.mcConnDetail.txtDetail.text == "Authenticating Account Info...") && (game.mcConnDetail.stage != null)) ? Root.trueString : Root.falseString);
+                    return ((game.mcConnDetail.txtDetail.text == "Authenticating Account Info...") && (game.mcConnDetail.stage != null)) ? Root.trueString : Root.falseString;
                 case "Client":
-                    return (((game.mcConnDetail.txtDetail.text == "Initializing Client...") && (game.mcConnDetail.stage != null)) ? Root.trueString : Root.falseString);
+                    return ((game.mcConnDetail.txtDetail.text == "Initializing Client...") && (game.mcConnDetail.stage != null)) ? Root.trueString : Root.falseString;
                 case "Lobby":
-                    return (((game.mcConnDetail.txtDetail.text == "Joining Lobby..") && (game.mcConnDetail.stage != null)) ? Root.trueString : Root.falseString);
+                    return ((game.mcConnDetail.txtDetail.text == "Joining Lobby..") && (game.mcConnDetail.stage != null)) ? Root.trueString : Root.falseString;
                 case "Server":
-                    return (((game.mcConnDetail.txtDetail.text == "Connecting to game server...") && (game.mcConnDetail.stage != null)) ? Root.trueString : Root.falseString);
+                    return ((game.mcConnDetail.txtDetail.text == "Connecting to game server...") && (game.mcConnDetail.stage != null)) ? Root.trueString : Root.falseString;
                 case "Character":
-                    return (((game.mcConnDetail.txtDetail.text == "Loading Character Data...") && (game.mcConnDetail.stage != null)) ? Root.trueString : Root.falseString);
+                    return ((game.mcConnDetail.txtDetail.text == "Loading Character Data...") && (game.mcConnDetail.stage != null)) ? Root.trueString : Root.falseString;
                 case "Communication":
-                    return (((game.mcConnDetail.txtDetail.text == "Communication with server has been lost. Please check your internet connection and try again.") && (game.mcConnDetail.stage != null)) ? Root.trueString : Root.falseString);
+                    return ((game.mcConnDetail.txtDetail.text == "Communication with server has been lost. Please check your internet connection and try again.") && (game.mcConnDetail.stage != null)) ? Root.trueString : Root.falseString;
                 case "MapLoading":
-                    return (((game.mcConnDetail.txtDetail.text == "Loading Map Files...") && (game.mcConnDetail.stage != null)) ? Root.trueString : Root.falseString);
+                    return ((game.mcConnDetail.txtDetail.text == "Loading Map Files...") && (game.mcConnDetail.stage != null)) ? Root.trueString : Root.falseString;
                 case "MapLoadingStuck":
-                    return (((game.mcConnDetail.txtDetail.text == "Loading Map... 100%") && (game.mcConnDetail.btnBack.visible == Root.trueString) && (game.mcConnDetail.stage != null)) ? Root.trueString : Root.falseString);
+                    return ((game.mcConnDetail.txtDetail.text == "Loading Map... 100%") && (game.mcConnDetail.btnBack.visible == Root.trueString) && (game.mcConnDetail.stage != null)) ? Root.trueString : Root.falseString;
                 case "MapLoadingError":
-                    return (((game.mcConnDetail.txtDetail.text == "Loading Map Files... Failed!") && (game.mcConnDetail.stage != null)) ? Root.trueString : Root.falseString);
+                    return ((game.mcConnDetail.txtDetail.text == "Loading Map Files... Failed!") && (game.mcConnDetail.stage != null)) ? Root.trueString : Root.falseString;
             }
             return Root.falseString;
         }
@@ -62,19 +60,19 @@
         // This function returns a boolean for whether the client label is on the Login label or not.
         public static function loginLabel():String
         {
-            return ((game.currentLabel == "Login" || game.currentLabel == "Select") ? Root.trueString : Root.falseString);
+            return (game.currentLabel == "Login" || game.currentLabel == "Select") ? Root.trueString : Root.falseString;
         }
 
         // This function returns a boolean for whether the client label is on the Server label or not.
         public static function serverLabel():String
         {
-            return ((game.mcLogin.currentLabel == "Servers") ? Root.trueString : Root.falseString);
+            return (game.mcLogin.currentLabel == "Servers") ? Root.trueString : Root.falseString;
         }
 
         // This function returns a boolean for whether the client label is on the Game label or not.
         public static function gameLabel():String
         {
-            return ((game.currentLabel == "Game") ? Root.trueString : Root.falseString);
+            return (game.currentLabel == "Game") ? Root.trueString : Root.falseString;
         }
 
         // This function returns a boolean for whether the game has loaded or not.
@@ -82,18 +80,18 @@
         {
             if (game.intChatMode)
             {
-                return (game.ui.mcInterface.ncText.visible ? Root.trueString : Root.falseString);
+                return game.ui.mcInterface.ncText.visible ? Root.trueString : Root.falseString;
             }
             else
             {
-                return (game.ui.mcInterface.te.visible ? Root.trueString : Root.falseString);
+                return game.ui.mcInterface.te.visible ? Root.trueString : Root.falseString;
             }
         }
 
         // This function returns a boolean for whether the connection screen is visible or not.
         public static function inConnStage():String
         {
-            return ((game.mcConnDetail.stage != null) ? Root.trueString : Root.falseString);
+            return (game.mcConnDetail.stage != null) ? Root.trueString : Root.falseString;
         }
 
         // This function executes by modifying the Send to Chat button's events (on click and on Enter key) to integrate them with the Chat Trigger handle.
@@ -197,7 +195,7 @@
                     break;
                 }
                 num++;
-            };
+            }
         }
 
         // This function shifts the backgrounds to the corresponding target in the Backgrounds array.
@@ -488,12 +486,12 @@
                         return;
                     }
                     game.chatF.submitMsg(text, game.chatF.chn.cur.typ, game.chatF.pmNm);
-                };
+                }
             }
             if (e.keyCode == Keyboard.ESCAPE)
             {
                 game.chatF.closeMsgEntry();
-            };
+            }
         }
 
         private static function closeChat():void

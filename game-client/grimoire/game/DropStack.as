@@ -8,7 +8,6 @@
         // #region Fields
 
         private static var game:* = Root.Game;
-        private static var pref:* = Root.Game.userPreference;
 
         // #endregion
 
@@ -21,7 +20,6 @@
             var i:int;
             var child:*;
             var children:int;
-            var item:String;
             var dItemName:String;
             var bool:String = Root.falseString;
             if (game.litePreference.data.bCustomDrops)
@@ -38,10 +36,10 @@
                         {
                             bool = Root.trueString;
                             break;
-                        };
-                    };
+                        }
+                    }
                     i++;
-                };
+                }
             }
             else
             {
@@ -53,11 +51,11 @@
                     {
                         bool = Root.trueString;
                         break;
-                    };
+                    }
                     i++;
-                };
-            };
-            return (bool);
+                }
+            }
+            return bool;
         }
 
         // This function executes by accepting the corresponding drop.
@@ -75,8 +73,8 @@
             var allowed:Boolean;
             if (item == null)
             {
-                return (Root.trueString);
-            };
+                return Root.trueString;
+            }
             if (game.isHouseItem(item))
             {
                 allowed = (avatar.houseitems.length < avatar.objData.iHouseSlots);
@@ -84,8 +82,8 @@
             else
             {
                 allowed = !invCat.isFullFor(avatar.items, item, avatar.objData.iBagSlots);
-            };
-            return (allowed ? Root.trueString : Root.falseString);
+            }
+            return allowed ? Root.trueString : Root.falseString;
         }
 
         // This function executes by rejecting a drop based on the corresponding list.
@@ -111,10 +109,10 @@
                         if (pickup.indexOf(itemName) == -1)
                         {
                             child.btNo.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
-                        };
-                    };
+                        }
+                    }
                     i++;
-                };
+                }
             }
             else
             {
@@ -127,11 +125,11 @@
                         if (child.cnt.strName.text.toLowerCase().indexOf(item.toLowerCase()) == -1)
                         {
                             child.cnt.nbtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
-                        };
+                        }
                         i++;
-                    };
-                };
-            };
+                    }
+                }
+            }
         }
 
         // #endregion

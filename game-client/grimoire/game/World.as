@@ -1,11 +1,6 @@
 ﻿package grimoire.game
 {
-    import flash.events.Event;
-    import flash.utils.Timer;
-    import flash.events.TimerEvent;
     import grimoire.Root;
-    import grimoire.game.Client;
-    import grimoire.game.Setting;
 
     public class World
     {
@@ -14,7 +9,6 @@
         public static var mapCells:Array = [];
         public static var busy:Boolean = false;
         private static var game:* = Root.Game;
-        private static var pref:* = Root.Game.userPreference;
 
         // #endregion
 
@@ -27,14 +21,14 @@
             {
                 try
                 {
-                    return ((game.getChildAt((game.numChildren - 1)) != game.mcConnDetail) ? Root.trueString : Root.falseString);
+                    return (game.getChildAt((game.numChildren - 1)) != game.mcConnDetail) ? Root.trueString : Root.falseString;
                 }
                 catch(e)
                 {
-                    return (Root.falseString);
-                };
-            };
-            return (Root.falseString);
+                    return Root.falseString;
+                }
+            }
+            return Root.falseString;
         }
 
         // This function returns a boolean for whether the corresponding action is available or not.
@@ -48,13 +42,13 @@
             _local_3 = new Date();
             _local_4 = _local_3.getTime();
             _local_5 = (_local_4 - _local_2.ts);
-            return ((_local_5 < _local_2.cd) ? Root.falseString : Root.trueString);
+            return (_local_5 < _local_2.cd) ? Root.falseString : Root.trueString;
         }
 
         // This function returns the players' datas in the current map.
         public static function playersInMap():String
         {
-            return (JSON.stringify(game.world.areaUsers));
+            return JSON.stringify(game.world.areaUsers);
         }
 
         // This function returns the monsters' datas in the current cell.
@@ -77,8 +71,8 @@
                 _loc5_.intHP = _loc4_.dataLeaf.intHP;
                 _loc5_.intHPMax = _loc4_.dataLeaf.intHPMax;
                 _loc2_.push(_loc5_);
-            };
-            return (JSON.stringify(_loc2_));
+            }
+            return JSON.stringify(_loc2_);
         }
 
         // This function returns the visible monsters' datas in the current cell.
@@ -103,9 +97,9 @@
                     _loc5_.intHP = _loc4_.dataLeaf.intHP;
                     _loc5_.intHPMax = _loc4_.dataLeaf.intHPMax;
                     _loc2_.push(_loc5_);
-                };
-            };
-            return (JSON.stringify(_loc2_));
+                }
+            }
+            return JSON.stringify(_loc2_);
         }
 
         // This function executes by setting the player's spawn point on the corresponding cell and pad.
@@ -117,13 +111,13 @@
         // This function returns a boolean for whether the corresponding monster is available or not.
         public static function isMonsterAvailable(monName:String):String
         {
-            return ((getMonsterByName(monName) != null) ? Root.trueString : Root.falseString);
+            return (getMonsterByName(monName) != null) ? Root.trueString : Root.falseString;
         }
 
         // This function returns the corresponding skill's name.
         public static function getSkillName(index:String):String
         {
-            return (('"' + Root.Game.world.actions.active[parseInt(index)].nam) + '"');
+            return ('"' + Root.Game.world.actions.active[parseInt(index)].nam) + '"';
         }
 
         // This function returns the monster object of the corresponding monster name.
@@ -141,19 +135,19 @@
                         monName = mon.pMC.pname.ti.text.toLowerCase();
                         if ((monName.indexOf(name.toLowerCase()) > -1) || (name == "*") && (mon.dataLeaf.intState > 0))
                         {
-                            return (mon);
-                        };
+                            return mon;
+                        }
                     }
                     else
                     {
                         if (mon.dataLeaf.intState > 0)
                         {
-                            return (mon);
-                        };
-                    };
-                };
-            };
-            return (null);
+                            return mon;
+                        }
+                    }
+                }
+            }
+            return null;
         }
 
         // This function returns the monster object of the corresponding monster name.
@@ -166,10 +160,10 @@
                 _loc3_ = _loc2_.pMC.pname.ti.text.toLowerCase();
                 if ((((_loc3_.indexOf(param1.toLowerCase()) > -1) || (param1 == "*")) && (_loc2_.dataLeaf.intState > 0)))
                 {
-                    return (_loc2_);
-                };
-            };
-            return (null);
+                    return _loc2_;
+                }
+            }
+            return null;
         }
 
         // This function returns the list of cells in the current map.
@@ -180,8 +174,8 @@
             for each (_loc2_ in game.world.map.currentScene.labels)
             {
                 _loc1_.push(_loc2_.name);
-            };
-            return (JSON.stringify(_loc1_));
+            }
+            return JSON.stringify(_loc1_);
         }
 
         // This function returns the list of pads in the current cell.
@@ -199,9 +193,9 @@
             }
             if (!json)
             {
-                return (pads);
+                return pads;
             }
-            return (JSON.stringify(pads));
+            return JSON.stringify(pads);
         }
 
         // This function returns the list of on-screen map items in the current cell.
@@ -238,9 +232,9 @@
             }
             if (!json)
             {
-                return (mapItems);
+                return mapItems;
             }
-            return (JSON.stringify(mapItems));
+            return JSON.stringify(mapItems);
         }
 
         // This function executes by scanning the map in frames.
@@ -257,25 +251,25 @@
                 {
                     mapCells.push(getCellInfo(cell.name, false));
                 }
-            };
+            }
             game.stage.frameRate = fps;
             busy = false;
             if (getInfo)
             {
-                return (JSON.stringify(mapCells));
+                return JSON.stringify(mapCells);
             }
         }
 
         // This function returns the map cells.
         public static function getMapCells():String
         {
-            return (JSON.stringify(mapCells));
+            return JSON.stringify(mapCells);
         }
 
         // This function returns the boolean whether the game client is busy or not.
         public static function isBusy():String
         {
-            return (busy ? Root.trueString : Root.falseString);
+            return busy ? Root.trueString : Root.falseString;
         }
 
         // This function returns the information of the corresponding cell.
@@ -312,9 +306,9 @@
             game.world.visible = grimoire.game.Setting._visibility;
             if (!json)
             {
-                return (cell);
+                return cell;
             }
-            return (JSON.stringify(cell));
+            return JSON.stringify(cell);
         }
 
         // This function returns the item tree of the corresponding item.
@@ -325,26 +319,26 @@
             for (_loc2_ in game.world.invTree)
             {
                 _loc1_.push(game.world.invTree[_loc2_]);
-            };
-            return (JSON.stringify(_loc1_));
+            }
+            return JSON.stringify(_loc1_);
         }
 
         // This function returns the room ID of the current map.
         public static function roomID():String
         {
-            return (game.world.curRoom.toString());
+            return game.world.curRoom.toString();
         }
 
         // This function returns the room number of the current map.
         public static function roomNumber():String
         {
-            return (game.world.strAreaName.split("-")[1]);
+            return game.world.strAreaName.split("-")[1];
         }
 
         // This function returns the players' datas in the current map.
         public static function players():String
         {
-            return (JSON.stringify(game.world.uoTree));
+            return JSON.stringify(game.world.uoTree);
         }
 
         // This function returns the corresponding monster's health.
@@ -353,9 +347,9 @@
             var monster:Object = grimoire.game.World.getMonsterByName(monName);
             if (monster != null)
             {
-                return (monster.dataLeaf.intHP);
+                return monster.dataLeaf.intHP;
             }
-            return (0);
+            return 0;
         }
 
         // This function returns a boolean for whether the corresponding player is in combat or not.
@@ -371,9 +365,9 @@
                 if ((player.strUsername.toLowerCase() == name.toLowerCase()) && (player.intState == 2))
                 {
                     bool = Root.trueString;
-                };
-            };
-            return (bool);
+                }
+            }
+            return bool;
         }
 
         // This function returns a boolean for whether the corresponding player has the corresponding class equipped or not.
@@ -384,8 +378,8 @@
             if ((avatar != null) && (avatar.objData.strClassName.toLowerCase() == cName.toLowerCase()))
             {
                 bool = Root.trueString;
-            };
-            return (bool);
+            }
+            return bool;
         }
 
         // This function returns the avatar object of the corresponding player's name.
@@ -403,16 +397,16 @@
                         uName = u.pnm.toLowerCase();
                         if ((uName.indexOf(name.toLowerCase()) > -1) || (name == "*"))
                         {
-                            return (u);
-                        };
+                            return u;
+                        }
                     }
                     else
                     {
-                        return (u);
-                    };
-                };
-            };
-            return (null);
+                        return u;
+                    }
+                }
+            }
+            return null;
         }
 
         // This function executes by reloading the current map where the player is in.
@@ -456,7 +450,7 @@
                 avatar.intState = target.dataLeaf.intState;
                 avatarList.push(avatar);
             }
-            return (JSON.stringify(avatarList));
+            return JSON.stringify(avatarList);
         }
 
         // This function returns the list of monsters in the map.
@@ -477,7 +471,7 @@
                 monster.intHPMax = target.dataLeaf.intHPMax;
                 monsterList.push(monster);
             }
-            return (JSON.stringify(monsterList));
+            return JSON.stringify(monsterList);
         }
 
         // Test function.
@@ -495,12 +489,12 @@
                     if (_local_2.strFrame.toLowerCase() == Root.Game.world.strFrame.toLowerCase())
                     {
                         _local_5 = Root.trueString;
-                    };
-                };
-            };
-            return (_local_5);
+                    }
+                }
+            }
+            return _local_5;
         }
 
         // #endregion
     }
-}//package grimoire.game
+}

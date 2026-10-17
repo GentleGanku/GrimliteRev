@@ -1,6 +1,5 @@
 ﻿package grimoire.game
 {
-    import flash.events.MouseEvent;
     import grimoire.Root;
 
     public class Network
@@ -8,7 +7,6 @@
         // #region Fields
 
         private static var game:* = Root.Game;
-        private static var pref:* = Root.Game.userPreference;
 
         // #endregion
 
@@ -18,7 +16,7 @@
         public static function isTemporarilyKicked():String
         {
             var mcLogin:* = game.mcLogin;
-            return ((((mcLogin != null) && (mcLogin.btnLogin != null)) && (!mcLogin.btnLogin.visible)) ? Root.trueString : Root.falseString);
+            return (((mcLogin != null) && (mcLogin.btnLogin != null)) && (!mcLogin.btnLogin.visible)) ? Root.trueString : Root.falseString;
         }
 
         // This function executes the game's login function.
@@ -48,17 +46,16 @@
             {
                 game.serialCmd.servers = [];
                 game.world.strMapName = "";
-                return (Root.trueString);
+                return Root.trueString;
             }
-            catch(e) { return (Root.falseString); };
-            return (Root.falseString);
+            catch (e) { return Root.falseString; }
         }
 
         // This function checks whether the servers are loaded or not.
         public static function areServersLoaded():String
         {
             var serialCmd:* = game.serialCmd;
-            return (((serialCmd != null) && (serialCmd.servers) && (serialCmd.servers.length > 0)) ? Root.trueString : Root.falseString);
+            return ((serialCmd != null) && (serialCmd.servers) && (serialCmd.servers.length > 0)) ? Root.trueString : Root.falseString;
         }
 
         // This function executes the game's connect function.
@@ -72,8 +69,8 @@
                     game.objServerInfo = server;
                     game.chatF.iChat = server.iChat;
                     break;
-                };
-            };
+                }
+            }
             game.connectTo(game.objServerInfo.sIP, game.objServerInfo.iPort);
         }
 
@@ -90,33 +87,33 @@
         // This function returns the real address (in string) of the current server.
         public static function realAddress():String
         {
-            return (('"' + game.objServerInfo.RealAddress) + '"');
+            return ('"' + game.objServerInfo.RealAddress) + '"';
         }
 
         // This function returns the real port (in string) of the current server.
         public static function realPort():String
         {
-            return (('"' + game.objServerInfo.RealPort) + '"');
+            return ('"' + game.objServerInfo.RealPort) + '"';
         }
 
         // This function returns the current server time.
         public static function serverTime():String
         {
-            return (('"' + game.date_server.toLocaleTimeString()) + '"');
+            return ('"' + game.date_server.toLocaleTimeString()) + '"';
         }
 
         // This function returns the name of the current server.
         public static function serverName():String
         {
-            return (('"' + game.objServerInfo.sName) + '"');
+            return ('"' + game.objServerInfo.sName) + '"';
         }
 
         // This function returns the IP address of the current server.
         public static function serverIP():String
         {
-            return (('"' + game.objServerInfo.sIP) + '"');
+            return ('"' + game.objServerInfo.sIP) + '"';
         }
 
         // #endregion
     }
-}//package grimoire.game
+}

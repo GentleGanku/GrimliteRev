@@ -1,16 +1,13 @@
 ﻿package grimoire.game
 {
     import flash.display.MovieClip;
-    import flash.display.DisplayObject;
     import grimoire.Root;
-    import grimoire.game.Client;
 
     public class Shop
     {
         // #region Fields
 
         private static var game:* = Root.Game;
-        private static var pref:* = Root.Game.userPreference;
         private static var LoadedShops:Array = [];
 
         // #endregion
@@ -30,7 +27,7 @@
             {
                 target.items.push(shop.items[i]);
                 i++;
-            };
+            }
             LoadedShops.push(target);
         }
 
@@ -44,7 +41,7 @@
         public static function isShopLoaded():String
         {
             var shopInfo:* = game.world.shopinfo;
-            return ((((shopInfo != null) && (shopInfo.items != null)) && (shopInfo.items.length > 0)) ? Root.trueString : Root.falseString);
+            return (((shopInfo != null) && (shopInfo.items != null)) && (shopInfo.items.length > 0)) ? Root.trueString : Root.falseString;
         }
 
         // This function executes by buying the corresponding item from the shop.
@@ -60,8 +57,8 @@
                 else
                 {
                     buyByEvent(item);
-                };
-            };
+                }
+            }
         }
 
         // This function executes by buying the corresponding item from the shop (by using IDs).
@@ -77,20 +74,20 @@
                 if (item != null)
                 {
                     buyByEvent(item);
-                };
+                }
             }
         }
 
         // This function returns a boolean for whether the corresponding item passes the game client's purchase checks or not.
         public static function canBuyItem(itemName:String):String
         {
-            return (isBuyable(getShopItem(itemName.toLowerCase())));
+            return isBuyable(getShopItem(itemName.toLowerCase()));
         }
 
         // This function returns a boolean for whether the corresponding item passes the game client's purchase checks or not (by using IDs).
         public static function canBuyItemByID(itemID:int, shopItemID:int):String
         {
-            return (isBuyable(getShopItemByID(itemID, shopItemID)));
+            return isBuyable(getShopItemByID(itemID, shopItemID));
         }
 
         // This function returns the item object of the corresponding item name.
@@ -103,11 +100,11 @@
                 item = game.world.shopinfo.items[i];
                 if (item.sName.toLowerCase() == itemName)
                 {
-                    return (item);
-                };
+                    return item;
+                }
                 i++;
-            };
-            return (null);
+            }
+            return null;
         }
 
         // This function returns the item object of the corresponding item ID and shop item ID.
@@ -118,16 +115,16 @@
             {
                 if ((item.ItemID == itemID) && (item.ShopItemID == shopItemID))
                 {
-                    return (item);
-                };
-            };
-            return (null);
+                    return item;
+                }
+            }
+            return null;
         }
 
         // This function returns the loaded shop datas.
         public static function getShops():String
         {
-            return (JSON.stringify(LoadedShops));
+            return JSON.stringify(LoadedShops);
         }
 
         // This function executes by loading the corresponding shop.
@@ -165,7 +162,7 @@
             else
             {
                 game.ui.mcPopup.fOpen("Shop");
-            };
+            }
         }
 
         // This function executes by selecting the corresponding item in the shop and buying it without the confirmation prompt.
@@ -176,7 +173,7 @@
             {
                 layout.update({"eventType":"listItemASel", "fData":item});
                 game.world.sendBuyItemRequestWithQuantity({"accept":true, "iSel":item, "iQty":1});
-            };
+            }
         }
 
         // This function returns a boolean for whether the item passes the quest lock and token checks of v4000 or not.
@@ -186,11 +183,11 @@
             if ((item == null) || invCat.isQuestLocked(item, game.world)
                 || (invCat.isToken(item) && (invCat.tokenHave(item, game.world) < invCat.tokenNeed(item, ((Number(item.iQty)) || (1))))))
             {
-                return (Root.falseString);
-            };
-            return (Root.trueString);
+                return Root.falseString;
+            }
+            return Root.trueString;
         }
 
         // #endregion
     }
-}//package grimoire.game
+}

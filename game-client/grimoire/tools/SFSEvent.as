@@ -1,9 +1,4 @@
-﻿// Decompiled by AS3 Sorcerer 6.30
-// www.as3sorcerer.com
-
-//grimoire.tools.SFSEvent
-
-package grimoire.tools
+﻿package grimoire.tools
 {
     import flash.events.Event;
 
@@ -62,14 +57,14 @@ package grimoire.tools
 
         override public function clone():Event
         {
-            return (new SFSEvent(this.type, this.params));
+            return new SFSEvent(this.type, this.params);
         }
 
         override public function toString():String
         {
-            return (formatToString("SFSEvent", "type", "bubbles", "cancelable", "eventPhase", "params"));
+            return formatToString("SFSEvent", "type", "bubbles", "cancelable", "eventPhase", "params");
         }
 
         // #endregion
     }
-}//package grimoire.tools
+}

@@ -1,7 +1,6 @@
 ﻿package grimoire
 {
     import flash.external.ExternalInterface;
-    import grimoire.Root;
     import grimoire.game.Aura;
     import grimoire.game.Bank;
     import grimoire.game.Client;
@@ -16,7 +15,6 @@
     import grimoire.game.Skill;
     import grimoire.game.TempInventory;
     import grimoire.game.World;
-    import grimoire.tools.SFSEvent;
 
     public class Externalizer
     {
@@ -25,9 +23,7 @@
         // This function executes by initiating the callbacks for the External Interface.
         public function init(root:Root):void
         {
-            ///
-            /// Root
-            ///
+            // Root
             this.addCallback("selectArrayObjects", Root.selectArrayObjects);
             this.addCallback("callGameFunction", Root.callGameFunction);
             this.addCallback("sendClientPacket", Root.sendClientPacket);
@@ -40,9 +36,8 @@
             this.addCallback("Password", Root.Password);
             this.addCallback("SetFPS", Root.setFPS);
             this.addCallback("isNull", Root.isNull);
-            ///
-            /// Network
-            ///
+
+            // Network
             this.addCallback("IsTemporarilyKicked", Network.isTemporarilyKicked);
             this.addCallback("AreServersLoaded", Network.areServersLoaded);
             this.addCallback("OnLoginExecute", Network.onLoginExecute);
@@ -56,9 +51,8 @@
             this.addCallback("Connect", Network.connect);
             this.addCallback("Logout", Network.logout);
             this.addCallback("Login", Network.login);
-            ///
-            /// Setting
-            ///
+
+            // Setting
             this.addCallback("DisableAnimations", Setting.disableAnimations);
             this.addCallback("SetInfiniteRange", Setting.toggleInfiniteRange);
             this.addCallback("SetProvokeMonsters", Setting.provokeMonsters);
@@ -71,9 +65,8 @@
             this.addCallback("DestroyPlayers", Setting.hidePlayers);
             this.addCallback("SetWalkSpeed", Setting.setWalkSpeed);
             this.addCallback("EnableChat", Setting.enableChat);
-            ///
-            /// World
-            ///
+
+            // World
             this.addCallback("GetVisibleMonstersInCell", World.getVisibleMonstersInCell);
             this.addCallback("IsMonsterAvailable", World.isMonsterAvailable);
             this.addCallback("CheckPlayerInCombat", World.isPlayerInCombat);
@@ -101,9 +94,8 @@
             this.addCallback("Players", World.players);
             this.addCallback("RoomId", World.roomID);
             this.addCallback("IsBusy", World.isBusy);
-            ///
-            /// Player
-            ///
+
+            // Player
             this.addCallback("ChangeAccessLevel", Player.changeAccessLevel);
             this.addCallback("CancelTargetSelf", Player.cancelTargetSelf);
             this.addCallback("CancelAutoAttack", Player.cancelAutoAttack);
@@ -152,9 +144,8 @@
             this.addCallback("Cell", Player.cell);
             this.addCallback("Map", Player.map);
             this.addCallback("Pad", Player.pad);
-            ///
-            /// Quest
-            ///
+
+            // Quest
             this.addCallback("LoadQuests", Quest.loadMultipleQuests);
             this.addCallback("IsInProgress", Quest.isInProgress);
             this.addCallback("GetQuestTree", Quest.getQuestTree);
@@ -164,9 +155,8 @@
             this.addCallback("GetQuests", Quest.getQuests);
             this.addCallback("LoadQuest", Quest.loadQuest);
             this.addCallback("Accept", Quest.acceptQuest);
-            ///
-            /// Shop
-            ///
+
+            // Shop
             this.addCallback("LoadArmorCustomizer", Shop.loadArmorCustomizer);
             this.addCallback("ResetShopInfo", Shop.resetShopInfo);
             this.addCallback("IsShopLoaded", Shop.isShopLoaded);
@@ -178,30 +168,26 @@
             this.addCallback("CanBuyItem", Shop.canBuyItem);
             this.addCallback("CanBuyItemById", Shop.canBuyItemByID);
             this.addCallback("LoadShop", Shop.load);
-            ///
-            /// DropStack
-            ///
+
+            // DropStack
             this.addCallback("AcceptDrop", DropStack.acceptDrop);
             this.addCallback("CanAcceptDrop", DropStack.canAcceptDrop);
             this.addCallback("RejectDrop", DropStack.rejectDrop);
             this.addCallback("HasDrop", DropStack.hasDrop);
-            ///
-            /// Skill
-            ///
+
+            // Skill
             this.addCallback("CheckSkillAvailability", Skill.isSkillAvailable);
             this.addCallback("AllSkillsAvailable", Skill.allSkillsAvailable);
             this.addCallback("SkillAvailable", Skill.isSkillReady);
             this.addCallback("UseSkill", Skill.skillAction);
             this.addCallback("getRange", Skill.getRange);
-            ///
-            /// Aura
-            ///
+
+            // Aura
             this.addCallback("isAuraWithStrValActive", Aura.isAuraWithStrValActive);
             this.addCallback("auraComparison", Aura.auraComparison);
             this.addCallback("isAuraActive", Aura.isAuraActive);
-            ///
-            /// Client
-            ///
+
+            // Client
             this.addCallback("LoadTravelTriggers", Client.loadTravelTriggers);
             this.addCallback("StartLatencyTimer", Client.startLatencyTimer);
             this.addCallback("IsClientLoading", Client.isClientLoading);
@@ -214,9 +200,8 @@
             this.addCallback("shiftBackgrounds", Client.shiftBackgrounds);
             this.addCallback("setBackgroundIndex", Client.setBackgroundIndex);
             this.addCallback("setAnonymousMode", Client.setAnonymousMode);
-            ///
-            /// Bank
-            ///
+
+            // Bank
             this.addCallback("UsedBankSlots", Bank.usedBankSlots);
             this.addCallback("LoadBankItems", Bank.loadBankItems);
             this.addCallback("IsBankLoaded", Bank.isBankLoaded);
@@ -229,26 +214,22 @@
             this.addCallback("Transfer", Bank.transfer);
             this.addCallback("CanTransfer", Bank.canTransfer);
             this.addCallback("CanBankSwap", Bank.canBankSwap);
-            ///
-            /// Inventory
-            ///
+
+            // Inventory
             this.addCallback("UsedInventorySlots", Inventory.usedInventorySlots);
             this.addCallback("GetInventoryItems", Inventory.inventoryItems);
             this.addCallback("InventorySlots", Inventory.inventorySlots);
             this.addCallback("UsedMiscSlots", Inventory.usedMiscSlots);
-            ///
-            /// TempInventory
-            ///
+
+            // TempInventory
             this.addCallback("ItemIsInTemp", TempInventory.isItemInTemp);
             this.addCallback("GetTempItems", TempInventory.tempItems);
-            ///
-            /// House
-            ///
+
+            // House
             this.addCallback("GetHouseItems", House.houseItems);
             this.addCallback("HouseSlots", House.houseSlots);
-            ///
-            /// Test
-            ///
+
+            // Test
             this.addCallback("GetCellPlayers", World.GetCellPlayers);
         }
 
@@ -256,18 +237,6 @@
         public function addCallback(name:String, func:Function):void
         {
             ExternalInterface.addCallback(name, func);
-        }
-
-        // This function executes by calling the corresponding callback from the External Interface.
-        public function call(name:String, ... rest):*
-        {
-            return (ExternalInterface.call(name, rest));
-        }
-
-        // This function executes by calling the corresponding message to the Debug from the External Interface.
-        public function debug(message:String):void
-        {
-            this.call("debug", message);
         }
 
         // #endregion

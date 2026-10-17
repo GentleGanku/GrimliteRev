@@ -1,6 +1,5 @@
 ﻿package grimoire
 {
-    import grimoire.*;
     import grimoire.backgrounds.*;
     import grimoire.game.*;
     import grimoire.tools.*;
@@ -52,7 +51,7 @@
 
         // #region Constructors
 
-        /// This function creates the instance and the loader.
+        // This function creates the instance and the loader.
         public function Root()
         {
             Root.instance = this;
@@ -87,13 +86,13 @@
         // This function returns the username of the player.
         public static function Username():String
         {
-            return (('"' + username) + '"');
+            return ('"' + username) + '"';
         }
 
         // This function returns the password of the player.
         public static function Password():String
         {
-            return (('"' + password) + '"');
+            return ('"' + password) + '"';
         }
 
         // This function sets the game's FPS to a corresponding number.
@@ -130,7 +129,7 @@
             {
                 cls = Class(gameDomain.getDefinition("it.gotoandplay.smartfoxserver.handlers.ExtHandler"));
                 _handler = new cls(Game.sfc);
-            };
+            }
             if (type == "xml")
             {
                 xmlReceived(packet);
@@ -171,7 +170,7 @@
             var funcName:String = parts.pop();
             var obj:* = _getObjectA(Root.Game, parts);
             var func:Function = (obj[funcName] as Function);
-            return (JSON.stringify(func.apply(null, args)));
+            return JSON.stringify(func.apply(null, args));
         }
 
         public static function selectArrayObjects(path:String, selector:String):String
@@ -179,8 +178,8 @@
             var obj:* = _getObjectS(Root.Game, path);
             if ((!(obj is Array)))
             {
-                return ("");
-            };
+                return "";
+            }
             var array:Array = (obj as Array);
             var narray:Array = new Array();
             var j:int;
@@ -188,8 +187,8 @@
             {
                 narray.push(_getObjectS(array[j], selector));
                 j++;
-            };
-            return (JSON.stringify(narray));
+            }
+            return JSON.stringify(narray);
         }
 
         public static function _getObjectA(root:*, parts:Array):*
@@ -201,19 +200,19 @@
             {
                 obj = obj[parts[i]];
                 i++;
-            };
-            return (obj);
+            }
+            return obj;
         }
 
         public static function _getObjectS(root:*, path:String):*
         {
-            return (_getObjectA(root, path.split(".")));
+            return _getObjectA(root, path.split("."));
         }
 
         public static function getGameObject(path:String):String
         {
             var obj:* = _getObjectS(Root.Game, path);
-            return (JSON.stringify(obj));
+            return JSON.stringify(obj);
         }
 
         public static function setGameObject(path:String, value:*):void
@@ -228,10 +227,10 @@
         {
             try
             {
-                return ((_getObjectS(Root.Game, path) == null).toString());
+                return (_getObjectS(Root.Game, path) == null).toString();
             }
-            catch(ex:Error) {};
-            return ("true");
+            catch (ex:Error) {}
+            return "true";
         }
 
         public function onXtPacketResponse(e:*):void
@@ -246,7 +245,7 @@
                 {
                     ExternalInterface.call("xtPacket", this.filter(e.params.message));
                 }
-            };
+            }
         }
 
         public function onPacketResponse(e:*):void
@@ -321,7 +320,7 @@
             }
         }
 
-        /// This function initializes the super objects.
+        // This function initializes the super objects.
         private function InitSuperObjects():void
         {
             DebugMode = Capabilities.isDebugger;
@@ -393,7 +392,7 @@
             for (info in root.loaderInfo.parameters)
             {
                 Game.params[info] = root.loaderInfo.parameters[info];
-            };
+            }
             Game.params.vars = this.loaderVars;
             Game.params.sURL = this.sURL;
             Game.params.sTitle = this.loaderVars.sTitle;
@@ -435,7 +434,7 @@
             if (Game.mcCharSelect)
             {
                 Game.mcCharSelect.Game.objLogin = objLogin;
-            };
+            }
         }
 
         private function onGameClick(e:MouseEvent):void
@@ -474,7 +473,7 @@
                     if (e.target.text != "None")
                     {
                         ExternalInterface.call("openWebsite", ("http://aqwwiki.wikidot.com/" + e.target.text));
-                    };
+                    }
                     return;
                 case "btCharPage":
                     ExternalInterface.call("openWebsite", ("https://account.aq.com/CharPage?id=" + e.target.parent.txtUserName.text));
@@ -559,7 +558,7 @@
             if (btn == "Login")
             {
                 var server:String = Game.mcCharSelect.mngr.displayAvts[Game.mcCharSelect.pos].server;
-            };
+            }
             username = Game.mcCharSelect.mngr.displayAvts[Game.mcCharSelect.pos].loginInfo.strUsername;
             password = Game.mcCharSelect.mngr.displayAvts[Game.mcCharSelect.pos].loginInfo.strPassword;
             var loginData:* = Game.mcCharSelect.mngr.displayAvts[Game.mcCharSelect.pos].loginInfo;
@@ -578,8 +577,8 @@
                 if (btn == "Login")
                 {
                     waitFor(Network.areServersLoaded, Network.connect, [server])
-                };
-            };
+                }
+            }
         }
 
         private function filter(e:String):String
@@ -587,27 +586,27 @@
             if (e.indexOf("[Sending - STR]: ") > -1)
             {
                 e = e.replace("[Sending - STR]: ", "");
-            };
+            }
             if (e.indexOf("[Sending - JSON]: ") > -1)
             {
                 e = e.replace("[Sending - JSON]: ", "");
-            };
+            }
             if (e.indexOf("[ RECEIVED ]: ") > -1)
             {
                 e = e.replace("[ RECEIVED ]: ", "");
-            };
+            }
             if (e.indexOf("[Sending]: ") > -1)
             {
                 e = e.replace("[Sending]: ", "");
-            };
+            }
             if (e.indexOf(", (len: ") > -1)
             {
                 var index:int = e.indexOf(", (len: ");
                 e = e.slice(0, index);
-            };
-            return (e);
+            }
+            return e;
         }
 
         // #endregion
     }
-}//package grimoire
+}

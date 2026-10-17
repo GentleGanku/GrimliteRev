@@ -1,7 +1,7 @@
 ﻿package grimoire.backgrounds
 {
     import flash.display.MovieClip;
-    import flash.events.*
+    // import flash.events.MouseEvent;
 
     public class FableForest extends MovieClip
     {
@@ -13,6 +13,7 @@
             this.x = -435;
             this.y = -218;
 
+            // Uncomment these, the import and the two handlers below to drag the background into place and log its x and y.
             // this.addEventListener(MouseEvent.MOUSE_DOWN, this.onDragStart);
             // this.addEventListener(MouseEvent.MOUSE_UP, this.onDragEnd);
         }
@@ -22,17 +23,17 @@
         // #region Methods
 
         // This function drags the background's position to a corresponding x and y coordinate.
-        private function onDragStart(e:MouseEvent):void
-        {
-            this.startDrag();
-        }
+        // private function onDragStart(e:MouseEvent):void
+        // {
+        //     this.startDrag();
+        // }
 
         // This function stops the background's position from being dragged, and logs the final x and y coordinates.
-        private function onDragEnd(e:MouseEvent):void
-        {
-            this.stopDrag();
-            trace("Background position has been changed to x: " + this.x + ", y: " + this.y + ".");
-        }
+        // private function onDragEnd(e:MouseEvent):void
+        // {
+        //     this.stopDrag();
+        //     trace("Background position has been changed to x: " + this.x + ", y: " + this.y + ".");
+        // }
 
         // #endregion
     }

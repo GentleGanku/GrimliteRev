@@ -8,7 +8,6 @@
 
         public static var skillRange:String = "";
         private static var game:* = Root.Game;
-        private static var pref:* = Root.Game.userPreference;
 
         // #endregion
 
@@ -17,19 +16,19 @@
         // This function returns a number for whether all of the player's skills are available or not.
         public static function allSkillsAvailable():int
         {
-            return (Math.max(skillReady(game.world.actions.active[1]), skillReady(game.world.actions.active[2]), skillReady(game.world.actions.active[3]), skillReady(game.world.actions.active[4])));
+            return Math.max(skillReady(game.world.actions.active[1]), skillReady(game.world.actions.active[2]), skillReady(game.world.actions.active[3]), skillReady(game.world.actions.active[4]));
         }
 
         // This function returns a number for whether the player's corresponding skill is available or not.
         public static function isSkillReady(index:String):int
         {
-            return (skillReady(game.world.actions.active[parseInt(index)]));
+            return skillReady(game.world.actions.active[parseInt(index)]);
         }
 
         // This function returns a boolean whether the player's corresponding skill is available or not.
         public static function isSkillAvailable(index:String):String
         {
-            return ((skillAvailability(game.world.actions.active[parseInt(index)])) ? Root.trueString : Root.falseString);
+            return (skillAvailability(game.world.actions.active[parseInt(index)])) ? Root.trueString : Root.falseString;
         }
 
         // This function executes the corresponding skill.
@@ -42,24 +41,24 @@
             {
                 game.world.myAvatar.target = null;
                 return;
-            };
+            }
             if ((skill.tgt == "s") || (skill.tgt == "f"))
             {
                 tgt = game.world.myAvatar.target;
                 game.world.myAvatar.target = game.world.myAvatar;
-            };
+            }
             if ((game.world.myAvatar.target != null) && (game.world.myAvatar.target.dataLeaf.intHP > 0))
             {
                 game.world.approachTarget();
                 if (skillAvailability(skill) && (game.world.myAvatar.dataLeaf.intMP >= skill.mp) && skill.isOK && (skillLock == null || !skillLock))
                 {
                     game.world.testAction(skill);
-                };
-            };
+                }
+            }
             if ((skill.tgt == "s") || (skill.tgt == "f"))
             {
                 game.world.myAvatar.target = tgt;
-            };
+            }
         }
 
         // This function fills the skillRange string with the skills' original range.
@@ -84,14 +83,14 @@
             {
                 if (game.world.autoActionTimer.running)
                 {
-                    return (false);
-                };
-                return (true);
-            };
+                    return false;
+                }
+                return true;
+            }
             if ((_local_2 - game.world.GCDTS) < game.world.GCD)
             {
-                return (false);
-            };
+                return false;
+            }
             if (skill.OldCD != null)
             {
                 _local_4 = Math.round((skill.OldCD * _local_3));
@@ -99,13 +98,13 @@
             else
             {
                 _local_4 = Math.round((skill.cd * _local_3));
-            };
+            }
             if ((_local_2 - skill.ts) >= _local_4)
             {
                 delete skill.OldCD;
-                return (true);
-            };
-            return (false);
+                return true;
+            }
+            return false;
         }
 
         // This function returns a number for whether the skill is ready or not.
@@ -122,18 +121,18 @@
             else
             {
                 _loc4_ = Math.round((param1.cd * _loc3_));
-            };
+            }
             var _loc5_:Number = (game.world.GCD - (_loc2_ - game.world.GCDTS));
             if (_loc5_ < 0)
             {
                 _loc5_ = 0;
-            };
+            }
             var _loc6_:Number = (_loc4_ - (_loc2_ - param1.ts));
             if (_loc6_ < 0)
             {
                 _loc6_ = 0;
-            };
-            return (Math.max(_loc5_, _loc6_));
+            }
+            return Math.max(_loc5_, _loc6_);
         }
 
         // #endregion

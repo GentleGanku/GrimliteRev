@@ -1,17 +1,13 @@
 ﻿package grimoire.game
 {
-    import flash.events.MouseEvent;
     import flash.filters.GlowFilter;
-    import flash.utils.getQualifiedClassName;
     import grimoire.Root;
-    import grimoire.game.Inventory;
 
     public class Player
     {
         // #region Fields
 
         private static var game:* = Root.Game;
-        private static var pref:* = Root.Game.userPreference;
 
         // #endregion
 
@@ -20,97 +16,97 @@
         // This function returns a boolean whether the player is logged into the game or not.
         public static function isLoggedIn():String
         {
-            return (((game != null) && (game.sfc != null) && game.sfc.isConnected) ? Root.trueString : Root.falseString);
+            return ((game != null) && (game.sfc != null) && game.sfc.isConnected) ? Root.trueString : Root.falseString;
         }
 
         // This function returns the player's cell.
         public static function cell():String
         {
-            return (('"' + game.world.strFrame) + '"');
+            return ('"' + game.world.strFrame) + '"';
         }
 
         // This function returns the player's faction datas.
         public static function factions():String
         {
-            return (JSON.stringify(game.world.myAvatar.factions));
+            return JSON.stringify(game.world.myAvatar.factions);
         }
 
         // This function returns the player's pad.
         public static function pad():String
         {
-            return (('"' + game.world.strPad) + '"');
+            return ('"' + game.world.strPad) + '"';
         }
 
         // This function returns the player's state.
         public static function state():int
         {
-            return (game.world.myAvatar.dataLeaf.intState);
+            return game.world.myAvatar.dataLeaf.intState;
         }
 
         // This function returns the player's current health.
         public static function health():int
         {
-            return (game.world.myAvatar.dataLeaf.intHP);
+            return game.world.myAvatar.dataLeaf.intHP;
         }
 
         // This function returns the player's maximum health.
         public static function maxHealth():int
         {
-            return (game.world.myAvatar.dataLeaf.intHPMax);
+            return game.world.myAvatar.dataLeaf.intHPMax;
         }
 
         // This function returns the player's current mana.
         public static function mana():int
         {
-            return (game.world.myAvatar.dataLeaf.intMP);
+            return game.world.myAvatar.dataLeaf.intMP;
         }
 
         // This function returns the player's maximum mana.
         public static function maxMana():int
         {
-            return (game.world.myAvatar.dataLeaf.intMPMax);
+            return game.world.myAvatar.dataLeaf.intMPMax;
         }
 
         // This function returns the name of the map where the player is currently in.
         public static function map():String
         {
-            return (('"' + game.world.strMapName) + '"');
+            return ('"' + game.world.strMapName) + '"';
         }
 
         // This function returns the player's current level.
         public static function level():int
         {
-            return (game.world.myAvatar.dataLeaf.intLevel);
+            return game.world.myAvatar.dataLeaf.intLevel;
         }
 
         // This function returns a boolean whether the player is currently member or not.
         public static function isMember():String
         {
-            return ((game.world.myAvatar.objData.iUpgDays > -1) ? Root.trueString : Root.falseString);
+            return (game.world.myAvatar.objData.iUpgDays > -1) ? Root.trueString : Root.falseString;
         }
 
         // This function returns the player's current gold.
         public static function gold():int
         {
-            return (game.world.myAvatar.objData.intGold);
+            return game.world.myAvatar.objData.intGold;
         }
 
         // This function returns a boolean whether the player has a target or not.
         public static function hasTarget():String
         {
-            return (((game.world.myAvatar.target != null) && (game.world.myAvatar.target.dataLeaf.intHP > 0)) ? Root.trueString : Root.falseString);
+            return ((game.world.myAvatar.target != null) && (game.world.myAvatar.target.dataLeaf.intHP > 0)) ? Root.trueString : Root.falseString;
         }
 
         // This function returns a boolean whether the player is AFK or not.
         public static function isAFK():String
         {
-            return ((!game.world.myAvatar.dataLeaf.afk) ? Root.falseString : Root.trueString);
+            return (!game.world.myAvatar.dataLeaf.afk) ? Root.falseString : Root.trueString;
         }
 
         // This function returns the player's current coordinates.
         public static function position():String
         {
-            return (JSON.stringify([game.world.myAvatar.pMC.x, game.world.myAvatar.pMC.y]));
+            return JSON.stringify([game.world.myAvatar.pMC.x, game.world.myAvatar.pMC.y]);
         }
 
         public static function walkToPoint(tx:String, ty:String):void
@@ -137,7 +133,7 @@
             if (game.world.myAvatar.target != null)
             {
                 game.world.setTarget(null);
-            };
+            }
         }
 
         // This function executes by removing the player's target if it's on them.
@@ -146,7 +142,7 @@
             if (game.world.myAvatar.target == game.world.myAvatar)
             {
                 game.world.cancelTarget();
-            };
+            }
         }
 
         // This function executes by toggling the player's mute ability.
@@ -159,7 +155,7 @@
             else
             {
                 Root.Game.chatF.muteMe(300000);
-            };
+            }
         }
 
         // This function executes by attacking the corresponding monster.
@@ -170,7 +166,7 @@
             {
                 game.world.setTarget(monster);
                 game.world.approachTarget();
-            };
+            }
         }
 
         // This function executes by jumping in to the corresponding cell and pad.
@@ -194,7 +190,6 @@
         // This function executes by equipping the corresponding item.
         public static function equipItem(itemID:String):void
         {
-            /*            rootClass.sfc.sendXtMessage("zm", "equipItem", [parseInt(itemID)], "str", curRoom);*/
             game.world.sendEquipItemRequest({
                 "ItemID":parseInt(itemID)
             });
@@ -238,7 +233,7 @@
             if (item != null)
             {
                 game.world.sendUseItemRequest(item);
-            };
+            }
         }
 
         // This function executes by getting the corresponding map item.
@@ -252,51 +247,51 @@
         {
             if (boostType.toLowerCase().indexOf("gold") > -1)
             {
-                return ((game.world.myAvatar.objData.iBoostG > 0) ? Root.trueString : Root.falseString);
+                return (game.world.myAvatar.objData.iBoostG > 0) ? Root.trueString : Root.falseString;
             }
             else if (boostType.toLowerCase().indexOf("xp") > -1)
             {
-                return ((game.world.myAvatar.objData.iBoostXP > 0) ? Root.trueString : Root.falseString);
+                return (game.world.myAvatar.objData.iBoostXP > 0) ? Root.trueString : Root.falseString;
             }
             else if (boostType.toLowerCase().indexOf("rep") > -1)
             {
-                return ((game.world.myAvatar.objData.iBoostRep > 0) ? Root.trueString : Root.falseString);
+                return (game.world.myAvatar.objData.iBoostRep > 0) ? Root.trueString : Root.falseString;
             }
             else if (boostType.toLowerCase().indexOf("class") > -1)
             {
-                return ((game.world.myAvatar.objData.iBoostCP > 0) ? Root.trueString : Root.falseString);
+                return (game.world.myAvatar.objData.iBoostCP > 0) ? Root.trueString : Root.falseString;
             }
-            return (Root.falseString);
+            return Root.falseString;
         }
 
         // This function returns the player's class name.
         public static function className():String
         {
-            return (('"' + game.world.myAvatar.objData.strClassName.toUpperCase()) + '"');
+            return ('"' + game.world.myAvatar.objData.strClassName.toUpperCase()) + '"';
         }
 
         // This function returns the player's User ID.
         public static function userID():int
         {
-            return (game.world.myAvatar.uid);
+            return game.world.myAvatar.uid;
         }
 
         // This function returns the player's character ID.
         public static function charID():int
         {
-            return (game.world.myAvatar.objData.CharID);
+            return game.world.myAvatar.objData.CharID;
         }
 
         // This function returns the player's gender.
         public static function gender():String
         {
-            return (('"' + game.world.myAvatar.objData.strGender.toUpperCase()) + '"');
+            return ('"' + game.world.myAvatar.objData.strGender.toUpperCase()) + '"';
         }
 
         // This function returns the player's datas.
         public static function playerData():Object
         {
-            return (game.world.myAvatar.objData);
+            return game.world.myAvatar.objData;
         }
 
         // This function executes by equipping the corresponding item on client-side.
@@ -305,7 +300,7 @@
             if (game.world.myAvatar.pMC.pAV.objData.eqp.Weapon == null)
             {
                 return;
-            };
+            }
             if (slot == "Off")
             {
                 game.world.myAvatar.pMC.pAV.objData.eqp.Weapon.sLink = equip.sLink;
@@ -316,13 +311,13 @@
             {
                 game.world.myAvatar.objData.eqp[slot] = equip;
                 game.world.myAvatar.loadMovieAtES(slot, equip.sFile, equip.sLink);
-            };
+            }
         }
 
         // This function returns the player's equipment datas.
         public static function getEquip(itemID:int):String
         {
-            return (JSON.stringify(game.world.avatars[itemID].objData.eqp));
+            return JSON.stringify(game.world.avatars[itemID].objData.eqp);
         }
 
         // This function executes by changing the player's name on client-side.
@@ -364,7 +359,7 @@
                 game.world.myAvatar.pMC.pname.ti.textColor = 16698168;
                 game.world.myAvatar.pMC.pname.filters = [new GlowFilter(0, 1, 3, 3, 64, 1)];
                 game.world.myAvatar.objData.intAccessLevel = 60;
-            };
+            }
         }
 
         // This function executes by changing the player's class name on client-side.
@@ -378,7 +373,7 @@
         public static function hasTargetByID(monID:int):String
         {
             var monster:Object = game.world.getMonster(monID);
-            return (((game.world.myAvatar.target == monster) && (game.world.myAvatar.target.dataLeaf.intHP > 0)) ? Root.trueString : Root.falseString);
+            return ((game.world.myAvatar.target == monster) && (game.world.myAvatar.target.dataLeaf.intHP > 0)) ? Root.trueString : Root.falseString;
         }
 
         // This function executes by restarting the player's AFK timer.
@@ -398,9 +393,9 @@
         // This function returns a boolean for whether the player's avatar has loaded or not.
         public static function isAvatarLoaded():String
         {
-            return (((game.world.myAvatar.invLoaded) || (game.world.myAvatar.pMC.artLoaded())) ? Root.trueString : Root.falseString);
+            return ((game.world.myAvatar.invLoaded) || (game.world.myAvatar.pMC.artLoaded())) ? Root.trueString : Root.falseString;
         }
 
         // #endregion
     }
-}//package grimoire.game
+}
