@@ -32,17 +32,17 @@
         }
 
         // This function returns a boolean for whether the corresponding action is available or not.
-        public static function isActionAvailable(_arg_1:String):String
+        public static function isActionAvailable(action:String):String
         {
-            var _local_2:*;
-            var _local_3:*;
-            var _local_4:*;
-            var _local_5:*;
-            _local_2 = game.world.lock[_arg_1];
-            _local_3 = new Date();
-            _local_4 = _local_3.getTime();
-            _local_5 = (_local_4 - _local_2.ts);
-            return (_local_5 < _local_2.cd) ? Root.falseString : Root.trueString;
+            var lock:*;
+            var date:*;
+            var now:*;
+            var elapsed:*;
+            lock = game.world.lock[action];
+            date = new Date();
+            now = date.getTime();
+            elapsed = (now - lock.ts);
+            return (elapsed < lock.cd) ? Root.falseString : Root.trueString;
         }
 
         // This function returns the players' datas in the current map.
@@ -54,52 +54,52 @@
         // This function returns the monsters' datas in the current cell.
         public static function getMonstersInCell():String
         {
-            var _loc3_:* = null;
-            var _loc4_:Object;
-            var _loc5_:Object;
-            var _loc1_:Array = game.world.getMonstersByCell(Root.Game.world.strFrame);
-            var _loc2_:Array = [];
-            for (_loc3_ in _loc1_)
+            var key:* = null;
+            var monster:Object;
+            var info:Object;
+            var monsters:Array = game.world.getMonstersByCell(Root.Game.world.strFrame);
+            var list:Array = [];
+            for (key in monsters)
             {
-                _loc4_ = _loc1_[_loc3_];
-                _loc5_ = new Object();
-                _loc5_.sRace = _loc4_.objData.sRace;
-                _loc5_.strMonName = _loc4_.objData.strMonName;
-                _loc5_.MonID = _loc4_.dataLeaf.MonID;
-                _loc5_.iLvl = _loc4_.dataLeaf.iLvl;
-                _loc5_.intState = _loc4_.dataLeaf.intState;
-                _loc5_.intHP = _loc4_.dataLeaf.intHP;
-                _loc5_.intHPMax = _loc4_.dataLeaf.intHPMax;
-                _loc2_.push(_loc5_);
+                monster = monsters[key];
+                info = new Object();
+                info.sRace = monster.objData.sRace;
+                info.strMonName = monster.objData.strMonName;
+                info.MonID = monster.dataLeaf.MonID;
+                info.iLvl = monster.dataLeaf.iLvl;
+                info.intState = monster.dataLeaf.intState;
+                info.intHP = monster.dataLeaf.intHP;
+                info.intHPMax = monster.dataLeaf.intHPMax;
+                list.push(info);
             }
-            return JSON.stringify(_loc2_);
+            return JSON.stringify(list);
         }
 
         // This function returns the visible monsters' datas in the current cell.
         public static function getVisibleMonstersInCell():String
         {
-            var _loc3_:* = null;
-            var _loc4_:Object;
-            var _loc5_:Object;
-            var _loc1_:Array = Root.Game.world.getMonstersByCell(Root.Game.world.strFrame);
-            var _loc2_:Array = [];
-            for (_loc3_ in _loc1_)
+            var key:* = null;
+            var monster:Object;
+            var info:Object;
+            var monsters:Array = Root.Game.world.getMonstersByCell(Root.Game.world.strFrame);
+            var list:Array = [];
+            for (key in monsters)
             {
-                _loc4_ = _loc1_[_loc3_];
-                if (!(((_loc4_.pMC == null) || (!(_loc4_.pMC.visible))) || (_loc4_.dataLeaf.intState <= 0)))
+                monster = monsters[key];
+                if (!(((monster.pMC == null) || (!(monster.pMC.visible))) || (monster.dataLeaf.intState <= 0)))
                 {
-                    _loc5_ = new Object();
-                    _loc5_.sRace = _loc4_.objData.sRace;
-                    _loc5_.strMonName = _loc4_.objData.strMonName;
-                    _loc5_.MonID = _loc4_.dataLeaf.MonID;
-                    _loc5_.iLvl = _loc4_.dataLeaf.iLvl;
-                    _loc5_.intState = _loc4_.dataLeaf.intState;
-                    _loc5_.intHP = _loc4_.dataLeaf.intHP;
-                    _loc5_.intHPMax = _loc4_.dataLeaf.intHPMax;
-                    _loc2_.push(_loc5_);
+                    info = new Object();
+                    info.sRace = monster.objData.sRace;
+                    info.strMonName = monster.objData.strMonName;
+                    info.MonID = monster.dataLeaf.MonID;
+                    info.iLvl = monster.dataLeaf.iLvl;
+                    info.intState = monster.dataLeaf.intState;
+                    info.intHP = monster.dataLeaf.intHP;
+                    info.intHPMax = monster.dataLeaf.intHPMax;
+                    list.push(info);
                 }
             }
-            return JSON.stringify(_loc2_);
+            return JSON.stringify(list);
         }
 
         // This function executes by setting the player's spawn point on the corresponding cell and pad.
@@ -151,16 +151,16 @@
         }
 
         // This function returns the monster object of the corresponding monster name.
-        public static function getMonsterByName(param1:String):Object
+        public static function getMonsterByName(name:String):Object
         {
-            var _loc2_:Object;
-            var _loc3_:String;
-            for each (_loc2_ in game.world.getMonstersByCell(game.world.strFrame))
+            var monster:Object;
+            var monName:String;
+            for each (monster in game.world.getMonstersByCell(game.world.strFrame))
             {
-                _loc3_ = _loc2_.pMC.pname.ti.text.toLowerCase();
-                if ((((_loc3_.indexOf(param1.toLowerCase()) > -1) || (param1 == "*")) && (_loc2_.dataLeaf.intState > 0)))
+                monName = monster.pMC.pname.ti.text.toLowerCase();
+                if ((((monName.indexOf(name.toLowerCase()) > -1) || (name == "*")) && (monster.dataLeaf.intState > 0)))
                 {
-                    return _loc2_;
+                    return monster;
                 }
             }
             return null;
@@ -169,13 +169,13 @@
         // This function returns the list of cells in the current map.
         public static function getCells():String
         {
-            var _loc2_:Object;
-            var _loc1_:Array = [];
-            for each (_loc2_ in game.world.map.currentScene.labels)
+            var label:Object;
+            var cells:Array = [];
+            for each (label in game.world.map.currentScene.labels)
             {
-                _loc1_.push(_loc2_.name);
+                cells.push(label.name);
             }
-            return JSON.stringify(_loc1_);
+            return JSON.stringify(cells);
         }
 
         // This function returns the list of pads in the current cell.
@@ -314,13 +314,13 @@
         // This function returns the item tree of the corresponding item.
         public static function getItemTree():String
         {
-            var _loc2_:* = null;
-            var _loc1_:Array = [];
-            for (_loc2_ in game.world.invTree)
+            var key:* = null;
+            var items:Array = [];
+            for (key in game.world.invTree)
             {
-                _loc1_.push(game.world.invTree[_loc2_]);
+                items.push(game.world.invTree[key]);
             }
-            return JSON.stringify(_loc1_);
+            return JSON.stringify(items);
         }
 
         // This function returns the room ID of the current map.
@@ -356,12 +356,12 @@
         public static function isPlayerInCombat(name:String):String
         {
             var player:Object;
-            var p:Object;
+            var key:Object;
             var list:Object = game.world.uoTree;
             var bool:String = Root.falseString;
-            for (p in list)
+            for (key in list)
             {
-                player = list[p];
+                player = list[key];
                 if ((player.strUsername.toLowerCase() == name.toLowerCase()) && (player.intState == 2))
                 {
                     bool = Root.trueString;
@@ -385,24 +385,24 @@
         // This function returns the avatar object of the corresponding player's name.
         public static function getAvatar(name:String):Object
         {
-            var u:*;
+            var avatar:*;
             var uName:String;
-            var a:* = game.world.avatars;
-            for each (u in a)
+            var avatars:* = game.world.avatars;
+            for each (avatar in avatars)
             {
-                if (u.pMC)
+                if (avatar.pMC)
                 {
                     if (name)
                     {
-                        uName = u.pnm.toLowerCase();
+                        uName = avatar.pnm.toLowerCase();
                         if ((uName.indexOf(name.toLowerCase()) > -1) || (name == "*"))
                         {
-                            return u;
+                            return avatar;
                         }
                     }
                     else
                     {
-                        return u;
+                        return avatar;
                     }
                 }
             }
@@ -475,24 +475,24 @@
         }
 
         // Test function.
-        public static function GetCellPlayers(_arg_1:*):*
+        public static function GetCellPlayers(name:*):*
         {
-            var _local_2:*;
-            var _local_3:*;
-            var _local_4:* = Root.Game.world.uoTree;
-            var _local_5:String = Root.falseString;
-            for (_local_3 in _local_4)
+            var player:*;
+            var key:*;
+            var users:* = Root.Game.world.uoTree;
+            var result:String = Root.falseString;
+            for (key in users)
             {
-                _local_2 = _local_4[_local_3];
-                if (_local_2.strUsername.toLowerCase() == _arg_1.toLowerCase())
+                player = users[key];
+                if (player.strUsername.toLowerCase() == name.toLowerCase())
                 {
-                    if (_local_2.strFrame.toLowerCase() == Root.Game.world.strFrame.toLowerCase())
+                    if (player.strFrame.toLowerCase() == Root.Game.world.strFrame.toLowerCase())
                     {
-                        _local_5 = Root.trueString;
+                        result = Root.trueString;
                     }
                 }
             }
-            return _local_5;
+            return result;
         }
 
         // #endregion

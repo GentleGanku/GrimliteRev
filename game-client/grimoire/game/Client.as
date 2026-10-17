@@ -178,10 +178,10 @@
             funcYes = fYes;
             funcNo = fNo;
             var child:MovieClip;
-            var num:int = 0;
-            while (num < game.ui.ModalStack.numChildren)
+            var i:int = 0;
+            while (i < game.ui.ModalStack.numChildren)
             {
-                child = (game.ui.ModalStack.getChildAt(num) as MovieClip);
+                child = (game.ui.ModalStack.getChildAt(i) as MovieClip);
                 if (child.cnt.strBody.text == text)
                 {
                     child.greedy = stayOnScreen;
@@ -194,7 +194,7 @@
                     }
                     break;
                 }
-                num++;
+                i++;
             }
         }
 

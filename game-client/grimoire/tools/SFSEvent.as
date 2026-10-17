@@ -45,10 +45,10 @@
 
         // #region Constructors
 
-        public function SFSEvent(param1:String, param2:Object)
+        public function SFSEvent(type:String, params:Object)
         {
-            super(param1);
-            this.params = param2;
+            super(type);
+            this.params = params;
         }
 
         // #endregion

@@ -581,30 +581,30 @@
             }
         }
 
-        private function filter(e:String):String
+        private function filter(message:String):String
         {
-            if (e.indexOf("[Sending - STR]: ") > -1)
+            if (message.indexOf("[Sending - STR]: ") > -1)
             {
-                e = e.replace("[Sending - STR]: ", "");
+                message = message.replace("[Sending - STR]: ", "");
             }
-            if (e.indexOf("[Sending - JSON]: ") > -1)
+            if (message.indexOf("[Sending - JSON]: ") > -1)
             {
-                e = e.replace("[Sending - JSON]: ", "");
+                message = message.replace("[Sending - JSON]: ", "");
             }
-            if (e.indexOf("[ RECEIVED ]: ") > -1)
+            if (message.indexOf("[ RECEIVED ]: ") > -1)
             {
-                e = e.replace("[ RECEIVED ]: ", "");
+                message = message.replace("[ RECEIVED ]: ", "");
             }
-            if (e.indexOf("[Sending]: ") > -1)
+            if (message.indexOf("[Sending]: ") > -1)
             {
-                e = e.replace("[Sending]: ", "");
+                message = message.replace("[Sending]: ", "");
             }
-            if (e.indexOf(", (len: ") > -1)
+            if (message.indexOf(", (len: ") > -1)
             {
-                var index:int = e.indexOf(", (len: ");
-                e = e.slice(0, index);
+                var index:int = message.indexOf(", (len: ");
+                message = message.slice(0, index);
             }
-            return e;
+            return message;
         }
 
         // #endregion

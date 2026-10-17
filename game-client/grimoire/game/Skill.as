@@ -76,9 +76,9 @@
         // This function returns a boolean whether the corresponding skill is available or not.
         private static function skillAvailability(skill:*):Boolean
         {
-            var _local_4:int;
-            var _local_2:Number = new Date().getTime();
-            var _local_3:Number = (1 - Math.min(Math.max(game.world.myAvatar.dataLeaf.sta.$tha, -1), 0.5));
+            var cooldown:int;
+            var now:Number = new Date().getTime();
+            var hasteFactor:Number = (1 - Math.min(Math.max(game.world.myAvatar.dataLeaf.sta.$tha, -1), 0.5));
             if (skill.auto)
             {
                 if (game.world.autoActionTimer.running)
@@ -87,19 +87,19 @@
                 }
                 return true;
             }
-            if ((_local_2 - game.world.GCDTS) < game.world.GCD)
+            if ((now - game.world.GCDTS) < game.world.GCD)
             {
                 return false;
             }
             if (skill.OldCD != null)
             {
-                _local_4 = Math.round((skill.OldCD * _local_3));
+                cooldown = Math.round((skill.OldCD * hasteFactor));
             }
             else
             {
-                _local_4 = Math.round((skill.cd * _local_3));
+                cooldown = Math.round((skill.cd * hasteFactor));
             }
-            if ((_local_2 - skill.ts) >= _local_4)
+            if ((now - skill.ts) >= cooldown)
             {
                 delete skill.OldCD;
                 return true;
@@ -108,31 +108,31 @@
         }
 
         // This function returns a number for whether the skill is ready or not.
-        private static function skillReady(param1:*):int
+        private static function skillReady(skill:*):int
         {
-            var _loc4_:Number = NaN;
-            var _loc2_:Number = new Date().getTime();
-            var _loc3_:Number = (1 - Math.min(Math.max(game.world.myAvatar.dataLeaf.sta.$tha, -1), 0.5));
-            if (param1.OldCD != null)
+            var cooldown:Number = NaN;
+            var now:Number = new Date().getTime();
+            var hasteFactor:Number = (1 - Math.min(Math.max(game.world.myAvatar.dataLeaf.sta.$tha, -1), 0.5));
+            if (skill.OldCD != null)
             {
-                _loc4_ = Math.round((param1.OldCD * _loc3_));
-                delete param1.OldCD;
+                cooldown = Math.round((skill.OldCD * hasteFactor));
+                delete skill.OldCD;
             }
             else
             {
-                _loc4_ = Math.round((param1.cd * _loc3_));
+                cooldown = Math.round((skill.cd * hasteFactor));
             }
-            var _loc5_:Number = (game.world.GCD - (_loc2_ - game.world.GCDTS));
-            if (_loc5_ < 0)
+            var globalLeft:Number = (game.world.GCD - (now - game.world.GCDTS));
+            if (globalLeft < 0)
             {
-                _loc5_ = 0;
+                globalLeft = 0;
             }
-            var _loc6_:Number = (_loc4_ - (_loc2_ - param1.ts));
-            if (_loc6_ < 0)
+            var skillLeft:Number = (cooldown - (now - skill.ts));
+            if (skillLeft < 0)
             {
-                _loc6_ = 0;
+                skillLeft = 0;
             }
-            return Math.max(_loc5_, _loc6_);
+            return Math.max(globalLeft, skillLeft);
         }
 
         // #endregion
