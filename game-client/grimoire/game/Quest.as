@@ -5,83 +5,80 @@
 
     public class Quest
     {
-		private static var game:* = Root.Game;
-		private static var pref:* = Root.Game.userPreference;
+        // #region Fields
 
-		// This function returns a boolean for whether the corresponding quest is in progress or not.
+        private static var game:* = Root.Game;
+        private static var pref:* = Root.Game.userPreference;
+
+        // #endregion
+
+        // #region Methods
+
+        // This function returns a boolean for whether the corresponding quest is in progress or not.
         public static function isInProgress(questID:String):String
         {
             return (!game.world.isQuestInProgress(parseInt(questID)) ? Root.falseString : Root.trueString);
         }
 
-		// This function executes by trying to complete the corresponding quest.
+        // This function executes by trying to complete the corresponding quest.
         public static function completeQuest(questID:String, itemID:String="-1", bool:Boolean=false):void
         {
-			if (game.world.coolDown("tryQuestComplete"))
+            if (game.world.coolDown("tryQuestComplete"))
             {
-				game.world.tryQuestComplete(parseInt(questID), parseInt(itemID), bool);
-			}
+                game.world.tryQuestComplete(parseInt(questID), parseInt(itemID), bool);
+            }
         }
 
-		// This function executes by trying to accept the corresponding quest.
+        // This function executes by trying to accept the corresponding quest.
         public static function acceptQuest(questID:String):void
         {
-			if (game.world.coolDown("acceptQuest"))
+            if (game.world.coolDown("acceptQuest"))
             {
-				game.world.acceptQuest(parseInt(questID));
-			}
+                game.world.acceptQuest(parseInt(questID));
+            }
         }
 
-		// This function executes by loading the corresponding quest.
+        // This function executes by loading the corresponding quest.
         public static function loadQuest(quest:String):void
         {
             game.world.showQuests([quest], "q");
         }
 
-		// This function executes by loading the corresponding list of quests.
+        // This function executes by loading the corresponding list of quests.
         public static function loadMultipleQuests(quests:String):void
         {
             game.world.showQuests(quests.split(","), "q");
         }
 
-		// This function executes by getting datas from the corresponding list of quests.
+        // This function executes by getting datas from the corresponding list of quests.
         public static function getQuests(quests:String):void
         {
             game.world.getQuests(quests.split(","));
         }
-		
-		// This function returns a boolean whether the corresponding quest is completely available or not.
+
+        // This function returns a boolean whether the corresponding quest is completely available or not.
         public static function isAvailable(questID:String):String
         {
-			var quest:Object = game.world.questTree[parseInt(questID)];
-			var boolean:String = Root.trueString;
-			if (((((quest.sField != null && game.world.getAchievement(quest.sField, quest.iIndex) != 0) || quest.iLvl > game.world.myAvatar.objData.intLevel)
-				|| (quest.bUpg == 1 && !game.world.myAvatar.isUpgraded())
-				|| (quest.iSlot >= 0 && game.world.getQuestValue(quest.iSlot) < (Math.abs(quest.iValue) - 1)))
-				|| (quest.iClass > 0 && game.world.myAvatar.getCPByID(quest.iClass) < quest.iReqCP))
-				|| (quest.FactionID > 1 && game.world.myAvatar.getRep(quest.FactionID) < quest.iReqRep))
-			{
-				boolean = Root.falseString;
-			};
+            var quest:Object = game.world.questTree[parseInt(questID)];
+            var boolean:String = Root.trueString;
+            if (((((quest.sField != null && game.world.getAchievement(quest.sField, quest.iIndex) != 0) || quest.iLvl > game.world.myAvatar.objData.intLevel)
+                || (quest.bUpg == 1 && !game.world.myAvatar.isUpgraded())
+                || (quest.iSlot >= 0 && game.world.getQuestValue(quest.iSlot) < (Math.abs(quest.iValue) - 1)))
+                || (quest.iClass > 0 && game.world.myAvatar.getCPByID(quest.iClass) < quest.iReqCP))
+                || (quest.FactionID > 1 && game.world.myAvatar.getRep(quest.FactionID) < quest.iReqRep))
+            {
+                boolean = Root.falseString;
+            };
             return (boolean);
         }
 
-		// This function returns a boolean whether the corresponding quest can be completed or not.
+        // This function returns a boolean whether the corresponding quest can be completed or not.
         public static function canComplete(questID:String):String
         {
             return ((game.world.canTurnInQuest(parseInt(questID)) && (getQuestValidation(parseInt(questID)) == "")) ? Root.trueString : Root.falseString);
         }
-			
-		// This function clones an object from the corresponding target.
-        private static function cloneObject(obj:Object):Object
-        {
-            var _loc2_:ByteArray = new ByteArray();
-            _loc2_.writeObject(obj);
-            _loc2_.position = 0;
-            return (_loc2_.readObject());
-        }
 
-		// This function returns the quest tree of every quest available.
+        // This function returns the quest tree of every quest available.
         public static function getQuestTree():String
         {
             var _loc2_:Object;
@@ -142,7 +139,7 @@
             return (JSON.stringify(_loc1_));
         }
 
-		// This function returns a boolean whether the player has the required items or not (for the quest).
+        // This function returns a boolean whether the player has the required items or not (for the quest).
         public static function hasRequiredItems(param1:Object):String
         {
             var _loc2_:Object;
@@ -165,7 +162,7 @@
             return (Root.trueString);
         }
 
-		// This function returns a string from the quest validation.
+        // This function returns a string from the quest validation.
         public static function getQuestValidation(param1:int):String
         {
             var _loc3_:int;
@@ -251,7 +248,15 @@
             return ("");
         }
 
+        // This function clones an object from the corresponding target.
+        private static function cloneObject(obj:Object):Object
+        {
+            var _loc2_:ByteArray = new ByteArray();
+            _loc2_.writeObject(obj);
+            _loc2_.position = 0;
+            return (_loc2_.readObject());
+        }
 
+        // #endregion
     }
 }//package grimoire.game
-

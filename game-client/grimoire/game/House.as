@@ -2,28 +2,34 @@
 {
     import grimoire.Root;
 
-    public class House 
+    public class House
     {
-		private static var game:* = Root.Game;
-		private static var pref:* = Root.Game.userPreference;
+        // #region Fields
 
-		// This function returns the datas from all of the house items.
+        private static var game:* = Root.Game;
+        private static var pref:* = Root.Game.userPreference;
+
+        // #endregion
+
+        // #region Methods
+
+        // This function returns the datas from all of the house items.
         public static function houseItems():String
         {
             return (JSON.stringify(game.world.myAvatar.houseitems));
         }
 
-		// This function returns the assigned value of the available house slots.
+        // This function returns the assigned value of the available house slots.
         public static function houseSlots():int
         {
             return (game.world.myAvatar.objData.iHouseSlots);
         }
 
-		// This function returns the item object of the corresponding item name.
+        // This function returns the item object of the corresponding item name.
         public static function getItem(itemName:String):Object
         {
             var item:Object;
-			var houseItems:* = game.world.myAvatar.houseitems;
+            var houseItems:* = game.world.myAvatar.houseitems;
             if ((houseItems != null) && (houseItems.length > 0))
             {
                 for each (item in houseItems)
@@ -37,7 +43,6 @@
             return (null);
         }
 
-
+        // #endregion
     }
 }//package grimoire.game
-

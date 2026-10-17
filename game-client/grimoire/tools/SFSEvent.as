@@ -7,8 +7,9 @@ package grimoire.tools
 {
     import flash.events.Event;
 
-    public class SFSEvent extends Event 
+    public class SFSEvent extends Event
     {
+        // #region Fields
 
         public static const onAdminMessage:String = "onAdminMessage";
         public static const onBuddyList:String = "onBuddyList";
@@ -43,14 +44,21 @@ package grimoire.tools
         public static const onUserEnterRoom:String = "onUserEnterRoom";
         public static const onUserLeaveRoom:String = "onUserLeaveRoom";
         public static const onUserVariablesUpdate:String = "onUserVariablesUpdate";
-
         public var params:Object;
+
+        // #endregion
+
+        // #region Constructors
 
         public function SFSEvent(param1:String, param2:Object)
         {
             super(param1);
             this.params = param2;
         }
+
+        // #endregion
+
+        // #region Methods
 
         override public function clone():Event
         {
@@ -62,7 +70,6 @@ package grimoire.tools
             return (formatToString("SFSEvent", "type", "bubbles", "cancelable", "eventPhase", "params"));
         }
 
-
+        // #endregion
     }
 }//package grimoire.tools
-

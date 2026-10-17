@@ -2,18 +2,24 @@
 {
     import grimoire.Root;
 
-    public class TempInventory 
+    public class TempInventory
     {
-		private static var game:* = Root.Game;
-		private static var pref:* = Root.Game.userPreference;
+        // #region Fields
 
-		// This function returns the temporary item datas.
+        private static var game:* = Root.Game;
+        private static var pref:* = Root.Game.userPreference;
+
+        // #endregion
+
+        // #region Methods
+
+        // This function returns the temporary item datas.
         public static function tempItems():String
         {
             return (JSON.stringify(game.world.myAvatar.tempitems));
         }
 
-		// This function returns the temporary item object of the corresponding item name.
+        // This function returns the temporary item object of the corresponding item name.
         public static function getTempItem(itemName:String):Object
         {
             var item:Object;
@@ -27,7 +33,7 @@
             return (null);
         }
 
-		// This function returns a boolean for whether the temporary item is in inventory or not.
+        // This function returns a boolean for whether the temporary item is in inventory or not.
         public static function isItemInTemp(itemName:String, itemQty:String):String
         {
             var item:Object = getTempItem(itemName);
@@ -38,7 +44,6 @@
             return ((itemQty == "*") ? Root.trueString : ((item.iQty >= parseInt(itemQty)) ? Root.trueString : Root.falseString));
         }
 
-
+        // #endregion
     }
 }//package grimoire.game
-
