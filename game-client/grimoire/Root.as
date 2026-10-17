@@ -577,6 +577,7 @@
 
         private function onGameEnter(e:Event):void
         {
+            Client.hookChat();
             if (e.target.world && ShouldBeAnonymous == Root.trueString)
             {
                 Client.setAnonymousMode(true);

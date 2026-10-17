@@ -19,6 +19,7 @@ namespace Grimoire.Tools
         /// Handles the calls the bridge SWF makes into C#. For <c>getBackgroundIndex</c>, -1 keeps the game's own
         /// backgrounds (Camouflage) and 0 is the first custom background. <c>loadError</c> arrives when the game version or
         /// the game SWF can't be downloaded, which otherwise leaves the client on the loading screen with no message.
+        /// <c>chatCommand</c> returns whether the line is a bot command, so the bridge keeps it from the game.
         /// </summary>
         public static void ProcessFlashCall(object sender, _IShockwaveFlashEvents_FlashCallEvent e)
         {
@@ -38,6 +39,10 @@ namespace Grimoire.Tools
                 if (callName == "getBackgroundIndex")
                 {
                     Root.Instance.Client.SetReturnValue(Root.Instance.camouflageToolStripMenuItem.Checked ? "<number>-1</number>" : "<number>0</number>");
+                }
+                if (callName == "chatCommand")
+                {
+                    Root.Instance.Client.SetReturnValue(ChatCommand.IsCommand(callArgs ?? "") ? "<true/>" : "<false/>");
                 }
                 if (callName == "loadError")
                 {

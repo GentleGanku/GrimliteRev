@@ -1,6 +1,7 @@
 ﻿package grimoire.game
 {
     import flash.events.MouseEvent;
+    import flash.net.SharedObject;
     import grimoire.Root;
 
     public class Setting
@@ -10,10 +11,6 @@
         public static var _visibility:Boolean = true;
         public static var oneTime:Object = {lagKiller:false, setFPS:false};
         private static var game:* = Root.Game;
-        private static var _untargetDeadTgts:Boolean = false;
-        private static var _untargetSelf:Boolean = false;
-        private static var _reaccQuest:Boolean = false;
-        private static var _warnDecline:Boolean = false;
 
         // #endregion
 
@@ -117,29 +114,60 @@
             game.world.showAnimations = !disable;
         }
 
-        // This function sets Untarget Dead, Untarget Self, Reaccept Quest, and Decline Warning options to a corresponding value.
-        public static function toggleAdvancedOpt(force:Boolean):void
+        // This function turns off the game's Untarget Dead, Untarget Self (only with untargetSelf), Reaccept Quest and Decline
+        // Warning options while a bot runs (running true), and puts back the values it turned off when the bot stops. The
+        // game saves its preferences when the client closes, so the values are also kept in the bridge's own SharedObject:
+        // after a crash mid-bot, the next start keeps those instead of saving the ones left switched off. A plugin that
+        // still passes one argument gets running false, which restores.
+        public static function toggleAdvancedOpt(untargetSelf:Boolean, running:Boolean = false):void
         {
             var data:* = game.litePreference.data;
-            if (data.bUntargetDead || _untargetDeadTgts)
+            var store:SharedObject = SharedObject.getLocal("grimliteAdvancedOpt");
+            var saved:Object = store.data.saved;
+            var key:String;
+            if (running)
             {
-                _untargetDeadTgts = !_untargetDeadTgts;
-                data.bUntargetDead = !data.bUntargetDead;
+                if (saved == null)
+                {
+                    saved = {"bUntargetDead": data.bUntargetDead, "bReaccept": data.bReaccept};
+                    if (untargetSelf)
+                    {
+                        saved.bUntargetSelf = data.bUntargetSelf;
+                    }
+                    if (data.bCustomDrops)
+                    {
+                        saved.warnDecline = data.dOptions["warnDecline"];
+                    }
+                    store.data.saved = saved;
+                    store.flush();
+                }
+                for (key in saved)
+                {
+                    if (key == "warnDecline")
+                    {
+                        data.dOptions["warnDecline"] = false;
+                    }
+                    else
+                    {
+                        data[key] = false;
+                    }
+                }
             }
-            if ((data.bUntargetSelf || _untargetSelf) && force)
+            else if (saved != null)
             {
-                _untargetSelf = !_untargetSelf;
-                data.bUntargetSelf = !data.bUntargetSelf;
-            }
-            if (data.bReaccept || _reaccQuest)
-            {
-                _reaccQuest = !_reaccQuest;
-                data.bReaccept = !data.bReaccept;
-            }
-            if (data.bCustomDrops && (data.dOptions["warnDecline"] || _warnDecline))
-            {
-                _warnDecline = !_warnDecline;
-                data.dOptions["warnDecline"] = !data.dOptions["warnDecline"];
+                for (key in saved)
+                {
+                    if (key == "warnDecline")
+                    {
+                        data.dOptions["warnDecline"] = saved[key];
+                    }
+                    else
+                    {
+                        data[key] = saved[key];
+                    }
+                }
+                delete store.data.saved;
+                store.flush();
             }
         }
 
@@ -169,11 +197,7 @@
         // This function disables the Death Ad in-game.
         public static function disableDeathAd():void
         {
-            var bDeathAd:* = game.userPreference.data.bDeathAd;
-            if (bDeathAd || (bDeathAd == null))
-            {
-                bDeathAd = false;
-            }
+            game.userPreference.data.bDeathAd = false;
         }
 
         // This function executes by enabling the player's ability to chat.

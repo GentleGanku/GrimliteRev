@@ -52,10 +52,13 @@
         }
 
         // This function checks whether the assigned value of the aura element is over/under/equal that of the corresponding number.
+        // Both sides are compared as numbers after rounding the aura value; comparing their toFixed strings made 9 greater
+        // than 10.
         public static function auraComparison(target:String, comp:String, auraName:String, auraValue:int):String
         {
             var aLeaf:Object = getAuras(target);
             var aura:Object;
+            var value:Number;
             var bool:String = Root.falseString;
             for each (aura in aLeaf)
             {
@@ -66,17 +69,18 @@
                         bool = Root.falseString;
                         break;
                     }
-                    if ((comp == "Greater") && aura.val.toFixed(0) > auraValue.toFixed(0))
+                    value = Number(Number(aura.val).toFixed(0));
+                    if ((comp == "Greater") && (value > auraValue))
                     {
                         bool = Root.trueString;
                         break;
                     }
-                    else if ((comp == "Less") && aura.val.toFixed(0) < auraValue.toFixed(0))
+                    else if ((comp == "Less") && (value < auraValue))
                     {
                         bool = Root.trueString;
                         break;
                     }
-                    else if ((comp == "Equal") && aura.val.toFixed(0) == auraValue.toFixed(0))
+                    else if ((comp == "Equal") && (value == auraValue))
                     {
                         bool = Root.trueString;
                         break;

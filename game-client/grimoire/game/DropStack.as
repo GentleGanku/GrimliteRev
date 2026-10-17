@@ -86,50 +86,42 @@
             return allowed ? Root.trueString : Root.falseString;
         }
 
-        // This function executes by rejecting a drop based on the corresponding list.
+        // This function executes by rejecting every drop whose name isn't in the corresponding comma-separated whitelist; an
+        // empty list rejects them all. Custom Drops UI names must match a whitelist name exactly, while classic popup names
+        // only have to contain one, since their text can hold more than the item name.
         public static function rejectDrop(list:String):void
         {
-            var source:*;
-            var i:int;
-            var child:*;
-            var children:int;
-            var item:String;
-            var itemName:String;
-            var pickup:Array = list.split(",");
-            if (game.litePreference.data.bCustomDrops)
+            var keep:Array = [];
+            var name:String;
+            for each (name in list.toLowerCase().split(","))
             {
-                source = customDropList();
-                i = 0;
-                while (i < source.numChildren)
+                if (name != "")
                 {
-                    child = source.getChildAt(i);
-                    if (child.itemObj)
-                    {
-                        itemName = child.itemObj.sName.toLowerCase();
-                        if (pickup.indexOf(itemName) == -1)
-                        {
-                            child.btNo.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
-                        }
-                    }
-                    i++;
+                    keep.push(name);
                 }
             }
-            else
+            rejectWhere(function(itemName:String, exact:Boolean):Boolean
             {
-                children = game.ui.dropStack.numChildren;
-                for each (item in pickup)
+                var kept:String;
+                for each (kept in keep)
                 {
-                    while (i < children)
+                    if (exact ? (itemName == kept) : (itemName.indexOf(kept) > -1))
                     {
-                        child = game.ui.dropStack.getChildAt(i);
-                        if (child.cnt.strName.text.toLowerCase().indexOf(item.toLowerCase()) == -1)
-                        {
-                            child.cnt.nbtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
-                        }
-                        i++;
+                        return false;
                     }
                 }
-            }
+                return true;
+            });
+        }
+
+        // This function executes by rejecting the drops with the corresponding name, matched the same way as in rejectDrop.
+        public static function rejectDropByName(itemName:String):void
+        {
+            var wanted:String = itemName.toLowerCase();
+            rejectWhere(function(name:String, exact:Boolean):Boolean
+            {
+                return exact ? (name == wanted) : (name.indexOf(wanted) > -1);
+            });
         }
 
         // This function returns the display list that holds the custom drops UI's items: the draggable window's menu when
@@ -137,6 +129,46 @@
         private static function customDropList():*
         {
             return (game.cDropsUI.mcDraggable) ? game.cDropsUI.mcDraggable.menu : game.cDropsUI;
+        }
+
+        // This function clicks No on every drop that reject(name, exact) picks, where name is lowercased and exact tells
+        // whether it is a Custom Drops UI name. The buttons are collected first, because a click removes its drop from the
+        // list being walked, which used to skip the next drop or read past the end.
+        private static function rejectWhere(reject:Function):void
+        {
+            var source:*;
+            var child:*;
+            var button:*;
+            var i:int;
+            var buttons:Array = [];
+            if (game.litePreference.data.bCustomDrops)
+            {
+                source = customDropList();
+                for (i = 0; i < source.numChildren; i++)
+                {
+                    child = source.getChildAt(i);
+                    if (child.itemObj && reject(child.itemObj.sName.toLowerCase(), true))
+                    {
+                        buttons.push(child.btNo);
+                    }
+                }
+            }
+            else
+            {
+                source = game.ui.dropStack;
+                for (i = 0; i < source.numChildren; i++)
+                {
+                    child = source.getChildAt(i);
+                    if (reject(child.cnt.strName.text.toLowerCase(), false))
+                    {
+                        buttons.push(child.cnt.nbtn);
+                    }
+                }
+            }
+            for each (button in buttons)
+            {
+                button.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+            }
         }
 
         // #endregion

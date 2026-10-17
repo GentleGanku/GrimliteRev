@@ -35,6 +35,7 @@
         };
         private static var game:* = Root.Game;
         private static var charPage:*;
+        private static var hookedInterface:*;
         private static var officialStandby:DisplayObject;
         private static var officialLoader:DisplayObject;
 
@@ -42,7 +43,9 @@
 
         // #region Methods
 
-        // This function returns a boolean for whether the client is loading on the corresponding type.
+        // This function returns a boolean for whether the client is loading on the corresponding type. MapLoadingStuck also
+        // needs the back button, which the game shows 10 seconds after the last progress update (ConnDetailMC), so a map
+        // that stops at 100% counts as stuck only after that.
         public static function isClientLoading(type:String):String
         {
             if (!loadingTexts.hasOwnProperty(type))
@@ -50,10 +53,8 @@
                 return Root.falseString;
             }
             var detail:* = game.mcConnDetail;
-            // btnBack.visible is a Boolean and never equals the '"True"' string, so MapLoadingStuck is never reported
-            // (CR-43, fix phase). Kept as it was.
             var loading:Boolean = ((detail.txtDetail.text == loadingTexts[type])
-                && ((type != "MapLoadingStuck") || (detail.btnBack.visible == Root.trueString))
+                && ((type != "MapLoadingStuck") || detail.btnBack.visible)
                 && (detail.stage != null));
             return loading ? Root.trueString : Root.falseString;
         }
@@ -95,13 +96,29 @@
             return (game.mcConnDetail.stage != null) ? Root.trueString : Root.falseString;
         }
 
-        // This function executes by modifying the Send to Chat button's events (on click and on Enter key) to integrate them with the Chat Trigger handle.
-        public static function modifyBtnSend():void
+        // This function puts the bridge's chat listeners on the game's chat input once per interface the game builds. They
+        // run at a higher priority than the game's own listeners on the same fields, so they see each line first and stop
+        // only the ones the bridge handles. Root calls this every frame, which costs a few property reads.
+        public static function hookChat():void
         {
-            game.ui.mcInterface.ncSendText.removeEventListener(MouseEvent.CLICK, game.chatF.onBtnSendText);
-            game.ui.mcInterface.ncSendText.addEventListener(MouseEvent.CLICK, onBtnSendText);
-            game.ui.mcInterface.ncText.removeEventListener(KeyboardEvent.KEY_DOWN, game.key_ChatEntry);
-            game.ui.mcInterface.ncText.addEventListener(KeyboardEvent.KEY_DOWN, key_ChatEntry);
+            var mci:* = (game.ui == null) ? null : game.ui.mcInterface;
+            if ((mci == null) || (mci == hookedInterface))
+            {
+                return;
+            }
+            hookedInterface = mci;
+            if (("ncText" in mci) && (mci.ncText != null))
+            {
+                mci.ncText.addEventListener(KeyboardEvent.KEY_DOWN, onChatKey, false, 1);
+            }
+            if (("te" in mci) && (mci.te != null))
+            {
+                mci.te.addEventListener(KeyboardEvent.KEY_DOWN, onChatKey, false, 1);
+            }
+            if (("ncSendText" in mci) && (mci.ncSendText != null))
+            {
+                mci.ncSendText.addEventListener(MouseEvent.CLICK, onChatSend, false, 1);
+            }
         }
 
         // This function returns a chat trigger list for the Custom Travel feature.
@@ -420,91 +437,59 @@
             }
         }
 
-        private static function onBtnSendText(e:MouseEvent):void
+        // This function runs before the game's Enter handler and stops the key when the bridge has handled the line.
+        private static function onChatKey(e:KeyboardEvent):void
         {
-            if (game.ui.mcInterface.ncText.text.indexOf(".") == 0 && game.ui.mcInterface.ncText.text.indexOf("c") == 1 && game.ui.mcInterface.ncText.text.indexOf("t") == 2)
+            if ((e.keyCode == Keyboard.ENTER) && handleChatLine(e.currentTarget))
             {
-                gotoCustomTravel(game.ui.mcInterface.ncText.text);
-                closeChat();
-            }
-            else
-            {
-                var text:String = game.ui.mcInterface.ncText.text;
-                if (text.indexOf("/join gullible") == 0)
-                {
-                    gullible();
-                    return;
-                }
-                if ((text.indexOf("/join ") == 0) && (text.indexOf("-") > -1) && (text.split("-")[1].indexOf("1e99") == 0))
-                {
-                    var room:int = Math.floor( Math.random() * 98999 | 1001);
-                    text = text.split("-")[0] + "-" + (text.split("-")[1] = room.toString());
-                }
-                if (text.indexOf("/") == 0)
-                {
-                    ExternalInterface.call("chatCommand", text.replace("/", ""));
-                    if ((text.indexOf("/combat") == 0) || (text.indexOf("/fps") == 0))
-                    {
-                        closeChat();
-                        return;
-                    }
-                }
-                game.chatF.submitMsg(text, game.chatF.chn.cur.typ, game.chatF.pmNm);
-                game.stage.focus = null;
+                e.stopImmediatePropagation();
             }
         }
 
-        private static function key_ChatEntry(e:KeyboardEvent):void
+        // This function runs before the game's Send button handler and stops the click when the bridge has handled the line.
+        private static function onChatSend(e:MouseEvent):void
         {
-            if (e.keyCode == Keyboard.ENTER)
+            if (handleChatLine(game.ui.mcInterface.ncText))
             {
-                var chatText:String = game.intChatMode ? game.ui.mcInterface.ncText.text : game.ui.mcInterface.te.text;
-                if (chatText.indexOf(".") == 0 && chatText.indexOf("c") == 1 && chatText.indexOf("t") == 2)
-                {
-                    gotoCustomTravel(chatText);
-                    closeChat();
-                }
-                else
-                {
-                    var text:String = chatText;
-                    if (text.indexOf("/join gullible") == 0)
-                    {
-                        gullible();
-                        return;
-                    }
-                    if ((text.indexOf("/join ") == 0) && (text.indexOf("-") > -1) && (text.split("-")[1].indexOf("1e99") == 0))
-                    {
-                        var room:int = Math.floor( Math.random() * 98999 | 1001);
-                        text = text.split("-")[0] + "-" + (text.split("-")[1] = room.toString());
-                    }
-                    if (text.indexOf("/") == 0)
-                    {
-                        ExternalInterface.call("chatCommand", text.replace("/", ""));
-                        if ((text.indexOf("/combat") == 0) || (text.indexOf("/fps") == 0))
-                        {
-                            closeChat();
-                        }
-                        return;
-                    }
-                    game.chatF.submitMsg(text, game.chatF.chn.cur.typ, game.chatF.pmNm);
-                }
-            }
-            if (e.keyCode == Keyboard.ESCAPE)
-            {
-                game.chatF.closeMsgEntry();
+                e.stopImmediatePropagation();
             }
         }
 
-        private static function closeChat():void
+        // This function handles a chat line before the game sends it, and returns true when the game must not see it:
+        // .ct travel shortcuts, the gullible easter egg, and the bot's own / commands, which C# runs and confirms through
+        // the chatCommand return value. The game's own commands such as /join still reach it, and "/join map-1e99" gets a
+        // random room from 1001 to 99999 in place of 1e99 first.
+        private static function handleChatLine(field:*):Boolean
         {
-            if (game.intChatMode)
+            var text:String = field.text;
+            if (text.indexOf(".ct") == 0)
             {
-                game.ui.mcInterface.ncText.text = "";
+                gotoCustomTravel(text);
+                clearChat(field);
+                return true;
             }
-            else
+            if (text.indexOf("/join gullible") == 0)
             {
-                game.ui.mcInterface.te.text = "";
+                gullible();
+                return true;
             }
+            if ((text.indexOf("/join ") == 0) && (text.indexOf("-") > -1) && (text.split("-")[1].indexOf("1e99") == 0))
+            {
+                text = text.split("-")[0] + "-" + (Math.floor(Math.random() * 98999) + 1001);
+                field.text = text;
+            }
+            if ((text.indexOf("/") == 0) && (ExternalInterface.call("chatCommand", text.substr(1)) == true))
+            {
+                clearChat(field);
+                return true;
+            }
+            return false;
+        }
+
+        // This function empties the chat input after the bridge has handled its line.
+        private static function clearChat(field:*):void
+        {
+            field.text = "";
             game.stage.focus = null;
         }
 

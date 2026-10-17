@@ -176,6 +176,7 @@
             this.addCallback("AcceptDrop", DropStack.acceptDrop);
             this.addCallback("CanAcceptDrop", DropStack.canAcceptDrop);
             this.addCallback("RejectDrop", DropStack.rejectDrop);
+            this.addCallback("RejectDropByName", DropStack.rejectDropByName);
             this.addCallback("HasDrop", DropStack.hasDrop);
 
             // Skill

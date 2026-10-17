@@ -128,7 +128,14 @@ namespace Grimoire.Tools
                         PickDrop(parameter);
                         break;
                     case "rejectdrop":
-                        Flash.Call("RejectDrop", parameter);
+                        if (string.IsNullOrEmpty(parameter))
+                        {
+                            Flash.Call("RejectDrop", parameter);
+                        }
+                        else
+                        {
+                            Flash.Call("RejectDropByName", parameter);
+                        }
                         break;
                     case "relogin":
                         Relogin();
@@ -142,6 +149,16 @@ namespace Grimoire.Tools
             {
                 ErrorReporter.Log("running ChatCommand.ExecuteCommand", ex);
             }
+        }
+
+        /// <summary>
+        /// Whether <paramref name="text"/> (a chat line without its leading "/") starts with one of the bot's chat
+        /// commands. The bridge stops such a line from also reaching the game, which would answer an unknown command.
+        /// </summary>
+        public static bool IsCommand(string text)
+        {
+            string command = text.Split(' ')[0];
+            return ChatCommands.Keys.Any(k => k.Equals(command, StringComparison.OrdinalIgnoreCase));
         }
 
         public static async void Combat(string target, bool isNull)

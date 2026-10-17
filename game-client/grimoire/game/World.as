@@ -101,7 +101,8 @@
             return Root.quote((skill == null) ? "" : skill.nam);
         }
 
-        // This function returns the monster object of the corresponding monster name.
+        // This function returns the first living monster in the cell whose name contains the corresponding name ("*" or
+        // an empty name for any). A dead monster is skipped, so AttackMonster doesn't target a corpse.
         public static function getMonster(name:String):Object
         {
             var mon:Object;
@@ -114,7 +115,7 @@
                     if (name)
                     {
                         monName = mon.pMC.pname.ti.text.toLowerCase();
-                        if ((monName.indexOf(name.toLowerCase()) > -1) || (name == "*") && (mon.dataLeaf.intState > 0))
+                        if (((monName.indexOf(name.toLowerCase()) > -1) || (name == "*")) && (mon.dataLeaf.intState > 0))
                         {
                             return mon;
                         }
