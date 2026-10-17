@@ -7,13 +7,14 @@
     {
         // #region Constructors
 
+        // Uncomment the two listeners in this constructor, the import and the two handlers below to drag the background
+        // into place and log its x and y.
         public function FableForest(name:String)
         {
             this.name = name;
             this.x = -435;
             this.y = -218;
 
-            // Uncomment these, the import and the two handlers below to drag the background into place and log its x and y.
             // this.addEventListener(MouseEvent.MOUSE_DOWN, this.onDragStart);
             // this.addEventListener(MouseEvent.MOUSE_UP, this.onDragEnd);
         }

@@ -143,6 +143,12 @@
             }
         }
 
+        // This function returns a boolean for whether the custom drops menu is open or not (False while Custom Drops UI is off).
+        public static function isDropMenuOpen():String
+        {
+            return (game.litePreference.data.bCustomDrops && game.cDropsUI && game.cDropsUI.isMenuOpen()) ? Root.trueString : Root.falseString;
+        }
+
         // This function executes by toggling the drop UI options.
         public static function toggleDropUIOpt(force:Boolean):void
         {

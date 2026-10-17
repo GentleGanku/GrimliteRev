@@ -109,11 +109,15 @@
             GameStage.frameRate = rate;
         }
 
-        // This function sets the login screen's title to a corresponding string.
+        // This function sets the login screen's title to a corresponding string. params.sTitle keeps the plain title,
+        // which the game builds the label from when it shows the login screen again.
         public static function setTitle(title:String):void
         {
-            Game.mcLogin.mcLogo.txtTitle.htmlText = ('<font color="#CC1F41">Release:</font>: ' + title);
-            Game.params.sTitle.htmlText = ('<font color="#CC1F41">Release:</font>: ' + title);
+            Game.params.sTitle = title;
+            if (Game.mcLogin)
+            {
+                Game.mcLogin.mcLogo.txtTitle.htmlText = '<font color="#CC1F41">Release:</font> ' + title;
+            }
         }
 
         // This function executes the game's Notify function.
@@ -220,6 +224,12 @@
         {
             var obj:* = _getObjectS(Root.Game, path);
             return JSON.stringify(obj);
+        }
+
+        // This function returns a static member of the game's document class, such as "loginInfo.strUsername".
+        public static function getGameObjectS(path:String):String
+        {
+            return JSON.stringify(_getObjectS(gameDomain.getDefinition("Game"), path));
         }
 
         public static function setGameObject(path:String, value:*):void
@@ -348,10 +358,12 @@
             }
         }
 
+        // This function starts loading the game once the bridge is on the stage. Only the aq.com hosts that the game and
+        // its files come from may script this SWF, which owns the stage and ExternalInterface.
         private function onAddedToStage(e:Event):void
         {
             removeEventListener(Event.ADDED_TO_STAGE, this.onAddedToStage);
-            Security.allowDomain("*");
+            Security.allowDomain("aq.com", "game.aq.com", "content.aq.com", "www.aq.com", "account.aq.com");
 
             if (BackgroundIndex >= 0)
             {

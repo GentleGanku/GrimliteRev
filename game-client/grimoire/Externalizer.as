@@ -26,9 +26,11 @@
             // Root
             this.addCallback("selectArrayObjects", Root.selectArrayObjects);
             this.addCallback("callGameFunction", Root.callGameFunction);
+            this.addCallback("callGameFunction0", Root.callGameFunction);
             this.addCallback("sendClientPacket", Root.sendClientPacket);
             this.addCallback("setGameObject", Root.setGameObject);
             this.addCallback("getGameObject", Root.getGameObject);
+            this.addCallback("getGameObjectS", Root.getGameObjectS);
             this.addCallback("GameMessage", Root.gameMessage);
             this.addCallback("GamePopup", Root.gamePopup);
             this.addCallback("setTitle", Root.setTitle);
@@ -62,6 +64,7 @@
             this.addCallback("SetEnemyMagnet", Setting.setEnemyMagnet);
             this.addCallback("SetLagKiller", Setting.toggleLagKiller);
             this.addCallback("dropUIOpt", Setting.toggleDropUIOpt);
+            this.addCallback("IsDropMenuOpen", Setting.isDropMenuOpen);
             this.addCallback("DestroyPlayers", Setting.hidePlayers);
             this.addCallback("SetWalkSpeed", Setting.setWalkSpeed);
             this.addCallback("EnableChat", Setting.enableChat);

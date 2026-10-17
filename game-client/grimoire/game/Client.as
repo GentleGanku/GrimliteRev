@@ -199,7 +199,8 @@
             }
         }
 
-        // This function shifts the backgrounds to the corresponding target in the Backgrounds array.
+        // This function shifts the backgrounds to the corresponding target in the Backgrounds array. The game's own art is
+        // kept so setBackgroundIndex can put it back.
         public static function shiftBackgrounds(main:int = 0, standby:int = 0, loader:int = 0):void
         {
             if (Root.BackgroundIndex < 0)
@@ -223,7 +224,6 @@
                 game.mcLogin.mcTitle.visible = true;
             }
 
-            // The game's own art is kept so setBackgroundIndex can put it back.
             if (!isCustomBackground(game.mcConnDetail.getChildAt(0)))
             {
                 officialStandby = game.mcConnDetail.getChildAt(0);

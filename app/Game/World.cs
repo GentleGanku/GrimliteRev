@@ -225,15 +225,26 @@ namespace Grimoire.Game
             }
         }
 
+        /// <summary>
+        /// Whether the Custom Drops UI menu is open. Setting it uses <c>dropUIOpt</c>: <c>false</c> only opens a closed
+        /// menu, and <c>true</c> toggles, so it is sent only to close an open one.
+        /// </summary>
         public static bool VisibleDropUI
         {
             get
             {
-                return GameObject.Get<bool>("cDropsUI.inner_menu.isMenuOpen()");
+                return Flash.Call<bool>("IsDropMenuOpen", new string[0]);
             }
             set
             {
-                GameObject.Set("cDropsUI.inner_menu.isMenuOpen()", value);
+                if (value)
+                {
+                    Flash.Call("dropUIOpt", false);
+                }
+                else if (VisibleDropUI)
+                {
+                    Flash.Call("dropUIOpt", true);
+                }
             }
         }
 
