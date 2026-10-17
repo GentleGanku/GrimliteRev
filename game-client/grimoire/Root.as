@@ -67,10 +67,12 @@
         // #region Methods
 
         // This function calls a delay action of milliseconds, waiting for the corresponding function to return True boolean, and then executes the second corresponding function.
-        public static function waitFor(bool:Function, func:Function, funcParams:Array, delay:int=300, boolString:String=Root.trueString):void
+        // It gives up after timeout milliseconds, so a condition that never comes true (servers that never load) doesn't
+        // keep the timer ticking for the rest of the session.
+        public static function waitFor(bool:Function, func:Function, funcParams:Array, delay:int=300, boolString:String=Root.trueString, timeout:int=60000):void
         {
             var f:Function;
-            var timer:Timer = new Timer(delay);
+            var timer:Timer = new Timer(delay, Math.max(1, Math.ceil(timeout / delay)));
             timer.addEventListener(TimerEvent.TIMER, f = function():void
             {
                 if (bool() == boolString)
@@ -95,11 +97,12 @@
             return quote(password);
         }
 
-        // This function wraps a value in double quotes for the callbacks whose C# side reads a JSON string. The value is
-        // not escaped, so a quote or backslash in it still breaks that JSON (CR-44, fix phase).
+        // This function returns a value as a JSON string for the callbacks whose C# side decodes the result as JSON.
+        // JSON.stringify escapes quotes, backslashes and control characters, so a password or a name with one of them no
+        // longer breaks that decoding (CR-44). undefined and null still arrive as "undefined" and "null".
         public static function quote(value:*):String
         {
-            return '"' + value + '"';
+            return JSON.stringify(String(value));
         }
 
         // This function sets the game's FPS to a corresponding number.
@@ -372,13 +375,25 @@
 
             this.urlLoader = new URLLoader();
             this.urlLoader.addEventListener(Event.COMPLETE, this.onDataComplete);
+            this.urlLoader.addEventListener(IOErrorEvent.IO_ERROR, this.onLoadError);
+            this.urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, this.onLoadError);
             this.urlLoader.load(new URLRequest(this.versionURL));
         }
 
+        // This function reads the game version response and starts loading the game SWF it names.
         private function onDataComplete(e:Event):void
         {
             this.urlLoader.removeEventListener(Event.COMPLETE, this.onDataComplete);
-            var loader:Object = JSON.parse(e.target.data);
+            var loader:Object;
+            try
+            {
+                loader = JSON.parse(e.target.data);
+            }
+            catch (err:Error)
+            {
+                loadFailed("The game version response could not be read: " + err.message);
+                return;
+            }
             this.sFile = ((loader.sFile + "?ver=") + loader.sVersion);
             this.sBG = loader.sBG;
             this.loaderVars = loader;
@@ -390,14 +405,38 @@
             this.loader = new Loader();
             this.loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, this.onProgress);
             this.loader.contentLoaderInfo.addEventListener(Event.COMPLETE, this.onComplete);
+            this.loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, this.onLoadError);
+            this.loader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, this.onLoadError);
             this.loader.load(new URLRequest(((this.sURL + "gamefiles/") + this.sFile)));
         }
 
+        // This function reports the game SWF download progress. bytesTotal is 0 until the size is known, which would
+        // send NaN.
         private function onProgress(e:ProgressEvent):void
         {
-            if (!DebugMode)
+            if (!DebugMode && (e.currentTarget.bytesTotal > 0))
             {
                 ExternalInterface.call("progress", Math.round((Number((e.currentTarget.bytesLoaded / e.currentTarget.bytesTotal)) * 100)));
+            }
+        }
+
+        // This function reports a failed download of the game version or the game SWF. Without it the client stays on
+        // the loading screen with no sign of what went wrong.
+        private function onLoadError(e:ErrorEvent):void
+        {
+            loadFailed(e.text);
+        }
+
+        // This function sends a load failure to C#, which shows it to the user, or traces it in debug mode.
+        private function loadFailed(message:String):void
+        {
+            if (DebugMode)
+            {
+                trace("DEBUG: " + message);
+            }
+            else
+            {
+                ExternalInterface.call("loadError", message);
             }
         }
 

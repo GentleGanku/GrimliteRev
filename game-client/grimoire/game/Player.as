@@ -314,10 +314,11 @@
             }
         }
 
-        // This function returns the player's equipment datas.
+        // This function returns the player's equipment datas, or null for an avatar that isn't in the room.
         public static function getEquip(itemID:int):String
         {
-            return JSON.stringify(game.world.avatars[itemID].objData.eqp);
+            var avatar:* = game.world.avatars[itemID];
+            return JSON.stringify(((avatar == null) || (avatar.objData == null)) ? null : avatar.objData.eqp);
         }
 
         // This function executes by changing the player's name on client-side.
@@ -376,12 +377,16 @@
             return ((game.world.myAvatar.target == monster) && (game.world.myAvatar.target.dataLeaf.intHP > 0)) ? Root.trueString : Root.falseString;
         }
 
-        // This function executes by restarting the player's AFK timer.
+        // This function executes by restarting the player's AFK timer. The player has no user tree entry until the map has
+        // loaded.
         public static function afkPostpone():void
         {
             var ts:* = new Date().getTime();
             var userTree:* = game.world.uoTree[game.sfc.myUserName];
-            userTree.afkts = ts;
+            if (userTree != null)
+            {
+                userTree.afkts = ts;
+            }
         }
 
         // This function executes by canceling the player's AFK state.

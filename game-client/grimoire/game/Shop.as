@@ -90,11 +90,15 @@
             return isBuyable(getShopItemByID(itemID, shopItemID));
         }
 
-        // This function returns the item object of the corresponding item name.
+        // This function returns the item object of the corresponding item name, or null while no shop is loaded.
         public static function getShopItem(itemName:String):Object
         {
             var item:Object;
             var i:int;
+            if ((game.world.shopinfo == null) || (game.world.shopinfo.items == null))
+            {
+                return null;
+            }
             while (i < game.world.shopinfo.items.length)
             {
                 item = game.world.shopinfo.items[i];
@@ -107,10 +111,15 @@
             return null;
         }
 
-        // This function returns the item object of the corresponding item ID and shop item ID.
+        // This function returns the item object of the corresponding item ID and shop item ID, or null while no shop is
+        // loaded.
         public static function getShopItemByID(itemID:int, shopItemID:int):Object
         {
             var item:Object;
+            if (game.world.shopinfo == null)
+            {
+                return null;
+            }
             for each (item in game.world.shopinfo.items)
             {
                 if ((item.ItemID == itemID) && (item.ShopItemID == shopItemID))

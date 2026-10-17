@@ -94,10 +94,11 @@
             return (getMonsterByName(monName) != null) ? Root.trueString : Root.falseString;
         }
 
-        // This function returns the corresponding skill's name.
+        // This function returns the corresponding skill's name, or an empty name for a slot the class doesn't have.
         public static function getSkillName(index:String):String
         {
-            return Root.quote(Root.Game.world.actions.active[parseInt(index)].nam);
+            var skill:* = Root.Game.world.actions.active[parseInt(index)];
+            return Root.quote((skill == null) ? "" : skill.nam);
         }
 
         // This function returns the monster object of the corresponding monster name.
@@ -309,10 +310,11 @@
             return game.world.curRoom.toString();
         }
 
-        // This function returns the room number of the current map.
+        // This function returns the room number of the current map, or an empty string while the area name has none.
         public static function roomNumber():String
         {
-            return game.world.strAreaName.split("-")[1];
+            var areaName:String = game.world.strAreaName;
+            return ((areaName == null) || (areaName.indexOf("-") < 0)) ? "" : areaName.split("-")[1];
         }
 
         // This function returns the players' datas in the current map.

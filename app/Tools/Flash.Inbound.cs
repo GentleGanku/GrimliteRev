@@ -3,6 +3,7 @@ using Grimoire.Game;
 using Grimoire.Game.Data;
 using Grimoire.Networking;
 using Grimoire.UI;
+using Grimoire.Utils;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
@@ -14,6 +15,11 @@ namespace Grimoire.Tools
     {
         #region Methods
 
+        /// <summary>
+        /// Handles the calls the bridge SWF makes into C#. For <c>getBackgroundIndex</c>, -1 keeps the game's own
+        /// backgrounds (Camouflage) and 0 is the first custom background. <c>loadError</c> arrives when the game version or
+        /// the game SWF can't be downloaded, which otherwise leaves the client on the loading screen with no message.
+        /// </summary>
         public static void ProcessFlashCall(object sender, _IShockwaveFlashEvents_FlashCallEvent e)
         {
             XElement xElement = XElement.Parse(e.request);
@@ -29,10 +35,13 @@ namespace Grimoire.Tools
                 {
                     Root.Instance.Client.SetReturnValue("<string>" + ModifyServerList(callArgs.Trim()) + "</string>");
                 }
-                // -1 keeps the game's own backgrounds (Camouflage), 0 is the first custom background.
                 if (callName == "getBackgroundIndex")
                 {
                     Root.Instance.Client.SetReturnValue(Root.Instance.camouflageToolStripMenuItem.Checked ? "<number>-1</number>" : "<number>0</number>");
+                }
+                if (callName == "loadError")
+                {
+                    ErrorReporter.Report("loading the game", new Exception(callArgs));
                 }
                 Proxy.Instance.LogPackets(callName, callArgs);
             }

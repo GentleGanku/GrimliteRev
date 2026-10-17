@@ -87,9 +87,12 @@
         }
 
         // This function returns the auras on the player ("Self") or on the player's current target (any other value).
+        // It returns null while there is no avatar or no target, which the aura checks read as "no aura".
         private static function getAuras(target:String):Object
         {
-            return (target == "Self") ? game.world.myAvatar.dataLeaf.auras : game.world.myAvatar.target.dataLeaf.auras;
+            var avatar:* = game.world.myAvatar;
+            var owner:* = (avatar == null) ? null : ((target == "Self") ? avatar : avatar.target);
+            return (owner == null) ? null : owner.dataLeaf.auras;
         }
 
         // #endregion

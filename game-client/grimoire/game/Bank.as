@@ -14,10 +14,12 @@
 
         // #region Methods
 
-        // This function returns all of the items in the bank.
+        // This function returns all of the items in the bank, or an empty list before the bank has loaded (C# stores the
+        // result as its saved bank list).
         public static function bankItems():String
         {
-            return JSON.stringify(game.world.bankinfo.items);
+            var bankInfo:* = game.world.bankinfo;
+            return JSON.stringify(((bankInfo == null) || (bankInfo.items == null)) ? [] : bankInfo.items);
         }
 
         // This function returns the assigned value of the available bank slots.
@@ -112,7 +114,7 @@
         public static function getItem(itemName:String):Object
         {
             var item:Object;
-            var bankItems:* = game.world.bankinfo.items;
+            var bankItems:* = (game.world.bankinfo == null) ? null : game.world.bankinfo.items;
             if ((bankItems != null) && (bankItems.length > 0))
             {
                 for each (item in bankItems)
