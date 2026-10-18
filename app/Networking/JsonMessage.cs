@@ -7,6 +7,10 @@ namespace Grimoire.Networking
     {
         #region Constructors
 
+        /// <summary>
+        /// Parses <paramref name="raw"/>. For text that isn't JSON, Command stays null, so no JSON handler matches the
+        /// message.
+        /// </summary>
         public JsonMessage(string raw)
         {
             try
@@ -17,7 +21,6 @@ namespace Grimoire.Networking
             }
             catch (JsonReaderException)
             {
-                // Not JSON: Command stays null, so no JSON handler matches this message.
             }
         }
 

@@ -10,19 +10,19 @@ namespace Grimoire.Tools
     {
         #region Methods
 
+        /// <summary>
+        /// Whether <paramref name="str"/> is base64: it must decode, and its length without spaces must be a multiple
+        /// of 4. The padding check comes from d@anish's solution.
+        /// </summary>
         public static bool IsBase64Encoded(string str)
         {
             try
             {
-                // If no exception is caught, then it is possibly a base64 encoded string
                 byte[] data = Convert.FromBase64String(str);
-                // The part that checks if the string was properly padded to the
-                // correct length was borrowed from d@anish's solution
                 return (str.Replace(" ", "").Length % 4 == 0);
             }
             catch
             {
-                // If exception is caught, then it is not a base64 encoded string
                 return false;
             }
 

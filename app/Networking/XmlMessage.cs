@@ -6,6 +6,10 @@ namespace Grimoire.Networking
     {
         #region Constructors
 
+        /// <summary>
+        /// Parses <paramref name="raw"/>. For text that isn't XML, Command stays null, so no XML handler matches the
+        /// message.
+        /// </summary>
         public XmlMessage(string raw)
         {
             try
@@ -17,7 +21,6 @@ namespace Grimoire.Networking
             }
             catch (XmlException)
             {
-                // Not XML: Command stays null, so no XML handler matches this message.
             }
         }
 

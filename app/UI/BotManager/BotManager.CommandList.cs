@@ -170,12 +170,14 @@ namespace Grimoire.UI
             SelectedList.EndUpdate();
         }
 
+        /// <summary>
+        /// Moves the selected commands down one place. It walks the selection from bottom to top, which is easier to
+        /// handle than top to bottom.
+        /// </summary>
         private void _MoveListBoxDown()
         {
             SelectedList.BeginUpdate();
             int numberOfSelectedItems = SelectedList.SelectedItems.Count;
-            // when going down, instead of moving through the selected items from top to bottom
-            // we'll go from bottom to top, it's easier to handle this way.
             for (int i = numberOfSelectedItems - 1; i >= 0; i--)
             {
                 if (SelectedList.SelectedIndices[i] < SelectedList.Items.Count - 1)

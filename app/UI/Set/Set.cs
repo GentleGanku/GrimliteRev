@@ -233,6 +233,9 @@ namespace Grimoire.UI
             }
         }
 
+        /// <summary>
+        /// Reads a set file. Returns false for a file that isn't a valid set, so the caller can report it.
+        /// </summary>
         private bool TryDeserialize(string json, out SetItem config)
         {
             try
@@ -242,7 +245,6 @@ namespace Grimoire.UI
             }
             catch
             {
-                // Not a valid set file; returning false lets the caller report it.
             }
             config = null;
             return false;

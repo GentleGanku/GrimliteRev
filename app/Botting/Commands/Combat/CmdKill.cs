@@ -36,9 +36,12 @@ namespace Grimoire.Botting.Commands.Combat
 
         #region Methods
 
+        /// <summary>
+        /// Kills the monster. Each run gets its own token source, so a skill loop from an earlier run keeps its own
+        /// (cancelled) token instead of reading a newer one.
+        /// </summary>
         public async Task Execute(IBotEngine instance)
         {
-            // One source per run: a skill loop from an earlier run keeps its own (cancelled) token instead of reading a newer one.
             CancellationTokenSource cts = new CancellationTokenSource();
             _cts = cts;
             BotData.BotState = BotData.State.Combat;

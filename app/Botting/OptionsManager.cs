@@ -312,11 +312,14 @@ namespace Grimoire.Botting
             _ = Proxy.Instance.SendToClient("{\"t\":\"xt\",\"b\":{\"r\":-1,\"o\":{\"cmd\":\"levelUp\",\"intExpToLevel\":\"0\",\"intLevel\":" + Player.levelCap + "}}}");
         }
 
+        /// <summary>
+        /// Sends the packet-spam packet. It is called on every options tick (250 ms) and sends only once PacketDelay
+        /// has passed since the last packet.
+        /// </summary>
         public static async void SetPacketSpam()
         {
             try
             {
-                // Called on every options tick (250 ms); send only once PacketDelay has passed since the last packet.
                 if (_packetSpamTimer.IsRunning && _packetSpamTimer.ElapsedMilliseconds < PacketDelay)
                 {
                     return;
@@ -350,10 +353,12 @@ namespace Grimoire.Botting
             }
         }
 
+        /// <summary>
+        /// Runs the options loop. Each call starts a new loop; an older one sees a newer generation and exits, so a
+        /// quick Stop and Start (as auto-relogin does) doesn't leave two loops sending everything twice.
+        /// </summary>
         public static async Task ApplySettings()
         {
-            // Each call starts a new loop; an older one sees a newer generation and exits, so a quick Stop and Start
-            // (as auto-relogin does) doesn't leave two loops sending everything twice.
             int generation = Interlocked.Increment(ref _loopGeneration);
             IsRunning = true;
             while (IsRunning && generation == _loopGeneration && Player.IsLoggedIn)

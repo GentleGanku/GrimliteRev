@@ -75,6 +75,10 @@ namespace Grimoire.UI
 
         #region Constructors
 
+        /// <summary>
+        /// Creates the main window. The NewBadge.Attach list holds the menu items that changed in this version; replace
+        /// it on every release.
+        /// </summary>
         public Root()
         {
             InitializeComponent();
@@ -86,7 +90,6 @@ namespace Grimoire.UI
             camouflageToolStripMenuItem.Checked = BotClientConfig.Instance.GetValue<bool>("clientHeaderToggle");
             ApplyCamouflage(camouflageToolStripMenuItem.Checked);
             triggerToggle();
-            // Items that changed in this version; replace the list on every release.
             NewBadge.Attach(grimliteToolStripMenuItem, botToolStripMenuItem, managerToolStripMenuItem, settingsToolStripMenuItem, camouflageToolStripMenuItem, discordToolStripMenuItem, supportMeToolStripMenuItem);
         }
 
@@ -132,13 +135,17 @@ namespace Grimoire.UI
             }
         }
 
+        /// <summary>
+        /// Adds the minimize box, system menu and sizing border to the window style (WS_MINIMIZEBOX 0x20000, WS_SYSMENU
+        /// 0x80000, WS_SIZEBOX 0x40000).
+        /// </summary>
         protected override CreateParams CreateParams
         {
             get
             {
                 CreateParams cp = base.CreateParams;
                 {
-                    cp.Style |= 0x20000 | 0x80000 | 0x40000; //WS_MINIMIZEBOX | WS_SYSMENU | WS_SIZEBOX;
+                    cp.Style |= 0x20000 | 0x80000 | 0x40000;
                 }
                 return cp;
             }
@@ -238,6 +245,10 @@ namespace Grimoire.UI
             SetMenuVisible(!menuVisible);
         }
 
+        /// <summary>
+        /// Shows or hides the menu bar. A normal window grows or shrinks by the menu's height so the game keeps its
+        /// size; a maximized one keeps its size.
+        /// </summary>
         public void SetMenuVisible(bool visible)
         {
             if (menuVisible == visible)
@@ -248,7 +259,6 @@ namespace Grimoire.UI
             int menuHeight = panel1.Height;
             panel1.Visible = visible;
             GamePanel.Dock = visible ? DockStyle.None : DockStyle.Fill;
-            // A normal window grows or shrinks by the menu's height so the game keeps its size; a maximized one keeps its size.
             if (WindowState == FormWindowState.Normal)
             {
                 ClientSize = new Size(ClientSize.Width, ClientSize.Height + (visible ? menuHeight : -menuHeight));

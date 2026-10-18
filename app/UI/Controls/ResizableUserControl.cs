@@ -24,10 +24,13 @@ namespace Grimoire.UI
 
         #region Constructors
 
+        /// <summary>
+        /// Creates the control. ResizeRedraw avoids visual artifacts while it is resized.
+        /// </summary>
         public ResizableUserControl()
         {
             this.DoubleBuffered = true;
-            this.SetStyle(ControlStyles.ResizeRedraw, true); // this is to avoid visual artifacts
+            this.SetStyle(ControlStyles.ResizeRedraw, true);
         }
 
         #endregion
@@ -110,11 +113,15 @@ namespace Grimoire.UI
             e.Graphics.FillRectangle(Brushes.Transparent, Bottom);
         }
 
+        /// <summary>
+        /// Answers WM_NCHITTEST (0x84) with the border or corner under the cursor, so the control can be resized from
+        /// its edges.
+        /// </summary>
         protected override void WndProc(ref Message message)
         {
             base.WndProc(ref message);
 
-            if (message.Msg == 0x84) // WM_NCHITTEST
+            if (message.Msg == 0x84)
             {
                 var cursor = this.PointToClient(Cursor.Position);
 

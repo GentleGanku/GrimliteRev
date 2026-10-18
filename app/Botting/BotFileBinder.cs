@@ -60,6 +60,10 @@ namespace Grimoire.Botting
             _default.BindToName(serializedType, out assemblyName, out typeName);
         }
 
+        /// <summary>
+        /// Whether a bot file may create an instance of <paramref name="type"/>. Forms and controls from this assembly
+        /// are refused: they run UI code when constructed, and nothing in a bot file needs them.
+        /// </summary>
         private static bool IsAllowed(Type type)
         {
             if (type.IsArray)
@@ -76,7 +80,6 @@ namespace Grimoire.Botting
             }
             if (type.Assembly == typeof(BotFileBinder).Assembly)
             {
-                // Forms and controls run UI code when constructed; nothing in a bot file needs them.
                 return !typeof(Component).IsAssignableFrom(type);
             }
             return type.IsPrimitive || type.IsEnum || type == typeof(string) || type == typeof(decimal)

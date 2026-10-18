@@ -18,18 +18,21 @@ namespace Grimoire.UI
 
         #region Methods
 
+        /// <summary>
+        /// Reserves room for the NEW! badge on each item. Drop-down menus size themselves from text and shortcut widths
+        /// only, so a blank shortcut text reserves the space; top-level items get extra right padding and left-aligned
+        /// text, which keeps that space free for the badge.
+        /// </summary>
         public static void Attach(params ToolStripMenuItem[] items)
         {
             foreach (ToolStripMenuItem item in items)
             {
                 if (item.IsOnDropDown)
                 {
-                    // Drop-down menus size themselves from text and shortcut widths only, so blank shortcut text reserves the space.
                     item.ShortcutKeyDisplayString = new string(' ', 8);
                 }
                 else
                 {
-                    // Left-aligned text keeps the reserved space on the right free for the badge.
                     Padding padding = item.Padding;
                     item.Padding = new Padding(padding.Left, padding.Top, padding.Right + BadgeSize.Width - 9, padding.Bottom);
                     item.TextAlign = ContentAlignment.MiddleLeft;

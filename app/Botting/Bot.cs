@@ -390,6 +390,10 @@ namespace Grimoire.Botting
             }
         }
 
+        /// <summary>
+        /// Runs the bot's commands. Stop and Pause cancel the command that is running, which arrives here as an
+        /// OperationCanceledException and is not an error.
+        /// </summary>
         private async Task Activate()
         {
             try
@@ -398,7 +402,6 @@ namespace Grimoire.Botting
             }
             catch (OperationCanceledException) when (_ctsBot.IsCancellationRequested)
             {
-                // Stop or Pause cancelled the command that was running.
             }
             catch (Exception ex)
             {

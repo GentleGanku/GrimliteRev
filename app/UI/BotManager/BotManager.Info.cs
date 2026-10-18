@@ -9,6 +9,10 @@ namespace Grimoire.UI
     {
         #region Methods
 
+        /// <summary>
+        /// Shows the description as RTF in the preview. The text is invalid RTF while it's still being typed, so the
+        /// preview keeps its last valid content.
+        /// </summary>
         private void richTextBox2_TextChanged(object sender, EventArgs e)
         {
             try
@@ -17,7 +21,6 @@ namespace Grimoire.UI
             }
             catch
             {
-                // The description is invalid RTF while it's still being typed; the preview keeps its last valid content.
             };
         }
 

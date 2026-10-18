@@ -64,6 +64,10 @@ namespace Grimoire.Networking.Handlers
             }
         }
 
+        /// <summary>
+        /// Logs an accepted drop. An item that isn't in the cached bank, inventory or house lists yet is logged by its
+        /// ID, since there is no name for it.
+        /// </summary>
         private void ParseLog(JsonMessage content, bool manual)
         {
             switch (manual)
@@ -87,7 +91,6 @@ namespace Grimoire.Networking.Handlers
                         drop = (inBank ? Player.Bank.SavedItems : Player.Inventory.Items).FirstOrDefault(i => i.Id.Equals(id)) ?? Player.House.Items.FirstOrDefault(i => i.Id.Equals(id));
                         if (drop == null)
                         {
-                            // Not in the cached bank, inventory or house lists yet; there is no name to log.
                             LogForm.Instance.AppendBot($"[{DateTime.Now:hh:mm:ss}] Item accepted: ID {id} x {dropQty}.\r\n");
                             break;
                         }

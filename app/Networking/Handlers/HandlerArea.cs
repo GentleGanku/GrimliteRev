@@ -31,11 +31,14 @@ namespace Grimoire.Networking.Handlers
 
         #region Methods
 
+        /// <summary>
+        /// Stores the map from moveToArea once the map has loaded. Only the newest map matters: a newer moveToArea
+        /// cancels this wait, and a wait never outlives a minute.
+        /// </summary>
         public async void Handle(JsonMessage message)
         {
             try
             {
-                // Only the newest map matters: a newer moveToArea cancels this wait, and a wait never outlives a minute.
                 var cts = new CancellationTokenSource();
                 Interlocked.Exchange(ref _cts, cts).Cancel();
                 await BotManager.Instance.ActiveBotEngine.WaitUntil(() => World.ActiveCutscene == 0 && !World.mapLoadInProgress && Player.IsLoggedIn, () => !cts.IsCancellationRequested, 120, 500, 500);

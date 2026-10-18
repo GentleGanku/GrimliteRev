@@ -175,6 +175,10 @@ namespace Grimoire.UI
             }
         }
 
+        /// <summary>
+        /// Draws a blank command (a label or divider line). Painting must not throw, so an item with a bad custom color
+        /// is drawn without it.
+        /// </summary>
         private void DrawBlank(DrawItemEventArgs e, IBotCommand cmd, StringFormat centered)
         {
             string txt = lstCommands.Items[e.Index].ToString();
@@ -212,7 +216,6 @@ namespace Grimoire.UI
                 }
                 catch
                 {
-                    // Painting must not throw; an item with a bad custom color is drawn without it.
                 }
             }
             else if (cmd is CmdBlank3 blank3)
@@ -223,7 +226,6 @@ namespace Grimoire.UI
                 }
                 catch
                 {
-                    // Painting must not throw; an item with a bad custom color is drawn without it.
                 }
             }
             else if (txt.Contains("(TROLL)"))

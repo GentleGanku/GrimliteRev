@@ -64,6 +64,10 @@ namespace Grimoire.Botting
             return string.IsNullOrWhiteSpace(s) ? null : s;
         }
 
+        /// <summary>
+        /// Returns <paramref name="toPath"/> relative to <paramref name="fromPath"/>, or unchanged when the two use
+        /// different URI schemes and can't be made relative.
+        /// </summary>
         public static string MakeRelativePath(String fromPath, String toPath)
         {
             if (string.IsNullOrEmpty(fromPath)) throw new ArgumentNullException("fromPath");
@@ -72,7 +76,7 @@ namespace Grimoire.Botting
             Uri fromUri = new Uri(fromPath);
             Uri toUri = new Uri(toPath);
 
-            if (fromUri.Scheme != toUri.Scheme) { return toPath; } // path can't be made relative.
+            if (fromUri.Scheme != toUri.Scheme) { return toPath; }
 
             Uri relativeUri = fromUri.MakeRelativeUri(toUri);
             string relativePath = Uri.UnescapeDataString(relativeUri.ToString());
@@ -84,6 +88,10 @@ namespace Grimoire.Botting
             return relativePath;
         }
 
+        /// <summary>
+        /// Returns <paramref name="toPath"/> relative to <paramref name="fromPath"/>, or unchanged when the two use
+        /// different URI schemes and can't be made relative.
+        /// </summary>
         public static string MakeRelativePathFrom(String fromPath, String toPath)
         {
             if (string.IsNullOrEmpty(fromPath)) throw new ArgumentNullException("fromPath");
@@ -92,7 +100,7 @@ namespace Grimoire.Botting
             Uri fromUri = new Uri(fromPath);
             Uri toUri = new Uri(toPath);
 
-            if (fromUri.Scheme != toUri.Scheme) { return toPath; } // path can't be made relative.
+            if (fromUri.Scheme != toUri.Scheme) { return toPath; }
 
             Uri relativeUri = fromUri.MakeRelativeUri(toUri);
             string relativePath = Uri.UnescapeDataString(relativeUri.ToString());

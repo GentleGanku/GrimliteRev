@@ -73,9 +73,12 @@ namespace Grimoire.Game
 
         #region Methods
 
+        /// <summary>
+        /// Enumerates a copy of the drops: packet handlers add drops on the UI thread while the bot reads them on a
+        /// worker thread.
+        /// </summary>
         public IEnumerator<InventoryItem> GetEnumerator()
         {
-            // Packet handlers add drops on the UI thread while the bot reads them on a worker thread; enumerate a copy.
             lock (_drops)
             {
                 return _drops.ToList().GetEnumerator();

@@ -62,6 +62,10 @@ namespace Grimoire.UI
 
         }
 
+        /// <summary>
+        /// Returns the saved color for <paramref name="ctr"/>, or the window text color when there is no valid saved
+        /// one.
+        /// </summary>
         private int GetColor(Control ctr)
         {
             string ctrName = ctr.Name.ToString().Remove(0, 3);
@@ -72,11 +76,14 @@ namespace Grimoire.UI
             }
             catch
             {
-                // No valid saved color: fall back to the window text color below.
             }
             return int.Parse(SystemColors.WindowText.ToString());
         }
 
+        /// <summary>
+        /// Returns the saved color for <paramref name="ctr"/>, or the window text color when there is no valid saved
+        /// one.
+        /// </summary>
         private int GetColor(string ctr)
         {
             string WindowText = SystemColors.WindowText.ToArgb().ToString("X");
@@ -86,7 +93,6 @@ namespace Grimoire.UI
             }
             catch
             {
-                // No valid saved color: fall back to the window text color below.
             }
             return int.Parse(SystemColors.WindowText.ToString());
         }
@@ -129,6 +135,10 @@ namespace Grimoire.UI
             Config.Instance.SetValue(x, ((CheckBox)sender).Checked.ToString());
         }
 
+        /// <summary>
+        /// Draws a command name in its custom color. Painting must not throw, so the item is drawn without its custom
+        /// color when that color is bad.
+        /// </summary>
         private void comboBox1_DrawItem(object sender, DrawItemEventArgs e)
         {
             if (!(e.Index > -1))
@@ -142,7 +152,6 @@ namespace Grimoire.UI
             }
             catch
             {
-                // Painting must not throw; the item is drawn without its custom color.
             }
         }
 
@@ -187,6 +196,11 @@ namespace Grimoire.UI
             Config.Instance.SetValue("CommandsSize", trackBar1.Value.ToString());
         }
 
+        /// <summary>
+        /// Gives every command type a random color. One Random is used for the whole loop, because Random instances
+        /// created in quick succession share a seed. With fewer than three RGB values the missing ones stay at 255, and
+        /// an invalid value leaves the mix white.
+        /// </summary>
         private void btnRandomColors_Click(object sender, EventArgs e)
         {
             var type = typeof(IBotCommand);
@@ -196,7 +210,7 @@ namespace Grimoire.UI
 
             var typeList = types as Type[] ?? types.ToArray();
             comboBox1.Items.Clear();
-            var random = new Random(); // One instance for the whole loop: Random instances created in quick succession share a seed.
+            var random = new Random();
             int mixR = 255;
             int mixG = 255;
             int mixB = 255;
@@ -222,13 +236,11 @@ namespace Grimoire.UI
                     }
                     catch
                     {
-                        // Fewer than three values: the missing ones stay at 255.
                     }
                 }
             }
             catch (Exception E)
             {
-                // Not a valid color: the mix stays white.
             }
             foreach (var t in typeList)
             {

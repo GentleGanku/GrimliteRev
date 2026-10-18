@@ -74,7 +74,7 @@ namespace Grimoire.UI
                 {
                     AddCommand(new CmdLoadBot
                     {
-                        BotFilePath = Extensions.MakeRelativePathFrom(Application.StartupPath, openFileDialog.FileName), // Path.GetFullPath(openFileDialog.FileName)
+                        BotFilePath = Extensions.MakeRelativePathFrom(Application.StartupPath, openFileDialog.FileName),
                         BotFileName = Path.GetFileName(openFileDialog.FileName)
 
                     }, (ModifierKeys & Keys.Control) == Keys.Control);

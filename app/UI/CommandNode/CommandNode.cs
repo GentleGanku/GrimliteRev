@@ -52,7 +52,6 @@ namespace Grimoire.UI
 
                     activeControl.Location = new Point(RightX, BottomY);
 
-                    ///!LocationRightPanel.Equals(this.activeControl) && this.activeControl.Bounds.IntersectsWith(LocationRightPanel.Bounds)
                 }
 
                 else

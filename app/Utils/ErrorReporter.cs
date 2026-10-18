@@ -22,6 +22,10 @@ namespace Grimoire.Utils
 
         #region Methods
 
+        /// <summary>
+        /// Writes the error to the Log window's Debug tab, or to the debugger output while the Log window doesn't exist
+        /// yet (startup) or anymore (shutdown).
+        /// </summary>
         public static void Log(string context, Exception ex)
         {
             string text = $"[{DateTime.Now:hh:mm:ss}] Error while {context}: {Describe(ex)}\r\n{ex?.StackTrace}\r\n";
@@ -31,7 +35,6 @@ namespace Grimoire.Utils
             }
             catch (Exception logFailure)
             {
-                // The Log window may not exist yet (startup) or anymore (shutdown).
                 Debug.WriteLine(text + logFailure);
             }
         }

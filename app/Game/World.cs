@@ -363,10 +363,13 @@ namespace Grimoire.Game
             LogForm.Instance.AppendDrops($"[Item Drop] ({dropQty}) {drop.Name} x {drop.Quantity} at {DateTime.Now:hh:mm:ss tt}.\r\n");
         }
 
+        /// <summary>
+        /// Records a loaded shop. Each visit loads the shop again, so one entry is kept per shop instead of one per
+        /// visit.
+        /// </summary>
         public static void OnShopLoaded(ShopInfo shopInfo)
         {
             ShopLoaded?.Invoke(shopInfo);
-            // Each visit loads the shop again; keep one entry per shop instead of one per visit.
             LoadedShops.RemoveAll(s => s.Id == shopInfo.Id);
             LoadedShops.Add(shopInfo);
         }
