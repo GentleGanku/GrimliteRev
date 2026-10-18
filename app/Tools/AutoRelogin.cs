@@ -165,11 +165,19 @@ namespace Grimoire.Tools
             Connect(server);
         }
 
+        /// <summary>
+        /// Lag Killer hides the world, which logging in needs, so it is off during a login (false) and comes back with
+        /// the other options afterwards (true).
+        /// </summary>
         public static void OptionsCheck(bool check)
         {
-            if (BotManager.Instance.chkLag.Checked)
+            if (check)
             {
-                OptionsManager.LagKiller = check;
+                OptionsManager.Refresh();
+            }
+            else if (OptionsManager.LagKiller)
+            {
+                OptionsManager.LagKiller = false;
             }
         }
 

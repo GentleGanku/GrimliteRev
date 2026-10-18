@@ -203,7 +203,6 @@ namespace Grimoire.UI
             cbLists.SelectedIndex = 0;
             _statementCommands = JsonConvert.DeserializeObject<List<StatementCommand>>(Resources.statementcmds, _serializerSettings);
             _defaultControlText = JsonConvert.DeserializeObject<Dictionary<string, string>>(Resources.defaulttext, _serializerSettings);
-            OptionsManager.StateChanged += OnOptionsStateChanged;
             string font = Config.Instance.GetValue<string>("font");
             lstCommands.ItemHeight = int.Parse(Config.Instance.GetValue<string>("CommandsSize") ?? "60");
             lstCommands.Font = new Font(font, lstCommands.ItemHeight / 4 - (float)6.5, FontStyle.Regular, GraphicsUnit.Point, 0);

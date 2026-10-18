@@ -23,7 +23,7 @@ namespace Grimoire.UI
     {
         #region Fields
 
-        public static readonly Action[] Actions = new Action[19]
+        public static readonly Action[] Actions = new Action[18]
         {
             delegate
             {
@@ -126,16 +126,6 @@ namespace Grimoire.UI
             delegate
             {
                 BotToggleAsync();
-            },
-            delegate
-            {
-                if (!OptionsManager.IsRunning)
-                {
-                    if (Player.IsLoggedIn)
-                        OptionsManager.Start();
-                }
-                else
-                    OptionsManager.Stop();
             },
             delegate
             {

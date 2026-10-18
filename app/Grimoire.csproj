@@ -278,6 +278,7 @@
     <Compile Include="Botting\FontInfo.cs" />
     <Compile Include="Botting\IBotCommand.cs" />
     <Compile Include="Botting\IBotEngine.cs" />
+    <Compile Include="Botting\ManipulationOptions.cs" />
     <Compile Include="Botting\OptionsManager.cs" />
     <Compile Include="Game\Data\ExtendedAvatar.cs" />
     <Compile Include="Game\Data\Bank.cs" />

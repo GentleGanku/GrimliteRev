@@ -52,8 +52,8 @@ namespace Grimoire.UI
 
         private void chkInfiniteRange_CheckedChanged(object sender, EventArgs e)
         {
-            OptionsManager.InfiniteRange = chkInfiniteRange.Checked;
-            Root.Instance.infRangeToolStripMenuItem.Checked = chkInfiniteRange.Checked;
+            OptionsManager.BotOptions.InfiniteRange = chkInfiniteRange.Checked;
+            OptionsManager.Refresh();
         }
 
         private void chkProvoke_Clicked(object sender, EventArgs e)
@@ -66,54 +66,32 @@ namespace Grimoire.UI
 
         private void chkProvoke_CheckedChanged(object sender, EventArgs e)
         {
-            OptionsManager.ProvokeMonsters = chkProvoke.Checked;
-            Root.Instance.provokeToolStripMenuItem1.Checked = chkProvoke.Checked;
+            OptionsManager.BotOptions.ProvokeMonsters = chkProvoke.Checked;
+            OptionsManager.Refresh();
         }
 
         private void chkMagnet_CheckedChanged(object sender, EventArgs e)
         {
-            OptionsManager.EnemyMagnet = chkMagnet.Checked;
-            Root.Instance.enemyMagnetToolStripMenuItem.Checked = chkMagnet.Checked;
+            OptionsManager.BotOptions.EnemyMagnet = chkMagnet.Checked;
+            OptionsManager.Refresh();
         }
 
         private void chkLag_CheckedChanged(object sender, EventArgs e)
         {
-            OptionsManager.LagKiller = chkLag.Checked;
-            Root.Instance.lagKillerToolStripMenuItem.Checked = chkLag.Checked;
+            OptionsManager.BotOptions.LagKiller = chkLag.Checked;
+            OptionsManager.Refresh();
         }
 
         private void chkSkipCutscenes_CheckedChanged(object sender, EventArgs e)
         {
-            OptionsManager.SkipCutscenes = chkSkipCutscenes.Checked;
-            Root.Instance.skipCutscenesToolStripMenuItem.Checked = chkSkipCutscenes.Checked;
+            OptionsManager.BotOptions.SkipCutscenes = chkSkipCutscenes.Checked;
+            OptionsManager.Refresh();
         }
 
         private void numWalkSpeed_ValueChanged(object sender, EventArgs e)
         {
-            OptionsManager.WalkSpeed = (int)numWalkSpeed.Value;
-        }
-
-        private void OnOptionsStateChanged(bool state)
-        {
-            if (InvokeRequired)
-            {
-                Invoke((Action)delegate
-                {
-                    chkEnableSettings.Checked = state;
-                });
-            }
-            else
-            {
-                chkEnableSettings.Checked = state;
-            }
-        }
-
-        private void chkEnableSettings_Click(object sender, EventArgs e)
-        {
-            if (chkEnableSettings.Checked)
-                OptionsManager.Start();
-            else
-                OptionsManager.Stop();
+            OptionsManager.BotOptions.WalkSpeed = (int)numWalkSpeed.Value;
+            OptionsManager.Refresh();
         }
 
         private void logScript(object sender, EventArgs e)

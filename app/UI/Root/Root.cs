@@ -547,18 +547,14 @@ namespace Grimoire.UI
 
         private void infRangeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OptionsManager.InfiniteRange = infRangeToolStripMenuItem.Checked;
-            BotManager.Instance.chkInfiniteRange.Checked = infRangeToolStripMenuItem.Checked;
+            OptionsManager.MenuOptions.InfiniteRange = infRangeToolStripMenuItem.Checked;
+            OptionsManager.Refresh();
         }
 
         private async void provokeToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            OptionsManager.ProvokeMonsters = provokeToolStripMenuItem1.Checked;
-            BotManager.Instance.chkProvoke.Checked = provokeToolStripMenuItem1.Checked;
-            if (provokeToolStripMenuItem1.Checked && !OptionsManager.IsRunning)
-            {
-                OptionsManager.ApplySettings().Forget("applying the client options");
-            }
+            OptionsManager.MenuOptions.ProvokeMonsters = provokeToolStripMenuItem1.Checked;
+            OptionsManager.Refresh();
         }
 
         private async void provokeToolStripMenuItem1_Clicked(object sender, EventArgs e)
@@ -571,37 +567,26 @@ namespace Grimoire.UI
 
         private async void enemyMagnetToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OptionsManager.EnemyMagnet = enemyMagnetToolStripMenuItem.Checked;
-            BotManager.Instance.chkMagnet.Checked = enemyMagnetToolStripMenuItem.Checked;
-            if (enemyMagnetToolStripMenuItem.Checked && !OptionsManager.IsRunning)
-            {
-                OptionsManager.ApplySettings().Forget("applying the client options");
-            }
+            OptionsManager.MenuOptions.EnemyMagnet = enemyMagnetToolStripMenuItem.Checked;
+            OptionsManager.Refresh();
         }
 
         private void lagKillerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OptionsManager.LagKiller = lagKillerToolStripMenuItem.Checked;
-            BotManager.Instance.chkLag.Checked = lagKillerToolStripMenuItem.Checked;
+            OptionsManager.MenuOptions.LagKiller = lagKillerToolStripMenuItem.Checked;
+            OptionsManager.Refresh();
         }
 
         private async void skipCutscenesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OptionsManager.SkipCutscenes = skipCutscenesToolStripMenuItem.Checked;
-            BotManager.Instance.chkSkipCutscenes.Checked = skipCutscenesToolStripMenuItem.Checked;
-            if (skipCutscenesToolStripMenuItem.Checked && !OptionsManager.IsRunning)
-            {
-                OptionsManager.ApplySettings().Forget("applying the client options");
-            }
+            OptionsManager.MenuOptions.SkipCutscenes = skipCutscenesToolStripMenuItem.Checked;
+            OptionsManager.Refresh();
         }
 
         private void walkSpeedToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OptionsManager.WalkSpeed = walkSpeedToolStripMenuItem.Checked ? 40 : 8;
-            if (walkSpeedToolStripMenuItem.Checked && !OptionsManager.IsRunning)
-            {
-                OptionsManager.ApplySettings().Forget("applying the client options");
-            }
+            OptionsManager.MenuOptions.WalkSpeed = walkSpeedToolStripMenuItem.Checked ? 40 : 8;
+            OptionsManager.Refresh();
         }
 
         private void MenuMain_MouseDown(object sender, MouseEventArgs e)

@@ -16,7 +16,9 @@ namespace Grimoire.Botting
         #region Fields
 
         private static readonly string[] empty = new string[0];
+        private static readonly ManipulationOptions Off = new ManipulationOptions();
         private static bool _isRunning;
+        private static bool _botActive;
         private static bool _lagKiller;
         private static bool _infRange;
         private static bool _hideYulgar;
@@ -57,6 +59,22 @@ namespace Grimoire.Botting
                 StateChanged?.Invoke(value);
             }
         }
+
+        /// <summary>
+        /// The options set in the main menu's Settings > Manipulation Options. They apply whenever you're in game.
+        /// </summary>
+        public static ManipulationOptions MenuOptions
+        {
+            get;
+        } = new ManipulationOptions();
+
+        /// <summary>
+        /// The options set in Bot Manager. They apply only while a bot runs.
+        /// </summary>
+        public static ManipulationOptions BotOptions
+        {
+            get;
+        } = new ManipulationOptions();
 
         public static bool ProvokeMonsters
         {
@@ -211,6 +229,18 @@ namespace Grimoire.Botting
             }
         }
 
+        /// <summary>
+        /// Whether the options loop has something to do. A running bot always keeps it going, because bot commands
+        /// such as packet spam switch options on during the run.
+        /// </summary>
+        private static bool NeedsLoop
+        {
+            get
+            {
+                return _botActive || PacketSpam || EnemyMagnet || SkipCutscenes || ProvokeMonsters || WalkSpeed != 8;
+            }
+        }
+
         private static IJsonMessageHandler HandlerHideRoom
         {
             get;
@@ -239,33 +269,83 @@ namespace Grimoire.Botting
 
         public static void DisableDeathAds() => Flash.Call("DisableDeathAd", empty);
 
+        /// <summary>
+        /// Applies the bot's options for as long as the bot runs.
+        /// </summary>
         public static void Start()
         {
-            ApplySettings().Forget("applying the client options");
-            if (BotManager.Instance.chkLag.Checked)
+            _botActive = true;
+            Refresh();
+        }
+
+        /// <summary>
+        /// Takes the bot's options back off when the bot stops, leaving the menu's. Packet spam is set by a bot
+        /// command, so it ends with the bot. When provoke turns off, the player moves to a cell of their own so the
+        /// provoked monsters stop following.
+        /// </summary>
+        public static void Stop()
+        {
+            bool provoked = ProvokeMonsters;
+            _botActive = false;
+            PacketSpam = false;
+            Refresh();
+            if (provoked && !ProvokeMonsters)
             {
-                LagKiller = true;
-            }
-            if (BotManager.Instance.chkProvoke.Checked)
-            {
-                ProvokeMonsters = true;
+                BotUtilities.MoveToSelfCell();
             }
         }
 
         /// <summary>
-        /// Stops the options loop when a bot stops or "Enable options without starting" is unchecked. Packet spam is set
-        /// by a bot command, so it ends with the bot. Cell provoke keeps running while its option is checked, so the
-        /// loop starts again for it.
+        /// Sets the options the client uses from the two sets: an option is on when the menu has it on, or, while a bot
+        /// runs, when Bot Manager has it on. Walk speed takes the faster of the two. Only a value that changes is sent
+        /// to the game, and the options loop starts when something needs it.
         /// </summary>
-        public static void Stop()
+        public static void Refresh()
         {
-            IsRunning = false;
-            PacketSpam = false;
-            if (BotManager.Instance.chkLag.Checked)
+            ManipulationOptions bot = _botActive ? BotOptions : Off;
+            bool infiniteRange = MenuOptions.InfiniteRange || bot.InfiniteRange;
+            if (infiniteRange != InfiniteRange)
             {
-                LagKiller = false;
+                InfiniteRange = infiniteRange;
             }
-            if (ProvokeMonsters)
+            bool lagKiller = MenuOptions.LagKiller || bot.LagKiller;
+            if (lagKiller != LagKiller)
+            {
+                LagKiller = lagKiller;
+            }
+            ProvokeMonsters = MenuOptions.ProvokeMonsters || bot.ProvokeMonsters;
+            EnemyMagnet = MenuOptions.EnemyMagnet || bot.EnemyMagnet;
+            SkipCutscenes = MenuOptions.SkipCutscenes || bot.SkipCutscenes;
+            int walkSpeed = Math.Max(MenuOptions.WalkSpeed, bot.WalkSpeed);
+            if (walkSpeed != WalkSpeed)
+            {
+                WalkSpeed = walkSpeed;
+                if (Player.IsLoggedIn)
+                {
+                    SetWalkSpeed();
+                }
+            }
+            if (NeedsLoop && !IsRunning && Player.IsLoggedIn)
+            {
+                ApplySettings().Forget("applying the client options");
+            }
+        }
+
+        /// <summary>
+        /// Sends the options that are on to a freshly loaded world, which starts with all of them off, and starts the
+        /// options loop when something needs it. Called after every login.
+        /// </summary>
+        public static void ApplyOnLogin()
+        {
+            if (InfiniteRange)
+            {
+                SetInfiniteRange(true);
+            }
+            if (LagKiller)
+            {
+                SetLagKiller();
+            }
+            if (NeedsLoop && !IsRunning)
             {
                 ApplySettings().Forget("applying the client options");
             }
@@ -318,16 +398,16 @@ namespace Grimoire.Botting
         }
 
         /// <summary>
-        /// Runs the options loop. Each call starts a new loop; an older one sees a newer generation and exits, so a
-        /// quick Stop and Start (as auto-relogin does) doesn't leave two loops sending everything twice. The newest loop
-        /// clears <see cref="IsRunning"/> when it ends, for example on logout, so turning an option on afterwards starts
-        /// a new one.
+        /// Runs the options loop while something needs it. Each call starts a new loop; an older one sees a newer
+        /// generation and exits, so a quick Stop and Start (as auto-relogin does) doesn't leave two loops sending
+        /// everything twice. The newest loop clears <see cref="IsRunning"/> when it ends, for example on logout, so
+        /// turning an option on afterwards starts a new one.
         /// </summary>
         public static async Task ApplySettings()
         {
             int generation = Interlocked.Increment(ref _loopGeneration);
             IsRunning = true;
-            while (IsRunning && generation == _loopGeneration && Player.IsLoggedIn)
+            while (IsRunning && generation == _loopGeneration && NeedsLoop && Player.IsLoggedIn)
             {
                 bool alive = (PacketSpam || EnemyMagnet) && Player.IsAlive;
                 if (PacketSpam && alive)

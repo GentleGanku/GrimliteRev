@@ -142,7 +142,6 @@ namespace Grimoire.UI
             "Yulgar Suite 42",
             "Relog",
             "Start/Stop Bot",
-            "Toggle Options",
             "Immediate Login",
             "Show Ping Monitor",
             "Hide Client Menu Bar"});

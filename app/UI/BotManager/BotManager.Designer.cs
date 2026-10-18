@@ -259,7 +259,6 @@ namespace Grimoire.UI
             this.numOptionsTimer = new DarkUI.Controls.DarkNumericUpDown();
             this.chkMagnet = new DarkUI.Controls.DarkCheckBox();
             this.chkLag = new DarkUI.Controls.DarkCheckBox();
-            this.chkEnableSettings = new DarkUI.Controls.DarkCheckBox();
             this.chkSkipCutscenes = new DarkUI.Controls.DarkCheckBox();
             this.label8 = new DarkUI.Controls.DarkLabel();
             this.numWalkSpeed = new DarkUI.Controls.DarkNumericUpDown();
@@ -3572,7 +3571,6 @@ namespace Grimoire.UI
             this.darkGroupBox19.Controls.Add(this.numOptionsTimer);
             this.darkGroupBox19.Controls.Add(this.chkMagnet);
             this.darkGroupBox19.Controls.Add(this.chkLag);
-            this.darkGroupBox19.Controls.Add(this.chkEnableSettings);
             this.darkGroupBox19.Controls.Add(this.chkSkipCutscenes);
             this.darkGroupBox19.Controls.Add(this.label8);
             this.darkGroupBox19.Controls.Add(this.numWalkSpeed);
@@ -3608,7 +3606,7 @@ namespace Grimoire.UI
             // 
             this.label6.AutoSize = true;
             this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.label6.Location = new System.Drawing.Point(64, 178);
+            this.label6.Location = new System.Drawing.Point(64, 156);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(97, 17);
             this.label6.TabIndex = 157;
@@ -3631,7 +3629,7 @@ namespace Grimoire.UI
             0,
             0,
             65536});
-            this.numOptionsTimer.Location = new System.Drawing.Point(5, 175);
+            this.numOptionsTimer.Location = new System.Drawing.Point(5, 153);
             this.numOptionsTimer.LoopValues = false;
             this.numOptionsTimer.Maximum = new decimal(new int[] {
             10000,
@@ -3673,15 +3671,6 @@ namespace Grimoire.UI
             this.chkLag.Text = "Lag killer";
             this.chkLag.CheckedChanged += new System.EventHandler(this.chkLag_CheckedChanged);
             // 
-            // chkEnableSettings
-            // 
-            this.chkEnableSettings.Location = new System.Drawing.Point(5, 131);
-            this.chkEnableSettings.Name = "chkEnableSettings";
-            this.chkEnableSettings.Size = new System.Drawing.Size(173, 17);
-            this.chkEnableSettings.TabIndex = 132;
-            this.chkEnableSettings.Text = "Enable options without starting";
-            this.chkEnableSettings.Click += new System.EventHandler(this.chkEnableSettings_Click);
-            // 
             // chkSkipCutscenes
             // 
             this.chkSkipCutscenes.AutoSize = true;
@@ -3696,7 +3685,7 @@ namespace Grimoire.UI
             // 
             this.label8.AutoSize = true;
             this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.label8.Location = new System.Drawing.Point(64, 157);
+            this.label8.Location = new System.Drawing.Point(64, 135);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(82, 17);
             this.label8.TabIndex = 122;
@@ -3709,7 +3698,7 @@ namespace Grimoire.UI
             0,
             0,
             65536});
-            this.numWalkSpeed.Location = new System.Drawing.Point(5, 153);
+            this.numWalkSpeed.Location = new System.Drawing.Point(5, 131);
             this.numWalkSpeed.LoopValues = false;
             this.numWalkSpeed.Maximum = new decimal(new int[] {
             99,
@@ -5462,7 +5451,6 @@ namespace Grimoire.UI
         private DarkTextBox txtPacket;
         private DarkButton btnServerPacket;
         private TabPage tabOptions;
-        private DarkCheckBox chkEnableSettings;
         private DarkTextBox txtSoundItem;
         private DarkButton btnSoundAdd;
         private DarkButton btnSoundDelete;
