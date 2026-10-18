@@ -43,15 +43,15 @@ namespace Grimoire.UI
         {
             get
             {
-                if (tabLogs.SelectedIndex == 0)
+                if (tabLogs.SelectedTab == tabLogDebug)
                     return txtLogDebug;
-                else if (tabLogs.SelectedIndex == 1)
+                else if (tabLogs.SelectedTab == tabLogScript)
                     return txtLogScript;
-                else if (tabLogs.SelectedIndex == 2)
+                else if (tabLogs.SelectedTab == tabLogDrops)
                     return txtLogDrops;
-                else if (tabLogs.SelectedIndex == 3)
+                else if (tabLogs.SelectedTab == tabLogChat)
                     return txtLogChat;
-                else if (tabLogs.SelectedIndex == 4)
+                else if (tabLogs.SelectedTab == tabLogBot)
                     return txtLogBot;
                 return null;
             }

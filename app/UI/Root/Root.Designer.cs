@@ -248,19 +248,22 @@ namespace Grimoire.UI
             this.botToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.botToolStripMenuItem.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.botToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.loadBotToolStripMenuItem,
             this.startToolStripMenuItem,
             this.stopToolStripMenuItem,
             this.managerToolStripMenuItem,
-            this.loadBotToolStripMenuItem});
+            this.logsToolStripMenuItem1});
             this.botToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
             this.botToolStripMenuItem.Name = "botToolStripMenuItem";
             this.botToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.botToolStripMenuItem.Text = "Bot";
+            this.botToolStripMenuItem.DropDownOpening += new System.EventHandler(this.botToolStripMenuItem_DropDownOpening);
             // 
             // startToolStripMenuItem
             // 
             this.startToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.startToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
+            this.startToolStripMenuItem.Enabled = false;
             this.startToolStripMenuItem.Name = "startToolStripMenuItem";
             this.startToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
             this.startToolStripMenuItem.Text = "Start";
@@ -292,7 +295,7 @@ namespace Grimoire.UI
             this.loadBotToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
             this.loadBotToolStripMenuItem.Name = "loadBotToolStripMenuItem";
             this.loadBotToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
-            this.loadBotToolStripMenuItem.Text = "Load Bot";
+            this.loadBotToolStripMenuItem.Text = "Load";
             this.loadBotToolStripMenuItem.Click += new System.EventHandler(this.loadBotToolStripMenuItem_Click);
             // 
             // toolsToolStripMenuItem
@@ -306,7 +309,6 @@ namespace Grimoire.UI
             this.cosmeticsToolStripMenuItem,
             this.bankToolStripMenuItem,
             this.eyeDropperToolStripMenuItem,
-            this.logsToolStripMenuItem1,
             this.notepadToolStripMenuItem1,
             this.pingMonitorToolStripMenuItem,
             this.FPSToolStripMenuItem,

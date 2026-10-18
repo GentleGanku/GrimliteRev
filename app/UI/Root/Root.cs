@@ -204,7 +204,7 @@ namespace Grimoire.UI
             }
             else
             {
-                startToolStripMenuItem.Enabled = true;
+                startToolStripMenuItem.Enabled = BotManager.Instance.lstCommands.Items.Count > 0;
                 loadBotToolStripMenuItem.Enabled = true;
                 stopToolStripMenuItem.Enabled = false;
             }
@@ -670,6 +670,15 @@ namespace Grimoire.UI
             }
         }
 
+        /// <summary>
+        /// Start is only enabled while no bot runs and the command list has commands. It is checked each time the Bot
+        /// menu opens, so commands added or removed anywhere, plugins included, are counted.
+        /// </summary>
+        private void botToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+        {
+            startToolStripMenuItem.Enabled = !BotManager.Instance.ActiveBotEngine.IsRunning && BotManager.Instance.lstCommands.Items.Count > 0;
+        }
+
         private async void startToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (Player.IsAlive && Player.IsLoggedIn && BotManager.Instance.lstCommands.Items.Count > 0)
@@ -703,7 +712,7 @@ namespace Grimoire.UI
             BotManager.Instance.BotStateChanged(IsRunning: false);
             await Task.Delay(2000);
             this.BotStateChanged(IsRunning: false);
-            BotManager.Instance.btnBotStart.Enabled = true;
+            BotManager.Instance.UpdateStartEnabled();
         }
 
         private void grimliteToolStripMenuItem_Click(object sender, EventArgs e)

@@ -103,11 +103,11 @@ namespace Grimoire.UI
             this.tabLogs.ClosingButtonColor = System.Drawing.Color.WhiteSmoke;
             this.tabLogs.ClosingMessage = null;
             this.tabLogs.ContextMenuStrip = this.contextMenuStrip1;
+            this.tabLogs.Controls.Add(this.tabLogChat);
+            this.tabLogs.Controls.Add(this.tabLogDrops);
+            this.tabLogs.Controls.Add(this.tabLogBot);
             this.tabLogs.Controls.Add(this.tabLogDebug);
             this.tabLogs.Controls.Add(this.tabLogScript);
-            this.tabLogs.Controls.Add(this.tabLogDrops);
-            this.tabLogs.Controls.Add(this.tabLogChat);
-            this.tabLogs.Controls.Add(this.tabLogBot);
             this.tabLogs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabLogs.HeaderColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.tabLogs.HorizontalLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
@@ -155,7 +155,7 @@ namespace Grimoire.UI
             this.tabLogDebug.Name = "tabLogDebug";
             this.tabLogDebug.Padding = new System.Windows.Forms.Padding(3);
             this.tabLogDebug.Size = new System.Drawing.Size(420, 219);
-            this.tabLogDebug.TabIndex = 0;
+            this.tabLogDebug.TabIndex = 3;
             this.tabLogDebug.Text = "Debug";
             // 
             // tabLogScript
@@ -168,7 +168,7 @@ namespace Grimoire.UI
             this.tabLogScript.Name = "tabLogScript";
             this.tabLogScript.Padding = new System.Windows.Forms.Padding(3);
             this.tabLogScript.Size = new System.Drawing.Size(420, 219);
-            this.tabLogScript.TabIndex = 1;
+            this.tabLogScript.TabIndex = 4;
             this.tabLogScript.Text = "Script";
             // 
             // txtLogScript
@@ -193,7 +193,7 @@ namespace Grimoire.UI
             this.tabLogDrops.Name = "tabLogDrops";
             this.tabLogDrops.Padding = new System.Windows.Forms.Padding(3);
             this.tabLogDrops.Size = new System.Drawing.Size(420, 219);
-            this.tabLogDrops.TabIndex = 2;
+            this.tabLogDrops.TabIndex = 1;
             this.tabLogDrops.Text = "Drops";
             // 
             // txtLogDrops
@@ -218,7 +218,7 @@ namespace Grimoire.UI
             this.tabLogChat.Name = "tabLogChat";
             this.tabLogChat.Padding = new System.Windows.Forms.Padding(3);
             this.tabLogChat.Size = new System.Drawing.Size(420, 219);
-            this.tabLogChat.TabIndex = 3;
+            this.tabLogChat.TabIndex = 0;
             this.tabLogChat.Text = "Chat";
             // 
             // txtLogChat
@@ -243,7 +243,7 @@ namespace Grimoire.UI
             this.tabLogBot.Name = "tabLogBot";
             this.tabLogBot.Padding = new System.Windows.Forms.Padding(3);
             this.tabLogBot.Size = new System.Drawing.Size(420, 219);
-            this.tabLogBot.TabIndex = 4;
+            this.tabLogBot.TabIndex = 2;
             this.tabLogBot.Text = "Bot";
             // 
             // txtLogBot

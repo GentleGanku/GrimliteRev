@@ -314,7 +314,7 @@ namespace Grimoire.UI
             BotStateChanged(IsRunning: false);
             await Task.Delay(2000);
             Root.Instance.BotStateChanged(IsRunning: false);
-            btnBotStart.Enabled = true;
+            UpdateStartEnabled();
         }
 
         public void BotStateChanged(bool IsRunning)
@@ -340,6 +340,15 @@ namespace Grimoire.UI
             btnSearchCmd.Enabled = !IsRunning;
             txtSearchCmd.Enabled = !IsRunning;
             btnLoad.Enabled = !IsRunning;
+        }
+
+        /// <summary>
+        /// Enables Start only while no bot runs and the command list has commands. Called after every change to the
+        /// command list; the main menu's Start checks the same when the Bot menu opens.
+        /// </summary>
+        public void UpdateStartEnabled()
+        {
+            btnBotStart.Enabled = !ActiveBotEngine.IsRunning && lstCommands.Items.Count > 0;
         }
 
         public void ControlInvoke(Control control, MethodInvoker action)

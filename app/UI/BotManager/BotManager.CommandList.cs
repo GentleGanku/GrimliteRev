@@ -27,6 +27,7 @@ namespace Grimoire.UI
             {
                 lstCommands.Items.Add(cmd);
             }
+            UpdateStartEnabled();
         }
 
         public void MultiMode()
@@ -151,6 +152,7 @@ namespace Grimoire.UI
                 SelectedList.Items.RemoveAt(idx);
             }
             SelectedList.EndUpdate();
+            UpdateStartEnabled();
         }
 
         private void _MoveListBoxUp()
@@ -197,6 +199,7 @@ namespace Grimoire.UI
             if (result == DialogResult.Yes)
             {
                 SelectedList.Items.Clear();
+                UpdateStartEnabled();
             }
         }
 
@@ -211,6 +214,7 @@ namespace Grimoire.UI
                 lstItems.Items.Clear();
                 lstQuests.Items.Clear();
                 lstSkills.Items.Clear();
+                UpdateStartEnabled();
             }
         }
 
@@ -248,6 +252,7 @@ namespace Grimoire.UI
                 {
                     SelectedList.Items.Insert(SelectedList.SelectedIndex + selectedItems.Count + i, selectedItems[i]);
                 }
+                UpdateStartEnabled();
                 e.Handled = true;
             }
             else if (ModifierKeys == Keys.Control && e.KeyCode == Keys.C && SelectedList.SelectedIndex > -1)
@@ -279,6 +284,7 @@ namespace Grimoire.UI
                     lstCommands.Items.AddRange(items.ToArray());
                     for (int i = 0; i < commands.Count; i++)
                         lstCommands.SelectedIndex = selectedIndex + i;
+                    UpdateStartEnabled();
                 }
                 List<Skill> skills = config.Skills;
                 if (skills != null && skills.Count > 0)

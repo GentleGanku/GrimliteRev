@@ -4979,6 +4979,7 @@ namespace Grimoire.UI
             this.btnBotStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
             this.btnBotStart.BackColorUseGeneric = false;
             this.btnBotStart.Checked = false;
+            this.btnBotStart.Enabled = false;
             this.btnBotStart.ForeColor = System.Drawing.Color.Gainsboro;
             this.btnBotStart.Location = new System.Drawing.Point(0, 0);
             this.btnBotStart.Margin = new System.Windows.Forms.Padding(0);

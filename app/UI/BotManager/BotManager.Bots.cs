@@ -232,6 +232,7 @@ namespace Grimoire.UI
                 else
                     rtbInfo.Text = config.Description;
                 LastIndexedSearch = 0;
+                UpdateStartEnabled();
             }
         }
 

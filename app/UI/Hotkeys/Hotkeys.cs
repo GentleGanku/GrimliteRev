@@ -322,7 +322,7 @@ namespace Grimoire.UI
                     BotManager.Instance.BotStateChanged(IsRunning: false);
                     await Task.Delay(2000);
                     Root.Instance.BotStateChanged(IsRunning: false);
-                    BotManager.Instance.btnBotStart.Enabled = true;
+                    BotManager.Instance.UpdateStartEnabled();
                 }
             }
             catch (Exception ex)

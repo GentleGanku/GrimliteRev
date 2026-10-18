@@ -29,7 +29,7 @@ namespace Grimoire.Botting.Commands.Misc
             BotManager.Instance.BotStateChanged(IsRunning: false);
             await Task.Delay(2000);
             Root.Instance.BotStateChanged(IsRunning: false);
-            BotManager.Instance.btnBotStart.Enabled = true;
+            BotManager.Instance.UpdateStartEnabled();
             DarkMessageBox.Show
             (
                 new Form { TopMost = true, StartPosition = FormStartPosition.CenterScreen },
