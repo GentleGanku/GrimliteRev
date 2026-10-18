@@ -51,6 +51,7 @@ namespace Grimoire.UI
             this.toolStripTextBox2 = new System.Windows.Forms.ToolStripTextBox();
             this.loginToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripComboBoxLoginServer = new System.Windows.Forms.ToolStripComboBox();
+            this.quickLoginStartupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DPSMeterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.commandeditornodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -209,7 +210,6 @@ namespace Grimoire.UI
             this.botToolStripMenuItem,
             this.toolsToolStripMenuItem,
             this.packetsToolStripMenuItem,
-            this.optionsToolStripMenuItem,
             this.pluginsStrip,
             this.settingsToolStripMenuItem,
             this.discordToolStripMenuItem,
@@ -298,9 +298,6 @@ namespace Grimoire.UI
             this.hotkeysToolStripMenuItem,
             this.pluginManagerToolStripMenuItem,
             this.cosmeticsToolStripMenuItem,
-            this.pingMonitorToolStripMenuItem,
-            this.FPSToolStripMenuItem,
-            this.loginToolStripMenuItem,
             this.DPSMeterToolStripMenuItem,
             this.setsToolStripMenuItem,
             this.commandeditornodeToolStripMenuItem});
@@ -381,7 +378,7 @@ namespace Grimoire.UI
             this.FPSToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
             this.FPSToolStripMenuItem.Name = "FPSToolStripMenuItem";
             this.FPSToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.FPSToolStripMenuItem.Text = "Set FPS";
+            this.FPSToolStripMenuItem.Text = "FPS Limiter";
             this.FPSToolStripMenuItem.Click += new System.EventHandler(this.FPSToolStripMenuItem_Click);
             // 
             // toolStripTextBox2
@@ -391,16 +388,18 @@ namespace Grimoire.UI
             this.toolStripTextBox2.Name = "toolStripTextBox2";
             this.toolStripTextBox2.Size = new System.Drawing.Size(100, 23);
             this.toolStripTextBox2.Text = "60";
+            this.toolStripTextBox2.TextChanged += new System.EventHandler(this.toolStripTextBox2_TextChanged);
             // 
             // loginToolStripMenuItem
             // 
             this.loginToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.loginToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripComboBoxLoginServer});
+            this.toolStripComboBoxLoginServer,
+            this.quickLoginStartupToolStripMenuItem});
             this.loginToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
             this.loginToolStripMenuItem.Name = "loginToolStripMenuItem";
             this.loginToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.loginToolStripMenuItem.Text = "Immediate Login";
+            this.loginToolStripMenuItem.Text = "Quick Login";
             this.loginToolStripMenuItem.Click += new System.EventHandler(this.loginToolStripMenuItem_Click);
             // 
             // toolStripComboBoxLoginServer
@@ -411,6 +410,16 @@ namespace Grimoire.UI
             this.toolStripComboBoxLoginServer.Size = new System.Drawing.Size(121, 23);
             this.toolStripComboBoxLoginServer.Text = "Server";
             this.toolStripComboBoxLoginServer.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBoxLoginServer_Click);
+            //
+            // quickLoginStartupToolStripMenuItem
+            //
+            this.quickLoginStartupToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
+            this.quickLoginStartupToolStripMenuItem.CheckOnClick = true;
+            this.quickLoginStartupToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
+            this.quickLoginStartupToolStripMenuItem.Name = "quickLoginStartupToolStripMenuItem";
+            this.quickLoginStartupToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.quickLoginStartupToolStripMenuItem.Text = "Automatic upon App Startup";
+            this.quickLoginStartupToolStripMenuItem.Click += new System.EventHandler(this.quickLoginStartupToolStripMenuItem_Click);
             // 
             // DPSMeterToolStripMenuItem
             // 
@@ -496,8 +505,8 @@ namespace Grimoire.UI
             this.walkSpeedToolStripMenuItem});
             this.optionsToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-            this.optionsToolStripMenuItem.Text = "Options";
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.optionsToolStripMenuItem.Text = "Manipulation Options";
             // 
             // infRangeToolStripMenuItem
             // 
@@ -573,7 +582,11 @@ namespace Grimoire.UI
             //
             this.settingsToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.camouflageToolStripMenuItem});
+            this.camouflageToolStripMenuItem,
+            this.pingMonitorToolStripMenuItem,
+            this.loginToolStripMenuItem,
+            this.FPSToolStripMenuItem,
+            this.optionsToolStripMenuItem});
             this.settingsToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
@@ -657,6 +670,7 @@ namespace Grimoire.UI
         public ToolStripMenuItem pingMonitorToolStripMenuItem;
         public ToolStripMenuItem loginToolStripMenuItem;
         public ToolStripComboBox toolStripComboBoxLoginServer;
+        private ToolStripMenuItem quickLoginStartupToolStripMenuItem;
         public ToolStripMenuItem optionsToolStripMenuItem;
         public ToolStripMenuItem infRangeToolStripMenuItem;
         public ToolStripMenuItem provokeToolStripMenuItem1;

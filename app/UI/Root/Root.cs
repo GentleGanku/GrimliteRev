@@ -64,6 +64,8 @@ namespace Grimoire.UI
 
         // Tracked separately because panel1.Visible reads false until the window is shown, and the constructor applies Camouflage before that.
         private bool menuVisible = true;
+        // Set while serverCatch selects the saved server, so that selection doesn't log in.
+        private bool _selectingServer;
 
         private Icon defaultIcon;
         private Icon defaultTrayIcon;
@@ -87,6 +89,7 @@ namespace Grimoire.UI
             camouflageToolStripMenuItem.Checked = BotClientConfig.Instance.GetValue<bool>("clientHeaderToggle");
             ApplyCamouflage(camouflageToolStripMenuItem.Checked);
             triggerToggle();
+            LoadSettings();
             NewBadge.Attach(grimliteToolStripMenuItem, botToolStripMenuItem, managerToolStripMenuItem, settingsToolStripMenuItem, camouflageToolStripMenuItem, discordToolStripMenuItem, supportMeToolStripMenuItem);
         }
 
@@ -213,10 +216,56 @@ namespace Grimoire.UI
             toolStripComboBoxLoginServer.Enabled = Type;
         }
 
+        /// <summary>
+        /// Selects the saved server in Quick Login's list without logging in to it.
+        /// </summary>
         public void serverCatch()
         {
-            toolStripComboBoxLoginServer.SelectedIndex = int.Parse(BotClientConfig.Instance.GetValue<string>("serverIndex") ?? "0");
-            toolStripComboBoxLoginServer.SelectedItem = toolStripComboBoxLoginServer.SelectedIndex;
+            int index = Math.Max(0, BotClientConfig.Instance.GetValue<int>("serverIndex"));
+            if (index < toolStripComboBoxLoginServer.Items.Count)
+            {
+                _selectingServer = true;
+                toolStripComboBoxLoginServer.SelectedIndex = index;
+                _selectingServer = false;
+            }
+        }
+
+        /// <summary>
+        /// Logs in to the server selected in Quick Login's list. Nothing happens when you're already on that server;
+        /// otherwise it logs out first, opens the server list with the saved account if needed, and connects.
+        /// </summary>
+        public async Task QuickLogin()
+        {
+            Server server = toolStripComboBoxLoginServer.SelectedItem as Server;
+            if (AutoRelogin.IsTemporarilyKicked || (Player.IsLoggedIn && server != null && string.Equals(World.ServerName(), server.Name, StringComparison.OrdinalIgnoreCase)))
+            {
+                return;
+            }
+            loginBoxToggle(false);
+            login_cts = new CancellationTokenSource();
+            try
+            {
+                if (Player.IsLoggedIn)
+                {
+                    Player.Logout();
+                    await BotManager.Instance.ActiveBotEngine.WaitUntil(() => AutoRelogin.LoginLabel, () => !login_cts.IsCancellationRequested, 5, 1500);
+                }
+                if (!AutoRelogin.ServerLabel)
+                {
+                    AutoRelogin.LoginExecute();
+                    await BotManager.Instance.ActiveBotEngine.WaitUntil(() => !AutoRelogin.IsClientLoading("Account"), () => !login_cts.IsCancellationRequested, 10, 500);
+                }
+                serverCatch();
+                if (toolStripComboBoxLoginServer.SelectedItem is Server selected)
+                {
+                    await AutoRelogin.ForceLogin(selected, login_cts);
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.Log("logging in with Quick Login", ex);
+            }
+            loginBoxToggle(true);
         }
 
         public void pingMonitorToolStripMenuItem_Click(object sender, EventArgs e)
@@ -362,6 +411,66 @@ namespace Grimoire.UI
             Flash.SwfLoadProgress -= OnLoadProgress;
             Game.Visible = true;
             prgLoader.Visible = false;
+            RunStartupSettings().Forget("applying the startup settings");
+        }
+
+        /// <summary>
+        /// Reads the Settings menu's saved choices: the Manipulation Options, FPS Limiter and automatic Quick Login.
+        /// Each option item's handler runs as it is checked, which hands it to <see cref="OptionsManager"/>.
+        /// </summary>
+        private void LoadSettings()
+        {
+            BotClientConfig config = BotClientConfig.Instance;
+            infRangeToolStripMenuItem.Checked = config.GetValue<bool>("optInfiniteRange");
+            provokeToolStripMenuItem1.Checked = config.GetValue<bool>("optProvokeMonsters");
+            enemyMagnetToolStripMenuItem.Checked = config.GetValue<bool>("optEnemyMagnet");
+            lagKillerToolStripMenuItem.Checked = config.GetValue<bool>("optLagKiller");
+            skipCutscenesToolStripMenuItem.Checked = config.GetValue<bool>("optSkipCutscenes");
+            walkSpeedToolStripMenuItem.Checked = config.GetValue<bool>("optFastWalk");
+            toolStripTextBox2.Text = config.GetValue<string>("fpsLimit") ?? toolStripTextBox2.Text;
+            FPSToolStripMenuItem.Checked = config.GetValue<bool>("fpsLimiter");
+            quickLoginStartupToolStripMenuItem.Checked = config.GetValue<bool>("quickLoginOnStartup");
+        }
+
+        /// <summary>
+        /// Runs the Settings menu's startup choices once, when the game first reaches its login screen: FPS Limiter,
+        /// then Quick Login to the saved server. The Manipulation Options are applied on every login instead
+        /// (<see cref="OptionsManager.ApplyOnLogin"/>).
+        /// </summary>
+        private async Task RunStartupSettings()
+        {
+            await BotManager.Instance.ActiveBotEngine.WaitUntil(() => AutoRelogin.LoginLabel, null, 60, 1000);
+            if (FPSToolStripMenuItem.Checked)
+            {
+                ApplyFpsLimiter();
+            }
+            if (quickLoginStartupToolStripMenuItem.Checked && !Player.IsLoggedIn)
+            {
+                await QuickLogin();
+            }
+        }
+
+        /// <summary>
+        /// Saves a Settings menu choice to BotClientConfig.cfg, so it is restored at the next start.
+        /// </summary>
+        private static void SaveSetting(string key, object value)
+        {
+            BotClientConfig.Instance.SetValue(key, value.ToString());
+        }
+
+        /// <summary>
+        /// Sends FPS Limiter's frame rate to the game while it is checked, and the game's default of 24 when it isn't.
+        /// </summary>
+        private void ApplyFpsLimiter()
+        {
+            if (FPSToolStripMenuItem.Checked)
+            {
+                Flash.Call("SetFPS", FPSToolStripMenuItem.DropDownItems[0].Text);
+            }
+            else
+            {
+                Flash.Call("SetFPS", 24);
+            }
         }
 
         private void fastTravelsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -547,12 +656,14 @@ namespace Grimoire.UI
         private void infRangeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OptionsManager.MenuOptions.InfiniteRange = infRangeToolStripMenuItem.Checked;
+            SaveSetting("optInfiniteRange", infRangeToolStripMenuItem.Checked);
             OptionsManager.Refresh();
         }
 
         private async void provokeToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             OptionsManager.MenuOptions.ProvokeMonsters = provokeToolStripMenuItem1.Checked;
+            SaveSetting("optProvokeMonsters", provokeToolStripMenuItem1.Checked);
             OptionsManager.Refresh();
         }
 
@@ -567,24 +678,28 @@ namespace Grimoire.UI
         private async void enemyMagnetToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OptionsManager.MenuOptions.EnemyMagnet = enemyMagnetToolStripMenuItem.Checked;
+            SaveSetting("optEnemyMagnet", enemyMagnetToolStripMenuItem.Checked);
             OptionsManager.Refresh();
         }
 
         private void lagKillerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OptionsManager.MenuOptions.LagKiller = lagKillerToolStripMenuItem.Checked;
+            SaveSetting("optLagKiller", lagKillerToolStripMenuItem.Checked);
             OptionsManager.Refresh();
         }
 
         private async void skipCutscenesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OptionsManager.MenuOptions.SkipCutscenes = skipCutscenesToolStripMenuItem.Checked;
+            SaveSetting("optSkipCutscenes", skipCutscenesToolStripMenuItem.Checked);
             OptionsManager.Refresh();
         }
 
         private void walkSpeedToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OptionsManager.MenuOptions.WalkSpeed = walkSpeedToolStripMenuItem.Checked ? 40 : 8;
+            SaveSetting("optFastWalk", walkSpeedToolStripMenuItem.Checked);
             OptionsManager.Refresh();
         }
 
@@ -649,14 +764,25 @@ namespace Grimoire.UI
 
         private void FPSToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (FPSToolStripMenuItem.Checked)
+            SaveSetting("fpsLimiter", FPSToolStripMenuItem.Checked);
+            ApplyFpsLimiter();
+        }
+
+        private void toolStripTextBox2_TextChanged(object sender, EventArgs e)
+        {
+            if (int.TryParse(toolStripTextBox2.Text, out int fps) && fps > 0)
             {
-                Flash.Call("SetFPS", FPSToolStripMenuItem.DropDownItems[0].Text);
+                SaveSetting("fpsLimit", fps);
+                if (FPSToolStripMenuItem.Checked)
+                {
+                    ApplyFpsLimiter();
+                }
             }
-            else
-            {
-                Flash.Call("SetFPS", 24);
-            }
+        }
+
+        private void quickLoginStartupToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveSetting("quickLoginOnStartup", quickLoginStartupToolStripMenuItem.Checked);
         }
 
         private void pluginAdded(object sender, ToolStripItemEventArgs e)
@@ -698,53 +824,23 @@ namespace Grimoire.UI
             }
         }
 
-        private async void loginToolStripMenuItem_Click(object sender, EventArgs e)
+        private void loginToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!AutoRelogin.IsTemporarilyKicked)
-            {
-                loginBoxToggle(false);
-                login_cts = new CancellationTokenSource();
-                if (Player.IsLoggedIn)
-                {
-                    Player.Logout();
-                    await BotManager.Instance.ActiveBotEngine.WaitUntil(() => AutoRelogin.LoginLabel, () => !login_cts.IsCancellationRequested, 5, 1500);
-                }
-                AutoRelogin.LoginExecute();
-                await BotManager.Instance.ActiveBotEngine.WaitUntil(() => !AutoRelogin.IsClientLoading("Account"), () => !login_cts.IsCancellationRequested, 10, 500);
-                loginBoxToggle(true);
-            }
+            QuickLogin().Forget("logging in with Quick Login");
         }
 
-        private async void toolStripComboBoxLoginServer_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Choosing a server saves it and logs in to it. Selecting the saved server from code (<see cref="serverCatch"/>)
+        /// doesn't log in.
+        /// </summary>
+        private void toolStripComboBoxLoginServer_Click(object sender, EventArgs e)
         {
-            if (toolStripComboBoxLoginServer.SelectedIndex == -1)
+            if (_selectingServer || toolStripComboBoxLoginServer.SelectedIndex == -1)
             {
                 return;
             }
-            if (AutoRelogin.AreServersLoaded)
-            {
-                loginBoxToggle(false);
-                login_cts = new CancellationTokenSource();
-                if (Player.IsLoggedIn)
-                {
-                    Player.Logout();
-                    await BotManager.Instance.ActiveBotEngine.WaitUntil(() => AutoRelogin.LoginLabel, () => !login_cts.IsCancellationRequested, 5, 1500);
-                }
-                if (!AutoRelogin.ServerLabel)
-                {
-                    AutoRelogin.LoginExecute();
-                    await BotManager.Instance.ActiveBotEngine.WaitUntil(() => !AutoRelogin.IsClientLoading("Account"), () => !login_cts.IsCancellationRequested, 10, 500);
-                }
-                try
-                {
-                    await AutoRelogin.ForceLogin((Server)toolStripComboBoxLoginServer.SelectedItem, login_cts);
-                }
-                catch (Exception ex)
-                {
-                    ErrorReporter.Log("logging in to the selected server", ex);
-                }
-                loginBoxToggle(true);
-            }
+            SaveSetting("serverIndex", toolStripComboBoxLoginServer.SelectedIndex);
+            QuickLogin().Forget("logging in with Quick Login");
         }
 
         private void camouflageToolStripMenuItem_Click(object sender, EventArgs e)

@@ -225,7 +225,7 @@ namespace Grimoire.UI
                 cbServers.Items.AddRange(servers);
                 cbServers.SelectedIndex = 0;
                 Root.Instance.toolStripComboBoxLoginServer.Items.AddRange(servers);
-                Root.Instance.toolStripComboBoxLoginServer.SelectedIndex = BotClientConfig.Instance.GetValue<int>("serverIndex");
+                Root.Instance.serverCatch();
             }
         }
 

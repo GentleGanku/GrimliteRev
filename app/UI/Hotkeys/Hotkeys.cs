@@ -131,7 +131,7 @@ namespace Grimoire.UI
             {
                 if (Root.Instance.ContainsFocus)
                 {
-                    ForceLogin(_cts = new System.Threading.CancellationTokenSource());
+                    Root.Instance.QuickLogin().Forget("logging in with Quick Login");
                 }
             },
             delegate
@@ -148,11 +148,11 @@ namespace Grimoire.UI
         private static readonly Dictionary<string, string> RenamedActions = new Dictionary<string, string>
         {
             { "Show Hotkeys", "Show Keyboard Shortcuts" },
-            { "Show Cosmetics Form", "Show Cosmetics Panel" }
+            { "Show Cosmetics Form", "Show Cosmetics Panel" },
+            { "Immediate Login", "Quick Login" }
         };
         private int _processId;
         private static System.Threading.CancellationTokenSource login_cts;
-        private static System.Threading.CancellationTokenSource _cts;
 
         #endregion
 
@@ -183,38 +183,6 @@ namespace Grimoire.UI
         #endregion
 
         #region Methods
-
-        public static async void ForceLogin(CancellationTokenSource cts)
-        {
-            try
-            {
-                if (!AutoRelogin.IsTemporarilyKicked)
-                {
-                    Root.Instance.loginBoxToggle(false);
-                    if (Player.IsLoggedIn)
-                    {
-                        Player.Logout();
-                        await BotManager.Instance.ActiveBotEngine.WaitUntil(() => AutoRelogin.LoginLabel, () => !cts.IsCancellationRequested, 5, 1500);
-                    }
-                    AutoRelogin.LoginExecute();
-                    await BotManager.Instance.ActiveBotEngine.WaitUntil(() => !AutoRelogin.IsClientLoading("Account"), () => !cts.IsCancellationRequested, 10, 500);
-                    Root.Instance.serverCatch();
-                    try
-                    {
-                        await AutoRelogin.ForceLogin((Server)Root.Instance.toolStripComboBoxLoginServer.SelectedItem, cts);
-                    }
-                    catch (Exception ex)
-                    {
-                        ErrorReporter.Log("logging in from the hotkey", ex);
-                    }
-                    Root.Instance.loginBoxToggle(true);
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorReporter.Log("running Hotkeys.ForceLogin", ex);
-            }
-        }
 
         public void ShowForm(Form form)
         {
@@ -420,15 +388,15 @@ namespace Grimoire.UI
                 Keys keys = (Keys)Enum.Parse(typeof(Keys), cbKeys.SelectedItem.ToString());
                 if (!KeyboardHook.Instance.TargetedKeys.Contains(keys))
                 {
-                    if (cbActions.Items[selectedIndex] == "Immediate Login")
+                    if ((string)cbActions.Items[selectedIndex] == "Quick Login")
                     {
                         string input = "";
                         DialogResult result = InputBox.InputDialog(ref input,
-                            "Please type the name of the server that you wish to use for the Immediate Login.",
-                            "Immediate Login", 250, 100, 40, 40);
+                            "Please type the name of the server that you wish to use for the Quick Login.",
+                            "Quick Login", 250, 100, 40, 40);
                         if (result == DialogResult.OK)
                         {
-                            int index = Root.Instance.toolStripComboBoxLoginServer.Items.IndexOf((input, StringComparison.OrdinalIgnoreCase));
+                            int index = Root.Instance.toolStripComboBoxLoginServer.Items.Cast<object>().ToList().FindIndex(s => string.Equals((s as Server)?.Name, input.Trim(), StringComparison.OrdinalIgnoreCase));
                             BotClientConfig.Instance.SetValue("serverIndex", ((index > -1) ? index.ToString() : "0"));
                         }
                         else

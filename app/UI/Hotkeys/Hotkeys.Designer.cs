@@ -142,7 +142,7 @@ namespace Grimoire.UI
             "Yulgar Suite 42",
             "Relog",
             "Start/Stop Bot",
-            "Immediate Login",
+            "Quick Login",
             "Show Ping Monitor",
             "Hide Client Menu Bar"});
             this.cbActions.Location = new System.Drawing.Point(122, 3);
