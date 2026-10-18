@@ -46,9 +46,13 @@
             {
                 game.serialCmd.servers = [];
                 game.world.strMapName = "";
-                return Root.trueString;
             }
-            catch (e) { return Root.falseString; }
+            catch (e) 
+			{ 
+				return Root.falseString; 
+			}
+		
+			return Root.trueString;
         }
 
         // This function checks whether the servers are loaded or not.
