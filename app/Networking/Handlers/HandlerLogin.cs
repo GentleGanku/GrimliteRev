@@ -45,7 +45,10 @@ namespace Grimoire.Networking.Handlers
                     Player.Quests.LoadedQuests.Clear();
                     await BotManager.Instance.ActiveBotEngine.WaitUntil(() => !World.uiLock, () => !_cts.IsCancellationRequested, 120, 500);
                     Player.Bank.Load();
-                    World.SendClientPacket("%xt%server%-1%Type \"/help\" without the quotation marks to bring information about Chat Commands into the chat.%");
+                    if (!Root.Instance.camouflageToolStripMenuItem.Checked)
+                    {
+                        World.SendClientPacket("%xt%server%-1%Type \"/help\" without the quotation marks to bring information about Chat Commands into the chat.%");
+                    }
                     InstallSettings();
                     OptionsManager.AntiAfk();
                     Player.EnableChat();

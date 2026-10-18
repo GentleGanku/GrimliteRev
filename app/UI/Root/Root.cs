@@ -319,7 +319,7 @@ namespace Grimoire.UI
 
         // Camouflage makes the client look like the official Artix Games Launcher: no title, the launcher icon on the window
         // and tray, the game's own backgrounds (-1 in the bridge's getBackgroundIndex and setBackgroundIndex), and no main menu.
-        // The menu holds Camouflage's own toggle, so Ctrl+Shift+M (ProcessCmdKey) shows and hides it while Camouflage is on.
+        // The menu holds Camouflage's own toggle, so Ctrl+F12 (OnAnyKeyDown) shows and hides it while Camouflage is on.
         public void ApplyCamouflage(bool enabled)
         {
             this.Text = enabled ? "" : "Grimlite Rev";
@@ -345,14 +345,17 @@ namespace Grimoire.UI
             }
         }
 
-        protected override bool ProcessCmdKey(ref System.Windows.Forms.Message msg, Keys keyData)
+        /// <summary>
+        /// Ctrl+F12 shows and hides the menu while Camouflage is on. It comes through the app's keyboard hook, so it
+        /// works while the game screen has focus, and it avoids Ctrl+Shift, which Windows uses to switch keyboard
+        /// layouts on many PCs.
+        /// </summary>
+        private void OnAnyKeyDown(Keys key)
         {
-            if (keyData == (Keys.Control | Keys.Shift | Keys.M) && camouflageToolStripMenuItem.Checked)
+            if (key == Keys.F12 && (ModifierKeys & Keys.Control) == Keys.Control && camouflageToolStripMenuItem.Checked && Hotkeys.Instance.ApplicationContainsFocus())
             {
-                SetMenuVisible(!menuVisible);
-                return true;
+                BeginInvoke((Action)(() => SetMenuVisible(!menuVisible)));
             }
-            return base.ProcessCmdKey(ref msg, keyData);
         }
 
         private void Root_Load(object sender, EventArgs e)
@@ -361,6 +364,7 @@ namespace Grimoire.UI
             this.Show();
             this.WindowState = FormWindowState.Normal;
             Hotkeys.Instance.LoadHotkeys();
+            KeyboardHook.Instance.AnyKeyDown += OnAnyKeyDown;
             Directory.CreateDirectory(PluginsPath);
             PreloadedPlugins.LoadRange(Directory.GetFiles(PluginsPath));
             InitializeGame();
@@ -849,7 +853,7 @@ namespace Grimoire.UI
             ApplyCamouflage(camouflageToolStripMenuItem.Checked);
             if (camouflageToolStripMenuItem.Checked)
             {
-                DarkMessageBox.Show(new Form { TopMost = true, StartPosition = FormStartPosition.CenterScreen }, "The main menu is now hidden. Press Ctrl+Shift+M to show or hide it while Camouflage is on. To turn Camouflage off, show the menu and uncheck Settings > Camouflage.", "Camouflage", MessageBoxIcon.Information);
+                DarkMessageBox.Show(new Form { TopMost = true, StartPosition = FormStartPosition.CenterScreen }, "The main menu is now hidden. Press Ctrl+F12 to show or hide it while Camouflage is on. To turn Camouflage off, show the menu and uncheck Settings > Camouflage.", "Camouflage", MessageBoxIcon.Information);
             }
         }
 

@@ -39,6 +39,11 @@ namespace Grimoire.Tools
 
         public event Action<Keys> KeyDown;
 
+        /// <summary>
+        /// Raised for every key pressed while the hook is installed, not only the keys in <see cref="TargetedKeys"/>.
+        /// </summary>
+        public event Action<Keys> AnyKeyDown;
+
         #endregion
 
         #region Properties
@@ -75,6 +80,7 @@ namespace Grimoire.Tools
             if (wParam.ToInt32() == 256 || wParam.ToInt32() == 260)
             {
                 Keys keys = (Keys)Marshal.ReadInt32(lParam);
+                this.AnyKeyDown?.Invoke(keys);
                 if (TargetedKeys.Contains(keys))
                 {
                     this.KeyDown?.Invoke(keys);
