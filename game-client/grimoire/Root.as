@@ -358,12 +358,14 @@
             }
         }
 
-        // This function starts loading the game once the bridge is on the stage. Only aq.com hosts may script this SWF,
-        // which owns the stage and ExternalInterface; the game uses the same "*.aq.com" rule for itself.
+        // This function starts loading the game once the bridge is on the stage. Only the aq.com hosts that the game and
+        // its files come from may script this SWF, which owns the stage and ExternalInterface. allowDomain takes exact
+        // host names or "*" only: a pattern like "*.aq.com" matches no host, so the game couldn't reach the stage and
+        // stayed blank.
         private function onAddedToStage(e:Event):void
         {
             removeEventListener(Event.ADDED_TO_STAGE, this.onAddedToStage);
-            Security.allowDomain("*.aq.com");
+            Security.allowDomain("aq.com", "game.aq.com", "content.aq.com", "www.aq.com", "account.aq.com");
 
             if (BackgroundIndex >= 0)
             {
