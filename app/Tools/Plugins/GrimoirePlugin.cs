@@ -33,6 +33,14 @@ namespace Grimoire.Tools.Plugins
             get;
         }
 
+        public string FilePath
+        {
+            get
+            {
+                return _pluginPath;
+            }
+        }
+
         public string Author
         {
             get

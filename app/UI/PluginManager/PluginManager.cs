@@ -133,21 +133,33 @@ namespace Grimoire.UI
             string text;
             if (File.Exists(text = Path.Combine(path, e.Node.FullPath)))
             {
-                GrimoirePlugin grimoirePlugin = new GrimoirePlugin(text);
-                if (grimoirePlugin.Load())
+                LoadOrSelect(text, "Grimoire", MessageBoxIcon.Hand);
+            }
+        }
+
+        /// <summary>
+        /// Loads the plugin at <paramref name="dllPath"/> and selects it in the loaded list. A plugin that is already
+        /// loaded, at startup or from this window, is only selected, so it never runs twice.
+        /// </summary>
+        private void LoadOrSelect(string dllPath, string errorTitle, MessageBoxIcon errorIcon)
+        {
+            string fullPath = Path.GetFullPath(dllPath);
+            GrimoirePlugin grimoirePlugin = GrimoirePlugin.LoadedPlugins.Find(p => string.Equals(Path.GetFullPath(p.FilePath), fullPath, StringComparison.OrdinalIgnoreCase));
+            if (grimoirePlugin == null)
+            {
+                grimoirePlugin = new GrimoirePlugin(dllPath);
+                if (!grimoirePlugin.Load())
                 {
-                    txtPlugin.Clear();
-                    lstLoaded.Items.Clear();
-                    ListBox.ObjectCollection items = lstLoaded.Items;
-                    object[] items2 = GrimoirePlugin.LoadedPlugins.ToArray();
-                    items.AddRange(items2);
-                    lstLoaded.SelectedItem = grimoirePlugin;
-                }
-                else
-                {
-                    DarkMessageBox.Show(new Form { TopMost = true, StartPosition = FormStartPosition.CenterScreen }, grimoirePlugin.LastError, "Grimoire", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    DarkMessageBox.Show(new Form { TopMost = true, StartPosition = FormStartPosition.CenterScreen }, grimoirePlugin.LastError, errorTitle, MessageBoxButtons.OK, errorIcon);
+                    return;
                 }
             }
+            txtPlugin.Clear();
+            lstLoaded.Items.Clear();
+            ListBox.ObjectCollection items = lstLoaded.Items;
+            object[] items2 = GrimoirePlugin.LoadedPlugins.ToArray();
+            items.AddRange(items2);
+            lstLoaded.SelectedItem = grimoirePlugin;
         }
 
         private void treePlugins_AfterExpand(object sender, TreeViewEventArgs e)
@@ -182,20 +194,7 @@ namespace Grimoire.UI
             string text;
             if (File.Exists(text = Plugintext))
             {
-                GrimoirePlugin grimoirePlugin = new GrimoirePlugin(text);
-                if (grimoirePlugin.Load())
-                {
-                    txtPlugin.Clear();
-                    lstLoaded.Items.Clear();
-                    ListBox.ObjectCollection items = lstLoaded.Items;
-                    object[] items2 = GrimoirePlugin.LoadedPlugins.ToArray();
-                    items.AddRange(items2);
-                    lstLoaded.SelectedItem = grimoirePlugin;
-                }
-                else
-                {
-                    DarkMessageBox.Show(new Form { TopMost = true, StartPosition = FormStartPosition.CenterScreen }, grimoirePlugin.LastError, "Error Detected!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                LoadOrSelect(text, "Error Detected!", MessageBoxIcon.Error);
             }
         }
 
