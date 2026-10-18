@@ -31,8 +31,8 @@
                     child = source.getChildAt(i);
                     if (child.itemObj)
                     {
-                        dItemName = child.itemObj.sName.toLowerCase();
-                        if (dItemName == itemName.toLowerCase())
+                        dItemName = Root.nameKey(child.itemObj.sName);
+                        if (dItemName == Root.nameKey(itemName))
                         {
                             bool = Root.trueString;
                             break;
@@ -47,7 +47,7 @@
                 while (i < children)
                 {
                     child = game.ui.dropStack.getChildAt(i);
-                    if (child.cnt.strName.text.toLowerCase() == itemName.toLowerCase())
+                    if (Root.nameKey(child.cnt.strName.text) == Root.nameKey(itemName))
                     {
                         bool = Root.trueString;
                         break;
@@ -93,7 +93,7 @@
         {
             var keep:Array = [];
             var name:String;
-            for each (name in list.toLowerCase().split(","))
+            for each (name in Root.nameKey(list).split(","))
             {
                 if (name != "")
                 {
@@ -117,7 +117,7 @@
         // This function executes by rejecting the drops with the corresponding name, matched the same way as in rejectDrop.
         public static function rejectDropByName(itemName:String):void
         {
-            var wanted:String = itemName.toLowerCase();
+            var wanted:String = Root.nameKey(itemName);
             rejectWhere(function(name:String, exact:Boolean):Boolean
             {
                 return exact ? (name == wanted) : (name.indexOf(wanted) > -1);
@@ -131,9 +131,9 @@
             return (game.cDropsUI.mcDraggable) ? game.cDropsUI.mcDraggable.menu : game.cDropsUI;
         }
 
-        // This function clicks No on every drop that reject(name, exact) picks, where name is lowercased and exact tells
-        // whether it is a Custom Drops UI name. The buttons are collected first, because a click removes its drop from the
-        // list being walked, which used to skip the next drop or read past the end.
+        // This function clicks No on every drop that reject(name, exact) picks, where name is in Root.nameKey form and
+        // exact tells whether it is a Custom Drops UI name. The buttons are collected first, because a click removes its
+        // drop from the list being walked, which used to skip the next drop or read past the end.
         private static function rejectWhere(reject:Function):void
         {
             var source:*;
@@ -147,7 +147,7 @@
                 for (i = 0; i < source.numChildren; i++)
                 {
                     child = source.getChildAt(i);
-                    if (child.itemObj && reject(child.itemObj.sName.toLowerCase(), true))
+                    if (child.itemObj && reject(Root.nameKey(child.itemObj.sName), true))
                     {
                         buttons.push(child.btNo);
                     }
@@ -159,7 +159,7 @@
                 for (i = 0; i < source.numChildren; i++)
                 {
                     child = source.getChildAt(i);
-                    if (reject(child.cnt.strName.text.toLowerCase(), false))
+                    if (reject(Root.nameKey(child.cnt.strName.text), false))
                     {
                         buttons.push(child.cnt.nbtn);
                     }

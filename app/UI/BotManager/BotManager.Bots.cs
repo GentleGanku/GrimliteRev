@@ -3,6 +3,7 @@ using Grimoire.Botting;
 using Grimoire.Botting.Commands.Misc;
 using Grimoire.Game.Data;
 using Grimoire.Tools;
+using Grimoire.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -170,17 +171,17 @@ namespace Grimoire.UI
                 if (drops != null && drops.Count > 0)
                 {
                     ListBox.ObjectCollection items = lstDrops.Items;
-                    object[] array = config.Drops.ToArray();
+                    object[] array = config.Drops.Select(d => d.UnifyQuotes()).ToArray();
                     items.AddRange(array);
                 }
                 List<string> item = config.Items;
                 if (item != null && item.Count > 0)
                 {
                     ListBox.ObjectCollection items = lstItems.Items;
-                    object[] array = config.Items.ToArray();
+                    object[] array = config.Items.Select(i => i.UnifyQuotes()).ToArray();
                     items.AddRange(array);
                 }
-                numSkillD.Value = config.SkillDelay;
+                SetInRange(numSkillD, config.SkillDelay);
                 chkExitRest.Checked = config.ExitCombatBeforeRest;
                 chkExistQuest.Checked = config.ExitCombatBeforeQuest;
                 if (config.Server != null)
@@ -188,9 +189,9 @@ namespace Grimoire.UI
                     cbServers.SelectedIndex = cbServers.Items.Cast<Server>().ToList().FindIndex((Server s) => s.Name == config.Server.Name);
                 }
                 chkRelog.Checked = config.AutoRelogin;
-                numRelogDelay.Value = config.RelogDelay;
+                SetInRange(numRelogDelay, config.RelogDelay);
                 chkRelogRetry.Checked = config.RelogRetryUponFailure;
-                numBotDelay.Value = config.BotDelay;
+                SetInRange(numBotDelay, config.BotDelay);
                 chkPickup.Checked = config.EnablePickup;
                 chkReject.Checked = config.EnableRejection;
                 chkPickupAll.Checked = config.EnablePickupAll;
@@ -204,17 +205,17 @@ namespace Grimoire.UI
                 chkSkipCutscenes.Checked = config.SkipCutscenes;
                 chkDisableAnims.Checked = config.DisableAnimations;
                 chkUntarget.Checked = config.Untarget;
-                numWalkSpeed.Value = (config.WalkSpeed <= 0) ? 8 : config.WalkSpeed;
+                SetInRange(numWalkSpeed, (config.WalkSpeed <= 0) ? 8 : config.WalkSpeed);
                 List<string> notifyUponDrop = config.NotifyUponDrop;
                 if (notifyUponDrop != null && notifyUponDrop.Count > 0)
                 {
                     ListBox.ObjectCollection items14 = lstSoundItems.Items;
-                    object[] array = config.NotifyUponDrop.ToArray();
+                    object[] array = config.NotifyUponDrop.Select(n => n.UnifyQuotes()).ToArray();
                     object[] items15 = array;
                     items14.AddRange(items15);
                 }
-                numRestMP.Value = config.RestMp;
-                numRest.Value = config.RestHp;
+                SetInRange(numRestMP, config.RestMp);
+                SetInRange(numRest, config.RestHp);
                 chkMP.Checked = config.RestIfMp;
                 chkHP.Checked = config.RestIfHp;
                 chkUnbankOnStart.Checked = config.UnbankOnStart;
@@ -224,7 +225,7 @@ namespace Grimoire.UI
                 chkRelogUponFailBuy.Checked = config.RelogUponItemBuyFailure;
                 chkRestartDeath.Checked = config.RestartUponDeath;
                 chkAFK.Checked = config.AFK;
-                numDropDelay.Value = (config.DropDelay < 0) ? 0 : config.DropDelay;
+                SetInRange(numDropDelay, config.DropDelay);
                 var description = txtSavedDesc.Text ?? "Description";
                 if (description.StartsWith("{\\rtf") || description.StartsWith("{\rtf"))
                     rtbInfo.Rtf = description;
@@ -253,6 +254,15 @@ namespace Grimoire.UI
         public void btnSaveDirectory_Click(object sender, EventArgs e)
         {
             Config.Instance.SetValue("botsDirectory", txtSaved.Text.ToString());
+        }
+
+        /// <summary>
+        /// Sets a number box from a bot file, moved into the box's range. A setting the file doesn't have loads as 0,
+        /// which is below the minimum of boxes like the relogin delay.
+        /// </summary>
+        private static void SetInRange(NumericUpDown box, decimal value)
+        {
+            box.Value = Math.Max(box.Minimum, Math.Min(box.Maximum, value));
         }
 
         private bool TryDeserializeLoadBot(string json, out Configuration config)

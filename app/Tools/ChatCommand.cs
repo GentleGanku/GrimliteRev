@@ -184,7 +184,7 @@ namespace Grimoire.Tools
                     Monster monster = null;
                     if (!random)
                     {
-                        monster = World.Monsters.Find(m => m.Name.Equals(target, StringComparison.OrdinalIgnoreCase));
+                        monster = World.Monsters.Find(m => m.Name.Equals(target.UnifyQuotes(), StringComparison.OrdinalIgnoreCase));
                         if (monster == null)
                         {
                             World.GameMessage("The corresponding monster does not exist.");

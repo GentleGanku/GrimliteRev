@@ -1,3 +1,4 @@
+using Grimoire.Utils;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
@@ -46,7 +47,7 @@ namespace Grimoire.Game.Data
             }
             set
             {
-                _name = value?.Trim();
+                _name = value?.Trim().UnifyQuotes();
             }
         }
 

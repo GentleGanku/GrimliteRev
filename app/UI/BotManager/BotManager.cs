@@ -6,6 +6,7 @@ using Grimoire.Botting.Commands.Misc.Statements;
 using Grimoire.Game;
 using Grimoire.Game.Data;
 using Grimoire.Tools;
+using Grimoire.Utils;
 using Newtonsoft.Json;
 using Properties;
 using System;
@@ -211,6 +212,10 @@ namespace Grimoire.UI
             {
                 Font = new Font(font, 8.25f, FontStyle.Regular, GraphicsUnit.Point, 0);
             }
+            foreach (DarkTextBox nameBox in new[] { txtMonster, txtMonsterSkillCmd, txtKillFMon, txtKillFItem, txtItem, txtWhitelist, txtShopItem, txtSwapInv, txtSwapBank, txtSoundItem })
+            {
+                nameBox.TextChanged += NameBox_TextChanged;
+            }
         }
 
         public void OnServersLoaded(Server[] servers)
@@ -386,6 +391,22 @@ namespace Grimoire.UI
             if (string.IsNullOrEmpty(textBox.Text) && _defaultControlText.TryGetValue(textBox.Name, out string value))
             {
                 textBox.Text = value;
+            }
+        }
+
+        /// <summary>
+        /// Straightens curly apostrophes and quotes as they are typed or pasted into a monster or item name box. Each
+        /// replacement is one character for one, so the caret stays where it was.
+        /// </summary>
+        private void NameBox_TextChanged(object sender, EventArgs e)
+        {
+            DarkTextBox textBox = (DarkTextBox)sender;
+            string unified = textBox.Text.UnifyQuotes();
+            if (unified != textBox.Text)
+            {
+                int caret = textBox.SelectionStart;
+                textBox.Text = unified;
+                textBox.SelectionStart = caret;
             }
         }
 

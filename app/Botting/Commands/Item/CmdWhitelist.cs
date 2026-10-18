@@ -1,4 +1,5 @@
 using Grimoire.UI;
+using Grimoire.Utils;
 using System.Threading.Tasks;
 
 
@@ -6,6 +7,12 @@ namespace Grimoire.Botting.Commands.Item
 {
     public class CmdWhitelist : IBotCommand
     {
+        #region Fields
+
+        private string _item;
+
+        #endregion
+
         #region Enums
 
         public enum state
@@ -23,8 +30,14 @@ namespace Grimoire.Botting.Commands.Item
 
         public string Item
         {
-            get;
-            set;
+            get
+            {
+                return _item;
+            }
+            set
+            {
+                _item = value.UnifyQuotes();
+            }
         }
 
         public state State

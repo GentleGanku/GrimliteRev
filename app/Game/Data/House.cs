@@ -1,4 +1,5 @@
 using Grimoire.Tools;
+using Grimoire.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,7 @@ namespace Grimoire.Game.Data
 
         public bool ContainsItem(string itemName, string quantity = "*")
         {
-            InventoryItem inventoryItem = Items.FirstOrDefault((InventoryItem i) => i.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
+            InventoryItem inventoryItem = Items.FirstOrDefault((InventoryItem i) => i.Name.Equals(itemName.UnifyQuotes(), StringComparison.OrdinalIgnoreCase));
             if (inventoryItem != null)
             {
                 if (!(quantity == "*"))

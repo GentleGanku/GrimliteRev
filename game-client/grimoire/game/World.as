@@ -114,8 +114,8 @@
                 {
                     if (name)
                     {
-                        monName = mon.pMC.pname.ti.text.toLowerCase();
-                        if (((monName.indexOf(name.toLowerCase()) > -1) || (name == "*")) && (mon.dataLeaf.intState > 0))
+                        monName = Root.nameKey(mon.pMC.pname.ti.text);
+                        if (((monName.indexOf(Root.nameKey(name)) > -1) || (name == "*")) && (mon.dataLeaf.intState > 0))
                         {
                             return mon;
                         }
@@ -139,8 +139,8 @@
             var monName:String;
             for each (monster in game.world.getMonstersByCell(game.world.strFrame))
             {
-                monName = monster.pMC.pname.ti.text.toLowerCase();
-                if ((((monName.indexOf(name.toLowerCase()) > -1) || (name == "*")) && (monster.dataLeaf.intState > 0)))
+                monName = Root.nameKey(monster.pMC.pname.ti.text);
+                if ((((monName.indexOf(Root.nameKey(name)) > -1) || (name == "*")) && (monster.dataLeaf.intState > 0)))
                 {
                     return monster;
                 }

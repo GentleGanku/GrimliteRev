@@ -1,17 +1,30 @@
 using Grimoire.Game;
 using Grimoire.Game.Data;
+using Grimoire.Utils;
 using System.Threading.Tasks;
 
 namespace Grimoire.Botting.Commands.Item
 {
     public class CmdSell : IBotCommand
     {
+        #region Fields
+
+        private string _itemName;
+
+        #endregion
+
         #region Properties
 
         public string ItemName
         {
-            get;
-            set;
+            get
+            {
+                return _itemName;
+            }
+            set
+            {
+                _itemName = value.UnifyQuotes();
+            }
         }
 
         #endregion

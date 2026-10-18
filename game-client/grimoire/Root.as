@@ -108,6 +108,14 @@
             return JSON.stringify(String(value));
         }
 
+        // This function returns a monster or item name in the form names are compared in: lowercased, with curly and
+        // look-alike apostrophes and quotes made straight. Names copied from the Wiki carry the curly ones, while the game
+        // mostly uses straight ones.
+        public static function nameKey(name:String):String
+        {
+            return (name == null) ? null : name.toLowerCase().replace(/[‘’‚‛ʼ′´]/g, "'").replace(/[“”„‟″]/g, "\"");
+        }
+
         // This function sets the game's FPS to a corresponding number.
         public static function setFPS(rate:int):void
         {

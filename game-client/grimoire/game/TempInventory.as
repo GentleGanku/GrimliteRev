@@ -24,7 +24,7 @@
             var item:Object;
             for each (item in game.world.myAvatar.tempitems)
             {
-                if (item.sName.toLowerCase() == itemName.toLowerCase())
+                if (Root.nameKey(item.sName) == Root.nameKey(itemName))
                 {
                     return item;
                 }

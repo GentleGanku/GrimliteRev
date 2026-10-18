@@ -119,7 +119,7 @@
             {
                 for each (item in bankItems)
                 {
-                    if (item.sName.toLowerCase() == itemName.toLowerCase())
+                    if (Root.nameKey(item.sName) == Root.nameKey(itemName))
                     {
                         return item;
                     }

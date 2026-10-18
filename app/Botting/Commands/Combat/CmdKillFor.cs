@@ -1,22 +1,42 @@
 using Grimoire.Game;
+using Grimoire.Utils;
 using System.Threading.Tasks;
 
 namespace Grimoire.Botting.Commands.Combat
 {
     public class CmdKillFor : IBotCommand
     {
+        #region Fields
+
+        private string _monster;
+        private string _itemName;
+
+        #endregion
+
         #region Properties
 
         public string Monster
         {
-            get;
-            set;
+            get
+            {
+                return _monster;
+            }
+            set
+            {
+                _monster = value.UnifyQuotes();
+            }
         }
 
         public string ItemName
         {
-            get;
-            set;
+            get
+            {
+                return _itemName;
+            }
+            set
+            {
+                _itemName = value.UnifyQuotes();
+            }
         }
 
         public ItemType ItemType

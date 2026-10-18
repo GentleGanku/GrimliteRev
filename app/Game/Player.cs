@@ -489,7 +489,7 @@ namespace Grimoire.Game
 
         public static void EnableChat() => Flash.Call("EnableChat", new string[0]);
 
-        public static bool HasDrop(string item) => World.DropStack.FirstOrDefault(i => i.Name.Equals(item, StringComparison.OrdinalIgnoreCase)) != null;
+        public static bool HasDrop(string item) => World.DropStack.FirstOrDefault(i => i.Name.Equals(item.UnifyQuotes(), StringComparison.OrdinalIgnoreCase)) != null;
 
         public static void AcceptDrop(int itemID) => Flash.Call("AcceptDrop", itemID);
 

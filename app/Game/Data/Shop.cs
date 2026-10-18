@@ -1,6 +1,7 @@
 using Grimoire.UI;
 using Grimoire.Botting;
 using Grimoire.Tools;
+using Grimoire.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
@@ -70,7 +71,7 @@ namespace Grimoire.Game.Data
             }
             await BotManager.Instance.ActiveBotEngine.WaitUntil(() => World.IsActionAvailable(LockActions.BuyItem), null, 10, 500);
             await BotUtilities.MoveOutOfCombat();
-            InventoryItem i = Player.Inventory.Items.FirstOrDefault((InventoryItem it) => it.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+            InventoryItem i = Player.Inventory.Items.FirstOrDefault((InventoryItem it) => it.Name.Equals(name.UnifyQuotes(), StringComparison.OrdinalIgnoreCase));
             int iQtyBefore = (i != null) ? i.Quantity : 0;
             Flash.Call("BuyItem", name, manual);
             if (i != null)
@@ -122,7 +123,7 @@ namespace Grimoire.Game.Data
         {
             await BotManager.Instance.ActiveBotEngine.WaitUntil(() => World.IsActionAvailable(LockActions.SellItem), null, 10, 500);
             await BotUtilities.MoveOutOfCombat();
-            InventoryItem i = Player.Inventory.Items.FirstOrDefault((InventoryItem it) => it.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+            InventoryItem i = Player.Inventory.Items.FirstOrDefault((InventoryItem it) => it.Name.Equals(name.UnifyQuotes(), StringComparison.OrdinalIgnoreCase));
             if (i != null)
             {
                 bool single = i.Quantity == 1;

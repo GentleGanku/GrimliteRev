@@ -3,6 +3,7 @@ using Grimoire.Botting.Commands.Misc;
 using Grimoire.Game;
 using Grimoire.Networking;
 using Grimoire.Tools;
+using Grimoire.Utils;
 using System;
 using System.Windows.Forms;
 
@@ -28,7 +29,7 @@ namespace Grimoire.UI
         {
             if (txtSoundItem.TextLength > 0)
             {
-                lstSoundItems.Items.Add(txtSoundItem.Text);
+                lstSoundItems.Items.Add(txtSoundItem.Text.UnifyQuotes());
             }
         }
 

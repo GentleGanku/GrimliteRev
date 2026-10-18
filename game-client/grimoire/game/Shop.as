@@ -47,7 +47,7 @@
         // This function executes by buying the corresponding item from the shop.
         public static function buyItem(itemName:String, byEvent:Boolean=false):void
         {
-            var item:Object = getShopItem(itemName.toLowerCase());
+            var item:Object = getShopItem(Root.nameKey(itemName));
             if (item != null)
             {
                 if (!byEvent)
@@ -81,7 +81,7 @@
         // This function returns a boolean for whether the corresponding item passes the game client's purchase checks or not.
         public static function canBuyItem(itemName:String):String
         {
-            return isBuyable(getShopItem(itemName.toLowerCase()));
+            return isBuyable(getShopItem(Root.nameKey(itemName)));
         }
 
         // This function returns a boolean for whether the corresponding item passes the game client's purchase checks or not (by using IDs).
@@ -102,7 +102,7 @@
             while (i < game.world.shopinfo.items.length)
             {
                 item = game.world.shopinfo.items[i];
-                if (item.sName.toLowerCase() == itemName)
+                if (Root.nameKey(item.sName) == itemName)
                 {
                     return item;
                 }

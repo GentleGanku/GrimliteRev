@@ -1,4 +1,5 @@
 using Grimoire.Tools;
+using Grimoire.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,7 +64,7 @@ namespace Grimoire.Game.Data
 
         public bool ContainsItem(string name, string quantity = "*")
         {
-            InventoryItem inventoryItem = Items.FirstOrDefault((InventoryItem i) => i.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+            InventoryItem inventoryItem = Items.FirstOrDefault((InventoryItem i) => i.Name.Equals(name.UnifyQuotes(), StringComparison.OrdinalIgnoreCase));
             if (inventoryItem != null)
             {
                 if (!(quantity == "*"))
@@ -77,7 +78,7 @@ namespace Grimoire.Game.Data
 
         public bool ContainsMaxItem(string name)
         {
-            InventoryItem inventoryItem = Items.FirstOrDefault((InventoryItem i) => i.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+            InventoryItem inventoryItem = Items.FirstOrDefault((InventoryItem i) => i.Name.Equals(name.UnifyQuotes(), StringComparison.OrdinalIgnoreCase));
             if (inventoryItem != null)
             {
                 return inventoryItem.Quantity >= inventoryItem.MaxStack;

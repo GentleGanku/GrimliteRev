@@ -2,6 +2,7 @@ using Grimoire.Botting;
 using Grimoire.Game.Data;
 using Grimoire.Tools;
 using Grimoire.UI;
+using Grimoire.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -95,7 +96,7 @@ namespace Grimoire.Game
             InventoryItem inventoryItem;
             lock (_drops)
             {
-                inventoryItem = _drops.FirstOrDefault((InventoryItem d) => d.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
+                inventoryItem = _drops.FirstOrDefault((InventoryItem d) => d.Name.Equals(itemName.UnifyQuotes(), StringComparison.OrdinalIgnoreCase));
             }
             bool success = inventoryItem != null;
             if (success)
@@ -144,7 +145,7 @@ namespace Grimoire.Game
             bool shown;
             lock (_drops)
             {
-                shown = _drops.Any((InventoryItem d) => d.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
+                shown = _drops.Any((InventoryItem d) => d.Name.Equals(itemName.UnifyQuotes(), StringComparison.OrdinalIgnoreCase));
             }
             return shown || Bot.Instance.HasDropInInventory(itemName);
         }

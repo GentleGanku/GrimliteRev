@@ -2,6 +2,7 @@ using Grimoire.Botting;
 using Grimoire.Botting.Commands.Item;
 using Grimoire.Game;
 using Grimoire.Game.Data;
+using Grimoire.Utils;
 using System;
 using System.Linq;
 using System.Windows.Forms;
@@ -15,6 +16,7 @@ namespace Grimoire.UI
 
         public void AddDrop(string Name, bool toConfig = false)
         {
+            Name = Name.UnifyQuotes();
             if (lstDrops.Items.Cast<string>().ToList().Find(i => i.Equals(Name, StringComparison.OrdinalIgnoreCase)) == null)
             {
                 lstDrops.Items.Add(Name);
@@ -27,6 +29,7 @@ namespace Grimoire.UI
 
         public void RemoveDrop(string Name, bool toConfig = false)
         {
+            Name = Name.UnifyQuotes();
             string item = lstDrops.Items.Cast<string>().ToList().Find(i => i.Equals(Name, StringComparison.OrdinalIgnoreCase));
             if (item != null)
             {
@@ -40,6 +43,7 @@ namespace Grimoire.UI
 
         public void AddItem(string Name)
         {
+            Name = Name.UnifyQuotes();
             if (!lstItems.Items.Contains(Name))
             {
                 lstItems.Items.Add(Name);

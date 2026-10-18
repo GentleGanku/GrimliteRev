@@ -15,6 +15,7 @@ namespace Grimoire.Botting.Commands.Combat
         private CancellationTokenSource _cts;
         private int Index;
         private int Count;
+        private string _monster;
 
         #endregion
 
@@ -22,8 +23,14 @@ namespace Grimoire.Botting.Commands.Combat
 
         public string Monster
         {
-            get;
-            set;
+            get
+            {
+                return _monster;
+            }
+            set
+            {
+                _monster = value.UnifyQuotes();
+            }
         }
 
         public bool Packet

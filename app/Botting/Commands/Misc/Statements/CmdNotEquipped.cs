@@ -1,5 +1,6 @@
 ﻿using Grimoire.Game;
 using Grimoire.Game.Data;
+using Grimoire.Utils;
 using System;
 using System.Threading.Tasks;
 
@@ -21,7 +22,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 
         public Task Execute(IBotEngine instance)
         {
-            if ((Player.Inventory.Items.Find((InventoryItem x) => x.Name.Equals(instance.Value(Value1), StringComparison.OrdinalIgnoreCase)) ?? new InventoryItem()).IsEquipped)
+            if ((Player.Inventory.Items.Find((InventoryItem x) => x.Name.Equals(instance.Value(Value1).UnifyQuotes(), StringComparison.OrdinalIgnoreCase)) ?? new InventoryItem()).IsEquipped)
             {
                 instance.Index++;
             }
