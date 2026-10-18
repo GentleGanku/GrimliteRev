@@ -53,6 +53,7 @@ namespace Grimoire.UI
             this.lstPackets.Name = "lstPackets";
             this.lstPackets.Size = new System.Drawing.Size(316, 128);
             this.lstPackets.TabIndex = 0;
+            this.lstPackets.SelectedIndexChanged += new System.EventHandler(this.lstPackets_SelectedIndexChanged);
             // 
             // txtPacket
             // 

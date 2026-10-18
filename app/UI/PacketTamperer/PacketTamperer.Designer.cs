@@ -58,6 +58,7 @@ namespace Grimoire.UI
             this.txtReceive.Name = "txtReceive";
             this.txtReceive.Size = new System.Drawing.Size(536, 228);
             this.txtReceive.TabIndex = 1;
+            this.txtReceive.TextChanged += new System.EventHandler(this.txtReceive_TextChanged);
             this.txtReceive.Text = "";
             // 
             // btnToServer
@@ -158,6 +159,7 @@ namespace Grimoire.UI
             this.btnClearCaptured.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
             this.btnClearCaptured.BackColorUseGeneric = false;
             this.btnClearCaptured.Checked = false;
+            this.btnClearCaptured.Enabled = false;
             this.btnClearCaptured.ForeColor = System.Drawing.Color.Gainsboro;
             this.btnClearCaptured.Location = new System.Drawing.Point(445, 3);
             this.btnClearCaptured.Name = "btnClearCaptured";

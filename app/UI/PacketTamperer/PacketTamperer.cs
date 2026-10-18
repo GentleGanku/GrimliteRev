@@ -78,6 +78,11 @@ namespace Grimoire.UI
             txtReceive.Clear();
         }
 
+        private void txtReceive_TextChanged(object sender, EventArgs e)
+        {
+            btnClearCaptured.Enabled = txtReceive.TextLength > 0;
+        }
+
         #endregion
     }
 }

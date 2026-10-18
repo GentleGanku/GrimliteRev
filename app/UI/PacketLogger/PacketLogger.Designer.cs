@@ -43,6 +43,7 @@ namespace Grimoire.UI
             this.txtPackets.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtPackets.Size = new System.Drawing.Size(416, 244);
             this.txtPackets.TabIndex = 15;
+            this.txtPackets.TextChanged += new System.EventHandler(this.txtPackets_TextChanged);
             // 
             // btnStart
             // 
@@ -62,6 +63,7 @@ namespace Grimoire.UI
             this.btnStop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
             this.btnStop.BackColorUseGeneric = false;
             this.btnStop.Checked = false;
+            this.btnStop.Enabled = false;
             this.btnStop.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnStop.Location = new System.Drawing.Point(213, 3);
             this.btnStop.Name = "btnStop";
@@ -75,6 +77,7 @@ namespace Grimoire.UI
             this.btnCopy.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
             this.btnCopy.BackColorUseGeneric = false;
             this.btnCopy.Checked = false;
+            this.btnCopy.Enabled = false;
             this.btnCopy.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnCopy.Location = new System.Drawing.Point(108, 3);
             this.btnCopy.Name = "btnCopy";
@@ -88,6 +91,7 @@ namespace Grimoire.UI
             this.btnClear.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
             this.btnClear.BackColorUseGeneric = false;
             this.btnClear.Checked = false;
+            this.btnClear.Enabled = false;
             this.btnClear.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnClear.Location = new System.Drawing.Point(3, 3);
             this.btnClear.Name = "btnClear";

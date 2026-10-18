@@ -44,12 +44,21 @@ namespace Grimoire.UI
         {
             Proxy.Instance._catchXtPackets = false;
             btnStart.Enabled = true;
+            btnStop.Enabled = false;
         }
 
         private void btnStart_Click(object sender, EventArgs e)
         {
             Proxy.Instance._catchXtPackets = true;
             btnStart.Enabled = false;
+            btnStop.Enabled = true;
+        }
+
+        private void txtPackets_TextChanged(object sender, EventArgs e)
+        {
+            bool hasText = txtPackets.TextLength > 0;
+            btnClear.Enabled = hasText;
+            btnCopy.Enabled = hasText;
         }
 
         private void PacketLogger_FormClosing(object sender, FormClosingEventArgs e)
