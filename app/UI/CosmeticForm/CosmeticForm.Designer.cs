@@ -789,7 +789,7 @@ namespace Grimoire.UI
             this.Icon = global::Properties.Resources.GrimoireIcon;
             this.Name = "CosmeticForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "SWF Cosmetics";
+            this.Text = "Cosmetics Panel";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CosmeticForm_FormClosing);
             this.tableLayoutPanel1.ResumeLayout(false);

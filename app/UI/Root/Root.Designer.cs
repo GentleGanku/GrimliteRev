@@ -343,7 +343,7 @@ namespace Grimoire.UI
             this.hotkeysToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
             this.hotkeysToolStripMenuItem.Name = "hotkeysToolStripMenuItem";
             this.hotkeysToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.hotkeysToolStripMenuItem.Text = "Hotkeys";
+            this.hotkeysToolStripMenuItem.Text = "Keyboard Shortcuts";
             this.hotkeysToolStripMenuItem.Click += new System.EventHandler(this.hotkeysToolStripMenuItem_Click);
             // 
             // pluginManagerToolStripMenuItem
@@ -361,7 +361,7 @@ namespace Grimoire.UI
             this.cosmeticsToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
             this.cosmeticsToolStripMenuItem.Name = "cosmeticsToolStripMenuItem";
             this.cosmeticsToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.cosmeticsToolStripMenuItem.Text = "Cosmetics";
+            this.cosmeticsToolStripMenuItem.Text = "Cosmetics Panel";
             this.cosmeticsToolStripMenuItem.Click += new System.EventHandler(this.cosmeticsToolStripMenuItem_Click);
             // 
             // bankToolStripMenuItem

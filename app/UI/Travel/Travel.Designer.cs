@@ -573,9 +573,9 @@ namespace Grimoire.UI
             this.chkCustomHotkeys.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkCustomHotkeys.Location = new System.Drawing.Point(6, 4);
             this.chkCustomHotkeys.Name = "chkCustomHotkeys";
-            this.chkCustomHotkeys.Size = new System.Drawing.Size(71, 17);
+            this.chkCustomHotkeys.Size = new System.Drawing.Size(130, 17);
             this.chkCustomHotkeys.TabIndex = 7;
-            this.chkCustomHotkeys.Text = "Hotkeys";
+            this.chkCustomHotkeys.Text = "Keyboard Shortcuts";
             this.chkCustomHotkeys.CheckedChanged += new System.EventHandler(this.chkCustomHotkeys_CheckedChanged);
             // 
             // lblCustomHotkeyTip1

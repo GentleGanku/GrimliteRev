@@ -318,10 +318,17 @@
             return ((areaName == null) || (areaName.indexOf("-") < 0)) ? "" : areaName.split("-")[1];
         }
 
-        // This function returns the players' datas in the current map.
+        // This function returns the players' datas in the current map, keyed by username. uoTree is a Dictionary, which
+        // JSON.stringify writes as the string "Dictionary", so its entries are copied into a plain object first.
         public static function players():String
         {
-            return JSON.stringify(game.world.uoTree);
+            var key:*;
+            var tree:Object = {};
+            for (key in game.world.uoTree)
+            {
+                tree[key] = game.world.uoTree[key];
+            }
+            return JSON.stringify(tree);
         }
 
         // This function returns the corresponding monster's health.

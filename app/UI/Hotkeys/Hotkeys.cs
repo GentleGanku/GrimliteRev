@@ -159,6 +159,11 @@ namespace Grimoire.UI
         };
 
         public static readonly List<Hotkey> InstalledHotkeys = new List<Hotkey>();
+        private static readonly Dictionary<string, string> RenamedActions = new Dictionary<string, string>
+        {
+            { "Show Hotkeys", "Show Keyboard Shortcuts" },
+            { "Show Cosmetics Form", "Show Cosmetics Panel" }
+        };
         private int _processId;
         private static System.Threading.CancellationTokenSource login_cts;
         private static System.Threading.CancellationTokenSource _cts;
@@ -253,7 +258,7 @@ namespace Grimoire.UI
                 Hotkey[] array = JsonConvert.DeserializeObject<Hotkey[]>(File.ReadAllText(configPath));
                 if (array != null)
                 {
-                    InstalledHotkeys.AddRange(array);
+                    InstalledHotkeys.AddRange(array.Where(ResolveAction));
                     foreach (Hotkey installedHotkey in InstalledHotkeys)
                     {
                         lstKeys.Items.Add(installedHotkey.Text);
@@ -372,6 +377,38 @@ namespace Grimoire.UI
             }
         }
 
+        /// <summary>
+        /// Points a saved shortcut at its action by the label in its text ("F1: Show Bot Manager"), so it keeps its
+        /// action when actions are renamed (see <see cref="RenamedActions"/>) or move in the list. A shortcut whose
+        /// action no longer exists is dropped.
+        /// </summary>
+        private bool ResolveAction(Hotkey hotkey)
+        {
+            int separator = hotkey.Text?.IndexOf(": ") ?? -1;
+            if (separator < 0)
+            {
+                return hotkey.ActionIndex >= 0 && hotkey.ActionIndex < cbActions.Items.Count;
+            }
+            string label = hotkey.Text.Substring(separator + 2);
+            if (RenamedActions.TryGetValue(label, out string renamed))
+            {
+                label = renamed;
+            }
+            int index = cbActions.Items.IndexOf(label);
+            if (index < 0)
+            {
+                return false;
+            }
+            hotkey.ActionIndex = index;
+            hotkey.Text = $"{hotkey.Key}: {label}";
+            return true;
+        }
+
+        private void lstKeys_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            btnRemove.Enabled = lstKeys.SelectedIndex > -1;
+        }
+
         private void btnRemove_Click(object sender, EventArgs e)
         {
             if (lstKeys.SelectedIndex < 0)
@@ -386,6 +423,7 @@ namespace Grimoire.UI
                 InstalledHotkeys.RemoveAt(hotkeyIndex);
                 lstKeys.Items.RemoveAt(hotkeyIndex);
             }
+            btnRemove.Enabled = lstKeys.SelectedIndex > -1;
         }
 
         private void btnAdd_Click(object sender, EventArgs e)

@@ -52,6 +52,7 @@ namespace Grimoire.UI
             this.lstKeys.Name = "lstKeys";
             this.lstKeys.Size = new System.Drawing.Size(269, 74);
             this.lstKeys.TabIndex = 28;
+            this.lstKeys.SelectedIndexChanged += new System.EventHandler(this.lstKeys_SelectedIndexChanged);
             // 
             // cbKeys
             // 
@@ -127,14 +128,14 @@ namespace Grimoire.UI
             this.cbActions.FormattingEnabled = true;
             this.cbActions.Items.AddRange(new object[] {
             "Show Bot Manager",
-            "Show Hotkeys",
+            "Show Keyboard Shortcuts",
             "Show Loaders/Grabbers",
             "Show Packet Logger",
             "Show Packet Spammer",
             "Show Fast Travels",
             "Minimize to Tray",
             "Show Bank",
-            "Show Cosmetics Form",
+            "Show Cosmetics Panel",
             "Show Logs",
             "Show Notepad",
             "Load Hair Shop",
@@ -170,6 +171,7 @@ namespace Grimoire.UI
             this.btnRemove.BackColorUseGeneric = false;
             this.btnRemove.Checked = false;
             this.btnRemove.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnRemove.Enabled = false;
             this.btnRemove.Location = new System.Drawing.Point(122, 30);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(150, 21);
@@ -221,7 +223,7 @@ namespace Grimoire.UI
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(46, 13);
             this.label1.TabIndex = 35;
-            this.label1.Text = "Hotkeys";
+            this.label1.Text = "Keyboard Shortcuts";
             // 
             // label2
             // 
@@ -251,7 +253,7 @@ namespace Grimoire.UI
             this.Name = "Hotkeys";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Hotkeys";
+            this.Text = "Keyboard Shortcuts";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Hotkeys_FormClosing);
             this.Load += new System.EventHandler(this.Hotkeys_Load);
