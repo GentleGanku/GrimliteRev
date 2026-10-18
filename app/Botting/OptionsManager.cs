@@ -261,8 +261,6 @@ namespace Grimoire.Botting
 
         public static void SetInfiniteRange(bool Toggle) => Flash.Call("SetInfiniteRange", Toggle);
 
-        public static void SetProvokeMonsters() => Flash.Call("SetProvokeMonsters", empty);
-
         public static void SetEnemyMagnet() => Flash.Call("SetEnemyMagnet", empty);
 
         public static void SetLagKiller() => Flash.Call("SetLagKiller", !LagKiller);

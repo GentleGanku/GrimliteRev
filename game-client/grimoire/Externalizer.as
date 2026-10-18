@@ -57,7 +57,6 @@
             // Setting
             this.addCallback("DisableAnimations", Setting.disableAnimations);
             this.addCallback("SetInfiniteRange", Setting.toggleInfiniteRange);
-            this.addCallback("SetProvokeMonsters", Setting.provokeMonsters);
             this.addCallback("advancedOpt", Setting.toggleAdvancedOpt);
             this.addCallback("DisableDeathAd", Setting.disableDeathAd);
             this.addCallback("SetSkipCutscenes", Setting.skipCutscenes);

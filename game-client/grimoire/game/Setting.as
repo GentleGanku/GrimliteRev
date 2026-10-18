@@ -36,12 +36,6 @@
             }
         }
 
-        // This function executes the game's aggroMon function.
-        public static function provokeMonsters():void
-        {
-            game.world.aggroAllMon();
-        }
-
         // This function forcibly pulls the enemy target to the player's position. (CLIENT-SIDE)
         public static function setEnemyMagnet():void
         {

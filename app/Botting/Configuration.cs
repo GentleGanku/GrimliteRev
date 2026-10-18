@@ -188,12 +188,6 @@ namespace Grimoire.Botting
             set;
         } = false;
 
-        public bool ProvokeAllMonster
-        {
-            get;
-            set;
-        } = false;
-
         public bool Untarget
         {
             get;
