@@ -50,6 +50,10 @@ namespace Grimoire.Networking.Handlers
                     OptionsManager.AntiAfk();
                     Player.EnableChat();
                     OptionsManager.DisableDeathAds();
+                    if (OptionsManager.ProvokeMonsters && !OptionsManager.IsRunning)
+                    {
+                        OptionsManager.ApplySettings().Forget("applying the client options");
+                    }
                     BotUtilities.ShouldUseSkill = true;
                     await BotManager.Instance.ActiveBotEngine.WaitUntil(() => Player.Bank.IsBankLoaded, () => !_cts.IsCancellationRequested, 20, 500);
                 }

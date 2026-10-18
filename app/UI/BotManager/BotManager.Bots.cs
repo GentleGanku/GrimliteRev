@@ -48,10 +48,7 @@ namespace Grimoire.UI
                 ProvokeMonsters = chkProvoke.Checked,
                 EnemyMagnet = chkMagnet.Checked,
                 LagKiller = chkLag.Checked,
-                HidePlayers = chkHidePlayers.Checked,
                 SkipCutscenes = chkSkipCutscenes.Checked,
-                DisableAnimations = chkDisableAnims.Checked,
-                Untarget = chkUntarget.Checked,
                 WalkSpeed = (int)numWalkSpeed.Value,
                 NotifyUponDrop = lstSoundItems.Items.Cast<string>().ToList(),
                 RestIfMp = chkMP.Checked,
@@ -102,10 +99,7 @@ namespace Grimoire.UI
                 ProvokeMonsters = chkProvoke.Checked,
                 EnemyMagnet = chkMagnet.Checked,
                 LagKiller = chkLag.Checked,
-                HidePlayers = chkHidePlayers.Checked,
                 SkipCutscenes = chkSkipCutscenes.Checked,
-                DisableAnimations = chkDisableAnims.Checked,
-                Untarget = chkUntarget.Checked,
                 WalkSpeed = (int)numWalkSpeed.Value,
                 NotifyUponDrop = lstSoundItems.Items.Cast<string>().ToList(),
                 RestIfMp = chkMP.Checked,
@@ -201,10 +195,7 @@ namespace Grimoire.UI
                 chkInfiniteRange.Checked = config.InfiniteAttackRange;
                 chkLag.Checked = config.LagKiller;
                 chkMagnet.Checked = config.EnemyMagnet;
-                chkHidePlayers.Checked = config.HidePlayers;
                 chkSkipCutscenes.Checked = config.SkipCutscenes;
-                chkDisableAnims.Checked = config.DisableAnimations;
-                chkUntarget.Checked = config.Untarget;
                 SetInRange(numWalkSpeed, (config.WalkSpeed <= 0) ? 8 : config.WalkSpeed);
                 List<string> notifyUponDrop = config.NotifyUponDrop;
                 if (notifyUponDrop != null && notifyUponDrop.Count > 0)

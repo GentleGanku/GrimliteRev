@@ -136,15 +136,6 @@
             }
         }
 
-        // This function executes by removing the player's target if it's on them.
-        public static function cancelTargetSelf():void
-        {
-            if (game.world.myAvatar.target == game.world.myAvatar)
-            {
-                game.world.cancelTarget();
-            }
-        }
-
         // This function executes by toggling the player's mute ability.
         public static function muteToggle():void
         {

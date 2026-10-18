@@ -171,14 +171,6 @@ namespace Grimoire.Tools
             {
                 OptionsManager.LagKiller = check;
             }
-            if (BotManager.Instance.chkDisableAnims.Checked)
-            {
-                OptionsManager.DisableAnimations = check;
-            }
-            if (BotManager.Instance.chkHidePlayers.Checked)
-            {
-                OptionsManager.HidePlayers = check;
-            }
         }
 
         private static async Task EnsureLoginSuccess(CancellationTokenSource cts)

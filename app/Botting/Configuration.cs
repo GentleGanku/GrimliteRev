@@ -188,12 +188,6 @@ namespace Grimoire.Botting
             set;
         } = false;
 
-        public bool Untarget
-        {
-            get;
-            set;
-        }
-
         public bool EnemyMagnet
         {
             get;
@@ -206,19 +200,7 @@ namespace Grimoire.Botting
             set;
         }
 
-        public bool HidePlayers
-        {
-            get;
-            set;
-        }
-
         public bool SkipCutscenes
-        {
-            get;
-            set;
-        }
-
-        public bool DisableAnimations
         {
             get;
             set;

@@ -55,7 +55,6 @@
             this.addCallback("Login", Network.login);
 
             // Setting
-            this.addCallback("DisableAnimations", Setting.disableAnimations);
             this.addCallback("SetInfiniteRange", Setting.toggleInfiniteRange);
             this.addCallback("advancedOpt", Setting.toggleAdvancedOpt);
             this.addCallback("DisableDeathAd", Setting.disableDeathAd);
@@ -99,7 +98,6 @@
 
             // Player
             this.addCallback("ChangeAccessLevel", Player.changeAccessLevel);
-            this.addCallback("CancelTargetSelf", Player.cancelTargetSelf);
             this.addCallback("CancelAutoAttack", Player.cancelAutoAttack);
             this.addCallback("UnequipPotion", Player.unequipUseableItem);
             this.addCallback("HasLoadedAvatar", Player.isAvatarLoaded);

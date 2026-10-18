@@ -102,18 +102,12 @@
             game.world.WALKSPEED = speed;
         }
 
-        // This function disables all animation in the room.
-        public static function disableAnimations(disable:Boolean):void
-        {
-            game.world.showAnimations = !disable;
-        }
-
-        // This function turns off the game's Untarget Dead, Untarget Self (only with untargetSelf), Reaccept Quest and Decline
-        // Warning options while a bot runs (running true), and puts back the values it turned off when the bot stops. The
-        // game saves its preferences when the client closes, so the values are also kept in the bridge's own SharedObject:
-        // after a crash mid-bot, the next start keeps those instead of saving the ones left switched off. A plugin that
-        // still passes one argument gets running false, which restores.
-        public static function toggleAdvancedOpt(untargetSelf:Boolean, running:Boolean = false):void
+        // This function turns off the game's Untarget Dead, Reaccept Quest and Decline Warning options while a bot runs
+        // (running true), and puts back the values it turned off when the bot stops. The game saves its preferences when
+        // the client closes, so the values are also kept in the bridge's own SharedObject: after a crash mid-bot, the next
+        // start keeps those instead of saving the ones left switched off. A value saved by an older version, such as
+        // Untarget Self, is still put back.
+        public static function toggleAdvancedOpt(running:Boolean = false):void
         {
             var data:* = game.litePreference.data;
             var store:SharedObject = SharedObject.getLocal("grimliteAdvancedOpt");
@@ -124,10 +118,6 @@
                 if (saved == null)
                 {
                     saved = {"bUntargetDead": data.bUntargetDead, "bReaccept": data.bReaccept};
-                    if (untargetSelf)
-                    {
-                        saved.bUntargetSelf = data.bUntargetSelf;
-                    }
                     if (data.bCustomDrops)
                     {
                         saved.warnDecline = data.dOptions["warnDecline"];

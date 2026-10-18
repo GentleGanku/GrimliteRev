@@ -17,9 +17,7 @@ namespace Grimoire.Botting
 
         private static readonly string[] empty = new string[0];
         private static bool _isRunning;
-        private static bool _disableAnimation;
         private static bool _lagKiller;
-        private static bool _hidePlayers;
         private static bool _infRange;
         private static bool _hideYulgar;
         private static bool _hideRoom;
@@ -109,32 +107,6 @@ namespace Grimoire.Botting
             set;
         }
 
-        public static bool DisableAnimations
-        {
-            get
-            {
-                return _disableAnimation;
-            }
-            set
-            {
-                _disableAnimation = value;
-                RunDisableAnimations(value);
-            }
-        }
-
-        public static bool HidePlayers
-        {
-            get
-            {
-                return _hidePlayers;
-            }
-            set
-            {
-                _hidePlayers = value;
-                DestroyPlayers(value);
-            }
-        }
-
         public static bool InfiniteRange
         {
             get
@@ -167,12 +139,6 @@ namespace Grimoire.Botting
         }
 
         public static int RoomNumber
-        {
-            get;
-            set;
-        }
-
-        public static bool Untarget
         {
             get;
             set;
@@ -273,8 +239,6 @@ namespace Grimoire.Botting
 
         public static void DisableDeathAds() => Flash.Call("DisableDeathAd", empty);
 
-        public static void RunDisableAnimations(bool Enabled) => Flash.Call("DisableAnimations", Enabled);
-
         public static void Start()
         {
             ApplySettings().Forget("applying the client options");
@@ -288,20 +252,22 @@ namespace Grimoire.Botting
             }
         }
 
+        /// <summary>
+        /// Stops the options loop when a bot stops or "Enable options without starting" is unchecked. Packet spam is set
+        /// by a bot command, so it ends with the bot. Cell provoke keeps running while its option is checked, so the
+        /// loop starts again for it.
+        /// </summary>
         public static void Stop()
         {
             IsRunning = false;
+            PacketSpam = false;
             if (BotManager.Instance.chkLag.Checked)
             {
                 LagKiller = false;
             }
-            if (BotManager.Instance.chkProvoke.Checked)
+            if (ProvokeMonsters)
             {
-                ProvokeMonsters = false;
-            }
-            if (BotManager.Instance.chkProvoke.Checked || BotManager.Instance.ActiveBotEngine.Configuration?.ProvokeMonsters == true || ProvokeMonsters)
-            {
-                BotUtilities.MoveToSelfCell();
+                ApplySettings().Forget("applying the client options");
             }
         }
 
@@ -353,7 +319,9 @@ namespace Grimoire.Botting
 
         /// <summary>
         /// Runs the options loop. Each call starts a new loop; an older one sees a newer generation and exits, so a
-        /// quick Stop and Start (as auto-relogin does) doesn't leave two loops sending everything twice.
+        /// quick Stop and Start (as auto-relogin does) doesn't leave two loops sending everything twice. The newest loop
+        /// clears <see cref="IsRunning"/> when it ends, for example on logout, so turning an option on afterwards starts
+        /// a new one.
         /// </summary>
         public static async Task ApplySettings()
         {
@@ -366,14 +334,16 @@ namespace Grimoire.Botting
                     SetPacketSpam();
                 if (EnemyMagnet && alive)
                     SetEnemyMagnet();
-                if (Untarget && Player.targetOnSelf)
-                    Player.CancelTargetSelf();
                 if (SkipCutscenes && World.ActiveCutscene > 0)
                     SetSkipCutscenes();
                 if (Player.walkSpeed != WalkSpeed)
                     SetWalkSpeed();
                 Provoke();
                 await Task.Delay(millisecondsDelay: Timer);
+            }
+            if (generation == _loopGeneration)
+            {
+                IsRunning = false;
             }
         }
 

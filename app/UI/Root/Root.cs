@@ -585,33 +585,11 @@ namespace Grimoire.UI
             BotManager.Instance.chkLag.Checked = lagKillerToolStripMenuItem.Checked;
         }
 
-        private void hidePlayersToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OptionsManager.HidePlayers = hidePlayersToolStripMenuItem.Checked;
-            BotManager.Instance.chkHidePlayers.Checked = hidePlayersToolStripMenuItem.Checked;
-        }
-
         private async void skipCutscenesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OptionsManager.SkipCutscenes = skipCutscenesToolStripMenuItem.Checked;
             BotManager.Instance.chkSkipCutscenes.Checked = skipCutscenesToolStripMenuItem.Checked;
             if (skipCutscenesToolStripMenuItem.Checked && !OptionsManager.IsRunning)
-            {
-                OptionsManager.ApplySettings().Forget("applying the client options");
-            }
-        }
-
-        private void disableAnimationsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OptionsManager.DisableAnimations = disableAnimationsToolStripMenuItem.Checked;
-            BotManager.Instance.chkDisableAnims.Checked = disableAnimationsToolStripMenuItem.Checked;
-        }
-
-        private void untargetSelfToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OptionsManager.Untarget = untargetSelfToolStripMenuItem.Checked;
-            BotManager.Instance.chkUntarget.Checked = untargetSelfToolStripMenuItem.Checked;
-            if (untargetSelfToolStripMenuItem.Checked && !OptionsManager.IsRunning)
             {
                 OptionsManager.ApplySettings().Forget("applying the client options");
             }

@@ -140,7 +140,7 @@ namespace Grimoire.Botting
             BotData.BotCell = null;
             BotData.BotPad = null;
             BotData.BotSkill = null;
-            Flash.Call("advancedOpt", OptionsManager.Untarget, true);
+            Flash.Call("advancedOpt", true);
             OnExecute(config);
             Index = 0;
             LogForm.Instance.AppendDebug($"[{DateTime.Now:hh:mm:ss}] The bot has been started.\r\n");
@@ -149,7 +149,7 @@ namespace Grimoire.Botting
         public void Stop()
         {
             LogForm.Instance.AppendBot($"[{DateTime.Now:hh:mm:ss}] Stopping the bot.\r\n");
-            Flash.Call("advancedOpt", OptionsManager.Untarget, false);
+            Flash.Call("advancedOpt", false);
             Flash.Call("dropUIOpt", true);
             OnCancel();
             IsRunning = false;

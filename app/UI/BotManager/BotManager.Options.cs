@@ -82,12 +82,6 @@ namespace Grimoire.UI
             Root.Instance.lagKillerToolStripMenuItem.Checked = chkLag.Checked;
         }
 
-        private void chkHidePlayers_CheckedChanged(object sender, EventArgs e)
-        {
-            OptionsManager.HidePlayers = chkHidePlayers.Checked;
-            Root.Instance.hidePlayersToolStripMenuItem.Checked = chkHidePlayers.Checked;
-        }
-
         private void chkSkipCutscenes_CheckedChanged(object sender, EventArgs e)
         {
             OptionsManager.SkipCutscenes = chkSkipCutscenes.Checked;
@@ -97,12 +91,6 @@ namespace Grimoire.UI
         private void numWalkSpeed_ValueChanged(object sender, EventArgs e)
         {
             OptionsManager.WalkSpeed = (int)numWalkSpeed.Value;
-        }
-
-        private void chkDisableAnims_CheckedChanged(object sender, EventArgs e)
-        {
-            OptionsManager.DisableAnimations = chkDisableAnims.Checked;
-            Root.Instance.disableAnimationsToolStripMenuItem.Checked = chkDisableAnims.Checked;
         }
 
         private void OnOptionsStateChanged(bool state)
@@ -162,12 +150,6 @@ namespace Grimoire.UI
         private void lstLogText_DoubleClick(object sender, EventArgs e)
         {
             this.txtLog.Text = $"{(this.txtLog.Text == "Logs" ? "" : txtLog.Text + " ")}{this.lstLogText.SelectedItem.ToString()}";
-        }
-
-        private void chkUntarget_CheckedChanged(object sender, EventArgs e)
-        {
-            OptionsManager.Untarget = chkUntarget.Checked;
-            Root.Instance.untargetSelfToolStripMenuItem.Checked = chkUntarget.Checked;
         }
 
         private void chkAFK_CheckedChanged(object sender, EventArgs e)

@@ -24,8 +24,6 @@ namespace Grimoire.Networking.Handlers
             World.SetSpawnPoint();
             if (OptionsManager.HideYulgar && Player.Map.ToLower() == "yulgar")
                 OptionsManager.DestroyPlayers(OptionsManager.HideYulgar);
-            if (OptionsManager.HidePlayers)
-                OptionsManager.DestroyPlayers(true);
         }
 
         #endregion

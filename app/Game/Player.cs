@@ -313,18 +313,6 @@ namespace Grimoire.Game
             }
         }
 
-        public static bool targetOnSelf
-        {
-            get
-            {
-                return GameObject.Get<bool>("world.myAvatar.target.isMyAvatar");
-            }
-            set
-            {
-                GameObject.Set("world.myAvatar.target.isMyAvatar", value);
-            }
-        }
-
         public static int walkSpeed
         {
             get
@@ -402,7 +390,6 @@ namespace Grimoire.Game
         /// <summary>
         /// Cancels Target on Self
         /// </summary>
-        public static void CancelTargetSelf() => Flash.Call("CancelTargetSelf", new string[0]);
 
         /// <summary>
         /// Attacks Monster
