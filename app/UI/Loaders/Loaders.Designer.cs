@@ -59,10 +59,10 @@ namespace Grimoire.UI
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cbLoad.FormattingEnabled = true;
             this.cbLoad.Items.AddRange(new object[] {
-            "Hair shop",
+            "Hair Shop",
             "Shop",
             "Quest",
-            "Armor customizer"});
+            "Armor Customizer"});
             this.cbLoad.Location = new System.Drawing.Point(52, 38);
             this.cbLoad.Name = "cbLoad";
             this.cbLoad.Size = new System.Drawing.Size(176, 21);
@@ -89,12 +89,11 @@ namespace Grimoire.UI
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cbGrab.FormattingEnabled = true;
             this.cbGrab.Items.AddRange(new object[] {
-            "Shop items",
-            "Quest IDs",
-            "Quest items, drop rates",
-            "Inventory items",
-            "Temp inventory items",
-            "Bank items",
+            "Shop Items",
+            "Quests (ID, Items, Drop Rates)",
+            "Inventory Items",
+            "Temporary Inventory Items",
+            "Bank Items",
             "Monsters"});
             this.cbGrab.Location = new System.Drawing.Point(12, 301);
             this.cbGrab.Name = "cbGrab";

@@ -40,7 +40,6 @@ namespace Grimoire.UI
         public enum Type
         {
             ShopItems,
-            QuestIDs,
             Quests,
             InventoryItems,
             TempItems,
@@ -187,26 +186,22 @@ namespace Grimoire.UI
                         break;
 
                     case 1:
-                        Grabber.GrabQuestIds(treeGrabbed);
-                        break;
-
-                    case 2:
                         Grabber.GrabQuests(treeGrabbed);
                         break;
 
-                    case 3:
+                    case 2:
                         Grabber.GrabInventoryItems(treeGrabbed);
                         break;
 
-                    case 4:
+                    case 3:
                         Grabber.GrabTempItems(treeGrabbed);
                         break;
 
-                    case 5:
+                    case 4:
                         Grabber.GrabBankItems(treeGrabbed);
                         break;
 
-                    case 6:
+                    case 5:
                         Grabber.GrabMonsters(treeGrabbed);
                         break;
                 }
@@ -234,6 +229,10 @@ namespace Grimoire.UI
             }
         }
 
+        /// <summary>
+        /// Quest (second to last) gets the Load and Force Accept buttons. Armor Customizer (last) takes no ID, so the ID
+        /// box above is hidden for it.
+        /// </summary>
         private void cbLoad_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbLoad.SelectedIndex == cbLoad.Items.Count - 2)
@@ -246,6 +245,7 @@ namespace Grimoire.UI
                 btnLoad.Visible = true;
                 tableLayoutPanel1.Visible = false;
             }
+            txtLoaders.Visible = cbLoad.SelectedIndex != cbLoad.Items.Count - 1;
         }
 
         private async void btnForceAccept_Click(object sender, EventArgs e)

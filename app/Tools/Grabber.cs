@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Dynamic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Globalization;
 using System.Drawing;
@@ -114,18 +115,6 @@ namespace Grimoire.Tools
             }
         }
 
-        public static void GrabQuestIds(TreeView tree)
-        {
-            List<Quest> quests = Player.Quests.QuestTree?.OrderBy((Quest q) => q.Id).ToList();
-            if (quests != null && quests.Count > 0)
-            {
-                foreach (Quest item in quests)
-                {
-                    tree.Nodes.Add($"{item.Id} - {item.Name}").ContextMenuStrip = MenuQuest(item.Id);
-                }
-            }
-        }
-
         public static void GrabInventoryItems(TreeView tree)
         {
             GrabItems(tree, inventory: true);
@@ -141,12 +130,16 @@ namespace Grimoire.Tools
             List<TempItem> tempItems = Player.TempInventory.Items?.OrderBy((TempItem i) => i.Name).ToList();
             if (tempItems != null && tempItems.Count > 0)
             {
-                foreach (TempItem item in tempItems)
+                foreach (IGrouping<string, TempItem> category in tempItems.GroupBy((TempItem i) => CategoryName(i.Type)).OrderBy((IGrouping<string, TempItem> g) => g.Key))
                 {
-                    TreeNode treeNode = tree.Nodes.Add(item.Name);
-                    treeNode.ContextMenuStrip = Wiki(item.Name);
-                    treeNode.Nodes.Add($"ID: {item.Id}");
-                    treeNode.Nodes.Add($"Quantity: {item.Quantity}");
+                    TreeNode categoryNode = tree.Nodes.Add($"{category.Key} ({category.Count()})");
+                    foreach (TempItem item in category)
+                    {
+                        TreeNode treeNode = categoryNode.Nodes.Add(item.Name);
+                        treeNode.ContextMenuStrip = Wiki(item.Name);
+                        treeNode.Nodes.Add($"ID: {item.Id}");
+                        treeNode.Nodes.Add($"Quantity: {item.Quantity}");
+                    }
                 }
             }
         }
@@ -191,20 +184,24 @@ namespace Grimoire.Tools
             List<InventoryItem> items = (inventory ? Player.Inventory.Items : Player.Bank.Items)?.OrderBy((InventoryItem i) => i.Name).ToList();
             if (items != null && items.Count > 0)
             {
-                foreach (InventoryItem item in items)
+                foreach (IGrouping<string, InventoryItem> category in items.GroupBy((InventoryItem i) => CategoryName(i.Category)).OrderBy((IGrouping<string, InventoryItem> g) => g.Key))
                 {
-                    TreeNode treeNode = tree.Nodes.Add(item.Name);
-                    treeNode.ContextMenuStrip = Wiki(item);
-                    treeNode.Nodes.Add($"ID: {item.Id}");
-                    treeNode.Nodes.Add($"Char Item ID: {item.CharItemId}");
-                    treeNode.Nodes.Add($"Quantity: {item.Quantity}/{item.MaxStack}");
-                    treeNode.Nodes.Add($"AC-tagged: {item.IsAcItem}");
-                    treeNode.Nodes.Add($"Category: {item.Category}");
-                    treeNode.Nodes.Add($"Description: {item.Description}");
-                    if (item.IsEquippableNonItem || item.IsWeapon)
+                    TreeNode categoryNode = tree.Nodes.Add($"{category.Key} ({category.Count()})");
+                    foreach (InventoryItem item in category)
                     {
-                        treeNode.Nodes.Add($"sFile: {item.File}");
-                        treeNode.Nodes.Add($"sLink: {item.Link}");
+                        TreeNode treeNode = categoryNode.Nodes.Add(item.Name);
+                        treeNode.ContextMenuStrip = Wiki(item);
+                        treeNode.Nodes.Add($"ID: {item.Id}");
+                        treeNode.Nodes.Add($"Char Item ID: {item.CharItemId}");
+                        treeNode.Nodes.Add($"Quantity: {item.Quantity}/{item.MaxStack}");
+                        treeNode.Nodes.Add($"AC-tagged: {item.IsAcItem}");
+                        treeNode.Nodes.Add($"Category: {item.Category}");
+                        treeNode.Nodes.Add($"Description: {item.Description}");
+                        if (item.IsEquippableNonItem || item.IsWeapon)
+                        {
+                            treeNode.Nodes.Add($"sFile: {item.File}");
+                            treeNode.Nodes.Add($"sLink: {item.Link}");
+                        }
                     }
                 }
             }
@@ -263,8 +260,7 @@ namespace Grimoire.Tools
                             {
                                 string nodeText = node.InnerText.Split(new string[] { node.InnerText.Contains(" (Dropped") ? " (Dropped" : node.InnerText.Contains(" (dropped") ? " (dropped" : " (During" }, StringSplitOptions.None)[0];
                                 nodeText = nodeText.Split(new string[] { " x" }, StringSplitOptions.None)[0];
-                                int lastInd = nodeText.LastIndexOf(' ');
-                                TreeNode treeNodeTempItem = treeNodeTemp.Nodes.Add(nodeText.EndsWith(" ") ? nodeText.Remove(lastInd) : nodeText);
+                                TreeNode treeNodeTempItem = treeNodeTemp.Nodes.Add(CleanDropName(nodeText));
                                 treeNodeTempItem.Nodes.Add($"Legend-tagged: " + (node.OuterHtml.Contains("legendsmall.png") ? "True" : "False"));
                                 treeNodeTempItem.Nodes.Add($"Seasonal-tagged: " + (node.OuterHtml.Contains("seasonalsmall.png") ? "True" : "False"));
                                 if (node.InnerText.Contains(" (Dropped") || node.InnerText.Contains(" (dropped") || node.InnerText.Contains(" (During"))
@@ -286,11 +282,10 @@ namespace Grimoire.Tools
                             }
                             if (!string.IsNullOrWhiteSpace(node.InnerText) && !node.OuterHtml.Contains("raresmall.png") && !node.OuterHtml.Contains("text-decoration: line-through"))
                             {
-                                string nodeText = node.ChildNodes["a"].FirstChild.InnerText;
-                                int lastInd = nodeText.LastIndexOf(' ');
-                                TreeNode treeNodeItem = treeNodeI.Nodes.Add(nodeText.EndsWith(" ") ? nodeText.Remove(lastInd) : nodeText);
-                                treeNodeItem.ContextMenuStrip = Wiki(nodeText.EndsWith(" ") ? nodeText.Remove(lastInd) : nodeText);
-                                treeNodeItem.ContextMenuStrip = MenuItem(new InventoryItem { Name = nodeText.EndsWith(" ") ? nodeText.Remove(lastInd) : nodeText });
+                                string nodeText = CleanDropName(node.ChildNodes["a"].FirstChild.InnerText);
+                                TreeNode treeNodeItem = treeNodeI.Nodes.Add(nodeText);
+                                treeNodeItem.ContextMenuStrip = Wiki(nodeText);
+                                treeNodeItem.ContextMenuStrip = MenuItem(new InventoryItem { Name = nodeText });
                                 treeNodeItem.Nodes.Add($"AC-tagged: " + (node.OuterHtml.Contains("acsmall.png") ? "True" : "False"));
                                 treeNodeItem.Nodes.Add($"Legend-tagged: " + (node.OuterHtml.Contains("legendsmall.png") ? "True" : "False"));
                                 treeNodeItem.Nodes.Add($"Seasonal-tagged: " + (node.OuterHtml.Contains("seasonalsmall.png") ? "True" : "False"));
@@ -316,6 +311,23 @@ namespace Grimoire.Tools
             }
         }
 
+        /// <summary>
+        /// The name of an item group in the grabbed tree. An item without a category is listed under "Other".
+        /// </summary>
+        private static string CategoryName(string category)
+        {
+            return string.IsNullOrWhiteSpace(category) ? "Other" : category;
+        }
+
+        /// <summary>
+        /// A drop name read from the Wiki, where long names can wrap onto a new line. Line breaks become one space, and
+        /// the spaces around the name are removed.
+        /// </summary>
+        private static string CleanDropName(string name)
+        {
+            return Regex.Replace(name, @"\s*[\r\n]+\s*", " ").Trim();
+        }
+
         private static ContextMenuStrip Wiki(string item)
         {
             ContextMenuStrip contextMenuStrip = new ContextMenuStrip();
@@ -333,7 +345,7 @@ namespace Grimoire.Tools
             };
             toolStripMenuItem1.Click += delegate (object S, EventArgs E)
             {
-                Search("https://aqwwiki.wikidot.com/search:site/q/" + item.Replace(" ", "+"));
+                Search("https://aqwwiki.wikidot.com/search:site/fullname/" + item.Replace(" ", "+"));
             };
             contextMenuStrip.Items.Add(toolStripMenuItem);
             contextMenuStrip.Items.Add(toolStripMenuItem1);
@@ -361,7 +373,7 @@ namespace Grimoire.Tools
             };
             toolStripMenuItem1.Click += delegate (object S, EventArgs E)
             {
-                Search("https://aqwwiki.wikidot.com/search:site/q/" + item.Name.Replace(" ", "+"));
+                Search("https://aqwwiki.wikidot.com/search:site/fullname/" + item.Name.Replace(" ", "+"));
             };
             toolStripMenuItem2.Click += delegate (object S, EventArgs E)
             {
@@ -394,7 +406,7 @@ namespace Grimoire.Tools
             };
             toolStripMenuItem1.Click += delegate (object S, EventArgs E)
             {
-                Search("https://aqwwiki.wikidot.com/search:site/q/" + Item.Name.Replace(" ", "+"));
+                Search("https://aqwwiki.wikidot.com/search:site/fullname/" + Item.Name.Replace(" ", "+"));
             };
             toolStripMenuItem2.Click += delegate
             {
@@ -503,7 +515,7 @@ namespace Grimoire.Tools
             {
                 foreach (InventoryItem Item in Items)
                 {
-                    Process.Start("https://aqwwiki.wikidot.com/search:site/q/" + Item.Name.Replace(" ", "+"));
+                    Process.Start("https://aqwwiki.wikidot.com/search:site/fullname/" + Item.Name.Replace(" ", "+"));
                 }
             };
             contextMenuStrip.Items.Add(toolStripMenuItem);
@@ -563,7 +575,7 @@ namespace Grimoire.Tools
             };
             toolStripMenuItem6.Click += delegate (object S, EventArgs E)
             {
-                Search("https://aqwwiki.wikidot.com/search:site/q/" + Item.Name.Replace(" ", "+"));
+                Search("https://aqwwiki.wikidot.com/search:site/fullname/" + Item.Name.Replace(" ", "+"));
             };
             contextMenuStrip.Items.Add(toolStripMenuItem);
             contextMenuStrip.Items.Add(toolStripMenuItem2);
@@ -628,7 +640,7 @@ namespace Grimoire.Tools
             };
             toolStripMenuItem6.Click += delegate (object S, EventArgs E)
             {
-                Search("https://aqwwiki.wikidot.com/search:site/q/" + Item.Name.Replace(" ", "+"));
+                Search("https://aqwwiki.wikidot.com/search:site/fullname/" + Item.Name.Replace(" ", "+"));
             };
             toolStripMenuItem7.Click += delegate
             {
