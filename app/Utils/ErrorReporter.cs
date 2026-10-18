@@ -2,6 +2,8 @@ using DarkUI.Forms;
 using Grimoire.UI;
 using System;
 using System.Diagnostics;
+using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -15,6 +17,7 @@ namespace Grimoire.Utils
     {
         #region Fields
 
+        private static readonly string _repositoryParent = FindRepositoryParent();
         // A burst of errors (one per packet, one per repaint) would otherwise stack popups faster than they can be closed.
         private static int _popupOpen;
 
@@ -23,19 +26,28 @@ namespace Grimoire.Utils
         #region Methods
 
         /// <summary>
+        /// Shortens the source paths in a stack trace to start at the repository folder, so
+        /// <c>C:\Projects\Freestyle\GrimliteRev\app\Game\World.cs</c> reads <c>GrimliteRev\app\Game\World.cs</c>.
+        /// </summary>
+        public static string TrimPaths(string text)
+        {
+            return string.IsNullOrEmpty(text) || string.IsNullOrEmpty(_repositoryParent) ? text : text.Replace(_repositoryParent, string.Empty);
+        }
+
+        /// <summary>
         /// Writes the error to the Log window's Debug tab, or to the debugger output while the Log window doesn't exist
         /// yet (startup) or anymore (shutdown).
         /// </summary>
         public static void Log(string context, Exception ex)
         {
-            string text = $"[{DateTime.Now:hh:mm:ss}] Error while {context}: {Describe(ex)}\r\n{ex?.StackTrace}\r\n";
+            string text = $"[{DateTime.Now:hh:mm:ss}] Error while {context}: {Describe(ex)}\r\n{TrimPaths(ex?.StackTrace)}\r\n";
             try
             {
                 LogForm.Instance.AppendDebug(text);
             }
             catch (Exception logFailure)
             {
-                Debug.WriteLine(text + logFailure);
+                Debug.WriteLine(text + TrimPaths(logFailure.ToString()));
             }
         }
 
@@ -60,6 +72,17 @@ namespace Grimoire.Utils
                 }
             });
             Show("Bot stopped", $"The bot stopped {where} because of an error:\r\n\r\n{Describe(ex)}\r\n\r\nThe details are in the Log window (Debug tab).");
+        }
+
+        /// <summary>
+        /// The folder that holds the repository on the machine that built the app, worked out from this file's build
+        /// path (<c>&lt;parent&gt;\&lt;repository&gt;\app\Utils\ErrorReporter.cs</c>). Stack traces use the same build paths.
+        /// </summary>
+        private static string FindRepositoryParent([CallerFilePath] string thisFile = "")
+        {
+            string repository = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(thisFile)));
+            string parent = string.IsNullOrEmpty(repository) ? null : Path.GetDirectoryName(repository);
+            return string.IsNullOrEmpty(parent) ? null : parent.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
         }
 
         private static string Describe(Exception ex)

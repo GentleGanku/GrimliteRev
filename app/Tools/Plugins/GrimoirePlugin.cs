@@ -1,3 +1,4 @@
+using Grimoire.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -96,7 +97,7 @@ namespace Grimoire.Tools.Plugins
             }
             catch (Exception ex)
             {
-                LastError = "Failure! This is either not a Grimoire plugin, or its code does not conform to the Grimoire standard.\n" + ex.Message + "\n" + ex.StackTrace;
+                LastError = "Failure! This is either not a Grimoire plugin, or its code does not conform to the Grimoire standard.\n" + ex.Message + "\n" + ErrorReporter.TrimPaths(ex.StackTrace);
                 return false;
             }
         }
@@ -111,7 +112,7 @@ namespace Grimoire.Tools.Plugins
             }
             catch (Exception ex)
             {
-                LastError = "Failed to unload plugin!\n" + ex.Message + "\n" + ex.StackTrace;
+                LastError = "Failed to unload plugin!\n" + ex.Message + "\n" + ErrorReporter.TrimPaths(ex.StackTrace);
                 return false;
             }
         }
