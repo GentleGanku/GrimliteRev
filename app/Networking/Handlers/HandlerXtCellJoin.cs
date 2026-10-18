@@ -1,5 +1,4 @@
-﻿using Grimoire.Botting;
-using Grimoire.Game;
+﻿using Grimoire.Game;
 
 namespace Grimoire.Networking.Handlers
 {
@@ -22,8 +21,6 @@ namespace Grimoire.Networking.Handlers
         public void Handle(XtMessage message)
         {
             World.SetSpawnPoint();
-            if (OptionsManager.HideYulgar && Player.Map.ToLower() == "yulgar")
-                OptionsManager.DestroyPlayers(OptionsManager.HideYulgar);
         }
 
         #endregion

@@ -21,7 +21,6 @@ namespace Grimoire.Botting
         private static bool _botActive;
         private static bool _lagKiller;
         private static bool _infRange;
-        private static bool _hideYulgar;
         private static bool _hideRoom;
         private static bool _afk;
         private static int _loopGeneration;
@@ -212,23 +211,6 @@ namespace Grimoire.Botting
             set;
         } = false;
 
-        public static bool HideYulgar
-        {
-            get
-            {
-                return _hideYulgar;
-            }
-            set
-            {
-                _hideYulgar = value;
-                if (value)
-                {
-                    if (Player.IsLoggedIn && Player.Map.ToLower() == "yulgar")
-                        DestroyPlayers(true);
-                }
-            }
-        }
-
         /// <summary>
         /// Whether the options loop has something to do. A running bot always keeps it going, because bot commands
         /// such as packet spam switch options on during the run.
@@ -260,8 +242,6 @@ namespace Grimoire.Botting
         public static void SetEnemyMagnet() => Flash.Call("SetEnemyMagnet", empty);
 
         public static void SetLagKiller() => Flash.Call("SetLagKiller", !LagKiller);
-
-        public static void DestroyPlayers(bool Enabled) => Flash.Call("DestroyPlayers", Enabled);
 
         public static void SetSkipCutscenes() => Flash.Call("SetSkipCutscenes", (BotData.BotCell == null) ? "Enter" : BotData.BotCell, (BotData.BotPad == null) ? "Spawn" : BotData.BotPad);
 

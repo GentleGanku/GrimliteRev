@@ -283,7 +283,6 @@ namespace Grimoire.UI
 
         public void triggerToggle()
         {
-            BotManager.Instance.chkHideYulgarPlayers.Checked = BotClientConfig.Instance.GetValue<bool>("hideYulgarPlayers");
             BotManager.Instance.chkAntiAfk.Checked = BotClientConfig.Instance.GetValue<bool>("antiAFK");
             BotManager.Instance.chkChangeRoomTag.Checked = BotClientConfig.Instance.GetValue<bool>("anonymousRoom");
             BotManager.Instance.chkChangeChat.Checked = BotClientConfig.Instance.GetValue<bool>("anonymousUser");

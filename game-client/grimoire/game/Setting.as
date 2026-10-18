@@ -58,26 +58,6 @@
             game.world.visible = visibility;
         }
 
-        // This function hides all player's avatar (excluding self) in the room.
-        public static function hidePlayers(hide:Boolean):void
-        {
-            var avatar:*;
-            for each (avatar in game.world.avatars)
-            {
-                if ((((avatar != null) && (avatar.pnm != null)) && (!avatar.isMyAvatar)))
-                {
-                    if (hide)
-                    {
-                        avatar.hideMC();
-                    }
-                    else
-                    {
-                        avatar.showMC();
-                    }
-                }
-            }
-        }
-
         // This function skips all cutscene in the room.
         public static function skipCutscenes(cell:String, pad:String):void
         {

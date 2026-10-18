@@ -63,7 +63,6 @@
             this.addCallback("SetLagKiller", Setting.toggleLagKiller);
             this.addCallback("dropUIOpt", Setting.toggleDropUIOpt);
             this.addCallback("IsDropMenuOpen", Setting.isDropMenuOpen);
-            this.addCallback("DestroyPlayers", Setting.hidePlayers);
             this.addCallback("SetWalkSpeed", Setting.setWalkSpeed);
             this.addCallback("EnableChat", Setting.enableChat);
 

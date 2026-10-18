@@ -141,12 +141,6 @@ namespace Grimoire.UI
             _ = Proxy.Instance.SendToClient("{\"t\":\"xt\",\"b\":{\"r\":-1,\"o\":{\"cmd\":\"sellItem\",\"intAmount\":999999,\"CharItemID\":1,\"bCoins\":1}}}");
         }
 
-        private void chkHideYulgarPlayers_CheckedChanged(object sender, EventArgs e)
-        {
-            BotClientConfig.Instance.SetValue("hideYulgarPlayers", chkHideYulgarPlayers.Checked.ToString());
-            OptionsManager.HideYulgar = chkHideYulgarPlayers.Checked;
-        }
-
         private void btnClientMessageEvt(object sender, EventArgs e)
         {
             IBotCommand cmd;

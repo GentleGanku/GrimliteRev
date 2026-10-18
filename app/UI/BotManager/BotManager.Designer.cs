@@ -266,7 +266,7 @@ namespace Grimoire.UI
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.btnLog = new DarkUI.Controls.DarkButton();
             this.btnLogDebug = new DarkUI.Controls.DarkButton();
-            this.lstLogText = new DarkUI.Controls.DarkListBox(this.components);
+            this.lstLogText = new Grimoire.UI.SingleLineListBox(this.components);
             this.txtLog = new DarkUI.Controls.DarkTextBox();
             this.label5 = new DarkUI.Controls.DarkLabel();
             this.txtSoundItem = new DarkUI.Controls.DarkTextBox();
@@ -315,7 +315,6 @@ namespace Grimoire.UI
             this.btnSetModerator = new DarkUI.Controls.DarkButton();
             this.btnSetNonMem = new DarkUI.Controls.DarkButton();
             this.chkChangeChat = new DarkUI.Controls.DarkCheckBox();
-            this.chkHideYulgarPlayers = new DarkUI.Controls.DarkCheckBox();
             this.chkAntiAfk = new DarkUI.Controls.DarkCheckBox();
             this.grpAlignment = new DarkUI.Controls.DarkGroupBox();
             this.btnSetChaos = new DarkUI.Controls.DarkButton();
@@ -4043,7 +4042,6 @@ namespace Grimoire.UI
             this.tabOptions2.Controls.Add(this.chkChangeRoomTag);
             this.tabOptions2.Controls.Add(this.grpAccessLevel);
             this.tabOptions2.Controls.Add(this.chkChangeChat);
-            this.tabOptions2.Controls.Add(this.chkHideYulgarPlayers);
             this.tabOptions2.Controls.Add(this.chkAntiAfk);
             this.tabOptions2.Controls.Add(this.grpAlignment);
             this.tabOptions2.ForeColor = System.Drawing.Color.Gainsboro;
@@ -4270,7 +4268,7 @@ namespace Grimoire.UI
             // chkToggleMute
             // 
             this.chkToggleMute.AutoSize = true;
-            this.chkToggleMute.Location = new System.Drawing.Point(6, 284);
+            this.chkToggleMute.Location = new System.Drawing.Point(6, 261);
             this.chkToggleMute.Name = "chkToggleMute";
             this.chkToggleMute.Size = new System.Drawing.Size(109, 21);
             this.chkToggleMute.TabIndex = 6;
@@ -4426,20 +4424,10 @@ namespace Grimoire.UI
             this.chkChangeChat.Text = "Anonymous user";
             this.chkChangeChat.CheckedChanged += new System.EventHandler(this.chkChangeChat_CheckedChanged);
             // 
-            // chkHideYulgarPlayers
-            // 
-            this.chkHideYulgarPlayers.AutoSize = true;
-            this.chkHideYulgarPlayers.Location = new System.Drawing.Point(6, 238);
-            this.chkHideYulgarPlayers.Name = "chkHideYulgarPlayers";
-            this.chkHideYulgarPlayers.Size = new System.Drawing.Size(169, 21);
-            this.chkHideYulgarPlayers.TabIndex = 144;
-            this.chkHideYulgarPlayers.Text = "Hide players in Yulgar";
-            this.chkHideYulgarPlayers.CheckedChanged += new System.EventHandler(this.chkHideYulgarPlayers_CheckedChanged);
-            // 
             // chkAntiAfk
             // 
             this.chkAntiAfk.AutoSize = true;
-            this.chkAntiAfk.Location = new System.Drawing.Point(6, 261);
+            this.chkAntiAfk.Location = new System.Drawing.Point(6, 238);
             this.chkAntiAfk.Name = "chkAntiAfk";
             this.chkAntiAfk.Size = new System.Drawing.Size(85, 21);
             this.chkAntiAfk.TabIndex = 144;
@@ -5350,7 +5338,6 @@ namespace Grimoire.UI
         public DarkCheckBox chkAntiAfk;
         public DarkCheckBox chkChangeRoomTag;
         public DarkCheckBox chkChangeChat;
-        public DarkCheckBox chkHideYulgarPlayers;
         public DarkTextBox txtSearchCmd;
         public DarkCheckBox chkPickup;
         public DarkCheckBox chkPickupAcTag;
@@ -5483,7 +5470,7 @@ namespace Grimoire.UI
         private DarkTextBox txtSaved;
         private DarkButton btnProvokeOn;
         private DarkButton btnProvokeOff;
-        private DarkListBox lstLogText;
+        private SingleLineListBox lstLogText;
         private DarkButton btnLogDebug;
         private DarkButton btnLog;
         private DarkTextBox txtLog;
