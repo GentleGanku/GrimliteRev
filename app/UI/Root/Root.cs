@@ -31,15 +31,12 @@ namespace Grimoire.UI
         {
             Root.Instance,
             AboutForm.Instance,
-            BankForm.Instance,
             BotManager.Instance,
             CommandColorForm.Instance,
             CosmeticForm.Instance,
-            EyeDropper.Instance,
             Hotkeys.Instance,
             Loaders.Instance,
             LogForm.Instance,
-            Notepad.Instance,
             PacketLogger.Instance,
             PacketSpammer.Instance,
             PacketTamperer.Instance,
@@ -515,11 +512,6 @@ namespace Grimoire.UI
             ShowForm(CosmeticForm.Instance);
         }
 
-        private void bankToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ShowForm(BankForm.Instance);
-        }
-
         private void discordToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DialogResult result = DarkMessageBox.Show(new Form { TopMost = true, StartPosition = FormStartPosition.CenterScreen }, "This opens a new tab on your default browser. Proceed?", "Discord Server", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -548,19 +540,9 @@ namespace Grimoire.UI
             ShowForm(this);
         }
 
-        private void eyeDropperToolStripMenuItem_Click_1(object sender, EventArgs e)
-        {
-            ShowForm(EyeDropper.Instance);
-        }
-
         private void logsToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             ShowForm(LogForm.Instance);
-        }
-
-        private void notepadToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            ShowForm(Notepad.Instance);
         }
 
         private void infRangeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -650,23 +632,6 @@ namespace Grimoire.UI
             {
                 ReleaseCapture();
                 SendMessage(Handle, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, IntPtr.Zero);
-            }
-        }
-
-        private void bankToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            if (Player.IsAlive && Player.IsLoggedIn)
-            {
-                Player.Bank.Show();
-            }
-        }
-
-        private async void reloadToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (Player.IsAlive && Player.IsLoggedIn)
-            {
-                await Proxy.Instance.SendToServer($"%xt%zm%loadBank%{World.RoomId}%All%");
-                Player.Bank.SavedItems = Flash.Call<List<InventoryItem>>("GetBankItems", new string[0]);
             }
         }
 

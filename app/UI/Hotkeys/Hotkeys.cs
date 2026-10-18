@@ -23,7 +23,7 @@ namespace Grimoire.UI
     {
         #region Fields
 
-        public static readonly Action[] Actions = new Action[20]
+        public static readonly Action[] Actions = new Action[19]
         {
             delegate
             {
@@ -70,10 +70,6 @@ namespace Grimoire.UI
             delegate
             {
                 Root.Instance.ShowForm(LogForm.Instance);
-            },
-            delegate
-            {
-                Root.Instance.ShowForm(Notepad.Instance);
             },
             delegate
             {

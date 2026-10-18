@@ -96,9 +96,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
-    <Reference Include="Unity3.Eyedropper">
-      <HintPath>Dependency\Unity3.Eyedropper.dll</HintPath>
-    </Reference>
     <Reference Include="VisualStudioTabControl">
       <HintPath>Dependency\VisualStudioTabControl.dll</HintPath>
     </Reference>
@@ -404,12 +401,6 @@
     <Compile Include="UI\AboutForm\AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\BankForm\BankForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\BankForm\BankForm.Designer.cs">
-      <DependentUpon>BankForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\BotManager\BotManager.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -466,12 +457,6 @@
     <Compile Include="UI\CommandColorForm\CommandColorForm.Designer.cs">
       <DependentUpon>CommandColorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\EyeDropper\EyeDropper.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\EyeDropper\EyeDropper.Designer.cs">
-      <DependentUpon>EyeDropper.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\Hotkeys\Hotkeys.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -491,12 +476,6 @@
       <DependentUpon>LogForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Controls\NewBadge.cs" />
-    <Compile Include="UI\Notepad\Notepad.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\Notepad\Notepad.Designer.cs">
-      <DependentUpon>Notepad.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\PacketLogger\PacketLogger.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -603,9 +582,6 @@
       <DependentUpon>AboutForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\BankForm\BankForm.resx">
-      <DependentUpon>BankForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\BotManager\BotManager.resx">
       <DependentUpon>BotManager.cs</DependentUpon>
     </EmbeddedResource>
@@ -615,9 +591,6 @@
     <EmbeddedResource Include="UI\CosmeticForm\CosmeticForm.resx">
       <DependentUpon>CosmeticForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\EyeDropper\EyeDropper.resx">
-      <DependentUpon>EyeDropper.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\Hotkeys\Hotkeys.resx">
       <DependentUpon>Hotkeys.cs</DependentUpon>
     </EmbeddedResource>
@@ -626,9 +599,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\LogForm\LogForm.resx">
       <DependentUpon>LogForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Notepad\Notepad.resx">
-      <DependentUpon>Notepad.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\PacketLogger\PacketLogger.resx">
       <DependentUpon>PacketLogger.cs</DependentUpon>

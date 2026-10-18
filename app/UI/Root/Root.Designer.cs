@@ -45,10 +45,7 @@ namespace Grimoire.UI
             this.hotkeysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pluginManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cosmeticsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.bankToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.eyeDropperToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.notepadToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.pingMonitorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FPSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripTextBox2 = new System.Windows.Forms.ToolStripTextBox();
@@ -71,8 +68,6 @@ namespace Grimoire.UI
             this.disableAnimationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.untargetSelfToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.walkSpeedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.bankToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.reloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pluginsStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.camouflageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -218,7 +213,6 @@ namespace Grimoire.UI
             this.toolsToolStripMenuItem,
             this.packetsToolStripMenuItem,
             this.optionsToolStripMenuItem,
-            this.bankToolStripMenuItem1,
             this.pluginsStrip,
             this.settingsToolStripMenuItem,
             this.discordToolStripMenuItem,
@@ -307,9 +301,6 @@ namespace Grimoire.UI
             this.hotkeysToolStripMenuItem,
             this.pluginManagerToolStripMenuItem,
             this.cosmeticsToolStripMenuItem,
-            this.bankToolStripMenuItem,
-            this.eyeDropperToolStripMenuItem,
-            this.notepadToolStripMenuItem1,
             this.pingMonitorToolStripMenuItem,
             this.FPSToolStripMenuItem,
             this.loginToolStripMenuItem,
@@ -366,24 +357,6 @@ namespace Grimoire.UI
             this.cosmeticsToolStripMenuItem.Text = "Cosmetics Panel";
             this.cosmeticsToolStripMenuItem.Click += new System.EventHandler(this.cosmeticsToolStripMenuItem_Click);
             // 
-            // bankToolStripMenuItem
-            // 
-            this.bankToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
-            this.bankToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
-            this.bankToolStripMenuItem.Name = "bankToolStripMenuItem";
-            this.bankToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.bankToolStripMenuItem.Text = "Bank Items";
-            this.bankToolStripMenuItem.Click += new System.EventHandler(this.bankToolStripMenuItem_Click);
-            // 
-            // eyeDropperToolStripMenuItem
-            // 
-            this.eyeDropperToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
-            this.eyeDropperToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
-            this.eyeDropperToolStripMenuItem.Name = "eyeDropperToolStripMenuItem";
-            this.eyeDropperToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.eyeDropperToolStripMenuItem.Text = "Eye Dropper";
-            this.eyeDropperToolStripMenuItem.Click += new System.EventHandler(this.eyeDropperToolStripMenuItem_Click_1);
-            // 
             // logsToolStripMenuItem1
             // 
             this.logsToolStripMenuItem1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
@@ -392,15 +365,6 @@ namespace Grimoire.UI
             this.logsToolStripMenuItem1.Size = new System.Drawing.Size(187, 22);
             this.logsToolStripMenuItem1.Text = "Logs";
             this.logsToolStripMenuItem1.Click += new System.EventHandler(this.logsToolStripMenuItem1_Click);
-            // 
-            // notepadToolStripMenuItem1
-            // 
-            this.notepadToolStripMenuItem1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
-            this.notepadToolStripMenuItem1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
-            this.notepadToolStripMenuItem1.Name = "notepadToolStripMenuItem1";
-            this.notepadToolStripMenuItem1.Size = new System.Drawing.Size(187, 22);
-            this.notepadToolStripMenuItem1.Text = "Notepad";
-            this.notepadToolStripMenuItem1.Click += new System.EventHandler(this.notepadToolStripMenuItem1_Click);
             // 
             // pingMonitorToolStripMenuItem
             // 
@@ -632,26 +596,6 @@ namespace Grimoire.UI
             this.walkSpeedToolStripMenuItem.Text = "Fast Walk Speed";
             this.walkSpeedToolStripMenuItem.CheckedChanged += new System.EventHandler(this.walkSpeedToolStripMenuItem_Click);
             // 
-            // bankToolStripMenuItem1
-            // 
-            this.bankToolStripMenuItem1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
-            this.bankToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.reloadToolStripMenuItem});
-            this.bankToolStripMenuItem1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
-            this.bankToolStripMenuItem1.Name = "bankToolStripMenuItem1";
-            this.bankToolStripMenuItem1.Size = new System.Drawing.Size(45, 20);
-            this.bankToolStripMenuItem1.Text = "Bank";
-            this.bankToolStripMenuItem1.Click += new System.EventHandler(this.bankToolStripMenuItem1_Click);
-            // 
-            // reloadToolStripMenuItem
-            // 
-            this.reloadToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
-            this.reloadToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(32)))), ((int)(((byte)(71)))));
-            this.reloadToolStripMenuItem.Name = "reloadToolStripMenuItem";
-            this.reloadToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
-            this.reloadToolStripMenuItem.Text = "Reload";
-            this.reloadToolStripMenuItem.Click += new System.EventHandler(this.reloadToolStripMenuItem_Click);
-            // 
             // pluginsStrip
             // 
             this.pluginsStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
@@ -779,10 +723,7 @@ namespace Grimoire.UI
         private ToolStripMenuItem hotkeysToolStripMenuItem;
         private ToolStripMenuItem pluginManagerToolStripMenuItem;
         private ToolStripMenuItem cosmeticsToolStripMenuItem;
-        private ToolStripMenuItem bankToolStripMenuItem;
-        private ToolStripMenuItem eyeDropperToolStripMenuItem;
         private ToolStripMenuItem logsToolStripMenuItem1;
-        private ToolStripMenuItem notepadToolStripMenuItem1;
         private ToolStripMenuItem FPSToolStripMenuItem;
         private ToolStripTextBox toolStripTextBox2;
         private ToolStripMenuItem DPSMeterToolStripMenuItem;
@@ -792,8 +733,6 @@ namespace Grimoire.UI
         private ToolStripMenuItem snifferToolStripMenuItem;
         private ToolStripMenuItem spammerToolStripMenuItem;
         private ToolStripMenuItem tampererToolStripMenuItem;
-        private ToolStripMenuItem bankToolStripMenuItem1;
-        private ToolStripMenuItem reloadToolStripMenuItem;
         private ToolStripMenuItem discordToolStripMenuItem;
         private ToolStripMenuItem supportMeToolStripMenuItem;
         private ToolStripMenuItem walkSpeedToolStripMenuItem;

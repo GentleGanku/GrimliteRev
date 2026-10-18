@@ -137,7 +137,6 @@ namespace Grimoire.UI
             "Show Bank",
             "Show Cosmetics Panel",
             "Show Logs",
-            "Show Notepad",
             "Load Hair Shop",
             "Load Armor Customizer",
             "Yulgar Suite 42",
