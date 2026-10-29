@@ -8,9 +8,15 @@ hero:
     file: ../../assets/grimlite-rev.png
     alt: Grimlite Rev icon, a red open book with a G on its pages
   actions:
-    - text: Download
-      link: https://github.com/GentleGanku/GrimliteRev/releases/latest
+    # Through the counter Worker (docs/src/data/worker.json), which notes the visitor's
+    # country and redirects to the GitHub release file. Update the tag and file names with
+    # every release.
+    - text: Download x64
+      link: https://grimliterev.gentleganku.workers.dev/download/v1.4.0/Grimlite.Rev-v1.4.0-x64.zip
       variant: primary
+    - text: Download x86
+      link: https://grimliterev.gentleganku.workers.dev/download/v1.4.0/Grimlite.Rev-v1.4.0-x86.zip
+      variant: secondary
     - text: Read the latest changelogs
       link: /GrimliteRev/changelog/v1-4-0/
       variant: secondary

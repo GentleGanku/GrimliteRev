@@ -1,0 +1,100 @@
+[
+	{
+		"tag": "v1.4.0",
+		"label": "v1.4.0",
+		"published": "2026-10-15",
+		"files": [
+			{
+				"key": "x64",
+				"name": "Grimlite.Rev-v1.4.0-x64.zip",
+				"size": 1304895
+			},
+			{
+				"key": "x86",
+				"name": "Grimlite.Rev-v1.4.0-x86.zip",
+				"size": 1304996
+			},
+			{
+				"key": "plugins",
+				"name": "Grimlite.Rev-v1.4.0-Plugins.zip",
+				"size": 245906
+			}
+		]
+	},
+	{
+		"tag": "v1.3.4",
+		"label": "v1.3.4",
+		"published": "2022-07-14",
+		"files": [
+			{
+				"key": "main",
+				"name": "Grimlite.Rev.rar",
+				"size": 1547231
+			},
+			{
+				"key": "amogus",
+				"name": "Grimlite.Rev-Amogus.rar",
+				"size": 1739875
+			},
+			{
+				"key": "ipplugins",
+				"name": "Grimlite.Rev-IPPlugins.rar",
+				"size": 98679
+			}
+		]
+	},
+	{
+		"tag": "v1.3-Skymeister",
+		"label": "v1.3 Skymeister",
+		"published": "2022-04-06",
+		"files": [
+			{
+				"key": "main",
+				"name": "Grimlite.Rev.rar",
+				"size": 1566178
+			}
+		]
+	},
+	{
+		"tag": "v1.3-Skywalker",
+		"label": "v1.3 Skywalker",
+		"published": "2022-01-14",
+		"files": [
+			{
+				"key": "main",
+				"name": "Grimlite.Rev.rar",
+				"size": 1679877
+			}
+		]
+	},
+	{
+		"tag": "v1.2",
+		"label": "v1.2",
+		"published": "2021-08-31",
+		"files": [
+			{
+				"key": "main",
+				"name": "Grimlite.Rev.rar",
+				"size": 1487496
+			}
+		]
+	},
+	{
+		"tag": "v1.1",
+		"label": "v1.1",
+		"published": "2021-07-28",
+		"files": []
+	},
+	{
+		"tag": "v1.0",
+		"label": "v1.0",
+		"published": "2021-07-23",
+		"files": [
+			{
+				"key": "main",
+				"name": "GrimLite.Rev.rar",
+				"size": 4185439
+			}
+		]
+	}
+]

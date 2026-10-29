@@ -1,0 +1,141 @@
+---
+// Download buttons for one release's files, shown under a changelog page's title when its
+// frontmatter sets `release`. The files and counts are GitHub's, read at build time; the links
+// go through the counter Worker, which notes the visitor's country (see src/data/metrics.ts).
+import { downloadUrl, findRelease } from '../data/metrics';
+
+interface Props {
+  tag: string;
+}
+
+const LABELS: Record<string, string> = {
+  x64: 'x64',
+  x86: 'x86',
+  plugins: 'Plugins',
+  main: 'Grimlite Rev',
+  amogus: 'Amogus',
+  ipplugins: 'IP Plugins',
+};
+
+const release = findRelease(Astro.props.tag);
+const files = release?.files ?? [];
+const size = (bytes: number) =>
+  bytes >= 1e6 ? `${(bytes / 1e6).toFixed(1)}\u00a0MB` : `${Math.round(bytes / 1e3)}\u00a0KB`;
+const count = (n: number) => `${n.toLocaleString('en-US')}\u00a0download${n === 1 ? '' : 's'}`;
+---
+
+{
+  release && files.length > 0 && (
+    <ul class="downloads not-content" aria-label={`${release.label} downloads`}>
+      {files.map((file, i) => (
+        <li>
+          <a
+            class:list={['download', { primary: i === 0 }]}
+            href={downloadUrl(release.tag, file)}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 3v12m0 0-5-5m5 5 5-5M5 20h14" />
+            </svg>
+            <span class="text">
+              <span class="label">{LABELS[file.key] ?? file.name}</span>
+              <span class="meta">{file.name}</span>
+              <span class="meta">
+                {file.downloads === undefined ? size(file.size) : `${size(file.size)} · ${count(file.downloads)}`}
+              </span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+<style>
+  .downloads {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 1.25rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .downloads li {
+    flex: 1 1 15rem;
+    min-width: 0;
+  }
+
+  .download {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 44px;
+    height: 100%;
+    padding: 0.625rem 1rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.75rem;
+    background: var(--sl-color-black);
+    color: var(--sl-color-white);
+    text-decoration: none;
+    transition: background-color 150ms ease;
+  }
+
+  .download:hover {
+    background: var(--sl-color-gray-6);
+  }
+
+  .download:focus-visible {
+    outline: 2px solid var(--sl-color-accent);
+    outline-offset: 2px;
+  }
+
+  /* The first file (x64, or the release's only build) is the one most people want. */
+  .download.primary {
+    border-color: var(--sl-color-white);
+    background: var(--sl-color-white);
+    color: var(--sl-color-black);
+  }
+
+  .download.primary:hover {
+    background: var(--sl-color-gray-2);
+  }
+
+  .download.primary .meta {
+    color: var(--sl-color-gray-6);
+  }
+
+  svg {
+    flex: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .label {
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .meta {
+    overflow-wrap: anywhere;
+    font-size: var(--sl-text-xs);
+    line-height: 1.4;
+    color: var(--sl-color-gray-2);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .download {
+      transition: none;
+    }
+  }
+</style>

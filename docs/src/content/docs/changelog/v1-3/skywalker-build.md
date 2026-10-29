@@ -2,6 +2,7 @@
 title: Grimlite Rev v1.3 Skywalker Build
 sidebar:
   label: Skywalker Build
+release: v1.3-Skywalker
 ---
 
 ## 1 February 2022:

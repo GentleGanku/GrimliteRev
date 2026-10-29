@@ -2,6 +2,7 @@
 title: Grimlite Rev v1.3 Skymeister Build
 sidebar:
   label: Skymeister Build
+release: v1.3-Skymeister
 ---
 
 ## 8 May 2022:

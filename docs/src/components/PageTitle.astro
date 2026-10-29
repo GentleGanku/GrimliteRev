@@ -1,10 +1,13 @@
 ---
 // Replaces Starlight's PageTitle. Pages that set `titleVideo` in their frontmatter get the
 // title inside a looping video banner; every other page gets Starlight's plain <h1>.
+// Pages that set `release` also get that release's download buttons under the title.
 // Starlight's page-title id: the table of contents' "Overview" link and the skip link target it.
 const PAGE_TITLE_ID = '_top';
 
-const { title, titleVideo } = Astro.locals.starlightRoute.entry.data;
+import DownloadButtons from './DownloadButtons.astro';
+
+const { title, titleVideo, release } = Astro.locals.starlightRoute.entry.data;
 const withBase = (path: string) => import.meta.env.BASE_URL.replace(/\/$/, '') + path;
 ---
 
@@ -34,6 +37,7 @@ const withBase = (path: string) => import.meta.env.BASE_URL.replace(/\/$/, '') +
     <h1 id={PAGE_TITLE_ID}>{title}</h1>
   )
 }
+{release && <DownloadButtons tag={release} />}
 
 <script>
   // Started here rather than with `autoplay`, so visitors who ask for reduced motion

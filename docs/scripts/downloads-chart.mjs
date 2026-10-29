@@ -1,7 +1,11 @@
-// Draws the "Total downloads" chart that README.md embeds from the Pages site.
-// Runs before every build (npm "prebuild") and writes public/metrics/:
+// Draws the "Total downloads" chart that README.md embeds from the Pages site, and saves the
+// download data the site shows. Runs before every build (npm "prebuild") and writes
+// public/metrics/:
 //   downloads-light.svg, downloads-dark.svg  the chart in GitHub's two themes
 //   history.json                             the recorded monthly totals
+//   downloads.json                           every release's files with GitHub's download counts
+//                                            (for the download buttons), and the visitors'
+//                                            countries the counter Worker recorded per file
 //
 // GitHub keeps only a running download total per release file, with no dates, so the
 // chart has two parts:
@@ -14,9 +18,11 @@
 // The history is read back from the live site, so recording needs no commits. If it
 // can't be read in CI, the build fails and the last good site stays up; otherwise the
 // next deploy would publish an empty history.
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 
 const REPO = 'GentleGanku/GrimliteRev';
+const DATA_DIR = new URL('../src/data/', import.meta.url);
+const TIMEOUT = 20_000;
 const HISTORY_URL = 'https://gentleganku.github.io/GrimliteRev/metrics/history.json';
 const OUT_DIR = new URL('../public/metrics/', import.meta.url);
 
@@ -39,6 +45,16 @@ const shortDate = (d) =>
 const longDate = (d) =>
 	new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 
+// The download buttons label each file by this key (src/components/DownloadButtons.astro).
+const FILE_ORDER = ['x64', 'x86', 'main', 'amogus', 'ipplugins', 'plugins'];
+const fileKey = (name) =>
+	/x64/.test(name) ? 'x64'
+	: /x86/.test(name) ? 'x86'
+	: /IPPlugins/.test(name) ? 'ipplugins'
+	: /Plugins\.zip$/.test(name) ? 'plugins'
+	: /Amogus/.test(name) ? 'amogus'
+	: 'main';
+
 async function fetchReleases() {
 	const headers = { Accept: 'application/vnd.github+json', 'User-Agent': 'grimlite-rev-docs' };
 	if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
@@ -52,6 +68,9 @@ async function fetchReleases() {
 			label: r.tag_name.replace(/-/g, ' '),
 			published: day(r.published_at),
 			downloads: r.assets.reduce((sum, a) => sum + a.download_count, 0),
+			files: r.assets
+				.map((a) => ({ key: fileKey(a.name), name: a.name, size: a.size, downloads: a.download_count }))
+				.sort((a, b) => FILE_ORDER.indexOf(a.key) - FILE_ORDER.indexOf(b.key)),
 		}))
 		.sort((a, b) => a.published.localeCompare(b.published));
 }
@@ -67,6 +86,19 @@ async function fetchHistory() {
 	} catch (err) {
 		if (process.env.CI) throw err;
 		console.warn(`downloads-chart: can't read the published history (${err.message}); starting a local one`);
+		return null;
+	}
+}
+
+// Every count the counter Worker holds (worker/src/index.js), or null when it can't be read.
+async function fetchWorkerCounts() {
+	const { url } = JSON.parse(await readFile(new URL('worker.json', DATA_DIR), 'utf8'));
+	try {
+		const res = await fetch(`${url}/counts`, { signal: AbortSignal.timeout(TIMEOUT) });
+		if (!res.ok) throw new Error(`answered ${res.status}`);
+		return await res.json();
+	} catch (err) {
+		console.warn(`downloads-chart: the Worker's counts are unavailable (${err.message})`);
 		return null;
 	}
 }
@@ -251,8 +283,21 @@ if (releases) {
 	console.warn('downloads-chart: keeping the published history unchanged');
 }
 
+// Without GitHub's data no downloads.json is written, and the buttons fall back to
+// src/data/releases.json without counts.
+const worker = await fetchWorkerCounts();
 await mkdir(OUT_DIR, { recursive: true });
 if (history) await writeFile(new URL('history.json', OUT_DIR), JSON.stringify(history, null, 2) + '\n');
+if (releases) {
+	const countries = {};
+	for (const [file, entry] of Object.entries(worker?.downloads ?? {})) countries[file] = entry.countries;
+	const data = {
+		updated: today,
+		releases: [...releases].reverse().map(({ tag, label, published, files }) => ({ tag, label, published, files })),
+		countries,
+	};
+	await writeFile(new URL('downloads.json', OUT_DIR), JSON.stringify(data, null, 2) + '\n');
+}
 for (const theme of Object.keys(THEMES)) {
 	const svg = history?.points.length
 		? chart(history, releases ?? history.baseline.releases, theme)

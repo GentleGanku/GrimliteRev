@@ -11,6 +11,9 @@ export const collections = {
 				// Looping video shown behind the page title (see src/components/PageTitle.astro).
 				// Paths are relative to public/, without the site base.
 				titleVideo: z.object({ src: z.string(), poster: z.string() }).optional(),
+				// Release tag whose files get download buttons under the title, from
+				// src/data/releases.json (see src/components/DownloadButtons.astro).
+				release: z.string().optional(),
 			}),
 		}),
 	}),
