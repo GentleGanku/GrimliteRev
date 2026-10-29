@@ -1,0 +1,16 @@
+# Grimlite Rev's counter (src/index.js). Setup: `npx wrangler d1 create grimliterev` (put its
+# id below), `npx wrangler d1 execute grimliterev --remote --file schema.sql`, `npm run deploy`,
+# then `npx wrangler secret put IP_SALT` with a long random string.
+name = "grimliterev"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+workers_dev = true
+
+[vars]
+SITE_ORIGIN = "https://gentleganku.github.io"
+FILES_BASE = "https://github.com/GentleGanku/GrimliteRev/releases/download"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "grimliterev"
+database_id = "6154446e-10bd-4835-bebb-a6d097aafca1"
