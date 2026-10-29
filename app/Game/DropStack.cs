@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Grimoire.Game
@@ -93,6 +94,7 @@ namespace Grimoire.Game
 
         public async Task<bool> GetDrop(string itemName)
         {
+            Bot.ForgetDropInInventory(itemName);
             InventoryItem inventoryItem;
             lock (_drops)
             {
@@ -150,20 +152,27 @@ namespace Grimoire.Game
             return shown || Bot.Instance.HasDropInInventory(itemName);
         }
 
-        public async Task RejectDrops()
+        /// <summary>
+        /// Rejects the drops that aren't on the drop list until the bot stops or pauses (<paramref name="token"/>). The
+        /// setting is read on every pass, so a bot loaded with Load bot can switch rejection on or off.
+        /// </summary>
+        public async Task RejectDrops(CancellationToken token)
         {
-            while (BotManager.Instance.ActiveBotEngine.IsRunning && BotManager.Instance.ActiveBotEngine.Configuration.EnableRejection)
+            while (BotManager.Instance.ActiveBotEngine.IsRunning && !token.IsCancellationRequested)
             {
                 Configuration configuration = BotManager.Instance.ActiveBotEngine.Configuration;
-                string wlArray;
-                if (configuration.Drops.Count > 0)
+                if (configuration.EnableRejection)
                 {
-                    string[] whitelisted = configuration.Drops.ToArray();
-                    wlArray = string.Join(",", whitelisted).ToLower();
+                    string wlArray;
+                    if (configuration.Drops.Count > 0)
+                    {
+                        string[] whitelisted = configuration.Drops.ToArray();
+                        wlArray = string.Join(",", whitelisted).ToLower();
+                    }
+                    else
+                        wlArray = "";
+                    Flash.Call("RejectDrop", wlArray);
                 }
-                else
-                    wlArray = "";
-                Flash.Call("RejectDrop", wlArray);
                 await Task.Delay(100);
             }
         }

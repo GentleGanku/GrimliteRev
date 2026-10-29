@@ -75,6 +75,24 @@ namespace Grimoire.Utils
         }
 
         /// <summary>
+        /// Runs <paramref name="action"/> on the UI thread: posted through the main form from any other thread, so the
+        /// caller doesn't wait. A control's own <c>InvokeRequired</c> isn't enough for forms that haven't been shown:
+        /// with no handle it says false on every thread, and the control then gets its window on the calling thread.
+        /// </summary>
+        public static void OnUiThread(Action action)
+        {
+            Form owner = Root.Instance;
+            if (owner != null && owner.IsHandleCreated && owner.InvokeRequired)
+            {
+                owner.BeginInvoke(action);
+            }
+            else
+            {
+                action();
+            }
+        }
+
+        /// <summary>
         /// The folder that holds the repository on the machine that built the app, worked out from this file's build
         /// path (<c>&lt;parent&gt;\&lt;repository&gt;\app\Utils\ErrorReporter.cs</c>). Stack traces use the same build paths.
         /// </summary>
@@ -107,19 +125,6 @@ namespace Grimoire.Utils
                     Interlocked.Exchange(ref _popupOpen, 0);
                 }
             });
-        }
-
-        private static void OnUiThread(Action action)
-        {
-            Form owner = Root.Instance;
-            if (owner != null && owner.IsHandleCreated && owner.InvokeRequired)
-            {
-                owner.BeginInvoke(action);
-            }
-            else
-            {
-                action();
-            }
         }
 
         #endregion

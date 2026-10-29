@@ -213,15 +213,15 @@ namespace Grimoire.Game
             }
         }
 
+        /// <summary>
+        /// The monsters in the map, with their cell and live health. <c>world.monsters</c> is a Vector, which the array
+        /// selector of the game object paths can't read, so the list comes from the bridge.
+        /// </summary>
         public static List<Monster> Monsters
         {
             get
             {
-                return GameObject.Select<List<Monster>>("world.monsters", "objData");
-            }
-            set
-            {
-                GameObject.Set("world.monsters", value);
+                return MonstersInMap ?? new List<Monster>();
             }
         }
 

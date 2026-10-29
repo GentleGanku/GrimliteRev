@@ -86,11 +86,11 @@ namespace Grimoire.Botting.Commands.Misc
             message = message + "\r\n";
             if (Debug)
                 if (Clear)
-                    LogForm.Instance.txtLogDebug.Clear();
+                    LogForm.Instance.ClearDebug();
                 else
                     LogForm.Instance.AppendDebug(message);
             else if (Clear)
-                LogForm.Instance.txtLogScript.Clear();
+                LogForm.Instance.ClearScript();
             else
                 LogForm.Instance.AppendScript(message);
         }

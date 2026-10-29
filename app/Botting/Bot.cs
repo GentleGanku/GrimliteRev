@@ -118,6 +118,14 @@ namespace Grimoire.Botting
 
         #region Methods
 
+        /// <summary>
+        /// Clears "Has dropped" for an item that was added straight to the inventory, once the bot has picked it up.
+        /// </summary>
+        public static void ForgetDropInInventory(string item)
+        {
+            DropsInInventory.RemoveAll(d => d.Equals(item.UnifyQuotes(), StringComparison.OrdinalIgnoreCase));
+        }
+
         public bool IsVar(string value)
         {
             return Regex.IsMatch(value, @"\[(?!Class Item)([^\)]*)\]");
@@ -243,14 +251,13 @@ namespace Grimoire.Botting
             }
         }
 
+        /// <summary>
+        /// Whether the item was added straight to the inventory since the bot started or since a Get drop for it.
+        /// Reading it doesn't clear it, so two checks in a row agree.
+        /// </summary>
         public bool HasDropInInventory(string item)
         {
-            if (DropsInInventory.Contains(item))
-            {
-                DropsInInventory.Remove(item);
-                return true;
-            }
-            return false;
+            return DropsInInventory.Contains(item);
         }
 
         public async void ReloginOnQuestFailure()
@@ -323,6 +330,7 @@ namespace Grimoire.Botting
             Player.CancelTarget();
             BotUtilities.ActiveBot = true;
             BotUtilities.HasLoadedQuests = false;
+            DropsInInventory.Clear();
             Configuration = config;
             _ctsBot = new CancellationTokenSource();
             World.ItemDropped += OnItemDropped;
@@ -349,7 +357,7 @@ namespace Grimoire.Botting
             }
             await this.LoadBotQuests();
             CheckQuests(_ctsBot.Token).Forget("completing the bot's quests");
-            World.DropStack.RejectDrops().Forget("rejecting drops");
+            World.DropStack.RejectDrops(_ctsBot.Token).Forget("rejecting drops");
             OptionsManager.Start();
             _ = Task.Factory.StartNew(Activate, _ctsBot.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
         }

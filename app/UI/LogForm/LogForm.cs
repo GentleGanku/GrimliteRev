@@ -86,7 +86,19 @@ namespace Grimoire.UI
             Append(txtLogBot, text);
         }
 
-        // Callers include the bot's worker thread; Clear and the append both run on the UI thread, in call order.
+        public void ClearDebug()
+        {
+            ErrorReporter.OnUiThread(txtLogDebug.Clear);
+        }
+
+        public void ClearScript()
+        {
+            ErrorReporter.OnUiThread(txtLogScript.Clear);
+        }
+
+        // Callers include the bot's worker thread; Clear and the append both run on the UI thread, through the main
+        // form. The box's own InvokeRequired would let a worker create the box's window while the Log window has
+        // never been opened, and the next append from another thread then waits forever in Invoke.
         private static void Append(TextBoxBase box, string text)
         {
             void Write()
@@ -97,14 +109,7 @@ namespace Grimoire.UI
                 }
                 box.AppendCapped(text);
             }
-            if (box.InvokeRequired)
-            {
-                box.Invoke((Action)Write);
-            }
-            else
-            {
-                Write();
-            }
+            ErrorReporter.OnUiThread(Write);
         }
 
         private void LogForm_Load(object sender, EventArgs e)

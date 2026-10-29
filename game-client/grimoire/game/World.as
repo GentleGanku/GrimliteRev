@@ -443,14 +443,18 @@
             return JSON.stringify(avatarList);
         }
 
-        // This function returns the list of monsters in the map.
+        // This function returns the list of monsters in the map. A monster without a dataLeaf (the game leaves it null
+        // when the map's monster IDs don't match) has no live data and is left out.
         public static function monstersInMap():String
         {
             var target:*;
             var monsterList:Array = [];
             for each (target in game.world.monsters)
             {
-                monsterList.push(monsterInfo(target));
+                if (target.dataLeaf != null)
+                {
+                    monsterList.push(monsterInfo(target));
+                }
             }
             return JSON.stringify(monsterList);
         }
@@ -477,13 +481,16 @@
         }
 
         // This function returns the monster's data in the shape the monster lists send to C#. The property order is the
-        // JSON key order.
+        // JSON key order. The cell and MonMapID come from the dataLeaf, so they follow the live monster; C# needs them to
+        // count the monsters in a cell and to provoke them.
         private static function monsterInfo(monster:*):Object
         {
             var info:Object = new Object();
             info.sRace = monster.objData.sRace;
             info.strMonName = monster.objData.strMonName;
             info.MonID = monster.dataLeaf.MonID;
+            info.MonMapID = monster.dataLeaf.MonMapID;
+            info.strFrame = monster.dataLeaf.strFrame;
             info.iLvl = monster.dataLeaf.iLvl;
             info.intState = monster.dataLeaf.intState;
             info.intHP = monster.dataLeaf.intHP;

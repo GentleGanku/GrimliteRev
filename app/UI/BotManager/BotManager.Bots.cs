@@ -189,10 +189,12 @@ namespace Grimoire.UI
                 chkPickup.Checked = config.EnablePickup;
                 chkReject.Checked = config.EnableRejection;
                 chkPickupAll.Checked = config.EnablePickupAll;
+                chkPickupAcTag.Checked = config.EnablePickupAcTagged;
                 chkAllSkillsCD.Checked = config.WaitForAllSkills;
                 chkSkillCD.Checked = config.WaitForSkill;
                 chkSkip.Checked = config.SkipDelayIndexIf;
                 chkInfiniteRange.Checked = config.InfiniteAttackRange;
+                chkProvoke.Checked = config.ProvokeMonsters;
                 chkLag.Checked = config.LagKiller;
                 chkMagnet.Checked = config.EnemyMagnet;
                 chkSkipCutscenes.Checked = config.SkipCutscenes;

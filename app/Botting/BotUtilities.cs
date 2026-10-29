@@ -86,6 +86,10 @@ namespace Grimoire.Botting
             return null;
         }
 
+        /// <summary>
+        /// Collects the IDs of the quests the bot's commands use. A command without a quest ID (Quest list Clear), a
+        /// variable, or a value that isn't a number is skipped.
+        /// </summary>
         public async static Task GetBotQuests(this IBotEngine instance)
         {
             PropertyInfo commandProperty;
@@ -95,10 +99,10 @@ namespace Grimoire.Botting
                 if (command.GetType().ToString().Contains("Quest"))
                 {
                     commandProperty = command.GetType().GetProperty("Quest") ?? command.GetType().GetProperty("QuestID") ?? command.GetType().GetProperty("Value1");
-                    if (!commandProperty.GetValue(command).ToString().StartsWith("[") && !string.IsNullOrWhiteSpace(commandProperty.GetValue(command).ToString()))
+                    string value = commandProperty?.GetValue(command)?.ToString();
+                    if (!string.IsNullOrWhiteSpace(value) && !value.StartsWith("[") && int.TryParse(instance.Value(value), out int questId))
                     {
-                        string value = instance.Value(commandProperty.GetValue(command).ToString());
-                        BotData.BotQuests.Add(int.Parse(value));
+                        BotData.BotQuests.Add(questId);
                     }
                 }
             }

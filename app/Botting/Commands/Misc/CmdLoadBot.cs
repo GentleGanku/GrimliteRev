@@ -24,11 +24,16 @@ namespace Grimoire.Botting.Commands.Misc
             set;
         }
 
+        /// <summary>
+        /// The bot file to load. Bot Manager saves the path relative to the app folder, so a relative path is resolved
+        /// from there and not from the current folder, which file dialogs change.
+        /// </summary>
         private string _path
         {
             get
             {
-                return BotManager.Instance.ActiveBotEngine.Value(BotFilePath);
+                string path = BotManager.Instance.ActiveBotEngine.Value(BotFilePath);
+                return Path.IsPathRooted(path) ? path : Path.Combine(Application.StartupPath, path);
             }
         }
 

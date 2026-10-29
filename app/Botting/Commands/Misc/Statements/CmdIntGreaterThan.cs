@@ -9,7 +9,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
         public CmdIntGreaterThan()
         {
             Tag = "Misc";
-            Text = "Int is greater than";
+            Text = "Int is greater than or equal to";
         }
 
         #endregion
@@ -27,7 +27,7 @@ namespace Grimoire.Botting.Commands.Misc.Statements
 
         public override string ToString()
         {
-            return $"{Value1} is greater than: {Value2} (value)";
+            return $"{Value1} is greater than or equal to: {Value2} (value)";
         }
 
         #endregion
