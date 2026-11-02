@@ -4,10 +4,13 @@
 	--sl-color-accent-low: color-mix(in oklch, #f64061 15%, #030712);
 	--sl-color-accent: #f64061;
 	--sl-color-accent-high: #f64061;
+	/* Text on an accent background, such as the Roadmap's selected version. */
+	--roadmap-on-accent: #030712;
 }
 
 :root[data-theme='light'] {
 	--sl-color-accent-low: color-mix(in oklch, #d6143a 10%, #f3f4f6);
 	--sl-color-accent: #d6143a;
 	--sl-color-accent-high: #d6143a;
+	--roadmap-on-accent: #ffffff;
 }

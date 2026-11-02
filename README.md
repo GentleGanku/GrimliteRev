@@ -4,7 +4,7 @@ A bot client for AdventureQuest Worlds. Grimlite Rev is a revision of Grimlite, 
 
 Bug reports can go either to the [Discord server](https://discord.gg/NZ6vmDTu44) or the repository's Issues.
 
-[Download](https://github.com/GentleGanku/GrimliteRev/releases/latest) · [Changelogs](https://gentleganku.github.io/GrimliteRev/) · [Discord](https://discord.gg/NZ6vmDTu44) · [Ko-fi](https://ko-fi.com/gentleganku)
+[Download](https://github.com/GentleGanku/GrimliteRev/releases/latest) · [Changelogs](https://gentleganku.github.io/GrimliteRev/) · [Roadmap](https://gentleganku.github.io/GrimliteRev/roadmap/) · [Discord](https://discord.gg/NZ6vmDTu44) · [Ko-fi](https://ko-fi.com/gentleganku)
 
 ## **Status**
 

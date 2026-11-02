@@ -1,0 +1,438 @@
+---
+// The Roadmap page: items from src/data/roadmap.json in three status sections, a version
+// filter, and an upvote button per item. Votes live in the counter Worker
+// (worker/src/index.js): one per visitor, and a second click takes it back. The build's
+// snapshot (public/metrics/votes.json) is shown first, then the Worker's live counts.
+import roadmap from '../data/roadmap.json';
+import { votes, WORKER } from '../data/metrics';
+
+const STATUSES = [
+  { id: 'planned', title: 'Planned', note: 'Lined up for its version', empty: 'Nothing planned' },
+  { id: 'in-progress', title: 'In progress', note: 'Being built now', empty: 'Nothing in progress' },
+  { id: 'done', title: 'Done', note: 'Built for its version', empty: 'Nothing done' },
+];
+
+const items = roadmap.items
+  .map((item) => ({ ...item, votes: votes[item.id] ?? 0 }))
+  .sort((a, b) => b.votes - a.votes);
+const countFor = (version: string) => items.filter((i) => i.version === version).length;
+const voteLabel = (n: number) => `${n.toLocaleString('en-US')} vote${n === 1 ? '' : 's'}`;
+---
+
+<div class="roadmap not-content" data-roadmap data-worker={WORKER}>
+  <div class="bar">
+    <fieldset class="filter">
+      <legend>Version</legend>
+      <div class="options">
+        <label>
+          <input type="radio" name="roadmap-version" value="" checked />
+          <span>All <span class="count">{items.length}</span></span>
+        </label>
+        {
+          roadmap.versions.map((version) => (
+            <label>
+              <input type="radio" name="roadmap-version" value={version} />
+              <span>
+                {version} <span class="count">{countFor(version)}</span>
+              </span>
+            </label>
+          ))
+        }
+      </div>
+    </fieldset>
+    <p class="status" role="status" data-vote-status></p>
+  </div>
+
+  <div class="sections">
+    {
+      STATUSES.map((status) => {
+        const list = items.filter((i) => i.status === status.id);
+        return (
+          <section aria-labelledby={`status-${status.id}`} data-status={status.id}>
+            <h2 id={`status-${status.id}`}>
+              {status.title} <span class="count" data-section-count>{list.length}</span>
+            </h2>
+            <p class="note">{status.note}</p>
+            <ul>
+              {list.map((item) => (
+                <li id={`item-${item.id}`} data-version={item.version}>
+                  <span class="version">{item.version}</span>
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                  <button
+                    type="button"
+                    class="vote"
+                    aria-pressed="false"
+                    data-id={item.id}
+                    data-title={item.title}
+                    data-votes={item.votes}
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 6 5 17h14z" />
+                    </svg>
+                    <span class="vote-text">Upvote</span>
+                    <span class="vote-count">{voteLabel(item.votes)}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <p class="empty" data-empty data-text={status.empty} hidden={list.length > 0}>
+              {status.empty} right now.
+            </p>
+          </section>
+        );
+      })
+    }
+  </div>
+</div>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-roadmap]')!;
+  const worker = root.dataset.worker!;
+  const radios = [...root.querySelectorAll<HTMLInputElement>('input[name="roadmap-version"]')];
+  const sections = [...root.querySelectorAll<HTMLElement>('section[data-status]')];
+  const buttons = [...root.querySelectorAll<HTMLButtonElement>('button.vote')];
+  const status = root.querySelector<HTMLElement>('[data-vote-status]')!;
+  // Items this visitor has voted for, as the Worker reports them.
+  const mine = new Set<string>();
+
+  function filter(version: string) {
+    for (const section of sections) {
+      let shown = 0;
+      for (const item of section.querySelectorAll<HTMLElement>('li[data-version]')) {
+        item.hidden = Boolean(version) && item.dataset.version !== version;
+        if (!item.hidden) shown++;
+      }
+      section.querySelector('[data-section-count]')!.textContent = String(shown);
+      const empty = section.querySelector<HTMLElement>('[data-empty]')!;
+      empty.hidden = shown > 0;
+      empty.textContent = `${empty.dataset.text}${version ? ` for ${version}` : ''} right now.`;
+    }
+  }
+
+  function render(button: HTMLButtonElement, count: number) {
+    const voted = mine.has(button.dataset.id!);
+    button.dataset.votes = String(count);
+    button.setAttribute('aria-pressed', String(voted));
+    button.querySelector('.vote-text')!.textContent = voted ? 'Voted' : 'Upvote';
+    button.querySelector('.vote-count')!.textContent = `${count.toLocaleString('en-US')} vote${count === 1 ? '' : 's'}`;
+  }
+
+  const initial = new URLSearchParams(location.search).get('v') ?? '';
+  const selected = radios.find((r) => r.value === initial) ?? radios[0];
+  selected.checked = true;
+  filter(selected.value);
+  for (const radio of radios) {
+    radio.addEventListener('change', () => {
+      filter(radio.value);
+      const url = new URL(location.href);
+      if (radio.value) url.searchParams.set('v', radio.value);
+      else url.searchParams.delete('v');
+      history.replaceState(null, '', url);
+    });
+  }
+
+  // A plain-text body keeps the request simple, so the browser sends it without a preflight.
+  for (const button of buttons) {
+    button.addEventListener('click', async () => {
+      if (button.getAttribute('aria-busy') === 'true') return;
+      const id = button.dataset.id!;
+      const add = !mine.has(id);
+      button.setAttribute('aria-busy', 'true');
+      try {
+        const res = await fetch(`${worker}/${add ? 'vote' : 'unvote'}`, { method: 'POST', body: id });
+        if (!res.ok) throw new Error(String(res.status));
+        const data: { count: number } = await res.json();
+        if (add) mine.add(id);
+        else mine.delete(id);
+        render(button, data.count);
+        status.textContent = add
+          ? `Thanks, your vote for ${button.dataset.title} is in. Click Voted to take it back.`
+          : `Your vote for ${button.dataset.title} was taken back.`;
+      } catch {
+        status.textContent = "Your vote couldn't be sent. Try again in a moment.";
+      } finally {
+        button.removeAttribute('aria-busy');
+      }
+    });
+  }
+
+  // Live counts and this visitor's votes. If the Worker can't be reached, the build's
+  // snapshot stays and votes still try to send on click.
+  fetch(`${worker}/votes`)
+    .then((res) => (res.ok ? res.json() : Promise.reject(new Error(String(res.status)))))
+    .then((data: { counts: Record<string, number>; mine: string[] }) => {
+      for (const id of data.mine) mine.add(id);
+      for (const button of buttons) render(button, data.counts[button.dataset.id!] ?? 0);
+    })
+    .catch(() => {});
+</script>
+
+<style>
+  .roadmap {
+    margin-top: 1.5rem;
+  }
+
+  /* The version filter stays under the header while the sections scroll past it. Celestia's
+     main pane hides horizontal overflow, which makes it a scroll container and stops sticky
+     positioning; clip hides the same overflow without that. */
+  :global(.main-pane:has([data-roadmap])) {
+    overflow-x: clip;
+  }
+
+  .bar {
+    position: sticky;
+    top: var(--sl-nav-height);
+    z-index: 2;
+    padding: 0.75rem 0;
+    background: var(--sl-color-bg);
+  }
+
+  .filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .filter legend {
+    float: left;
+    margin-inline-end: 0.75rem;
+    font-weight: 600;
+    color: var(--sl-color-white);
+  }
+
+  .options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .options label {
+    position: relative;
+    flex: none;
+  }
+
+  /* On phones the sticky bar stays one row tall: the options scroll sideways, and the
+     legend is kept for screen readers only. */
+  @media (width < 50rem) {
+    .filter legend {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .filter,
+    .options {
+      flex-wrap: nowrap;
+      min-width: 0;
+    }
+
+    /* The padding keeps the focus outline inside the scrolling row. */
+    .options {
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding: 4px;
+      margin: -4px;
+    }
+
+    .options label > span {
+      padding: 0 0.875rem;
+    }
+  }
+
+  .options input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  .options label > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0 1.125rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.75rem;
+    font-weight: 600;
+    color: var(--sl-color-white);
+    background: var(--sl-color-black);
+  }
+
+  .options label:hover > span {
+    border-color: var(--sl-color-gray-3);
+  }
+
+  .options input:checked + span {
+    border-color: var(--sl-color-accent);
+    background: var(--sl-color-accent);
+    color: var(--roadmap-on-accent);
+  }
+
+  .options input:focus-visible + span {
+    outline: 2px solid var(--sl-color-white);
+    outline-offset: 2px;
+  }
+
+  .count {
+    font-weight: 400;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .status {
+    margin: 0.5rem 0 0;
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-2);
+  }
+
+  .status:empty {
+    display: none;
+  }
+
+  .sections {
+    display: grid;
+    gap: 2rem;
+    margin-top: 1rem;
+  }
+
+  @media (min-width: 50rem) {
+    .sections {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.25rem;
+      align-items: start;
+    }
+  }
+
+  h2 {
+    margin: 0;
+    font-size: var(--sl-text-xl);
+    color: var(--sl-color-white);
+  }
+
+  h2 .count {
+    margin-inline-start: 0.25rem;
+    color: var(--sl-color-gray-3);
+  }
+
+  .note {
+    margin: 0.125rem 0 0.75rem;
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-3);
+  }
+
+  ul {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    display: grid;
+    gap: 0.375rem;
+    padding: 1rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.75rem;
+    background: var(--sl-color-black);
+  }
+
+  li[hidden] {
+    display: none;
+  }
+
+  .version {
+    justify-self: start;
+    padding: 0.125rem 0.5rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.375rem;
+    font-size: var(--sl-text-xs);
+    font-weight: 600;
+    color: var(--sl-color-gray-2);
+  }
+
+  h3 {
+    margin: 0;
+    font-size: var(--sl-text-base);
+    line-height: 1.35;
+    color: var(--sl-color-white);
+  }
+
+  li p {
+    margin: 0;
+    font-size: var(--sl-text-sm);
+    line-height: 1.5;
+    color: var(--sl-color-gray-2);
+  }
+
+  .vote {
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    margin-top: 0.375rem;
+    padding: 0 0.875rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.5rem;
+    background: transparent;
+    font: inherit;
+    font-size: var(--sl-text-sm);
+    font-weight: 600;
+    color: var(--sl-color-white);
+    cursor: pointer;
+  }
+
+  .vote:hover {
+    border-color: var(--sl-color-gray-3);
+  }
+
+  .vote:focus-visible {
+    outline: 2px solid var(--sl-color-accent);
+    outline-offset: 2px;
+  }
+
+  .vote svg {
+    width: 1rem;
+    height: 1rem;
+    fill: currentColor;
+  }
+
+  .vote-count {
+    font-weight: 400;
+    font-variant-numeric: tabular-nums;
+    color: var(--sl-color-gray-2);
+  }
+
+  /* Your own votes are the second place the accent appears. Clicking one takes it back. */
+  .vote[aria-pressed='true'] {
+    border-color: var(--sl-color-accent);
+    color: var(--sl-color-accent-high);
+  }
+
+  .vote[aria-busy='true'] {
+    cursor: progress;
+  }
+
+  .empty {
+    margin: 0;
+    padding: 1rem;
+    border: 1px dashed var(--sl-color-gray-5);
+    border-radius: 0.75rem;
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-2);
+  }
+
+  .empty[hidden] {
+    display: none;
+  }
+</style>

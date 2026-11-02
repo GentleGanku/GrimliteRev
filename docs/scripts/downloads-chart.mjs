@@ -1,11 +1,12 @@
 // Draws the "Total downloads" chart that README.md embeds from the Pages site, and saves the
-// download data the site shows. Runs before every build (npm "prebuild") and writes
+// download and vote data the site shows. Runs before every build (npm "prebuild") and writes
 // public/metrics/:
 //   downloads-light.svg, downloads-dark.svg  the chart in GitHub's two themes
 //   history.json                             the recorded monthly totals
 //   downloads.json                           every release's files with GitHub's download counts
 //                                            (for the download buttons), and the visitors'
 //                                            countries the counter Worker recorded per file
+//   votes.json                               Roadmap votes per item, from the counter Worker
 //
 // GitHub keeps only a running download total per release file, with no dates, so the
 // chart has two parts:
@@ -297,6 +298,11 @@ if (releases) {
 		countries,
 	};
 	await writeFile(new URL('downloads.json', OUT_DIR), JSON.stringify(data, null, 2) + '\n');
+}
+if (worker) {
+	const roadmap = JSON.parse(await readFile(new URL('roadmap.json', DATA_DIR), 'utf8'));
+	const votes = { updated: today, counts: Object.fromEntries(roadmap.items.map((item) => [item.id, worker.votes?.[item.id] ?? 0])) };
+	await writeFile(new URL('votes.json', OUT_DIR), JSON.stringify(votes, null, 2) + '\n');
 }
 for (const theme of Object.keys(THEMES)) {
 	const svg = history?.points.length

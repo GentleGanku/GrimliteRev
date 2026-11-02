@@ -29,6 +29,7 @@ export default defineConfig({
 				{ icon: 'discord', label: 'Discord', href: 'https://discord.gg/NZ6vmDTu44' },
 			],
 			sidebar: [
+				'roadmap',
 				{
 					label: 'Changelogs',
 					items: [
@@ -50,6 +51,7 @@ export default defineConfig({
 					stylingSystem: 'css',
 					nav: [
 						{ label: 'Changelogs', href: '/GrimliteRev/changelog/v1-4-0/' },
+						{ label: 'Roadmap', href: '/GrimliteRev/roadmap/' },
 						{ label: 'Releases', href: 'https://github.com/GentleGanku/GrimliteRev/releases' },
 						{ label: 'Ko-fi', href: 'https://ko-fi.com/gentleganku' },
 					],

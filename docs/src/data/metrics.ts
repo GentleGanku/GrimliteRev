@@ -32,6 +32,8 @@ function readMetrics(name: string) {
 const downloads = readMetrics('downloads.json');
 const releases: Release[] = downloads?.releases ?? fallbackReleases;
 
+export const votes: Record<string, number> = readMetrics('votes.json')?.counts ?? {};
+
 // The counter Worker (worker/src/index.js), set in worker.json.
 export const WORKER = worker.url;
 
