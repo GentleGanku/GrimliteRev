@@ -1,0 +1,93 @@
+---
+// The art behind a hero, filling its parent: a muted looping video, an image, or, until the art
+// exists, a placeholder backdrop that says what it should show.
+//
+// A video has no separate pause button. The banner itself is the control: click it, or focus it
+// and press Space or Enter, to pause or play (WCAG 2.2.2 asks for a way to stop moving content).
+// It starts from the script rather than with `autoplay`, so visitors who ask for reduced motion
+// get the still frame and can start it themselves.
+interface Props {
+	video?: string;
+	image?: string;
+	poster?: string;
+	placeholder?: string;
+}
+
+const withBase = (path: string) => import.meta.env.BASE_URL.replace(/\/$/, '') + path;
+const { video, image, poster, placeholder } = Astro.props;
+---
+
+{
+	video ? (
+		<div class="hero-media" role="button" tabindex="0" aria-label="Play background video" aria-pressed="false" data-hero-video>
+			<video src={withBase(video)} poster={poster && withBase(poster)} muted loop playsinline preload="metadata" aria-hidden="true" />
+		</div>
+	) : image ? (
+		<div class="hero-media" aria-hidden="true">
+			<img src={withBase(image)} alt="" decoding="async" fetchpriority="high" />
+		</div>
+	) : (
+		<div class="hero-media placeholder">
+			<span>[Background: {placeholder ?? 'hero art'}]</span>
+		</div>
+	)
+}
+
+<script>
+	for (const banner of document.querySelectorAll<HTMLElement>('[data-hero-video]')) {
+		const video = banner.querySelector('video')!;
+		const sync = () => {
+			banner.setAttribute('aria-label', video.paused ? 'Play background video' : 'Pause background video');
+			banner.setAttribute('aria-pressed', String(!video.paused));
+		};
+		const toggle = () => (video.paused ? video.play().catch(sync) : video.pause());
+		video.addEventListener('play', sync);
+		video.addEventListener('pause', sync);
+		banner.addEventListener('click', toggle);
+		banner.addEventListener('keydown', (event) => {
+			if (event.key === ' ' || event.key === 'Enter') {
+				event.preventDefault();
+				toggle();
+			}
+		});
+		if (!matchMedia('(prefers-reduced-motion: reduce)').matches) video.play().catch(sync);
+	}
+</script>
+
+<style>
+	.hero-media {
+		position: absolute;
+		inset: 0;
+	}
+
+	[data-hero-video] {
+		cursor: pointer;
+	}
+
+	[data-hero-video]:focus-visible {
+		outline: 3px solid #fff;
+		outline-offset: -6px;
+	}
+
+	video,
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: 50% 35%;
+	}
+
+	/* An honest stand-in, not disguised as art: a plain surface with its label in a corner. */
+	.placeholder {
+		background: var(--gr-surface);
+		border: 2px dashed var(--gr-line);
+	}
+
+	.placeholder span {
+		position: absolute;
+		top: 1rem;
+		right: max(var(--sl-content-pad-x), calc((100vw - 67.5rem) / 2));
+		color: var(--gr-muted);
+		font-size: var(--sl-text-sm);
+	}
+</style>

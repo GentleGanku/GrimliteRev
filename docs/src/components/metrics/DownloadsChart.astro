@@ -1,0 +1,190 @@
+---
+// Total downloads over time, drawn at build time from the history behind the README chart
+// (public/metrics/history.json, see scripts/downloads-chart.mjs). GitHub keeps no download
+// dates, so the chart has two parts, and says so:
+//   - Dashed steps: each release's count as of the first recording, placed at its release date.
+//   - Solid line and dots: the all-release total recorded once a month since then.
+import { history } from '../../data/metrics';
+import { longDate, number } from '../../data/figures';
+
+const W = 960;
+const H = 340;
+const P = { left: 72, right: 24, top: 28, bottom: 44 };
+
+const steps = history?.baseline.releases ?? [];
+const points = history?.points ?? [];
+const ok = steps.length > 0;
+
+const t = (d: string) => Date.parse(`${d.slice(0, 10)}T00:00:00Z`);
+const start = ok ? t(steps[0].published) : 0;
+const lastDate = points.at(-1)?.date ?? history?.baseline.recordedFrom ?? '';
+const end = ok ? Math.max(t(lastDate), t(steps.at(-1)!.published)) + 60 * 864e5 : 1;
+const stepTotal = steps.reduce((sum, r) => sum + r.downloads, 0);
+const top = Math.max(stepTotal, ...points.map((p) => p.total), 1);
+const step = (() => {
+	const rough = top / 4;
+	const power = 10 ** Math.floor(Math.log10(rough));
+	return [1, 2, 2.5, 5, 10].map((m) => m * power).find((s) => s >= rough)!;
+})();
+const yMax = Math.ceil(top / step) * step;
+
+const x = (d: string) => P.left + ((t(d) - start) / (end - start)) * (W - P.left - P.right);
+const y = (n: number) => H - P.bottom - (n / yMax) * (H - P.top - P.bottom);
+const f = (n: number) => n.toFixed(1);
+
+let sum = 0;
+let stepPath = '';
+const marks: { x: number; y: number; label: string; n: number }[] = [];
+for (const r of steps) {
+	const px = x(r.published);
+	stepPath += stepPath ? ` H${f(px)} V${f(y(sum + r.downloads))}` : `M${f(px)},${f(y(0))} V${f(y(r.downloads))}`;
+	sum += r.downloads;
+	if (r.downloads / Math.max(stepTotal, 1) >= 0.04) marks.push({ x: px, y: y(sum), label: r.label, n: r.downloads });
+}
+// Step labels never overlap: the bigger release keeps its spot, a smaller one too close to a
+// label already placed is left out (its count is on the per-release list below).
+const placed: typeof marks = [];
+for (const m of [...marks].sort((a, b) => b.n - a.n)) {
+	if (placed.every((p) => Math.abs(p.x - m.x) > 110 || Math.abs(p.y - m.y) > 18)) placed.push(m);
+}
+const recordedStart = history?.baseline.recordedFrom ?? lastDate;
+if (ok) stepPath += ` H${f(x(recordedStart))}`;
+const linePath = points.length
+	? `M${f(x(recordedStart))},${f(y(stepTotal))} ` + points.map((p) => `L${f(x(p.date))},${f(y(p.total))}`).join(' ')
+	: '';
+const latest = points.at(-1);
+const ticks = Array.from({ length: Math.round(yMax / step) + 1 }, (_, i) => i * step);
+const years: number[] = [];
+if (ok) for (let yr = new Date(start).getUTCFullYear() + 1; Date.UTC(yr, 0, 1) < end; yr++) years.push(yr);
+const yearX = (yr: number) => P.left + ((Date.UTC(yr, 0, 1) - start) / (end - start)) * (W - P.left - P.right);
+const compact = (n: number) => (n >= 1e6 ? `${n / 1e6}M` : n >= 1e3 ? `${n / 1e3}k` : String(n));
+---
+
+{
+	ok ? (
+		<figure class="chart">
+			<svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="chart-title chart-desc">
+				<title id="chart-title">Total downloads over time</title>
+				<desc id="chart-desc">
+					{`Release counts as of ${longDate(recordedStart)} placed at each release date, then the recorded monthly total${latest ? `, ${number(latest.total)} on ${longDate(latest.date)}` : ''}.`}
+				</desc>
+				{ticks.map((n) => (
+					<g class="grid">
+						<line x1={P.left} x2={W - P.right} y1={y(n)} y2={y(n)} />
+						<text x={P.left - 10} y={y(n) + 4} text-anchor="end">
+							{compact(n)}
+						</text>
+					</g>
+				))}
+				{years.map((yr) => (
+					<text class="year" x={yearX(yr)} y={H - 14} text-anchor="middle">
+						{yr}
+					</text>
+				))}
+				<path class="steps" d={stepPath} />
+				{linePath && <path class="line" d={linePath} />}
+				{points.map((p) => (
+					<circle class="dot" cx={x(p.date)} cy={y(p.total)} r="5" />
+				))}
+				{placed.map((m) => (
+					<text class="mark" x={m.x + 6} y={m.y - 8}>
+						{m.label}
+					</text>
+				))}
+				{latest && (
+					<text class="latest" x={x(latest.date) - 10} y={y(latest.total) - 14} text-anchor="end">
+						{number(latest.total)}
+					</text>
+				)}
+			</svg>
+			<figcaption>
+				<span class="key dashed">Each release's count on {longDate(recordedStart)}, at its release date</span>
+				<span class="key solid">Recorded total, once a month</span>
+			</figcaption>
+		</figure>
+	) : (
+		<p class="empty">The download history couldn't be read for this build. It comes back with the next one.</p>
+	)
+}
+
+<style>
+	.chart {
+		margin: 0;
+	}
+
+	svg {
+		display: block;
+		width: 100%;
+		height: auto;
+		overflow: visible;
+	}
+
+	.grid line {
+		stroke: var(--gr-line);
+		stroke-width: 1;
+	}
+
+	.grid text,
+	.year {
+		fill: var(--gr-muted);
+		font-size: 13px;
+	}
+
+	.steps {
+		fill: none;
+		stroke: var(--gr-muted);
+		stroke-width: 2;
+		stroke-dasharray: 6 5;
+	}
+
+	.line {
+		fill: none;
+		stroke: var(--gr-accent);
+		stroke-width: 3;
+	}
+
+	.dot {
+		fill: var(--gr-accent);
+	}
+
+	.mark {
+		fill: var(--gr-text);
+		font-size: 13px;
+		font-weight: 700;
+	}
+
+	.latest {
+		fill: var(--gr-text-strong);
+		font-family: var(--gr-font-display);
+		font-stretch: var(--gr-display-stretch);
+		font-weight: 850;
+		font-size: 26px;
+	}
+
+	figcaption {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem 1.5rem;
+		margin-top: 0.75rem;
+		font-size: var(--sl-text-sm);
+		color: var(--gr-muted);
+	}
+
+	.key::before {
+		content: '';
+		display: inline-block;
+		width: 1.75rem;
+		margin-right: 0.5rem;
+		vertical-align: middle;
+		border-top: 2px dashed var(--gr-muted);
+	}
+
+	.key.solid::before {
+		border-top: 3px solid var(--gr-accent);
+	}
+
+	.empty {
+		margin: 0;
+		color: var(--gr-muted);
+	}
+</style>

@@ -5,6 +5,12 @@ sidebar:
 showcase:
   kind: build
   kicker: 13 January 2022
+template: splash
+# Showcase pages have their own version list, so no Previous/Next links.
+prev: false
+next: false
+heroMedia:
+  placeholder: this build's login background
 ---
 
 _13 January 2022_

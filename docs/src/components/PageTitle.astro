@@ -1,15 +1,17 @@
 ---
 // Replaces Starlight's PageTitle. Pages whose frontmatter sets `showcase` get a poster header
-// instead of the plain <h1>: the home page poster, or a changelog poster with the release's
-// downloads, a version list and, for major releases, the highlighted features. The page's
-// Markdown follows as the full changelog. Other pages keep Starlight's plain <h1>, with
-// download buttons when they set `release`.
+// instead of the plain <h1>:
+//   home     the home page poster
+//   release  a major release: poster (downloads and versions on its right), the overview of
+//            changes, then the highlighted features (`presenting`, `stops`, `note`)
+//   build    an older build: poster, then the overview of changes on the showcase tint
+// The page's Markdown follows as the full changelog (src/components/MarkdownContent.astro).
+// Other pages keep Starlight's plain <h1>, with download buttons when they set `release`.
 import DownloadButtons from './DownloadButtons.astro';
 import HomePoster from './showcase/HomePoster.astro';
-import JumpLinks from './showcase/JumpLinks.astro';
 import NoteCard from './showcase/NoteCard.astro';
+import Overview from './showcase/Overview.astro';
 import Presenting from './showcase/Presenting.astro';
-import ReleasePicker from './showcase/ReleasePicker.astro';
 import ReleasePoster from './showcase/ReleasePoster.astro';
 import Stops from './showcase/Stops.astro';
 import { findRelease, latestRelease } from '../data/metrics';
@@ -17,8 +19,8 @@ import { findRelease, latestRelease } from '../data/metrics';
 // Starlight's page-title id: the "Overview" link and the skip link target it.
 const PAGE_TITLE_ID = '_top';
 
-const { entry, headings } = Astro.locals.starlightRoute;
-const { title, titleVideo, release, showcase } = entry.data;
+const { entry } = Astro.locals.starlightRoute;
+const { title, titleVideo, heroMedia, release, showcase } = entry.data;
 
 const published = release ? findRelease(release)?.published : undefined;
 const date = published
@@ -31,25 +33,18 @@ const date = published
 	: undefined;
 const isLatest = release !== undefined && release === latestRelease?.tag;
 const stamp = showcase?.stamp ?? (isLatest ? 'Latest release' : undefined);
+const media = heroMedia ?? (titleVideo ? { video: titleVideo.src, poster: titleVideo.poster } : { placeholder: `${title} art` });
+const hasHighlights = showcase?.kind === 'release' && showcase.presenting !== undefined;
 ---
 
 {
 	showcase?.kind === 'home' ? (
-		<HomePoster intro={showcase.intro} stamp={showcase.stamp} />
+		<HomePoster intro={showcase.intro} stamp={showcase.stamp} media={media} />
 	) : showcase ? (
 		<>
-			<ReleasePoster
-				title={title}
-				kicker={showcase.kicker ?? date}
-				stamp={stamp}
-				video={showcase.kind === 'release' ? titleVideo : undefined}
-				compact={showcase.kind === 'build'}
-			/>
-			<div class="under-poster">
-				{release && <DownloadButtons tag={release} />}
-				<ReleasePicker />
-			</div>
-			{showcase.kind === 'release' && showcase.presenting && (
+			<ReleasePoster title={title} kicker={showcase.kicker ?? date} stamp={stamp} release={release} media={media} />
+			<Overview body={entry.body} tinted={!hasHighlights} />
+			{hasHighlights && showcase.presenting && (
 				<section class="highlights gr-bleed gr-tinted" aria-labelledby="highlights">
 					<Presenting id="highlights" {...showcase.presenting} />
 					{showcase.stops && <Stops stops={showcase.stops} />}
@@ -62,7 +57,6 @@ const stamp = showcase?.stamp ?? (isLatest ? 'Latest release' : undefined);
 					)}
 				</section>
 			)}
-			{showcase.kind === 'release' && <JumpLinks headings={headings} />}
 		</>
 	) : (
 		<>
@@ -80,16 +74,10 @@ const stamp = showcase?.stamp ?? (isLatest ? 'Latest release' : undefined);
 		color: var(--gr-text-strong);
 	}
 
-	.under-poster {
-		display: grid;
-		gap: 1.5rem;
-		padding-top: 1.5rem;
-	}
-
 	.highlights {
 		display: grid;
 		gap: 3rem;
-		margin-top: 4.5rem;
+		margin-top: 3rem;
 		padding-block: 3.5rem 4.5rem;
 	}
 

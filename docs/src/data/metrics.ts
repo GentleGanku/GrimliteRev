@@ -48,3 +48,39 @@ export const findRelease = (tag: string) => releases.find((r) => r.tag === tag);
 export const latestRelease: Release | undefined = [...releases].sort((a, b) =>
 	b.published.localeCompare(a.published),
 )[0];
+
+// Every release, newest first, and the day GitHub's counts were read (undefined without them).
+export const allReleases: Release[] = [...releases].sort((a, b) => b.published.localeCompare(a.published));
+export const downloadsUpdated: string | undefined = downloads?.updated;
+
+// A release's downloads over all its files, or undefined when GitHub's counts weren't read.
+export const releaseDownloads = (release: Release) =>
+	release.files.every((f) => f.downloads === undefined)
+		? undefined
+		: release.files.reduce((sum, f) => sum + (f.downloads ?? 0), 0);
+
+// Downloads made through the site's buttons, per country code, summed over every file (the
+// counter Worker's data; empty until someone downloads through the site).
+export const countryTotals: Record<string, number> = {};
+for (const perFile of Object.values((downloads?.countries ?? {}) as Record<string, Record<string, number>>)) {
+	for (const [country, n] of Object.entries(perFile ?? {})) countryTotals[country] = (countryTotals[country] ?? 0) + n;
+}
+
+// The site's page views per path (the counter Worker's data), and the recorded download history
+// behind the README chart (scripts/downloads-chart.mjs). Null when they weren't written.
+export interface Views {
+	updated: string;
+	total: number;
+	pages: Record<string, number>;
+}
+
+export interface History {
+	baseline: {
+		recordedFrom: string;
+		releases: { tag: string; label: string; published: string; downloads: number }[];
+	};
+	points: { month: string; date: string; total: number }[];
+}
+
+export const views: Views | null = readMetrics('views.json');
+export const history: History | null = readMetrics('history.json');

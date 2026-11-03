@@ -6,6 +6,12 @@ release: v1.3-Skywalker
 showcase:
   kind: build
   kicker: 30 January to 1 February 2022
+template: splash
+# Showcase pages have their own version list, so no Previous/Next links.
+prev: false
+next: false
+heroMedia:
+  placeholder: this build's login background
 ---
 
 ## 1 February 2022:

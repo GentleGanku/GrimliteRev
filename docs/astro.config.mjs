@@ -17,6 +17,7 @@ export default defineConfig({
 				Header: './src/components/Header.astro',
 				SiteTitle: './src/components/SiteTitle.astro',
 				PageTitle: './src/components/PageTitle.astro',
+				MarkdownContent: './src/components/MarkdownContent.astro',
 			},
 			favicon: '/favicon.png',
 			customCss: ['./src/styles/theme.css', './src/styles/fixes.css'],
@@ -29,6 +30,7 @@ export default defineConfig({
 			],
 			sidebar: [
 				'roadmap',
+				'metrics',
 				{
 					label: 'Changelogs',
 					items: [

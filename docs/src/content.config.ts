@@ -22,8 +22,21 @@ export const collections = {
 		schema: docsSchema({
 			extend: z.object({
 				// Looping video shown behind the page title (see src/components/PageTitle.astro).
-				// Paths are relative to public/, without the site base.
+				// Paths are relative to public/, without the site base. Kept as the short form of
+				// `heroMedia.video` + `heroMedia.poster`.
 				titleVideo: z.object({ src: z.string(), poster: z.string() }).optional(),
+				// Art behind a showcase or home hero (src/components/showcase/HeroMedia.astro): a
+				// video (with a still `poster`), or an image. Paths are relative to public/, without
+				// the site base. Without a file, `placeholder` says what the art should show and is
+				// written on a placeholder backdrop.
+				heroMedia: z
+					.object({
+						video: z.string().optional(),
+						image: z.string().optional(),
+						poster: z.string().optional(),
+						placeholder: z.string().optional(),
+					})
+					.optional(),
 				// Release tag whose files get download buttons under the title, from
 				// src/data/releases.json (see src/components/DownloadButtons.astro).
 				release: z.string().optional(),

@@ -1,0 +1,139 @@
+---
+// The overview under a showcase poster: how many changes the changelog lists in each group
+// (sorted by src/data/changes.ts), with the first few lines of each and a link to the rest.
+// `tinted` puts it on the showcase tint, for pages where it's the only showcase section.
+import { GROUPS, sortChanges } from '../../data/changes';
+
+interface Props {
+	body?: string;
+	tinted?: boolean;
+}
+
+const SHOWN = 3;
+const { body, tinted = false } = Astro.props;
+const groups = sortChanges(body);
+const filled = GROUPS.filter((g) => groups[g.id].length > 0);
+const total = filled.reduce((sum, g) => sum + groups[g.id].length, 0);
+---
+
+{
+	total > 0 && (
+		<section class:list={['overview', 'gr-bleed', { 'gr-tinted': tinted }]} aria-labelledby="overview">
+			<div class="head">
+				<h2 id="overview">What changed</h2>
+				<p>
+					{total} {total === 1 ? 'change' : 'changes'} in the changelog below, sorted by the first word of each line.
+				</p>
+			</div>
+			<div class="groups">
+				{filled.map((g) => {
+					const lines = groups[g.id];
+					return (
+						<div class="group">
+							<p class="count">
+								<span class="n">{lines.length}</span> {g.label}
+							</p>
+							<ul>
+								{lines.slice(0, SHOWN).map((line) => (
+									<li>{line}</li>
+								))}
+							</ul>
+							{lines.length > SHOWN && (
+								<a class="more" href="#full-changelog">
+									And {lines.length - SHOWN} more in the full changelog
+								</a>
+							)}
+						</div>
+					);
+				})}
+			</div>
+		</section>
+	)
+}
+
+<style>
+	.overview {
+		display: grid;
+		gap: 2rem;
+		margin-top: 1rem;
+		padding-block: 2.5rem 3.5rem;
+	}
+
+	.overview.gr-tinted {
+		margin-top: 2.5rem;
+	}
+
+	.head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.5rem 1.5rem;
+	}
+
+	h2 {
+		margin: 0;
+		font-size: clamp(2rem, 5vw, 3rem);
+		line-height: 1;
+		color: var(--gr-text-strong);
+	}
+
+	.head p {
+		margin: 0;
+		color: var(--gr-muted);
+	}
+
+	.groups {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));
+		gap: 2rem 2.5rem;
+	}
+
+	.group {
+		display: grid;
+		align-content: start;
+		gap: 0.75rem;
+		padding-top: 1rem;
+		border-top: 3px solid var(--gr-text-strong);
+	}
+
+	.count {
+		display: flex;
+		align-items: baseline;
+		gap: 0.5rem;
+		margin: 0;
+		font-family: var(--gr-font-display);
+		font-stretch: var(--gr-display-stretch);
+		font-weight: 850;
+		font-size: var(--sl-text-2xl);
+		line-height: 1;
+		color: var(--gr-text-strong);
+	}
+
+	.n {
+		font-size: clamp(3rem, 6vw, 4.5rem);
+		line-height: 0.85;
+	}
+
+	ul {
+		display: grid;
+		gap: 0.5rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		font-size: var(--sl-text-sm);
+		line-height: 1.5;
+	}
+
+	.more {
+		justify-self: start;
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		color: var(--gr-text-strong);
+		font-size: var(--sl-text-sm);
+		font-weight: 700;
+		text-decoration: underline;
+		text-decoration-color: var(--gr-accent);
+		text-underline-offset: 0.25em;
+	}
+</style>

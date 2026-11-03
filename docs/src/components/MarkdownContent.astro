@@ -1,0 +1,144 @@
+---
+// Replaces Starlight's MarkdownContent. On showcase changelog pages (`showcase.kind` release or
+// build) the Markdown is the full changelog: it runs at the full section width on the left,
+// with a sticky "On this page" list of its headings on the right that marks the section being
+// read. On narrower screens that list is hidden and the jump bar above the changelog, which
+// stays under the header while you scroll, is the navigation. Other pages render as Starlight's.
+import '@astrojs/starlight/style/markdown.css';
+import JumpLinks from './showcase/JumpLinks.astro';
+
+const { entry, headings } = Astro.locals.starlightRoute;
+const kind = entry.data.showcase?.kind;
+const isChangelog = kind === 'release' || kind === 'build';
+const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const label = (text: string) => {
+	const clean = text.replace(/:$/, '');
+	return clean === clean.toUpperCase() ? clean.charAt(0) + clean.slice(1).toLowerCase() : clean;
+};
+---
+
+{
+	isChangelog ? (
+		<div class="changelog">
+			<div class="main">
+				<JumpLinks headings={headings} />
+				<div class="sl-markdown-content">
+					<slot />
+				</div>
+			</div>
+			{toc.length > 1 && (
+				<aside class="toc" aria-labelledby="toc-title">
+					<h2 id="toc-title">On this page</h2>
+					<ul>
+						{toc.map((h) => (
+							<li class={`depth-${h.depth}`}>
+								<a href={`#${h.slug}`} data-toc-link={h.slug}>
+									{label(h.text)}
+								</a>
+							</li>
+						))}
+					</ul>
+				</aside>
+			)}
+		</div>
+	) : (
+		<div class="sl-markdown-content">
+			<slot />
+		</div>
+	)
+}
+
+<script>
+	// Marks the heading most recently scrolled past (or the first one) in "On this page" and in
+	// the jump bar, in page order.
+	const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')];
+	const ids = [...new Set(links.map((a) => a.dataset.tocLink!))];
+	const targets = ids
+		.map((id) => document.getElementById(id))
+		.filter((el): el is HTMLElement => !!el)
+		.sort((a, b) => (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1));
+	if (targets.length > 0) {
+		const mark = () => {
+			const offset = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+			let current = targets[0];
+			for (const el of targets) if (el.getBoundingClientRect().top - offset <= 8) current = el;
+			// At the bottom of the page the last sections can't reach the top, so the last one wins.
+			if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) current = targets.at(-1)!;
+			for (const a of links) {
+				if (a.dataset.tocLink === current.id) a.setAttribute('aria-current', 'true');
+				else a.removeAttribute('aria-current');
+			}
+		};
+		addEventListener('scroll', mark, { passive: true });
+		mark();
+	}
+</script>
+
+<style>
+	.changelog {
+		display: grid;
+		gap: 2rem 3.5rem;
+	}
+
+	.main {
+		min-width: 0;
+	}
+
+	.toc {
+		display: none;
+	}
+
+	@media (min-width: 72rem) {
+		.changelog {
+			grid-template-columns: minmax(0, 1fr) 15rem;
+			align-items: start;
+		}
+
+		.toc {
+			position: sticky;
+			top: calc(var(--sl-nav-height) + 2rem);
+			display: block;
+			max-height: calc(100vh - var(--sl-nav-height) - 4rem);
+			overflow-y: auto;
+			margin-top: 3.5rem;
+			padding-left: 1.25rem;
+			border-left: 1px solid var(--gr-line);
+		}
+	}
+
+	.toc h2 {
+		margin: 0 0 0.75rem;
+		font-size: var(--sl-text-xl);
+		color: var(--gr-text-strong);
+	}
+
+	.toc ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.toc a {
+		display: block;
+		padding: 0.35rem 0;
+		color: var(--gr-muted);
+		font-size: var(--sl-text-sm);
+		text-decoration: none;
+	}
+
+	.toc .depth-3 a {
+		padding-left: 0.85rem;
+	}
+
+	.toc a:hover {
+		color: var(--gr-text-strong);
+	}
+
+	/* The section being read. */
+	.toc a[aria-current='true'] {
+		color: var(--gr-text-strong);
+		font-weight: 700;
+		text-decoration: underline 2px var(--gr-accent);
+		text-underline-offset: 0.3em;
+	}
+</style>

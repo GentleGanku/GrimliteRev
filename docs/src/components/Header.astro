@@ -2,10 +2,11 @@
 // Replaces Starlight's Header. Destinations are written out as text links instead of an icon
 // row, so a first-time visitor can read where each one goes. On phones the links move to a
 // second row under the logo and search, because Starlight's mobile menu only exists on pages
-// with a sidebar, and Home and the Roadmap have none.
+// with a sidebar, and Home and the showcase pages have none. The colour theme is an icon
+// button beside the title (ThemeToggle.astro).
 import Search from 'virtual:starlight/components/Search';
 import SiteTitle from 'virtual:starlight/components/SiteTitle';
-import ThemeSelect from 'virtual:starlight/components/ThemeSelect';
+import ThemeToggle from './ThemeToggle.astro';
 import { changelogLinks } from '../data/changelogs';
 
 const { sidebar } = Astro.locals.starlightRoute;
@@ -17,7 +18,8 @@ const latestChangelog = changelogLinks(sidebar as never)[0]?.href ?? `${base}/ch
 const links = [
 	{ label: 'Changelogs', href: latestChangelog, current: path.startsWith(`${base}/changelog/`) },
 	{ label: 'Roadmap', href: `${base}/roadmap/`, current: path.startsWith(`${base}/roadmap/`) },
-	{ label: 'Releases', href: 'https://github.com/GentleGanku/GrimliteRev/releases', current: false },
+	{ label: 'Metrics', href: `${base}/metrics/`, current: path.startsWith(`${base}/metrics/`) },
+	{ label: 'GitHub', href: 'https://github.com/GentleGanku/GrimliteRev', current: false },
 	{ label: 'Discord', href: 'https://discord.gg/NZ6vmDTu44', current: false },
 ];
 ---
@@ -25,6 +27,7 @@ const links = [
 <div class="header">
 	<div class="title-wrapper">
 		<SiteTitle />
+		<ThemeToggle />
 	</div>
 	<div class="search print:hidden">
 		<Search />
@@ -48,9 +51,6 @@ const links = [
 					Support on Ko-fi
 				</a>
 			</li>
-			<li class="theme">
-				<ThemeSelect />
-			</li>
 		</ul>
 	</nav>
 </div>
@@ -67,6 +67,9 @@ const links = [
 
 	.title-wrapper {
 		grid-area: title;
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
 		overflow: clip;
 		min-width: 0;
 		padding: 0.25rem;
@@ -129,10 +132,6 @@ const links = [
 		width: 1rem;
 		height: 1rem;
 		fill: currentColor;
-	}
-
-	.theme {
-		margin-inline-start: 0.5rem;
 	}
 
 	/* Phones: logo and search on the first row, the links on a second row that scrolls sideways

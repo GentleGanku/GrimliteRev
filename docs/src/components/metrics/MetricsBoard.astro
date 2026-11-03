@@ -1,0 +1,187 @@
+---
+// The Metrics page: downloads over time, downloads per release, where the site's downloads come
+// from, and site views. Every number is GitHub's release count or the counter Worker's record
+// (src/data/metrics.ts); each block says which, and when it was read. A block without data says
+// so instead of showing zeros.
+import { getCollection } from 'astro:content';
+import DownloadsChart from './DownloadsChart.astro';
+import RankedBars from './RankedBars.astro';
+import { allReleases, countryTotals, downloadsUpdated, releaseDownloads, views } from '../../data/metrics';
+import { countryName, longDate, number } from '../../data/figures';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const pages = await getCollection('docs');
+const pageFor = (tag: string) => pages.find((p) => p.data.release === tag);
+const titleFor = (path: string) => {
+	const id = path.replace(base, '').replace(/^\/|\/$/g, '');
+	const page = pages.find((p) => p.id === (id || 'index'));
+	return page ? (id ? (page.data.sidebar?.label ?? page.data.title) : 'Home') : path;
+};
+
+const perRelease = allReleases
+	.map((r) => ({ release: r, value: releaseDownloads(r) }))
+	.filter((r): r is { release: (typeof allReleases)[number]; value: number } => r.value !== undefined)
+	.sort((a, b) => b.value - a.value)
+	.map(({ release, value }) => {
+		const page = pageFor(release.tag);
+		return {
+			label: release.label,
+			value,
+			href: page ? `${base}/${page.id}/` : undefined,
+			note: longDate(release.published),
+		};
+	});
+const total = perRelease.reduce((sum, r) => sum + r.value, 0);
+
+const countries = Object.entries(countryTotals)
+	.sort((a, b) => b[1] - a[1])
+	.slice(0, 10)
+	.map(([code, value]) => ({ label: countryName(code), value }));
+const countryTotal = Object.values(countryTotals).reduce((sum, n) => sum + n, 0);
+
+const viewRows = Object.entries(views?.pages ?? {})
+	.sort((a, b) => b[1] - a[1])
+	.slice(0, 6)
+	.map(([path, value]) => ({ label: titleFor(path), value, href: path.startsWith(base) ? path : undefined }));
+---
+
+<div class="board not-content">
+	<section class="block lead" aria-labelledby="m-total">
+		<div class="figure">
+			<h2 id="m-total">Downloads</h2>
+			{
+				total > 0 ? (
+					<p class="big">{number(total)}</p>
+				) : (
+					<p class="empty">GitHub's counts couldn't be read for this build.</p>
+				)
+			}
+			<p class="source">
+				Every release file on GitHub, all time.{downloadsUpdated && ` Read ${longDate(downloadsUpdated)}.`}
+			</p>
+		</div>
+		<DownloadsChart />
+	</section>
+
+	<section class="block" aria-labelledby="m-releases">
+		<h2 id="m-releases">Per release</h2>
+		{
+			perRelease.length > 0 ? (
+				<RankedBars rows={perRelease} unit="downloads" />
+			) : (
+				<p class="empty">GitHub's counts couldn't be read for this build.</p>
+			)
+		}
+		<p class="source">GitHub's download count for each release, all its files together.</p>
+	</section>
+
+	<div class="pair">
+		<section class="block" aria-labelledby="m-countries">
+			<h2 id="m-countries">Where downloads come from</h2>
+			{
+				countries.length > 0 ? (
+					<RankedBars rows={countries} unit="downloads" />
+				) : (
+					<p class="empty">No countries recorded yet. They're counted from downloads made through this site's buttons.</p>
+				)
+			}
+			<p class="source">
+				{countryTotal > 0 ? `${number(countryTotal)} downloads made through this site's buttons. ` : ''}
+				Recorded by the site's own counter, not by GitHub.
+			</p>
+		</section>
+
+		<section class="block" aria-labelledby="m-views">
+			<h2 id="m-views">Site views</h2>
+			{
+				views && views.total > 0 ? (
+					<>
+						<p class="big small">{number(views.total)}</p>
+						<RankedBars rows={viewRows} unit="views" />
+					</>
+				) : (
+					<p class="empty">No page views recorded yet.</p>
+				)
+			}
+			<p class="source">
+				Page views on this site, counted by the site's own counter.{views && ` Read ${longDate(views.updated)}.`}
+			</p>
+		</section>
+	</div>
+</div>
+
+<style>
+	.board {
+		display: grid;
+		gap: 4rem;
+		margin-top: 1rem;
+	}
+
+	.block {
+		display: grid;
+		gap: 1.25rem;
+		align-content: start;
+	}
+
+	h2 {
+		margin: 0;
+		font-size: clamp(2rem, 5vw, 3rem);
+		line-height: 1;
+		color: var(--gr-text-strong);
+	}
+
+	/* The all-time total is the page's focal point: the biggest number on it. */
+	.big {
+		margin: 0;
+		font-family: var(--gr-font-display);
+		font-stretch: var(--gr-display-stretch);
+		font-weight: 850;
+		font-size: clamp(4rem, 9vw, 7rem);
+		line-height: 0.85;
+		letter-spacing: -0.02em;
+		color: var(--gr-text-strong);
+	}
+
+	.big.small {
+		font-size: clamp(3rem, 7vw, 4.5rem);
+	}
+
+	.source,
+	.empty {
+		margin: 0;
+		font-size: var(--sl-text-sm);
+		color: var(--gr-muted);
+	}
+
+	.empty {
+		font-size: var(--sl-text-base);
+	}
+
+	.lead {
+		padding-bottom: 3rem;
+		border-bottom: 3px solid var(--gr-text-strong);
+	}
+
+	.figure {
+		display: grid;
+		gap: 0.75rem;
+	}
+
+	.pair {
+		display: grid;
+		gap: 4rem;
+	}
+
+	@media (min-width: 60rem) {
+		.lead {
+			grid-template-columns: minmax(18rem, 0.8fr) minmax(0, 1.6fr);
+			align-items: end;
+			column-gap: 3rem;
+		}
+
+		.pair {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			column-gap: 4rem;
+		}
+	}
+</style>

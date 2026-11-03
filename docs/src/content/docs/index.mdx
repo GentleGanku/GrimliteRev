@@ -4,6 +4,8 @@ description: A bot client for AdventureQuest Worlds, revised from Grimlite. Down
 template: splash
 # The poster (src/components/showcase/HomePoster.astro) takes its download buttons and stamp
 # from the newest release in the release data, so this page needs no edit per release.
+heroMedia:
+  placeholder: home hero art
 showcase:
   kind: home
   intro: A bot client for AdventureQuest Worlds. It runs the game in its own window, and its Bot Manager plays it for you from the bots you build.
@@ -13,8 +15,10 @@ import Spotlight from '../../components/home/Spotlight.astro';
 import NewHere from '../../components/home/NewHere.astro';
 import WhatsNext from '../../components/home/WhatsNext.astro';
 import Community from '../../components/home/Community.astro';
+import MetricsOverview from '../../components/home/MetricsOverview.astro';
 
 <Spotlight />
-<NewHere />
 <WhatsNext />
+<NewHere />
+<MetricsOverview />
 <Community />

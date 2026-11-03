@@ -1,0 +1,111 @@
+---
+// Home: three figures from the Metrics page (all-time downloads, the most downloaded release,
+// and page views) and a link to the page. Only real counts; a figure without data is left out,
+// and with none at all the section says the numbers are on their way.
+import { allReleases, releaseDownloads, views } from '../../data/metrics';
+import { number } from '../../data/figures';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const counted = allReleases
+	.map((r) => ({ label: r.label, value: releaseDownloads(r) }))
+	.filter((r): r is { label: string; value: number } => r.value !== undefined);
+const total = counted.reduce((sum, r) => sum + r.value, 0);
+const top = [...counted].sort((a, b) => b.value - a.value)[0];
+
+const figures = [
+	total > 0 && { value: number(total), label: 'downloads, all releases' },
+	top && { value: top.label, label: `most downloaded, ${number(top.value)} times` },
+	views && views.total > 0 && { value: number(views.total), label: 'page views on this site' },
+].filter(Boolean) as { value: string; label: string }[];
+---
+
+<section class="metrics not-content" aria-labelledby="metrics-overview">
+	<h2 id="metrics-overview">By the numbers</h2>
+	{
+		figures.length > 0 ? (
+			<dl>
+				{figures.map((f) => (
+					<div>
+						<dt>{f.label}</dt>
+						<dd>{f.value}</dd>
+					</div>
+				))}
+			</dl>
+		) : (
+			<p class="empty">The counts couldn't be read for this build. They come back with the next one.</p>
+		)
+	}
+	<a class="more" href={`${base}/metrics/`}>Open the Metrics page</a>
+</section>
+
+<style>
+	.metrics {
+		display: grid;
+		gap: 1.75rem;
+		margin-top: 5rem;
+		padding-top: 2rem;
+		border-top: 3px solid var(--gr-text-strong);
+	}
+
+	h2 {
+		margin: 0;
+		font-size: clamp(2.25rem, 6vw, 3.75rem);
+		line-height: 1;
+		color: var(--gr-text-strong);
+	}
+
+	dl {
+		display: grid;
+		gap: 1.5rem 3rem;
+		margin: 0;
+	}
+
+	dl > div {
+		display: flex;
+		flex-direction: column-reverse;
+		gap: 0.35rem;
+	}
+
+	dd {
+		margin: 0;
+		font-family: var(--gr-font-display);
+		font-stretch: var(--gr-display-stretch);
+		font-weight: 850;
+		font-size: clamp(3rem, 7vw, 5rem);
+		line-height: 0.9;
+		color: var(--gr-text-strong);
+	}
+
+	dt {
+		color: var(--gr-muted);
+		font-weight: 600;
+	}
+
+	.empty {
+		margin: 0;
+		color: var(--gr-muted);
+	}
+
+	.more {
+		justify-self: start;
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		padding: 0 1.25rem;
+		border: 2px solid var(--gr-text-strong);
+		color: var(--gr-text-strong);
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	.more:hover {
+		background: var(--gr-text-strong);
+		color: var(--gr-base);
+	}
+
+	@media (min-width: 50rem) {
+		dl {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+	}
+</style>

@@ -1,6 +1,7 @@
 ---
-// Every changelog, newest first, so a visitor can switch versions without the sidebar
-// (release showcases are full-width pages). The order comes from the sidebar config.
+// Every changelog, newest first, behind one button under the poster's downloads. The list opens
+// as a native popover, so Escape and a click outside close it without extra script. The order
+// comes from the sidebar config.
 import { changelogLinks } from '../../data/changelogs';
 
 const links = changelogLinks(Astro.locals.starlightRoute.sidebar as never);
@@ -8,68 +9,154 @@ const links = changelogLinks(Astro.locals.starlightRoute.sidebar as never);
 
 {
 	links.length > 1 && (
-		<nav class="picker" aria-label="Versions">
-			<p class="label" id="versions-label">
-				All versions
-			</p>
-			<ul aria-labelledby="versions-label">
-				{links.map(({ label, href, isCurrent }) => (
-					<li>
-						<a href={href} aria-current={isCurrent ? 'page' : undefined}>
-							{label}
-						</a>
-					</li>
-				))}
-			</ul>
-		</nav>
+		<div class="picker">
+			<button type="button" class="open" popovertarget="all-versions" aria-haspopup="true">
+				<span>All versions</span>
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path d="m6 9 6 6 6-6" />
+				</svg>
+			</button>
+			<div id="all-versions" class="list gr-dark" popover aria-labelledby="all-versions-title">
+				<div class="head">
+					<p id="all-versions-title">All versions</p>
+					<button type="button" class="close" popovertarget="all-versions" popovertargetaction="hide" aria-label="Close the version list">
+						<svg viewBox="0 0 24 24" aria-hidden="true">
+							<path d="M6 6l12 12M18 6 6 18" />
+						</svg>
+					</button>
+				</div>
+				<ul>
+					{links.map(({ label, href, isCurrent }) => (
+						<li>
+							<a href={href} aria-current={isCurrent ? 'page' : undefined}>
+								{label}
+								{isCurrent && <span class="here">You're here</span>}
+							</a>
+						</li>
+					))}
+				</ul>
+			</div>
+		</div>
 	)
 }
 
 <style>
-	.picker {
+	.open {
 		display: flex;
-		flex-wrap: wrap;
 		align-items: center;
-		gap: 0.5rem 1rem;
-	}
-
-	.label {
-		margin: 0;
+		justify-content: space-between;
+		gap: 0.5rem;
+		width: 100%;
+		min-height: 44px;
+		padding: 0 0.9rem;
+		border: 1px dashed var(--gr-line);
+		border-radius: 0.375rem;
+		background: transparent;
+		color: var(--gr-text-strong);
+		font: inherit;
 		font-size: var(--sl-text-sm);
 		font-weight: 600;
-		color: var(--gr-muted);
+		text-align: start;
+		cursor: pointer;
+	}
+
+	.open:hover {
+		border-style: solid;
+		border-color: var(--gr-text);
+	}
+
+	svg {
+		flex: none;
+		width: 1.1rem;
+		height: 1.1rem;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 2;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+
+	/* The popup sits in the browser's top layer, centred, over a dimmed page. */
+	.list {
+		width: min(22rem, calc(100vw - 2rem));
+		max-height: min(32rem, calc(100vh - 4rem));
+		margin: auto;
+		padding: 0;
+		overflow: auto;
+		border: 1px solid var(--gr-line);
+		border-radius: 0.375rem;
+		background: var(--gr-base);
+		color: var(--gr-text);
+	}
+
+	.list::backdrop {
+		background: rgb(15 18 23 / 0.6);
+	}
+
+	.head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0.5rem 0.5rem 0.5rem 1.25rem;
+		border-bottom: 1px solid var(--gr-line);
+	}
+
+	.head p {
+		margin: 0;
+		font-family: var(--gr-font-display);
+		font-stretch: var(--gr-display-stretch);
+		font-weight: 850;
+		font-size: var(--sl-text-2xl);
+		color: var(--gr-text-strong);
+	}
+
+	.close {
+		display: grid;
+		place-items: center;
+		width: 44px;
+		height: 44px;
+		padding: 0;
+		border: 0;
+		border-radius: 0.375rem;
+		background: transparent;
+		color: var(--gr-text);
+		cursor: pointer;
+	}
+
+	.close:hover {
+		color: var(--gr-text-strong);
+		background: var(--gr-surface);
 	}
 
 	ul {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.5rem;
 		margin: 0;
-		padding: 0;
+		padding: 0.5rem 0;
 		list-style: none;
 	}
 
 	a {
-		display: inline-flex;
+		display: flex;
 		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
 		min-height: 44px;
-		padding: 0 0.9rem;
-		border: 1px solid var(--gr-line);
-		border-radius: 0.375rem;
-		color: var(--gr-text);
-		font-size: var(--sl-text-sm);
+		padding: 0 1.25rem;
+		color: var(--gr-text-strong);
 		font-weight: 600;
 		text-decoration: none;
 	}
 
 	a:hover {
-		border-color: var(--gr-text);
-		color: var(--gr-text-strong);
+		background: var(--gr-surface);
 	}
 
 	a[aria-current='page'] {
-		border-color: var(--gr-accent);
-		color: var(--gr-text-strong);
-		box-shadow: inset 0 -3px 0 var(--gr-accent);
+		box-shadow: inset 3px 0 0 var(--gr-accent);
+	}
+
+	.here {
+		font-size: var(--sl-text-xs);
+		font-weight: 600;
+		color: var(--gr-muted);
 	}
 </style>

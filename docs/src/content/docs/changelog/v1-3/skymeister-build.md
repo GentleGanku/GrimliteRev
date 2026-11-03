@@ -6,6 +6,12 @@ release: v1.3-Skymeister
 showcase:
   kind: build
   kicker: 6 April to 8 May 2022
+template: splash
+# Showcase pages have their own version list, so no Previous/Next links.
+prev: false
+next: false
+heroMedia:
+  placeholder: this build's login background
 ---
 
 ## 8 May 2022:

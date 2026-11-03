@@ -17,6 +17,8 @@
 	--gr-on-accent: #1c2028;
 	--gr-paper-ink: #1c2028;
 	--gr-paper-accent: #b0102f;
+	/* Scrollbar thumb, 3.38:1 on Base (3:1 is the bar for a control). */
+	--gr-scroll-thumb: #6b7282;
 
 	/* One family covers both roles (pairing A in DESIGN.md): the width axis gives the poster
 	   titles their narrow, heavy cut, so the pages load a single font file. */
@@ -58,6 +60,7 @@
 	--gr-line: #c5cbd5;
 	--gr-accent: #c4122f;
 	--gr-on-accent: #ffffff;
+	--gr-scroll-thumb: #7a808c;
 
 	--sl-color-white: var(--gr-text-strong);
 	--sl-color-gray-1: #1c2028;
@@ -161,11 +164,49 @@ h3,
 }
 
 /* Showcase pages: the poster runs straight into the page, so drop the rule Starlight draws
-   between the title panel and the content, and keep the changelog text at a readable width. */
+   between the title panel and the content. */
 main:has(.poster, .home-poster) .content-panel + .content-panel {
 	border-top: 0;
 }
 
-main:has(.poster) .sl-markdown-content {
-	max-width: 46rem;
+/* Thin scrollbars in the site's colours: the thumb is a muted grey that turns red while it's
+   dragged or hovered, on the page colour, so the default bright system bar doesn't break the
+   dark theme. */
+html {
+	scrollbar-color: var(--gr-scroll-thumb) var(--gr-base);
+	scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+
+::-webkit-scrollbar-track {
+	background: var(--gr-base);
+}
+
+::-webkit-scrollbar-thumb {
+	border: 2px solid var(--gr-base);
+	border-radius: 5px;
+	background: var(--gr-scroll-thumb);
+}
+
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active {
+	background: var(--gr-accent);
+}
+
+/* Art areas (hero posters) stay dark in both themes, because the art behind them is dark and
+   their text is white. Everything inside picks up the dark palette from these tokens. */
+.gr-dark {
+	--gr-base: #1c2028;
+	--gr-surface: #2d3342;
+	--gr-text: #dcdcdc;
+	--gr-text-strong: #ffffff;
+	--gr-muted: #9aa1ae;
+	--gr-line: #3d4454;
+	--gr-accent: #f64061;
+	--gr-on-accent: #1c2028;
+	color-scheme: dark;
 }

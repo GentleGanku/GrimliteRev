@@ -7,6 +7,8 @@
 //                                            (for the download buttons), and the visitors'
 //                                            countries the counter Worker recorded per file
 //   votes.json                               Roadmap votes per item, from the counter Worker
+//   views.json                               the site's page views per path, from the counter
+//                                            Worker (for the Metrics page)
 //
 // GitHub keeps only a running download total per release file, with no dates, so the
 // chart has two parts:
@@ -303,6 +305,9 @@ if (worker) {
 	const roadmap = JSON.parse(await readFile(new URL('roadmap.json', DATA_DIR), 'utf8'));
 	const votes = { updated: today, counts: Object.fromEntries(roadmap.items.map((item) => [item.id, worker.votes?.[item.id] ?? 0])) };
 	await writeFile(new URL('votes.json', OUT_DIR), JSON.stringify(votes, null, 2) + '\n');
+	const pages = worker.pageviews ?? {};
+	const total = Object.values(pages).reduce((sum, n) => sum + n, 0);
+	await writeFile(new URL('views.json', OUT_DIR), JSON.stringify({ updated: today, total, pages }, null, 2) + '\n');
 }
 for (const theme of Object.keys(THEMES)) {
 	const svg = history?.points.length

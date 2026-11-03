@@ -1,0 +1,130 @@
+---
+// A ranked list with a bar per row, its length relative to the first row. Used for downloads per
+// release, countries and most-viewed pages. The first row's bar is the accent; the rest are
+// neutral, so the leader reads at a glance.
+import { number } from '../../data/figures';
+
+interface Row {
+	label: string;
+	value: number;
+	href?: string;
+	note?: string;
+}
+
+interface Props {
+	rows: Row[];
+	unit: string;
+}
+
+const { rows, unit } = Astro.props;
+const max = Math.max(...rows.map((r) => r.value), 1);
+---
+
+<ol class="bars">
+	{
+		rows.map((row, i) => (
+			<li class:list={{ lead: i === 0 }}>
+				<span class="label">
+					{row.href ? <a href={row.href}>{row.label}</a> : row.label}
+					{row.note && <span class="note">{row.note}</span>}
+				</span>
+				<span class="track" aria-hidden="true">
+					<span class="bar" style={`width: ${Math.max((row.value / max) * 100, 0.5)}%`} />
+				</span>
+				<span class="value">
+					{number(row.value)} <span class="unit">{row.value === 1 ? unit.replace(/s$/, '') : unit}</span>
+				</span>
+			</li>
+		))
+	}
+</ol>
+
+<style>
+	.bars {
+		display: grid;
+		gap: 0.75rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	li {
+		display: grid;
+		grid-template-columns: minmax(6rem, 11rem) minmax(0, 1fr) auto;
+		align-items: center;
+		gap: 0.25rem 1rem;
+	}
+
+	.label {
+		display: flex;
+		flex-direction: column;
+		min-width: 0;
+		font-weight: 700;
+		color: var(--gr-text-strong);
+		overflow-wrap: anywhere;
+	}
+
+	.label a {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		color: var(--gr-text-strong);
+		text-decoration: underline;
+		text-decoration-color: var(--gr-line);
+		text-underline-offset: 0.25em;
+	}
+
+	.label a:hover {
+		text-decoration-color: var(--gr-accent);
+	}
+
+	.note {
+		font-size: var(--sl-text-xs);
+		font-weight: 600;
+		color: var(--gr-muted);
+	}
+
+	.track {
+		height: 0.9rem;
+		background: var(--gr-surface);
+	}
+
+	.bar {
+		display: block;
+		height: 100%;
+		background: var(--gr-muted);
+	}
+
+	.lead .bar {
+		background: var(--gr-accent);
+	}
+
+	.value {
+		font-family: var(--gr-font-display);
+		font-stretch: var(--gr-display-stretch);
+		font-weight: 850;
+		font-size: var(--sl-text-xl);
+		color: var(--gr-text-strong);
+		text-align: end;
+		white-space: nowrap;
+	}
+
+	.unit {
+		font-family: var(--gr-font-body);
+		font-stretch: 100%;
+		font-weight: 600;
+		font-size: var(--sl-text-xs);
+		color: var(--gr-muted);
+	}
+
+	@media (width < 40rem) {
+		li {
+			grid-template-columns: minmax(0, 1fr) auto;
+		}
+
+		.track {
+			grid-column: 1 / -1;
+			grid-row: 2;
+		}
+	}
+</style>
