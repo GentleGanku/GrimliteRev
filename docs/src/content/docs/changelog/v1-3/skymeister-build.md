@@ -3,6 +3,9 @@ title: Grimlite Rev v1.3 Skymeister Build
 sidebar:
   label: Skymeister Build
 release: v1.3-Skymeister
+showcase:
+  kind: build
+  kicker: 6 April to 8 May 2022
 ---
 
 ## 8 May 2022:

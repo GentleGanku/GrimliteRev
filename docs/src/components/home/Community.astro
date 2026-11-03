@@ -1,0 +1,90 @@
+---
+// Home: where to report bugs and get help, and how to support the project.
+import NoteCard from '../showcase/NoteCard.astro';
+---
+
+<section class="community not-content" aria-labelledby="community">
+	<div class="links">
+		<h2 id="community">Help and source</h2>
+		<ul>
+			<li>
+				<a href="https://discord.gg/NZ6vmDTu44">Discord server</a>
+				<span>Questions, help and bug reports</span>
+			</li>
+			<li>
+				<a href="https://github.com/GentleGanku/GrimliteRev">GitHub repository</a>
+				<span>Source code, issues and every release</span>
+			</li>
+			<li>
+				<a href="https://ko-fi.com/gentleganku">Ko-fi</a>
+				<span>Tip the developer to support the project</span>
+			</li>
+		</ul>
+	</div>
+	<NoteCard tag="Bug reports" title="Something broke?">
+		<p>
+			Report it on the <a href="https://discord.gg/NZ6vmDTu44">Discord server</a> or in the repository's{' '}
+			<a href="https://github.com/GentleGanku/GrimliteRev/issues">Issues</a>.
+		</p>
+	</NoteCard>
+</section>
+
+<style>
+	.community {
+		display: grid;
+		gap: 3rem;
+		margin-top: 5rem;
+		margin-bottom: 2rem;
+		align-items: center;
+	}
+
+	h2 {
+		margin: 0 0 1rem;
+		font-size: clamp(2.25rem, 6vw, 3.75rem);
+		line-height: 1;
+		color: var(--gr-text-strong);
+	}
+
+	ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	li {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0 1rem;
+		padding-block: 0.75rem;
+		border-bottom: 1px solid var(--gr-line);
+	}
+
+	li a {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		color: var(--gr-text-strong);
+		font-family: var(--gr-font-display);
+		font-stretch: var(--gr-display-stretch);
+		font-weight: 850;
+		font-size: var(--sl-text-2xl);
+		text-decoration: none;
+	}
+
+	li a:hover {
+		text-decoration: underline 2px var(--gr-accent);
+		text-underline-offset: 0.2em;
+	}
+
+	li span {
+		color: var(--gr-muted);
+	}
+
+	@media (min-width: 60rem) {
+		.community {
+			grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+			column-gap: 4rem;
+		}
+	}
+</style>

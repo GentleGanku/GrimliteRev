@@ -2,6 +2,9 @@
 title: Grimlite Rev v1.3 Skyguard Build
 sidebar:
   label: Skyguard Build
+showcase:
+  kind: build
+  kicker: 13 January 2022
 ---
 
 _13 January 2022_

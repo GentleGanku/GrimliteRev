@@ -42,3 +42,9 @@ export const downloadUrl = (tag: string, file: ReleaseFile) =>
 	`${WORKER}/download/${encodeURIComponent(tag)}/${encodeURIComponent(file.name)}`;
 
 export const findRelease = (tag: string) => releases.find((r) => r.tag === tag);
+
+// The newest release by publish date (downloads.json lists releases oldest first,
+// releases.json newest first).
+export const latestRelease: Release | undefined = [...releases].sort((a, b) =>
+	b.published.localeCompare(a.published),
+)[0];

@@ -1,0 +1,63 @@
+---
+// A paper note pinned onto a showcase: one side note that matters to returning users, such as
+// a removed feature. It is the only light surface in the dark theme, so use one per page.
+interface Props {
+	tag: string;
+	title: string;
+}
+
+const { tag, title } = Astro.props;
+---
+
+<aside class="note">
+	<p class="tag">{tag}</p>
+	<p class="title">{title}</p>
+	<div class="body"><slot /></div>
+</aside>
+
+<style>
+	.note {
+		max-width: 26rem;
+		padding: 1.25rem 1.5rem 1.5rem;
+		background: var(--gr-paper);
+		color: var(--gr-paper-ink);
+		transform: rotate(1.5deg);
+		/* The note sits on top of the page, so it is the one element with a drop shadow. */
+		box-shadow: 0 0.5rem 1.25rem rgb(0 0 0 / 0.28);
+	}
+
+	.tag {
+		display: inline-block;
+		margin: 0;
+		padding: 0.1rem 0.5rem;
+		border: 2px solid var(--gr-paper-accent);
+		color: var(--gr-paper-accent);
+		font-weight: 800;
+		font-size: var(--sl-text-sm);
+		transform: rotate(-2deg);
+	}
+
+	.title {
+		margin: 0.75rem 0 0;
+		font-family: var(--gr-font-display);
+		font-stretch: var(--gr-display-stretch);
+		font-weight: 850;
+		font-size: var(--sl-text-2xl);
+		line-height: 1.1;
+	}
+
+	.body {
+		margin-top: 0.5rem;
+		font-size: var(--sl-text-sm);
+		line-height: 1.6;
+	}
+
+	.body :global(p) {
+		margin: 0;
+	}
+
+	.body :global(a) {
+		color: var(--gr-paper-accent);
+		font-weight: 600;
+	}
+</style>

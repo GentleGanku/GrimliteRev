@@ -1,0 +1,126 @@
+---
+// The poster at the top of a changelog page: the release name set large over the release's
+// video, with a stamp label. Older builds (`compact`) get the same type, smaller, on a plain
+// band inside the page column, next to the sidebar. The title is split so the version, the
+// part people scan for, is the biggest thing on it.
+import TitleVideo from './TitleVideo.astro';
+
+interface Props {
+	title: string;
+	kicker?: string;
+	stamp?: string;
+	video?: { src: string; poster: string };
+	compact?: boolean;
+}
+
+const { title, kicker, stamp, video, compact = false } = Astro.props;
+const match = title.match(/^(.*?)\s+(v\d.*)$/);
+const name = match?.[1] ?? '';
+const version = match?.[2] ?? title;
+---
+
+<header class:list={['poster', { 'gr-bleed': !compact, compact, 'has-video': video }]}>
+	{video && <TitleVideo src={video.src} poster={video.poster} />}
+	<div class="copy">
+		{kicker && <p class="kicker">{kicker}</p>}
+		<h1 id="_top">
+			{name && <span class="name">{name}</span>}
+			<span class="version">{version}</span>
+		</h1>
+		{stamp && <p class="gr-stamp stamp">{stamp}</p>}
+	</div>
+</header>
+
+<style>
+	.poster {
+		position: relative;
+		display: flex;
+		align-items: flex-end;
+		margin-top: -1.5rem;
+		padding-block: 3rem 2.5rem;
+		background: var(--gr-surface);
+		overflow: hidden;
+	}
+
+	.poster.has-video {
+		min-height: clamp(24rem, 62vh, 38rem);
+		background: #1c2028;
+	}
+
+	/* Dark ground under the type so white text stays readable over the brightest frames of the
+	   art. Only the lower left, where the text sits, is darkened. */
+	.has-video::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		background:
+			linear-gradient(to top, rgb(28 32 40 / 0.95) 0%, rgb(28 32 40 / 0.75) 35%, rgb(28 32 40 / 0) 70%),
+			linear-gradient(to right, rgb(28 32 40 / 0.6), rgb(28 32 40 / 0) 60%);
+		pointer-events: none;
+	}
+
+	.copy {
+		position: relative;
+		z-index: 2;
+		max-width: 100%;
+	}
+
+	.has-video .copy {
+		color: #fff;
+	}
+
+	.kicker {
+		margin: 0 0 0.5rem;
+		font-weight: 600;
+		color: var(--gr-muted);
+	}
+
+	.has-video .kicker {
+		color: #dcdcdc;
+	}
+
+	h1 {
+		display: flex;
+		flex-direction: column;
+		margin: 0;
+		line-height: 0.88;
+		color: var(--gr-text-strong);
+		scroll-margin-top: 100vh;
+	}
+
+	.has-video h1 {
+		color: #fff;
+	}
+
+	.name {
+		font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+		line-height: 1;
+		margin-bottom: 0.35rem;
+	}
+
+	.version {
+		font-size: clamp(3.5rem, 13vw, 9.5rem);
+		letter-spacing: -0.02em;
+		overflow-wrap: anywhere;
+	}
+
+	.compact {
+		margin-top: 1rem;
+		padding: 2rem 1.5rem 1.75rem;
+		mask: var(--gr-book-edge-bottom) bottom / 100% 1rem no-repeat,
+			linear-gradient(#000, #000) top / 100% calc(100% - 1rem) no-repeat;
+	}
+
+	.compact .version {
+		font-size: clamp(2.5rem, 6vw, 4.5rem);
+		line-height: 0.95;
+	}
+
+	.stamp {
+		position: relative;
+		margin: 1.25rem 0 0;
+		transform: rotate(-3deg);
+		transform-origin: left center;
+	}
+</style>

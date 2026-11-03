@@ -3,6 +3,19 @@ import { z } from 'astro/zod';
 import { docsLoader } from '@astrojs/starlight/loaders';
 import { docsSchema } from '@astrojs/starlight/schema';
 
+// A feature stop on a release showcase (src/components/showcase/Stops.astro). Stops follow
+// where the feature sits in the app, from the Main Menu to the Bot Manager.
+const stop = z.object({
+	title: z.string(),
+	// Where to find it in the app, such as "Main Menu > Settings".
+	where: z.string(),
+	blurb: z.string(),
+	// What the image will show. Until the art exists, this is written on the placeholder.
+	image: z.string(),
+	// Set while the wording still has to be checked by the maintainer. Not rendered.
+	review: z.boolean().optional(),
+});
+
 export const collections = {
 	docs: defineCollection({
 		loader: docsLoader(),
@@ -14,6 +27,34 @@ export const collections = {
 				// Release tag whose files get download buttons under the title, from
 				// src/data/releases.json (see src/components/DownloadButtons.astro).
 				release: z.string().optional(),
+				// Showcase header and highlights (see src/components/showcase/). `home` is the home
+				// page poster, `release` a major release, `build` a lighter header for older builds.
+				showcase: z
+					.object({
+						kind: z.enum(['home', 'release', 'build']),
+						kicker: z.string().optional(),
+						stamp: z.string().optional(),
+						intro: z.string().optional(),
+						presenting: z
+							.object({
+								kicker: z.string(),
+								before: z.string(),
+								mark: z.string(),
+								after: z.string(),
+								review: z.boolean().optional(),
+							})
+							.optional(),
+						stops: z.array(stop).optional(),
+						note: z
+							.object({
+								tag: z.string(),
+								title: z.string(),
+								body: z.string(),
+								review: z.boolean().optional(),
+							})
+							.optional(),
+					})
+					.optional(),
 			}),
 		}),
 	}),

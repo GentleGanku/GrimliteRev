@@ -1,0 +1,100 @@
+---
+// Home: what a first-time user needs and the setup steps, from the README.
+import { latestRelease } from '../../data/metrics';
+
+const x64 = latestRelease?.files.find((f) => f.key === 'x64')?.name;
+const x86 = latestRelease?.files.find((f) => f.key === 'x86')?.name;
+---
+
+<section class="new-here not-content" aria-labelledby="new-here">
+	<h2 id="new-here">New here?</h2>
+	<div class="need">
+		<h3>You'll need</h3>
+		<ul>
+			<li>
+				Windows with <a href="https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48">.NET Framework 4.8</a>
+			</li>
+			<li>
+				The <a href="https://gitlab.com/cleanflash/installer/-/releases">Clean Flash plugin</a>, ActiveX version
+			</li>
+		</ul>
+	</div>
+	<div class="steps">
+		<h3>Set it up</h3>
+		<ol>
+			<li>
+				Download a package from the latest release: <code>{x64 ?? 'the x64 zip'}</code>, or{' '}
+				<code>{x86 ?? 'the x86 zip'}</code> on an old or slow PC.
+			</li>
+			<li>Extract the zip file.</li>
+			<li>
+				Open the <code>Grimlite Rev</code> folder and run <code>Grimoire.exe</code>.
+			</li>
+		</ol>
+		<p class="after">
+			The Bot Manager saves your <code>.gbot</code> files in the <code>Bots</code> folder. Plugin DLLs go in
+			the <code>Plugins</code> folder.
+		</p>
+	</div>
+</section>
+
+<style>
+	.new-here {
+		display: grid;
+		gap: 2rem;
+		margin-top: 5rem;
+	}
+
+	h2 {
+		margin: 0;
+		font-size: clamp(3rem, 9vw, 6rem);
+		line-height: 0.9;
+		color: var(--gr-text-strong);
+	}
+
+	h3 {
+		margin: 0 0 0.75rem;
+		font-size: var(--sl-text-2xl);
+		color: var(--gr-text-strong);
+	}
+
+	ul,
+	ol {
+		margin: 0;
+		padding-inline-start: 1.25rem;
+	}
+
+	li + li {
+		margin-top: 0.5rem;
+	}
+
+	ol li::marker {
+		font-family: var(--gr-font-display);
+		font-weight: 850;
+		color: var(--gr-accent);
+	}
+
+	a {
+		color: var(--gr-accent);
+		text-underline-offset: 0.2em;
+	}
+
+	code {
+		overflow-wrap: anywhere;
+		font-size: 0.9em;
+	}
+
+	.after {
+		max-width: 40rem;
+		margin: 1.25rem 0 0;
+		color: var(--gr-muted);
+	}
+
+	@media (min-width: 60rem) {
+		.new-here {
+			grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr) minmax(0, 1.4fr);
+			column-gap: 3rem;
+			align-items: start;
+		}
+	}
+</style>

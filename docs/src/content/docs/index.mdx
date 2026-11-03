@@ -1,29 +1,20 @@
 ---
 title: Grimlite Rev
-description: A revisioned version of Grimlite, an AQW Bot Client.
+description: A bot client for AdventureQuest Worlds, revised from Grimlite. Download the latest release, see what's new, and vote on what comes next.
 template: splash
-hero:
-  tagline: A revisioned version of Grimlite, an AQW Bot Client.
-  image:
-    file: ../../assets/grimlite-rev.png
-    alt: Grimlite Rev icon, a red open book with a G on its pages
-  actions:
-    # Through the counter Worker (docs/src/data/worker.json), which notes the visitor's
-    # country and redirects to the GitHub release file. Update the tag and file names with
-    # every release.
-    - text: Download x64
-      link: https://grimliterev.gentleganku.workers.dev/download/v1.4.0/Grimlite.Rev-v1.4.0-x64.zip
-      variant: primary
-    - text: Download x86
-      link: https://grimliterev.gentleganku.workers.dev/download/v1.4.0/Grimlite.Rev-v1.4.0-x86.zip
-      variant: secondary
-    - text: Read the latest changelogs
-      link: /GrimliteRev/changelog/v1-4-0/
-      variant: secondary
+# The poster (src/components/showcase/HomePoster.astro) takes its download buttons and stamp
+# from the newest release in the release data, so this page needs no edit per release.
+showcase:
+  kind: home
+  intro: A bot client for AdventureQuest Worlds. It runs the game in its own window, and its Bot Manager plays it for you from the bots you build.
 ---
 
-**Roadmap**: [see what's coming and vote for features](/GrimliteRev/roadmap/)
+import Spotlight from '../../components/home/Spotlight.astro';
+import NewHere from '../../components/home/NewHere.astro';
+import WhatsNext from '../../components/home/WhatsNext.astro';
+import Community from '../../components/home/Community.astro';
 
-**Discord server**: [https://discord.gg/NZ6vmDTu44](https://discord.gg/NZ6vmDTu44)
-
-**Tip to support me and the project plz**: [ko-fi.com/gentleganku](http://ko-fi.com/gentleganku)
+<Spotlight />
+<NewHere />
+<WhatsNext />
+<Community />

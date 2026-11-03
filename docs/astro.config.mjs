@@ -1,7 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
-import starlightCelestiaTheme from 'starlight-theme-celestia';
 import worker from './src/data/worker.json' with { type: 'json' };
 
 // Counts a page view in the counter Worker (worker/src/index.js). Local dev servers aren't
@@ -15,12 +14,12 @@ export default defineConfig({
 		starlight({
 			title: 'Grimlite Rev',
 			components: {
+				Header: './src/components/Header.astro',
 				SiteTitle: './src/components/SiteTitle.astro',
-				SocialIcons: './src/components/SocialIcons.astro',
 				PageTitle: './src/components/PageTitle.astro',
 			},
 			favicon: '/favicon.png',
-			customCss: ['./src/styles/accent.css', './src/styles/fixes.css'],
+			customCss: ['./src/styles/theme.css', './src/styles/fixes.css'],
 			head: [
 				{ tag: 'script', content: countPageView },
 			],
@@ -45,17 +44,6 @@ export default defineConfig({
 						},
 					],
 				},
-			],
-			plugins: [
-				starlightCelestiaTheme({
-					stylingSystem: 'css',
-					nav: [
-						{ label: 'Changelogs', href: '/GrimliteRev/changelog/v1-4-0/' },
-						{ label: 'Roadmap', href: '/GrimliteRev/roadmap/' },
-						{ label: 'Releases', href: 'https://github.com/GentleGanku/GrimliteRev/releases' },
-						{ label: 'Ko-fi', href: 'https://ko-fi.com/gentleganku' },
-					],
-				}),
 			],
 		}),
 	],

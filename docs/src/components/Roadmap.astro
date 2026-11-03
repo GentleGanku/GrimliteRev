@@ -19,7 +19,7 @@ const countFor = (version: string) => items.filter((i) => i.version === version)
 const voteLabel = (n: number) => `${n.toLocaleString('en-US')} vote${n === 1 ? '' : 's'}`;
 ---
 
-<div class="roadmap not-content" data-roadmap data-worker={WORKER}>
+<div class="roadmap gr-bleed gr-tinted not-content" data-roadmap data-worker={WORKER}>
   <div class="bar">
     <fieldset class="filter">
       <legend>Version</legend>
@@ -169,13 +169,16 @@ const voteLabel = (n: number) => `${n.toLocaleString('en-US')} vote${n === 1 ? '
 </script>
 
 <style>
+  /* The board sits on the showcase tint, like the release highlights, so the Roadmap reads as
+     part of the same site. */
   .roadmap {
-    margin-top: 1.5rem;
+    margin-top: 3rem;
+    padding-block: 1.5rem 4rem;
   }
 
-  /* The version filter stays under the header while the sections scroll past it. Celestia's
-     main pane hides horizontal overflow, which makes it a scroll container and stops sticky
-     positioning; clip hides the same overflow without that. */
+  /* The version filter stays under the header while the sections scroll past it. A main pane
+     that hides horizontal overflow becomes a scroll container and stops sticky positioning;
+     clip hides the same overflow without that. */
   :global(.main-pane:has([data-roadmap])) {
     overflow-x: clip;
   }
@@ -185,7 +188,7 @@ const voteLabel = (n: number) => `${n.toLocaleString('en-US')} vote${n === 1 ? '
     top: var(--sl-nav-height);
     z-index: 2;
     padding: 0.75rem 0;
-    background: var(--sl-color-bg);
+    background: var(--gr-tint);
   }
 
   .filter {

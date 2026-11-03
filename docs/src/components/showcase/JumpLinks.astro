@@ -1,0 +1,82 @@
+---
+// The start of the full changelog on a showcase page, with links to its sections (Additions,
+// Patches, Others), standing in for the "On this page" list that full-width pages don't have.
+interface Heading {
+	depth: number;
+	slug: string;
+	text: string;
+}
+
+interface Props {
+	headings: Heading[];
+}
+
+const { headings } = Astro.props;
+const sections = headings.some((h) => h.depth === 3)
+	? headings.filter((h) => h.depth === 3)
+	: headings.filter((h) => h.depth === 2);
+const label = (text: string) => {
+	const clean = text.replace(/:$/, '');
+	return clean === clean.toUpperCase() ? clean.charAt(0) + clean.slice(1).toLowerCase() : clean;
+};
+---
+
+<nav class="jump" aria-labelledby="full-changelog">
+	<h2 id="full-changelog">Full changelog</h2>
+	{
+		sections.length > 1 && (
+			<ul>
+				{sections.map((h) => (
+					<li>
+						<a href={`#${h.slug}`}>{label(h.text)}</a>
+					</li>
+				))}
+			</ul>
+		)
+	}
+</nav>
+
+<style>
+	.jump {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.75rem 1.5rem;
+		margin-top: 3.5rem;
+		padding-bottom: 1rem;
+		border-bottom: 3px solid var(--gr-text-strong);
+	}
+
+	h2 {
+		margin: 0;
+		font-size: clamp(2rem, 5vw, 3rem);
+		line-height: 1;
+		color: var(--gr-text-strong);
+	}
+
+	ul {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0 0.25rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	a {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		padding: 0 0.6rem;
+		color: var(--gr-text);
+		font-weight: 600;
+		text-decoration: underline;
+		text-decoration-color: var(--gr-line);
+		text-underline-offset: 0.3em;
+	}
+
+	a:hover {
+		color: var(--gr-text-strong);
+		text-decoration-color: var(--gr-accent);
+	}
+</style>

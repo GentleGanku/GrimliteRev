@@ -1,0 +1,25 @@
+---
+// An image slot that says plainly what will go in it. It is never styled to pass for real
+// art; the maintainer replaces it with a screenshot or artwork later.
+interface Props {
+	label: string;
+}
+---
+
+<div class="placeholder" role="img" aria-label={`Image to come: ${Astro.props.label}`}>
+	<span>[Image: {Astro.props.label}]</span>
+</div>
+
+<style>
+	.placeholder {
+		display: grid;
+		place-items: center;
+		aspect-ratio: 16 / 10;
+		padding: 1rem;
+		border: 2px dashed var(--gr-line);
+		background: var(--gr-surface);
+		color: var(--gr-muted);
+		font-size: var(--sl-text-sm);
+		text-align: center;
+	}
+</style>

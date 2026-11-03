@@ -89,19 +89,24 @@ const count = (n: number) => `${n.toLocaleString('en-US')}\u00a0download${n === 
     outline-offset: 2px;
   }
 
-  /* The first file (x64, or the release's only build) is the one most people want. */
+  /* The first file (x64, or the release's only build) is the one most people want, so it gets
+     the accent, as the home page's download does. */
   .download.primary {
-    border-color: var(--sl-color-white);
-    background: var(--sl-color-white);
-    color: var(--sl-color-black);
+    border-color: var(--gr-accent);
+    background: var(--gr-accent);
+    color: var(--gr-on-accent);
   }
 
   .download.primary:hover {
-    background: var(--sl-color-gray-2);
+    background: var(--gr-accent);
+  }
+
+  .download.primary:hover .label {
+    text-decoration: underline;
   }
 
   .download.primary .meta {
-    color: var(--sl-color-gray-6);
+    color: var(--gr-on-accent);
   }
 
   svg {

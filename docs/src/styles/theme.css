@@ -1,0 +1,171 @@
+/* Grimlite Rev site theme. Colours and type come from the "Docs site" section of DESIGN.md:
+   the dark theme reuses the app's own palette, so the site and the client look like one
+   product. Every text pair below was checked for WCAG AA (see DESIGN.md for the ratios). */
+
+@import '@fontsource-variable/archivo/wdth.css';
+
+:root {
+	--gr-base: #1c2028;
+	--gr-surface: #2d3342;
+	--gr-tint: #1f2e36;
+	--gr-paper: #ede6d6;
+	--gr-text: #dcdcdc;
+	--gr-text-strong: #ffffff;
+	--gr-muted: #9aa1ae;
+	--gr-line: #3d4454;
+	--gr-accent: #f64061;
+	--gr-on-accent: #1c2028;
+	--gr-paper-ink: #1c2028;
+	--gr-paper-accent: #b0102f;
+
+	/* One family covers both roles (pairing A in DESIGN.md): the width axis gives the poster
+	   titles their narrow, heavy cut, so the pages load a single font file. */
+	--gr-font-display: 'Archivo Variable', 'Arial Narrow', sans-serif;
+	--gr-font-body: 'Archivo Variable', 'Segoe UI', sans-serif;
+	--gr-display-stretch: 68%;
+
+	--sl-font: var(--gr-font-body);
+
+	--sl-color-white: var(--gr-text-strong);
+	--sl-color-gray-1: #eceef2;
+	--sl-color-gray-2: var(--gr-text);
+	--sl-color-gray-3: var(--gr-muted);
+	--sl-color-gray-4: #6b7282;
+	--sl-color-gray-5: var(--gr-line);
+	--sl-color-gray-6: var(--gr-surface);
+	--sl-color-black: var(--gr-base);
+
+	--sl-color-accent-low: #4a1d2a;
+	--sl-color-accent: var(--gr-accent);
+	--sl-color-accent-high: var(--gr-accent);
+	--sl-color-text-accent: var(--gr-accent);
+	--sl-color-bg-nav: var(--gr-base);
+	--sl-color-bg-sidebar: var(--gr-base);
+	--sl-color-hairline: var(--gr-line);
+	--sl-color-hairline-shade: var(--gr-line);
+
+	/* Kept for the Roadmap's selected version filter. */
+	--roadmap-on-accent: var(--gr-on-accent);
+}
+
+:root[data-theme='light'] {
+	--gr-base: #f1f3f6;
+	--gr-surface: #e3e7ee;
+	--gr-tint: #dde8ea;
+	--gr-text: #1c2028;
+	--gr-text-strong: #0f1217;
+	--gr-muted: #535a67;
+	--gr-line: #c5cbd5;
+	--gr-accent: #c4122f;
+	--gr-on-accent: #ffffff;
+
+	--sl-color-white: var(--gr-text-strong);
+	--sl-color-gray-1: #1c2028;
+	--sl-color-gray-2: var(--gr-text);
+	--sl-color-gray-3: var(--gr-muted);
+	--sl-color-gray-4: #8a909b;
+	--sl-color-gray-5: var(--gr-line);
+	--sl-color-gray-6: var(--gr-surface);
+	--sl-color-gray-7: var(--gr-surface);
+	--sl-color-black: var(--gr-base);
+
+	--sl-color-accent-low: #f6d5dc;
+	--sl-color-accent: var(--gr-accent);
+	--sl-color-accent-high: var(--gr-accent);
+	--sl-color-text-accent: var(--gr-accent);
+	--sl-color-bg-nav: var(--gr-base);
+	--sl-color-bg-sidebar: var(--gr-base);
+	--sl-color-hairline: var(--gr-line);
+	--sl-color-hairline-light: var(--gr-line);
+	--sl-color-hairline-shade: var(--gr-line);
+}
+
+/* Full-bleed showcase sections reach past the content column; clip (not hidden) keeps the
+   sticky header and in-page anchors working. */
+body {
+	overflow-x: clip;
+	background-color: var(--gr-base);
+}
+
+h1,
+h2,
+h3,
+.gr-display {
+	font-family: var(--gr-font-display);
+	font-stretch: var(--gr-display-stretch);
+	font-weight: 850;
+	letter-spacing: -0.01em;
+}
+
+/* Book edge: the shape of the logo's page edges, two arcs that meet in the middle. It cuts
+   the bottom of stamps and the top of tinted showcase sections, and is the site's motif. */
+.gr-stamp {
+	display: inline-block;
+	padding: 0.35em 0.85em 0.6em;
+	background: var(--gr-accent);
+	color: var(--gr-on-accent);
+	font-family: var(--gr-font-display);
+	font-stretch: 100%;
+	font-weight: 800;
+	font-size: var(--sl-text-sm);
+	line-height: 1.2;
+	mask: var(--gr-book-edge-bottom) bottom / 100% 0.5em no-repeat,
+		linear-gradient(#000, #000) top / 100% calc(100% - 0.5em) no-repeat;
+}
+
+:root {
+	--gr-book-edge-bottom: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 10' preserveAspectRatio='none'%3E%3Cpath d='M0 0H100V10Q75 2 50 7Q25 2 0 10Z'/%3E%3C/svg%3E");
+	--gr-book-edge-top: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 10' preserveAspectRatio='none'%3E%3Cpath d='M0 0Q25 8 50 3Q75 8 100 0V10H0Z'/%3E%3C/svg%3E");
+}
+
+/* The one highlighted word in a showcase headline. */
+.gr-mark {
+	padding: 0 0.15em;
+	background: var(--gr-accent);
+	color: var(--gr-on-accent);
+	-webkit-box-decoration-break: clone;
+	box-decoration-break: clone;
+}
+
+/* A tinted showcase section whose top edge follows the book edge. */
+.gr-tinted {
+	position: relative;
+	background: var(--gr-tint);
+}
+
+.gr-tinted::before {
+	content: '';
+	position: absolute;
+	inset: -1.5rem 0 auto;
+	height: 1.5rem;
+	background: var(--gr-tint);
+	mask: var(--gr-book-edge-top) center / 100% 100% no-repeat;
+	pointer-events: none;
+}
+
+/* Breaks a showcase section out of Starlight's content column to the full window width. */
+.gr-bleed {
+	width: 100vw;
+	margin-inline: calc(50% - 50vw);
+	padding-inline: max(var(--sl-content-pad-x), calc((100vw - 67.5rem) / 2));
+}
+
+:focus-visible {
+	outline: 2px solid var(--gr-accent);
+	outline-offset: 2px;
+}
+
+.sl-markdown-content a:not(:where(.not-content *)) {
+	color: var(--gr-accent);
+	text-underline-offset: 0.2em;
+}
+
+/* Showcase pages: the poster runs straight into the page, so drop the rule Starlight draws
+   between the title panel and the content, and keep the changelog text at a readable width. */
+main:has(.poster, .home-poster) .content-panel + .content-panel {
+	border-top: 0;
+}
+
+main:has(.poster) .sl-markdown-content {
+	max-width: 46rem;
+}

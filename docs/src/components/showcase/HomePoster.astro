@@ -1,0 +1,181 @@
+---
+// The home page poster: the name set as large as the screen allows, what Grimlite Rev is, and
+// the newest release's download. The files come from the release data, so the buttons follow
+// each new release without editing the page.
+import { downloadUrl, latestRelease } from '../../data/metrics';
+
+interface Props {
+	intro?: string;
+	stamp?: string;
+}
+
+const { intro } = Astro.props;
+const stamp = Astro.props.stamp ?? (latestRelease ? `${latestRelease.label} is out` : undefined);
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const x64 = latestRelease?.files.find((f) => f.key === 'x64') ?? latestRelease?.files[0];
+const x86 = latestRelease?.files.find((f) => f.key === 'x86');
+const mb = (bytes: number) => `${(bytes / 1e6).toFixed(1)} MB`;
+const changelog = latestRelease ? `${base}/changelog/${latestRelease.tag.replace(/\./g, '-')}/` : undefined;
+---
+
+<header class="home-poster gr-bleed">
+	<div class="title">
+		<h1 id="_top">Grimlite Rev</h1>
+		{
+			stamp && changelog && (
+				<a class="gr-stamp stamp" href={changelog}>
+					{stamp}
+				</a>
+			)
+		}
+	</div>
+	<div class="row">
+		{intro && <p class="intro">{intro}</p>}
+		{
+			latestRelease && x64 && (
+				<div class="get">
+					<a class="download" href={downloadUrl(latestRelease.tag, x64)}>
+						<svg viewBox="0 0 24 24" aria-hidden="true">
+							<path d="M12 3v12m0 0-5-5m5 5 5-5M5 20h14" />
+						</svg>
+						<span>
+							<span class="action">Download {latestRelease.label}</span>
+							<span class="file">
+								{x64.name}, {mb(x64.size)}
+							</span>
+						</span>
+					</a>
+					{x86 && (
+						<p class="alt">
+							Try x64 first. If Grimlite Rev shows an error, or the PC is old or slow, use the{' '}
+							<a href={downloadUrl(latestRelease.tag, x86)}>x86 build</a> ({mb(x86.size)}).
+						</p>
+					)}
+				</div>
+			)
+		}
+	</div>
+</header>
+
+<style>
+	.home-poster {
+		margin-top: -1.5rem;
+		padding-block: clamp(2.5rem, 7vw, 5rem) 3.5rem;
+	}
+
+	.title {
+		position: relative;
+		display: inline-block;
+		max-width: 100%;
+	}
+
+	h1 {
+		margin: 0;
+		font-size: clamp(4rem, 17vw, 13.5rem);
+		line-height: 0.82;
+		letter-spacing: -0.03em;
+		color: var(--gr-text-strong);
+		overflow-wrap: anywhere;
+	}
+
+	/* The stamp sits on the title's top edge, like a label stuck onto the poster. */
+	.stamp {
+		position: absolute;
+		top: -0.75rem;
+		right: -1.25rem;
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		font-size: var(--sl-text-base);
+		text-decoration: none;
+		transform: rotate(-4deg);
+	}
+
+	.stamp:hover {
+		text-decoration: underline;
+	}
+
+	.row {
+		display: grid;
+		gap: 2rem;
+		margin-top: 2.5rem;
+	}
+
+	.intro {
+		max-width: 32ch;
+		margin: 0;
+		font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+		line-height: 1.35;
+		color: var(--gr-text);
+	}
+
+	.download {
+		display: inline-flex;
+		align-items: center;
+		gap: 1rem;
+		min-height: 44px;
+		padding: 1rem 1.5rem 1rem 1.25rem;
+		background: var(--gr-accent);
+		color: var(--gr-on-accent);
+		text-decoration: none;
+	}
+
+	.download:hover .action {
+		text-decoration: underline;
+	}
+
+	.download svg {
+		flex: none;
+		width: 1.75rem;
+		height: 1.75rem;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 2.25;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+
+	.download > span {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.action {
+		font-family: var(--gr-font-display);
+		font-stretch: var(--gr-display-stretch);
+		font-weight: 850;
+		font-size: var(--sl-text-2xl);
+		line-height: 1.1;
+	}
+
+	.file {
+		font-size: var(--sl-text-sm);
+		font-weight: 600;
+	}
+
+	.alt {
+		max-width: 38ch;
+		margin: 1rem 0 0;
+		font-size: var(--sl-text-sm);
+		color: var(--gr-muted);
+	}
+
+	.alt a {
+		color: var(--gr-text-strong);
+		font-weight: 600;
+	}
+
+	@media (min-width: 50rem) {
+		.row {
+			grid-template-columns: minmax(0, 1fr) auto;
+			align-items: end;
+		}
+	}
+
+	@media (width < 50rem) {
+		.stamp {
+			position: static;
+			margin-top: 1rem;
+		}
+	}
+</style>

@@ -1,25 +1,58 @@
-/* Celestia's ThemeSelect script sets an inline `visibility: visible` on every theme
-   toggle. That overrides the hidden mobile sidebar, so its toggle shows (and takes
-   focus) over the page while the menu is closed. Let each toggle follow its container. */
-starlight-theme-select button {
-	visibility: inherit !important;
-}
-
-/* Celestia's mobile controls are 28px squares and its sidebar rows are 28px tall.
+/* Starlight's mobile controls are 32px squares and its sidebar rows are shorter than a finger.
    Raise every touch target in the mobile layout to 44px. */
 @media (width < 50rem) {
-	header button[data-open-modal],
-	celestia-mobile-menu-toggle,
-	#starlight__sidebar a:has(> .sr-only),
-	#starlight__sidebar starlight-theme-select button {
-		width: 44px;
-		height: 44px;
-		align-items: center;
+	:root {
+		--sl-menu-button-size: 44px;
+	}
+
+	header button[data-open-modal] {
+		min-width: 44px;
+		min-height: 44px;
 		justify-content: center;
 	}
 
 	#starlight__sidebar summary,
 	#starlight__sidebar li > a {
+		min-height: 44px;
+		display: flex;
+		align-items: center;
+	}
+
+	starlight-theme-select select {
+		min-height: 44px;
+	}
+}
+
+/* The header is two rows tall on phones (see Header.astro). Keep the menu button centred on
+   the first row, next to the logo and search, instead of halfway down the header. */
+@media (width < 50rem) {
+	:root {
+		--sl-nav-pad-y: 0.25rem;
+	}
+
+	.sl-menu-button {
+		top: calc(var(--sl-nav-pad-y) + 1.5rem - var(--sl-menu-button-size) / 2);
+	}
+}
+
+/* Starlight's menu button is a white circle with a drop shadow, the loudest thing in the
+   header. Match it to the header's other controls: a bordered square on the page colour. */
+.sl-menu-button,
+:root[data-theme='light'] .sl-menu-button {
+	border: 1px solid var(--gr-line);
+	border-radius: 0.375rem;
+	background-color: var(--gr-base);
+	color: var(--gr-text-strong);
+	box-shadow: none;
+}
+
+.sl-menu-button:has(~ :popover-open),
+:root[data-theme='light'] .sl-menu-button:has(~ :popover-open) {
+	background-color: var(--gr-surface);
+}
+
+@media (width < 50rem) {
+	mobile-starlight-toc a {
 		min-height: 44px;
 		display: flex;
 		align-items: center;

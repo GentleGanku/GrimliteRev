@@ -1,0 +1,120 @@
+---
+// Home: what's coming in the next version, from the Roadmap data (src/data/roadmap.json).
+// Features already in progress are listed before planned ones.
+import roadmap from '../../data/roadmap.json';
+
+interface Item {
+	id: string;
+	version: string;
+	status: string;
+	title: string;
+	description: string;
+}
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const next = roadmap.versions[0];
+const rank: Record<string, number> = { 'in-progress': 0, planned: 1 };
+const items = (roadmap.items as Item[])
+	.filter((i) => i.version === next && i.status in rank)
+	.sort((a, b) => rank[a.status] - rank[b.status]);
+const shown = items.slice(0, 4);
+---
+
+<section class="next not-content" aria-labelledby="whats-next">
+	<h2 id="whats-next">Coming in {next}</h2>
+	{
+		shown.length > 0 ? (
+			<ul>
+				{shown.map((item) => (
+					<li>
+						<p class="status">{item.status === 'in-progress' ? 'In progress' : 'Planned'}</p>
+						<h3>{item.title}</h3>
+						<p>{item.description}</p>
+					</li>
+				))}
+			</ul>
+		) : (
+			<p class="empty">
+				Nothing is listed for {next} yet. Ideas are welcome on the{' '}
+				<a href="https://discord.gg/NZ6vmDTu44">Discord server</a>.
+			</p>
+		)
+	}
+	<a class="more" href={`${base}/roadmap/`}>
+		{items.length > shown.length ? `See all ${items.length} and vote on the Roadmap` : 'Open the Roadmap and vote'}
+	</a>
+</section>
+
+<style>
+	.next {
+		display: grid;
+		gap: 1.5rem;
+		margin-top: 5rem;
+		padding-top: 2rem;
+		border-top: 3px solid var(--gr-text-strong);
+	}
+
+	h2 {
+		margin: 0;
+		font-size: clamp(2.25rem, 6vw, 3.75rem);
+		line-height: 1;
+		color: var(--gr-text-strong);
+	}
+
+	ul {
+		display: grid;
+		gap: 1.5rem 2.5rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	li p {
+		margin: 0.25rem 0 0;
+	}
+
+	.status {
+		font-size: var(--sl-text-sm);
+		font-weight: 700;
+		color: var(--gr-muted);
+	}
+
+	h3 {
+		margin: 0.15rem 0 0;
+		font-size: var(--sl-text-2xl);
+		color: var(--gr-text-strong);
+	}
+
+	.empty {
+		max-width: 40rem;
+		margin: 0;
+		font-size: var(--sl-text-lg);
+	}
+
+	.empty a {
+		color: var(--gr-accent);
+	}
+
+	.more {
+		justify-self: start;
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		padding: 0 1.25rem;
+		border: 2px solid var(--gr-text-strong);
+		color: var(--gr-text-strong);
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	.more:hover {
+		background: var(--gr-text-strong);
+		color: var(--gr-base);
+	}
+
+	@media (min-width: 50rem) {
+		ul {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+</style>

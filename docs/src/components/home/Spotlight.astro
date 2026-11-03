@@ -1,0 +1,91 @@
+---
+// Home: the newest major release's highlights in short, taken from that release's changelog
+// page (its `showcase` frontmatter), next to the release art.
+import { getCollection } from 'astro:content';
+import Presenting from '../showcase/Presenting.astro';
+import Stops from '../showcase/Stops.astro';
+import { latestRelease } from '../../data/metrics';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const pages = await getCollection('docs');
+const page =
+	pages.find((p) => p.data.release === latestRelease?.tag && p.data.showcase?.kind === 'release') ??
+	pages.find((p) => p.data.showcase?.kind === 'release');
+const showcase = page?.data.showcase;
+const art = page?.data.titleVideo?.poster;
+---
+
+{
+	page && showcase?.presenting && (
+		<section class="spotlight gr-bleed gr-tinted not-content" aria-labelledby="spotlight">
+			<div class="lead">
+				<Presenting id="spotlight" {...showcase.presenting} />
+				{showcase.stops && <Stops stops={showcase.stops.slice(0, 4)} compact />}
+				<a class="more" href={`${base}/${page.id}/`}>
+					See everything in {page.data.sidebar?.label ?? page.data.title}
+				</a>
+			</div>
+			{art && (
+				<figure class="art">
+					<img src={`${base}${art}`} alt="" loading="lazy" decoding="async" />
+				</figure>
+			)}
+		</section>
+	)
+}
+
+<style>
+	.spotlight {
+		display: grid;
+		gap: 3rem;
+		margin-top: 3rem;
+		padding-block: 3.5rem 4rem;
+	}
+
+	.lead {
+		display: grid;
+		gap: 2.25rem;
+		align-content: start;
+	}
+
+	.more {
+		justify-self: start;
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		padding: 0 1.25rem;
+		border: 2px solid var(--gr-text-strong);
+		color: var(--gr-text-strong);
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	.more:hover {
+		background: var(--gr-text-strong);
+		color: var(--gr-tint);
+	}
+
+	.art {
+		margin: 0;
+	}
+
+	img {
+		width: 100%;
+		aspect-ratio: 4 / 5;
+		object-fit: cover;
+		object-position: 30% 50%;
+		transform: rotate(1.5deg);
+	}
+
+	@media (min-width: 60rem) {
+		.spotlight {
+			grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+			align-items: start;
+		}
+
+		.art {
+			position: sticky;
+			top: calc(var(--sl-nav-height) + 2rem);
+		}
+	}
+</style>
