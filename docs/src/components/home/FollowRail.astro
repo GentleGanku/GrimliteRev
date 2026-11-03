@@ -1,0 +1,60 @@
+---
+// Home: the sections after Presenting. When the hero art follows the reader (src/data/follow.ts),
+// they move into a right column and an empty sticky slot on the left receives the hero video
+// (HomePoster.astro moves it there as the page scrolls). Otherwise, and on narrow screens, the
+// sections run at full width as they always have.
+import { heroFollows } from '../../data/follow';
+
+const follows = await heroFollows();
+---
+
+{
+	follows ? (
+		<div class="rail" data-follow-rail>
+			<div class="slot" data-follow-slot="rail" aria-hidden="true" />
+			<div class="sections">
+				<slot />
+			</div>
+		</div>
+	) : (
+		<div class="sections">
+			<slot />
+		</div>
+	)
+}
+
+<style>
+	/* The sections lay themselves out by this container's width (container queries), so they
+	   read the same in the right column as they do at full width. They sit above the moving
+	   video, which passes behind their text while it glides. */
+	.sections {
+		position: relative;
+		z-index: 2;
+		container: home / inline-size;
+	}
+
+	.slot {
+		display: none;
+	}
+
+	@media (min-width: 60rem) {
+		.rail {
+			display: grid;
+			grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+			column-gap: 3.5rem;
+			align-items: start;
+		}
+
+		.slot {
+			display: block;
+			position: sticky;
+			top: calc(var(--sl-nav-height) + 2rem);
+			aspect-ratio: 16 / 9;
+			margin-top: 5rem;
+		}
+
+		.rail .sections {
+			min-width: 0;
+		}
+	}
+</style>

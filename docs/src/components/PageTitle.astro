@@ -14,6 +14,7 @@ import Presenting from './showcase/Presenting.astro';
 import ReleasePoster from './showcase/ReleasePoster.astro';
 import Stops from './showcase/Stops.astro';
 import { findRelease, latestRelease } from '../data/metrics';
+import { heroFollows } from '../data/follow';
 
 // Starlight's page-title id: the "Overview" link and the skip link target it.
 const PAGE_TITLE_ID = '_top';
@@ -36,12 +37,13 @@ const isLatest = release !== undefined && release === latestRelease?.tag;
 const when = showcase?.kicker ?? date;
 const stamp = showcase?.stamp ?? (isLatest ? (when ? `Latest release since ${when}` : 'Latest release') : when);
 const media = heroMedia ?? (titleVideo ? { video: titleVideo.src, poster: titleVideo.poster } : { placeholder: `${title} art` });
+const follows = showcase?.kind === 'home' ? await heroFollows() : false;
 const hasHighlights = showcase?.kind === 'release' && showcase.presenting !== undefined;
 ---
 
 {
 	showcase?.kind === 'home' ? (
-		<HomePoster intro={showcase.intro} stamp={showcase.stamp} media={media} />
+		<HomePoster stamp={showcase.stamp} media={media} follow={follows} />
 	) : showcase ? (
 		<>
 			<ReleasePoster title={title} stamp={stamp} release={release} media={media} />

@@ -4,8 +4,9 @@
 // section starts below the fold instead of peeking in. The files come from the release data, so
 // the buttons follow each new release without editing the page.
 //
-// The original layout: the name set large at the top, what Grimlite Rev is on the left and the
-// download on the right. Like the release posters it is an art area: dark in both themes, the
+// The same layout as the changelog posters: the name set large, then on one line the tagline
+// stamp and the newest release's download, with the 32-bit advice under the download, all
+// centred in the banner's height. Like the release posters it is an art area: dark in both themes, the
 // art dimmed to 38% so the text sits straight on it (white stays above 4.5:1 even over white
 // art), and it ends on a straight edge where the next section starts.
 import HeroMedia from './HeroMedia.astro';
@@ -13,82 +14,134 @@ import { downloadUrl, latestRelease } from '../../data/metrics';
 import { downloadData } from '../../data/downloads';
 
 interface Props {
-	intro?: string;
 	stamp?: string;
 	media: { video?: string; image?: string; poster?: string; placeholder?: string };
+	follow?: boolean;
 }
 
-const { intro, media } = Astro.props;
-const stamp = Astro.props.stamp ?? (latestRelease ? `${latestRelease.label} is out` : undefined);
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const { stamp, media, follow = false } = Astro.props;
 const x64 = latestRelease?.files.find((f) => f.key === 'x64') ?? latestRelease?.files[0];
 const x86 = latestRelease?.files.find((f) => f.key === 'x86');
-const mb = (bytes: number) => `${(bytes / 1e6).toFixed(1)} MB`;
-const downloads = (n?: number) => (n === undefined ? undefined : `${n.toLocaleString('en-US')} downloads`);
-const changelog = latestRelease ? `${base}/changelog/${latestRelease.tag.replace(/\./g, '-')}/` : undefined;
+const mb = (bytes: number) => `${(bytes / 1e6).toFixed(1)} MB`;
 ---
 
 <header class="home-poster gr-bleed gr-dark">
-	<div class="art">
+	<div class="art" data-follow-art={follow ? '' : undefined}>
 		<HeroMedia {...media} />
 	</div>
-	<div class="content">
-		<div class="title">
-			<h1 id="_top">Grimlite Rev</h1>
-			{
-				stamp && changelog && (
-					<a class="gr-stamp stamp" href={changelog}>
-						{stamp}
-					</a>
-				)
-			}
-		</div>
-		<div class="row">
-			{intro && <p class="intro">{intro}</p>}
-			{
-				latestRelease && x64 && (
-					<div class="get">
-						<a
-							class="download"
-							href={downloadUrl(latestRelease.tag, x64)}
-							title={x64.name}
-							{...downloadData(latestRelease, x64)}
-						>
-							<svg viewBox="0 0 24 24" aria-hidden="true">
-								<path d="M12 3v12m0 0-5-5m5 5 5-5M5 20h14" />
-							</svg>
-							<span>
-								<span class="action">Download {latestRelease.label}</span>
-								<span class="file">
-									<span>x64 (64-bit)</span>
-									<span>{mb(x64.size)}</span>
-									{downloads(x64.downloads) && <span>{downloads(x64.downloads)}</span>}
-								</span>
-							</span>
-						</a>
-						{x86 && (
-							<p class="alt">
-								Try x64 first. If Grimlite Rev shows an error, or the PC is old or slow, use the{' '}
-								<a href={downloadUrl(latestRelease.tag, x86)} title={x86.name} {...downloadData(latestRelease, x86)}>
-									x86 (32-bit) build
-								</a>{' '}
-								({mb(x86.size)}).
-							</p>
-						)}
-					</div>
-				)
-			}
-		</div>
+	<div class="inner">
+		<h1 id="_top">Grimlite Rev</h1>
+		{stamp && <p class="gr-stamp stamp">{stamp}</p>}
+		{
+			latestRelease && x64 && (
+				<a
+					class="download"
+					href={downloadUrl(latestRelease.tag, x64)}
+					title={x64.name}
+					{...downloadData(latestRelease, x64)}
+				>
+					<svg viewBox="0 0 24 24" aria-hidden="true">
+						<path d="M12 3v12m0 0-5-5m5 5 5-5M5 20h14" />
+					</svg>
+					<span>
+						<span class="action">Download Grimlite Rev</span>
+						<span class="file">
+							{latestRelease.label} &bull; 64-bit &bull; {mb(x64.size)}
+						</span>
+					</span>
+				</a>
+			)
+		}
+		{
+			latestRelease && x86 && (
+				<p class="alt">
+					If Grimlite Rev shows an error or the PC is old and slow, use the{' '}
+					<a href={downloadUrl(latestRelease.tag, x86)} title={x86.name} {...downloadData(latestRelease, x86)}>
+						32-bit build
+					</a>{' '}
+					instead.
+				</p>
+			)
+		}
 	</div>
 </header>
+
+<script>
+	// The hero art follows the reader on wide screens (see FollowRail.astro): it starts as the
+	// hero's background, glides into the empty slot beside Presenting as Spotlight comes up, then
+	// into the slot on the left of the sections after it. Each slot is sticky, so the art scrolls
+	// with the page and is never left behind. The art layer is fixed and placed over the active
+	// slot on every scroll frame; between two places its box is interpolated over part of a
+	// screen of scrolling. With reduced motion it jumps from one place to the next instead. On
+	// narrow screens, and without the slots, it stays in the hero.
+	const art = document.querySelector<HTMLElement>('[data-follow-art]');
+	const hero = art?.closest<HTMLElement>('.home-poster');
+	const spot = document.querySelector<HTMLElement>('[data-follow-slot="spotlight"]');
+	const rail = document.querySelector<HTMLElement>('[data-follow-slot="rail"]');
+	if (art && hero && spot && rail) {
+		const wide = matchMedia('(min-width: 60rem)');
+		const still = matchMedia('(prefers-reduced-motion: reduce)');
+		const zone = (el: Element) => {
+			const top = el.getBoundingClientRect().top;
+			const t = Math.min(Math.max((innerHeight * 0.85 - top) / (innerHeight * 0.4), 0), 1);
+			if (still.matches) return t < 0.5 ? 0 : 1;
+			return t * t * (3 - 2 * t);
+		};
+		const mix = (a: DOMRect, b: DOMRect, t: number) => ({
+			x: a.x + (b.x - a.x) * t,
+			y: a.y + (b.y - a.y) * t,
+			w: a.width + (b.width - a.width) * t,
+			h: a.height + (b.height - a.height) * t,
+		});
+		const reset = () => {
+			art.removeAttribute('style');
+			art.classList.remove('in-slot');
+		};
+		let queued = false;
+		const place = () => {
+			queued = false;
+			if (!wide.matches) return reset();
+			const toSpot = zone(spot.closest('section') ?? spot);
+			const toRail = zone(rail.closest('[data-follow-rail]') ?? rail);
+			const box =
+				toRail > 0
+					? mix(spot.getBoundingClientRect(), rail.getBoundingClientRect(), toRail)
+					: mix(hero.getBoundingClientRect(), spot.getBoundingClientRect(), toSpot);
+			const dim = toRail > 0 ? 1 : 0.38 + 0.62 * toSpot;
+			Object.assign(art.style, {
+				position: 'fixed',
+				inset: 'auto',
+				left: `${box.x}px`,
+				top: `${box.y}px`,
+				width: `${box.w}px`,
+				height: `${box.h}px`,
+				zIndex: '1',
+			});
+			art.style.setProperty('--dim', String(dim));
+			art.classList.toggle('in-slot', toRail > 0 || toSpot > 0.5);
+		};
+		const queue = () => {
+			if (!queued) {
+				queued = true;
+				requestAnimationFrame(place);
+			}
+		};
+		addEventListener('scroll', queue, { passive: true });
+		addEventListener('resize', queue);
+		wide.addEventListener('change', queue);
+		place();
+	}
+</script>
 
 <style>
 	.home-poster {
 		position: relative;
 		display: flex;
+		background: var(--gr-base);
+		align-items: center;
 		min-height: calc(100svh - var(--sl-nav-height));
 		margin-top: -1.5rem;
-		padding-block: 4.5rem 4rem;
+		padding-block: 4rem;
 		color: #fff;
 	}
 
@@ -101,25 +154,26 @@ const changelog = latestRelease ? `${base}/changelog/${latestRelease.tag.replace
 
 	.art :global(video),
 	.art :global(img) {
-		opacity: 0.38;
+		opacity: var(--dim, 0.38);
 	}
 
-	.content {
+	/* Following the reader (script below): the art is placed over its slot, at full strength,
+	   with the placeholder's label in its own corner. */
+	.art[data-follow-art].in-slot :global(.placeholder span) {
+		right: 1rem;
+	}
+
+	.inner {
 		position: relative;
 		z-index: 2;
+		display: grid;
+		gap: 1.5rem;
 		width: 100%;
 		pointer-events: none;
 	}
 
-	.title,
-	.row > * {
+	.inner > * {
 		pointer-events: auto;
-	}
-
-	.title {
-		position: relative;
-		display: inline-block;
-		max-width: 100%;
 	}
 
 	h1 {
@@ -131,47 +185,21 @@ const changelog = latestRelease ? `${base}/changelog/${latestRelease.tag.replace
 		overflow-wrap: anywhere;
 	}
 
-	/* The stamp sits on the title's top edge, like a label stuck onto the poster. */
 	.stamp {
-		position: absolute;
-		top: -1.75rem;
-		right: -0.5rem;
-		display: inline-flex;
-		align-items: center;
-		min-height: 44px;
-		font-size: var(--sl-text-base);
-		text-decoration: none;
-		transform: rotate(-4deg);
-	}
-
-	.stamp:hover {
-		text-decoration: underline;
-	}
-
-	.row {
-		display: grid;
-		gap: 2rem;
-		margin-top: 2.5rem;
-	}
-
-	.intro {
-		max-width: 34ch;
-		margin: 0;
-		font-size: clamp(1.2rem, 2.1vw, 1.5rem);
-		line-height: 1.4;
-		color: #fff;
-	}
-
-	.get {
 		justify-self: start;
+		margin: 0;
+		font-size: var(--sl-text-lg);
+		transform: rotate(-3deg);
+		transform-origin: left center;
 	}
 
 	.download {
+		justify-self: start;
 		display: inline-flex;
 		align-items: center;
 		gap: 1rem;
 		min-height: 44px;
-		padding: 1rem 1.5rem 1rem 1.25rem;
+		padding: 0.9rem 1.5rem 0.9rem 1.25rem;
 		background: var(--gr-accent);
 		color: var(--gr-on-accent);
 		text-decoration: none;
@@ -211,16 +239,13 @@ const changelog = latestRelease ? `${base}/changelog/${latestRelease.tag.replace
 	}
 
 	.file {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0 0.75rem;
 		font-size: var(--sl-text-sm);
 		font-weight: 600;
 	}
 
 	.alt {
-		max-width: 38ch;
-		margin: 1rem 0 0;
+		max-width: 34ch;
+		margin: 0;
 		font-size: var(--sl-text-sm);
 		color: #fff;
 	}
@@ -230,21 +255,44 @@ const changelog = latestRelease ? `${base}/changelog/${latestRelease.tag.replace
 		font-weight: 700;
 	}
 
-	@media (min-width: 50rem) {
-		.row {
-			grid-template-columns: minmax(0, 1fr) auto;
-			align-items: start;
-		}
-
-		.get {
-			justify-self: end;
+	/* Phones: a smaller tagline keeps the stamp on one line. */
+	@media (width < 30rem) {
+		.stamp {
+			font-size: var(--sl-text-sm);
 		}
 	}
 
-	@media (width < 50rem) {
+	/* Wide screens: the title on top, then the stamp and the download on one line, then the
+	   32-bit advice under the download (the changelog posters' grid). */
+	@media (min-width: 60rem) {
+		.inner {
+			grid-template-columns: minmax(0, 1fr) auto;
+			grid-template-areas:
+				'title .'
+				'stamp download'
+				'. alt';
+			align-items: center;
+			row-gap: 0.5rem;
+		}
+
+		h1 {
+			grid-area: title;
+			margin-bottom: 1rem;
+		}
+
 		.stamp {
-			position: static;
-			margin-top: 1rem;
+			grid-area: stamp;
+		}
+
+		.download {
+			grid-area: download;
+			justify-self: end;
+		}
+
+		.alt {
+			grid-area: alt;
+			justify-self: end;
+			text-align: end;
 		}
 	}
 </style>

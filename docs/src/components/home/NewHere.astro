@@ -94,7 +94,8 @@ const x86 = latestRelease?.files.find((f) => f.key === 'x86')?.name;
 		color: var(--gr-muted);
 	}
 
-	@media (min-width: 60rem) {
+	/* Sized by the space the section gets (FollowRail.astro's container), not the window. */
+	@container home (min-width: 52rem) {
 		.new-here {
 			grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr) minmax(0, 1.4fr);
 			column-gap: 3rem;

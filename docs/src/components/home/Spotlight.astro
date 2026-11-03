@@ -1,10 +1,12 @@
 ---
 // Home: the newest major release's highlights in short, taken from that release's changelog
-// page (its `showcase` frontmatter), next to the release art.
+// page (its `showcase` frontmatter), next to the release art, or next to the hero video when it
+// follows the reader.
 import { getCollection } from 'astro:content';
 import Presenting from '../showcase/Presenting.astro';
 import Stops from '../showcase/Stops.astro';
 import { latestRelease } from '../../data/metrics';
+import { heroFollows } from '../../data/follow';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const pages = await getCollection('docs');
@@ -13,6 +15,9 @@ const page =
 	pages.find((p) => p.data.showcase?.kind === 'release');
 const showcase = page?.data.showcase;
 const art = page?.data.titleVideo?.poster;
+// When the hero video follows the reader, it takes the art's place: an empty sticky slot that
+// HomePoster.astro moves the video into.
+const follows = await heroFollows();
 ---
 
 {
@@ -25,7 +30,9 @@ const art = page?.data.titleVideo?.poster;
 					See everything in {page.data.sidebar?.label ?? page.data.title}
 				</a>
 			</div>
-			{art && (
+			{follows ? (
+				<div class="art slot" data-follow-slot="spotlight" aria-hidden="true" />
+			) : art && (
 				<figure class="art">
 					<img src={`${base}${art}`} alt="" loading="lazy" decoding="async" />
 				</figure>
@@ -44,7 +51,10 @@ const art = page?.data.titleVideo?.poster;
 		padding-block: 3.5rem 4rem;
 	}
 
+	/* Above the moving hero video, which passes behind this text while it glides in. */
 	.lead {
+		position: relative;
+		z-index: 2;
 		display: grid;
 		gap: 2.25rem;
 		align-content: start;
@@ -80,7 +90,16 @@ const art = page?.data.titleVideo?.poster;
 		transform: rotate(1.5deg);
 	}
 
+	.slot {
+		display: none;
+	}
+
 	@media (min-width: 60rem) {
+		.slot {
+			display: block;
+			aspect-ratio: 16 / 9;
+		}
+
 		.spotlight {
 			grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
 			align-items: start;

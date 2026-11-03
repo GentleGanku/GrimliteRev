@@ -112,7 +112,8 @@ const figures = [
 		color: var(--gr-base);
 	}
 
-	@media (min-width: 60rem) {
+	/* Sized by the space the section gets (FollowRail.astro's container), not the window. */
+	@container home (min-width: 52rem) {
 		dl {
 			grid-template-columns: repeat(4, minmax(0, 1fr));
 			column-gap: 4.5rem;

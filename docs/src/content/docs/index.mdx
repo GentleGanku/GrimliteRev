@@ -2,13 +2,14 @@
 title: Grimlite Rev
 description: A bot client for AdventureQuest Worlds, revised from Grimlite. Download the latest release, see what's new, and vote on what comes next.
 template: splash
-# The poster (src/components/showcase/HomePoster.astro) takes its download buttons and stamp
-# from the newest release in the release data, so this page needs no edit per release.
+# The poster (src/components/showcase/HomePoster.astro) takes its download from the newest
+# release in the release data, so this page needs no edit per release. `stamp` is the tagline.
 heroMedia:
-  placeholder: home hero art
+  placeholder: home hero video
+  follow: true
 showcase:
   kind: home
-  intro: A bot client for AdventureQuest Worlds. It runs the game in its own window, and its Bot Manager plays it for you from the bots you build.
+  stamp: The intuitive AQW bot client since 2021
 ---
 
 import Spotlight from '../../components/home/Spotlight.astro';
@@ -16,9 +17,13 @@ import NewHere from '../../components/home/NewHere.astro';
 import WhatsNext from '../../components/home/WhatsNext.astro';
 import Community from '../../components/home/Community.astro';
 import MetricsOverview from '../../components/home/MetricsOverview.astro';
+import FollowRail from '../../components/home/FollowRail.astro';
 
 <Spotlight />
-<WhatsNext />
-<MetricsOverview />
-<NewHere />
-<Community />
+
+<FollowRail>
+  <WhatsNext />
+  <MetricsOverview />
+  <NewHere />
+  <Community />
+</FollowRail>

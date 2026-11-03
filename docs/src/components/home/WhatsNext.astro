@@ -110,7 +110,8 @@ const shown = items.slice(0, 4);
 		color: var(--gr-base);
 	}
 
-	@media (min-width: 50rem) {
+	/* Sized by the space the section gets (FollowRail.astro's container), not the window. */
+	@container home (min-width: 40rem) {
 		ul {
 			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}

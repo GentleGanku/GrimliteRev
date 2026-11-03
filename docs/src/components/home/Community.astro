@@ -81,7 +81,8 @@ import NoteCard from '../showcase/NoteCard.astro';
 		color: var(--gr-muted);
 	}
 
-	@media (min-width: 60rem) {
+	/* Sized by the space the section gets (FollowRail.astro's container), not the window. */
+	@container home (min-width: 44rem) {
 		.community {
 			grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
 			column-gap: 4rem;

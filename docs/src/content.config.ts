@@ -35,6 +35,9 @@ export const collections = {
 						image: z.string().optional(),
 						poster: z.string().optional(),
 						placeholder: z.string().optional(),
+						// Home only: the art follows the reader down the page (FollowRail.astro).
+						// On by default for a video; set it on a placeholder that stands in for one.
+						follow: z.boolean().optional(),
 					})
 					.optional(),
 				// Release tag whose files get download buttons under the title, from
