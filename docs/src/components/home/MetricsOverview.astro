@@ -1,8 +1,8 @@
 ---
-// Home: three figures from the Metrics page (all-time downloads, the most downloaded release,
-// and page views) and a link to the page. Only real counts; a figure without data is left out,
+// Home: four figures from the Metrics page (all-time downloads, the most downloaded release,
+// GitHub stars and page views) and a link to the page. Only real counts; a figure without data is left out,
 // and with none at all the section says the numbers are on their way.
-import { allReleases, releaseDownloads, views } from '../../data/metrics';
+import { allReleases, releaseDownloads, stars, views } from '../../data/metrics';
 import { number } from '../../data/figures';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -15,6 +15,7 @@ const top = [...counted].sort((a, b) => b.value - a.value)[0];
 const figures = [
 	total > 0 && { value: number(total), label: 'downloads, all releases' },
 	top && { value: top.label, label: `most downloaded, ${number(top.value)} times` },
+	stars && stars.total > 0 && { value: number(stars.total), label: 'stars on GitHub' },
 	views && views.total > 0 && { value: number(views.total), label: 'page views on this site' },
 ].filter(Boolean) as { value: string; label: string }[];
 ---
@@ -54,29 +55,37 @@ const figures = [
 		color: var(--gr-text-strong);
 	}
 
+	/* Each figure is a two-row subgrid (number, then label), so every number sits on the same
+	   line even when one label wraps to two lines. */
 	dl {
 		display: grid;
-		gap: 1.5rem 3rem;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 2.5rem 3rem;
 		margin: 0;
 	}
 
 	dl > div {
-		display: flex;
-		flex-direction: column-reverse;
-		gap: 0.35rem;
+		display: grid;
+		grid-row: span 2;
+		grid-template-rows: subgrid;
+		row-gap: 0.5rem;
 	}
 
+
 	dd {
+		grid-row: 1;
+		align-self: end;
 		margin: 0;
 		font-family: var(--gr-font-display);
 		font-stretch: var(--gr-display-stretch);
 		font-weight: 850;
-		font-size: clamp(3rem, 7vw, 5rem);
+		font-size: clamp(2.5rem, 5vw, 4rem);
 		line-height: 0.9;
 		color: var(--gr-text-strong);
 	}
 
 	dt {
+		grid-row: 2;
 		color: var(--gr-muted);
 		font-weight: 600;
 	}
@@ -103,9 +112,10 @@ const figures = [
 		color: var(--gr-base);
 	}
 
-	@media (min-width: 50rem) {
+	@media (min-width: 60rem) {
 		dl {
-			grid-template-columns: repeat(3, minmax(0, 1fr));
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+			column-gap: 4.5rem;
 		}
 	}
 </style>

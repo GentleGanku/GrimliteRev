@@ -38,7 +38,9 @@ const art = page?.data.titleVideo?.poster;
 	.spotlight {
 		display: grid;
 		gap: 3rem;
-		margin-top: 3rem;
+		/* Pulls up over Starlight's padding between the title panel and the content (1.5rem
+		   each), so the book edge meets the bottom of the hero with no gap. */
+		margin-top: -3rem;
 		padding-block: 3.5rem 4rem;
 	}
 

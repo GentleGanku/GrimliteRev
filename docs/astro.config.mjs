@@ -13,11 +13,13 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'Grimlite Rev',
+			routeMiddleware: './src/routeData.ts',
 			components: {
 				Header: './src/components/Header.astro',
 				SiteTitle: './src/components/SiteTitle.astro',
 				PageTitle: './src/components/PageTitle.astro',
 				MarkdownContent: './src/components/MarkdownContent.astro',
+				Footer: './src/components/Footer.astro',
 			},
 			favicon: '/favicon.png',
 			customCss: ['./src/styles/theme.css', './src/styles/fixes.css'],

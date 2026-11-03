@@ -1,7 +1,9 @@
 ---
-// Every changelog, newest first, behind one button under the poster's downloads. The list opens
-// as a native popover, so Escape and a click outside close it without extra script. The order
-// comes from the sidebar config.
+// Every changelog, newest first, behind a "See more app versions" link under the poster's
+// downloads. It's a button styled as a link, because it opens the list in place instead of
+// going somewhere: a native popover, so Escape and a click outside close it without extra
+// script. The list follows the theme picked in the header (.gr-themed), not the dark poster it
+// opens from. The order comes from the sidebar config.
 import { changelogLinks } from '../../data/changelogs';
 
 const links = changelogLinks(Astro.locals.starlightRoute.sidebar as never);
@@ -11,14 +13,11 @@ const links = changelogLinks(Astro.locals.starlightRoute.sidebar as never);
 	links.length > 1 && (
 		<div class="picker">
 			<button type="button" class="open" popovertarget="all-versions" aria-haspopup="true">
-				<span>All versions</span>
-				<svg viewBox="0 0 24 24" aria-hidden="true">
-					<path d="m6 9 6 6 6-6" />
-				</svg>
+				See more app versions
 			</button>
-			<div id="all-versions" class="list gr-dark" popover aria-labelledby="all-versions-title">
+			<div id="all-versions" class="list gr-themed" popover aria-labelledby="all-versions-title">
 				<div class="head">
-					<p id="all-versions-title">All versions</p>
+					<p id="all-versions-title">App versions</p>
 					<button type="button" class="close" popovertarget="all-versions" popovertargetaction="hide" aria-label="Close the version list">
 						<svg viewBox="0 0 24 24" aria-hidden="true">
 							<path d="M6 6l12 12M18 6 6 18" />
@@ -41,28 +40,31 @@ const links = changelogLinks(Astro.locals.starlightRoute.sidebar as never);
 }
 
 <style>
-	.open {
+	.picker {
 		display: flex;
+		justify-content: flex-end;
+	}
+
+	.open {
+		display: inline-flex;
 		align-items: center;
-		justify-content: space-between;
-		gap: 0.5rem;
-		width: 100%;
 		min-height: 44px;
-		padding: 0 0.9rem;
-		border: 1px dashed var(--gr-line);
-		border-radius: 0.375rem;
+		padding: 0;
+		border: 0;
 		background: transparent;
 		color: var(--gr-text-strong);
 		font: inherit;
 		font-size: var(--sl-text-sm);
 		font-weight: 600;
-		text-align: start;
+		text-decoration: underline;
+		text-decoration-color: var(--gr-muted);
+		text-underline-offset: 0.3em;
 		cursor: pointer;
 	}
 
 	.open:hover {
-		border-style: solid;
-		border-color: var(--gr-text);
+		text-decoration-color: var(--gr-accent);
+		text-decoration-thickness: 2px;
 	}
 
 	svg {

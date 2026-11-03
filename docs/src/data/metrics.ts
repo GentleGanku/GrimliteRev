@@ -84,3 +84,13 @@ export interface History {
 
 export const views: Views | null = readMetrics('views.json');
 export const history: History | null = readMetrics('history.json');
+
+// The repository's GitHub stars: the total and the day each was given, oldest first (written by
+// scripts/downloads-chart.mjs; null when GitHub couldn't be read).
+export interface Stars {
+	updated: string;
+	total: number;
+	dates: string[];
+}
+
+export const stars: Stars | null = readMetrics('stars.json');

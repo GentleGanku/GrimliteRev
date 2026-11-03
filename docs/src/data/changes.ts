@@ -8,11 +8,13 @@
 // Markdown is reduced to plain text. Lines keep their order in the changelog.
 export type Group = 'added' | 'changed' | 'fixed' | 'removed';
 
-export const GROUPS: { id: Group; label: string }[] = [
-	{ id: 'added', label: 'added' },
-	{ id: 'changed', label: 'changed' },
-	{ id: 'fixed', label: 'fixed' },
-	{ id: 'removed', label: 'removed' },
+// Each group is labelled with what its lines are about and what happened to them, in singular
+// and plural ("1 feature added", "6 bugs fixed").
+export const GROUPS: { id: Group; one: string; many: string }[] = [
+	{ id: 'added', one: 'feature added', many: 'features added' },
+	{ id: 'changed', one: 'feature changed', many: 'features changed' },
+	{ id: 'fixed', one: 'bug fixed', many: 'bugs fixed' },
+	{ id: 'removed', one: 'misc. item removed', many: 'misc. items removed' },
 ];
 
 const VERBS: Record<string, Group> = {

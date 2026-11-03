@@ -1,0 +1,213 @@
+---
+// GitHub stars over time, drawn at build time from public/metrics/stars.json. GitHub records
+// the day each star was given. The chart has one point per month that gained stars (the running
+// total after that month's last star, placed on that day), joined by straight lines; a point
+// shows its total when hovered, and every month is also listed for screen readers below. Removed stars aren't in GitHub's list, so the line
+// shows today's stargazers by the day they starred.
+import { stars } from '../../data/metrics';
+import { compact, longDate, niceStep, number } from '../../data/figures';
+import { LabelPlacer } from './labels';
+
+const W = 720;
+const H = 260;
+const P = { left: 56, right: 24, top: 28, bottom: 44 };
+
+const dates = stars?.dates ?? [];
+const ok = dates.length > 0;
+
+const t = (d: string) => Date.parse(`${d.slice(0, 10)}T00:00:00Z`);
+const start = ok ? t(dates[0]) - 30 * 864e5 : 0;
+const end = ok ? Math.max(t(stars!.updated), t(dates.at(-1)!)) + 30 * 864e5 : 1;
+const step = niceStep(dates.length);
+const yMax = Math.max(Math.ceil(dates.length / step) * step, step);
+
+const x = (d: string) => P.left + ((t(d) - start) / (end - start)) * (W - P.left - P.right);
+const y = (n: number) => H - P.bottom - (n / yMax) * (H - P.top - P.bottom);
+const f = (n: number) => n.toFixed(1);
+
+// One point per month with stars: the running total after its last star.
+const months: { date: string; total: number }[] = [];
+dates.forEach((d, i) => {
+	if (months.at(-1)?.date.slice(0, 7) === d.slice(0, 7)) months.at(-1)!.date = d;
+	else months.push({ date: d, total: 0 });
+	months.at(-1)!.total = i + 1;
+});
+const dots = months.map((m) => ({ x: x(m.date), y: y(m.total), total: m.total }));
+// The line starts from zero on the first of the first star's month.
+const originDate = ok ? `${dates[0].slice(0, 7)}-01` : '';
+const line = ok && x(originDate) < dots[0].x ? [{ x: x(originDate), y: y(0) }, ...dots] : dots;
+
+// Straight from month to month with sharp corners: the same stroke as the downloads chart.
+const path = line.map((p, i) => `${i ? 'L' : 'M'}${f(p.x)},${f(p.y)}`).join(' ');
+
+// The newest total is always shown, set large. Each other month shows its own total only while
+// its point is hovered: just above the point, or below it near the top edge.
+const placer = new LabelPlacer({ x0: 0, y0: 0, x1: W, y1: H - P.bottom - 2 });
+for (let i = 1; i < line.length; i++) placer.line(line[i - 1].x, line[i - 1].y, line[i].x, line[i].y);
+for (const d of dots) placer.point(d.x, d.y, 4);
+const newest = dots.at(-1);
+const newestSpot = newest ? placer.place(newest.x, newest.y, number(newest.total).length * 26 * 0.45, 26, true) : null;
+const monthName = (iso: string) =>
+	new Date(`${iso.slice(0, 7)}-01T00:00:00Z`).toLocaleDateString('en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+const hovers = months.slice(0, -1).map((m, i) => {
+	const d = dots[i];
+	const above = d.y - 12 > 14;
+	return { ...d, month: monthName(m.date), tx: Math.min(Math.max(d.x, 14), W - 14), ty: above ? d.y - 12 : d.y + 22 };
+});
+
+const ticks = Array.from({ length: Math.round(yMax / step) + 1 }, (_, i) => i * step);
+const years: number[] = [];
+if (ok) for (let yr = new Date(start).getUTCFullYear() + 1; Date.UTC(yr, 0, 1) < end; yr++) years.push(yr);
+const yearX = (yr: number) => P.left + ((Date.UTC(yr, 0, 1) - start) / (end - start)) * (W - P.left - P.right);
+---
+
+{
+	ok && (
+		<figure class="chart">
+			<svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="stars-title stars-desc">
+				<title id="stars-title">GitHub stars over time</title>
+				<desc id="stars-desc">
+					{`${number(dates.length)} stars, the first on ${longDate(dates[0])} and the latest on ${longDate(dates.at(-1)!)}.`}
+				</desc>
+				{ticks.map((n) => (
+					<g class="grid">
+						<line x1={P.left} x2={W - P.right} y1={y(n)} y2={y(n)} />
+						<text x={P.left - 10} y={y(n) + 4} text-anchor="end">
+							{compact(n)}
+						</text>
+					</g>
+				))}
+				{years.map((yr) => (
+					<text class="year" x={yearX(yr)} y={H - 14} text-anchor="middle">
+						{yr}
+					</text>
+				))}
+				<path class="line" d={path} />
+				{hovers.map((h) => (
+					<g class="pt">
+						<title>{`${h.month}: ${number(h.total)} stars`}</title>
+						<circle class="hit" cx={h.x} cy={h.y} r="10" />
+						<circle class="dot" cx={h.x} cy={h.y} r="3.5" />
+						<text class="mark" x={h.tx} y={h.ty} text-anchor="middle">
+							{h.total}
+						</text>
+					</g>
+				))}
+				{newest && <circle class="dot" cx={newest.x} cy={newest.y} r="4.5" />}
+				{newest && newestSpot && (
+					<text class="latest" x={newestSpot.x} y={newestSpot.y} text-anchor={newestSpot.anchor}>
+						{number(newest.total)}
+					</text>
+				)}
+			</svg>
+			<table class="sr-only">
+				<caption>GitHub stars by month</caption>
+				<tr>
+					<th scope="col">Month</th>
+					<th scope="col">Stars</th>
+				</tr>
+				{months.map((m) => (
+					<tr>
+						<td>{monthName(m.date)}</td>
+						<td>{m.total}</td>
+					</tr>
+				))}
+			</table>
+			<figcaption>
+				<span class="key">Stars on the repository, the running total for each month that gained stars. The first was on {longDate(dates[0])}.</span>
+			</figcaption>
+		</figure>
+	)
+}
+
+<style>
+	/* The chart is drawn at 720 units wide, so its text shows near its set size on a wide screen.
+	   On a phone it keeps 40rem of width and scrolls sideways instead of shrinking the labels. */
+	.chart {
+		margin: 0;
+		overflow-x: auto;
+	}
+
+	svg {
+		display: block;
+		width: 100%;
+		min-width: 40rem;
+		height: auto;
+	}
+
+	.grid line {
+		stroke: var(--gr-line);
+		stroke-width: 1;
+	}
+
+	.grid text,
+	.year {
+		fill: var(--gr-muted);
+		font-size: 13px;
+	}
+
+	/* The same stroke as the downloads chart: accent, 3px, straight with sharp corners. */
+	.line {
+		fill: none;
+		stroke: var(--gr-accent);
+		stroke-width: 3;
+		stroke-linejoin: miter;
+		stroke-miterlimit: 10;
+	}
+
+	.hit {
+		fill: transparent;
+	}
+
+	/* A month's total shows only while its point is hovered, with a ring of the page colour so
+	   it stays readable over the line. */
+	.pt .mark {
+		opacity: 0;
+		pointer-events: none;
+		paint-order: stroke;
+		stroke: var(--gr-base);
+		stroke-width: 4px;
+		stroke-linejoin: round;
+	}
+
+	.pt:hover .mark {
+		opacity: 1;
+	}
+
+	.pt:hover .dot {
+		r: 5px;
+	}
+
+	.dot {
+		fill: var(--gr-accent);
+	}
+
+	.mark {
+		fill: var(--gr-text-strong);
+		font-size: 14px;
+		font-weight: 700;
+	}
+
+	.latest {
+		fill: var(--gr-text-strong);
+		font-family: var(--gr-font-display);
+		font-stretch: var(--gr-display-stretch);
+		font-weight: 850;
+		font-size: 26px;
+	}
+
+	figcaption {
+		margin-top: 0.75rem;
+		font-size: var(--sl-text-sm);
+		color: var(--gr-muted);
+	}
+
+	.key::before {
+		content: '';
+		display: inline-block;
+		width: 1.75rem;
+		margin-right: 0.5rem;
+		vertical-align: middle;
+		border-top: 3px solid var(--gr-accent);
+	}
+</style>

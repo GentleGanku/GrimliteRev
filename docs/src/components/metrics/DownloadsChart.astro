@@ -2,14 +2,19 @@
 // Total downloads over time, drawn at build time from the history behind the README chart
 // (public/metrics/history.json, see scripts/downloads-chart.mjs). GitHub keeps no download
 // dates, so the chart has two parts, and says so:
-//   - Dashed steps: each release's count as of the first recording, placed at its release date.
+//   - Dashed: the running total after each release, counted on the first recording and placed
+//     at its release date, joined by straight lines.
 //   - Solid line and dots: the all-release total recorded once a month since then.
+// Every checkpoint carries its total: each release step the running total after that release,
+// each recorded month its total, as a number beside its point. Labels never overlap (labels.ts);
+// one with no free spot is left out, except the newest total.
 import { history } from '../../data/metrics';
-import { longDate, number } from '../../data/figures';
+import { compact, longDate, niceStep, number } from '../../data/figures';
+import { LabelPlacer } from './labels';
 
-const W = 960;
-const H = 340;
-const P = { left: 72, right: 24, top: 28, bottom: 44 };
+const W = 720;
+const H = 300;
+const P = { left: 56, right: 24, top: 28, bottom: 44 };
 
 const steps = history?.baseline.releases ?? [];
 const points = history?.points ?? [];
@@ -21,43 +26,80 @@ const lastDate = points.at(-1)?.date ?? history?.baseline.recordedFrom ?? '';
 const end = ok ? Math.max(t(lastDate), t(steps.at(-1)!.published)) + 60 * 864e5 : 1;
 const stepTotal = steps.reduce((sum, r) => sum + r.downloads, 0);
 const top = Math.max(stepTotal, ...points.map((p) => p.total), 1);
-const step = (() => {
-	const rough = top / 4;
-	const power = 10 ** Math.floor(Math.log10(rough));
-	return [1, 2, 2.5, 5, 10].map((m) => m * power).find((s) => s >= rough)!;
-})();
+const step = niceStep(top);
 const yMax = Math.ceil(top / step) * step;
 
 const x = (d: string) => P.left + ((t(d) - start) / (end - start)) * (W - P.left - P.right);
 const y = (n: number) => H - P.bottom - (n / yMax) * (H - P.top - P.bottom);
 const f = (n: number) => n.toFixed(1);
 
+// Labels may use the margin left of the plot, except where the y-axis numbers are.
+const placer = new LabelPlacer({ x0: 0, y0: 0, x1: W, y1: H - P.bottom - 2 });
+for (let n = 0; n <= yMax; n += step) placer.block(P.left - 44, y(n) - 8, 36, 16);
+const textWidth = (text: string, size: number, em = 0.58) => text.length * size * em;
+
 let sum = 0;
 let stepPath = '';
-const marks: { x: number; y: number; label: string; n: number }[] = [];
+let prev: { x: number; y: number } | null = null;
+const corners: { x: number; y: number; total: number; label: string; downloads: number }[] = [];
 for (const r of steps) {
 	const px = x(r.published);
-	stepPath += stepPath ? ` H${f(px)} V${f(y(sum + r.downloads))}` : `M${f(px)},${f(y(0))} V${f(y(r.downloads))}`;
+	const before = sum;
 	sum += r.downloads;
-	if (r.downloads / Math.max(stepTotal, 1) >= 0.04) marks.push({ x: px, y: y(sum), label: r.label, n: r.downloads });
-}
-// Step labels never overlap: the bigger release keeps its spot, a smaller one too close to a
-// label already placed is left out (its count is on the per-release list below).
-const placed: typeof marks = [];
-for (const m of [...marks].sort((a, b) => b.n - a.n)) {
-	if (placed.every((p) => Math.abs(p.x - m.x) > 110 || Math.abs(p.y - m.y) > 18)) placed.push(m);
+	// Straight from one release's running total to the next: sharp corners, no stairs.
+	if (sum === before && prev) continue;
+	stepPath += stepPath ? ` L${f(px)},${f(y(sum))}` : `M${f(px)},${f(y(sum))}`;
+	if (prev) placer.line(prev.x, prev.y, px, y(sum));
+	prev = { x: px, y: y(sum) };
+	// A release with no downloads (v1.1) sits on the previous step, so it gets no label of its own.
+	if (r.downloads > 0) corners.push({ x: px, y: y(sum), total: sum, label: r.label, downloads: r.downloads });
 }
 const recordedStart = history?.baseline.recordedFrom ?? lastDate;
-if (ok) stepPath += ` H${f(x(recordedStart))}`;
-const linePath = points.length
-	? `M${f(x(recordedStart))},${f(y(stepTotal))} ` + points.map((p) => `L${f(x(p.date))},${f(y(p.total))}`).join(' ')
+if (ok) {
+	stepPath += ` L${f(x(recordedStart))},${f(y(stepTotal))}`;
+	if (prev) placer.line(prev.x, prev.y, x(recordedStart), prev.y);
+}
+
+const dots = points.map((p) => ({ x: x(p.date), y: y(p.total), total: p.total }));
+const linePath = dots.length
+	? `M${f(x(recordedStart))},${f(y(stepTotal))} ` + dots.map((d) => `L${f(d.x)},${f(d.y)}`).join(' ')
 	: '';
+let from = { x: x(recordedStart), y: y(stepTotal) };
+for (const d of dots) {
+	placer.line(from.x, from.y, d.x, d.y);
+	from = d;
+}
+for (const c of corners) placer.point(c.x, c.y, 4);
+for (const d of dots) placer.point(d.x, d.y, 6);
+
+// Most important first: the newest total, then the releases by their own size, then the older
+// months, newest first.
+const newest = dots.at(-1);
 const latest = points.at(-1);
+const newestSpot = newest ? placer.place(newest.x, newest.y, textWidth(number(newest.total), 26, 0.45), 26, true) : null;
+// A release label that finds no spot as a full number tries the compact form ("67.8k").
+const short = (n: number) => (n >= 1e3 ? `${+(n / 1e3).toFixed(1)}k` : String(n));
+const stepLabels = [...corners]
+	.sort((a, b) => b.downloads - a.downloads)
+	.map((c) => {
+		for (const text of [number(c.total), short(c.total)]) {
+			const spot = placer.place(c.x, c.y, textWidth(text, 13), 16);
+			if (spot) return { ...c, text, spot };
+		}
+		return null;
+	})
+	.filter((c) => c !== null);
+const dotLabels = dots
+	.slice(0, -1)
+	.reverse()
+	.map((d) => ({ ...d, spot: placer.place(d.x, d.y, textWidth(number(d.total), 13), 16) }))
+	.filter((d) => d.spot)
+	.map((d) => ({ ...d, spot: d.spot! }));
+
 const ticks = Array.from({ length: Math.round(yMax / step) + 1 }, (_, i) => i * step);
 const years: number[] = [];
 if (ok) for (let yr = new Date(start).getUTCFullYear() + 1; Date.UTC(yr, 0, 1) < end; yr++) years.push(yr);
 const yearX = (yr: number) => P.left + ((Date.UTC(yr, 0, 1) - start) / (end - start)) * (W - P.left - P.right);
-const compact = (n: number) => (n >= 1e6 ? `${n / 1e6}M` : n >= 1e3 ? `${n / 1e3}k` : String(n));
 ---
 
 {
@@ -83,22 +125,30 @@ const compact = (n: number) => (n >= 1e6 ? `${n / 1e6}M` : n >= 1e3 ? `${n / 1e3
 				))}
 				<path class="steps" d={stepPath} />
 				{linePath && <path class="line" d={linePath} />}
-				{points.map((p) => (
-					<circle class="dot" cx={x(p.date)} cy={y(p.total)} r="5" />
+				{corners.map((c) => (
+					<circle class="corner" cx={c.x} cy={c.y} r="3.5" />
 				))}
-				{placed.map((m) => (
-					<text class="mark" x={m.x + 6} y={m.y - 8}>
-						{m.label}
+				{dots.map((d) => (
+					<circle class="dot" cx={d.x} cy={d.y} r="5" />
+				))}
+				{stepLabels.map((c) => (
+					<text class="mark" x={c.spot.x} y={c.spot.y} text-anchor={c.spot.anchor}>
+						{c.text}
 					</text>
 				))}
-				{latest && (
-					<text class="latest" x={x(latest.date) - 10} y={y(latest.total) - 14} text-anchor="end">
-						{number(latest.total)}
+				{dotLabels.map((d) => (
+					<text class="mark" x={d.spot.x} y={d.spot.y} text-anchor={d.spot.anchor}>
+						{number(d.total)}
+					</text>
+				))}
+				{newest && newestSpot && (
+					<text class="latest" x={newestSpot.x} y={newestSpot.y} text-anchor={newestSpot.anchor}>
+						{number(newest.total)}
 					</text>
 				)}
 			</svg>
 			<figcaption>
-				<span class="key dashed">Each release's count on {longDate(recordedStart)}, at its release date</span>
+				<span class="key dashed">Running total by release date, each release counted on {longDate(recordedStart)}</span>
 				<span class="key solid">Recorded total, once a month</span>
 			</figcaption>
 		</figure>
@@ -108,15 +158,18 @@ const compact = (n: number) => (n >= 1e6 ? `${n / 1e6}M` : n >= 1e3 ? `${n / 1e3
 }
 
 <style>
+	/* The chart is drawn at 720 units wide, so its text shows near its set size on a wide screen.
+	   On a phone it keeps 40rem of width and scrolls sideways instead of shrinking the labels. */
 	.chart {
 		margin: 0;
+		overflow-x: auto;
 	}
 
 	svg {
 		display: block;
 		width: 100%;
+		min-width: 40rem;
 		height: auto;
-		overflow: visible;
 	}
 
 	.grid line {
@@ -130,25 +183,32 @@ const compact = (n: number) => (n >= 1e6 ? `${n / 1e6}M` : n >= 1e3 ? `${n / 1e3
 		font-size: 13px;
 	}
 
-	.steps {
-		fill: none;
-		stroke: var(--gr-muted);
-		stroke-width: 2;
-		stroke-dasharray: 6 5;
-	}
-
+	/* One stroke for both Metrics charts (see StarsChart.astro): accent, 3px, straight segments
+	   with sharp corners. The release part is dashed, because those totals were counted later. */
+	.steps,
 	.line {
 		fill: none;
 		stroke: var(--gr-accent);
 		stroke-width: 3;
+		stroke-linejoin: miter;
+		stroke-miterlimit: 10;
 	}
+
+	.steps {
+		stroke-dasharray: 8 5;
+	}
+
 
 	.dot {
 		fill: var(--gr-accent);
 	}
 
+	.corner {
+		fill: var(--gr-accent);
+	}
+
 	.mark {
-		fill: var(--gr-text);
+		fill: var(--gr-text-strong);
 		font-size: 13px;
 		font-weight: 700;
 	}
@@ -176,7 +236,7 @@ const compact = (n: number) => (n >= 1e6 ? `${n / 1e6}M` : n >= 1e3 ? `${n / 1e3
 		width: 1.75rem;
 		margin-right: 0.5rem;
 		vertical-align: middle;
-		border-top: 2px dashed var(--gr-muted);
+		border-top: 3px dashed var(--gr-accent);
 	}
 
 	.key.solid::before {

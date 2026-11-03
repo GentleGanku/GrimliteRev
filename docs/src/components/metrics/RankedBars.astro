@@ -1,7 +1,8 @@
 ---
 // A ranked list with a bar per row, its length relative to the first row. Used for downloads per
 // release, countries and most-viewed pages. The first row's bar is the accent; the rest are
-// neutral, so the leader reads at a glance.
+// neutral, so the leader reads at a glance. Every row shares the list's columns (subgrid), so all
+// tracks are the same width and bar lengths compare fairly, whatever each row's value text is.
 import { number } from '../../data/figures';
 
 interface Row {
@@ -42,7 +43,8 @@ const max = Math.max(...rows.map((r) => r.value), 1);
 <style>
 	.bars {
 		display: grid;
-		gap: 0.75rem;
+		grid-template-columns: minmax(6rem, 11rem) minmax(0, 1fr) max-content;
+		gap: 0.75rem 1rem;
 		margin: 0;
 		padding: 0;
 		list-style: none;
@@ -50,9 +52,10 @@ const max = Math.max(...rows.map((r) => r.value), 1);
 
 	li {
 		display: grid;
-		grid-template-columns: minmax(6rem, 11rem) minmax(0, 1fr) auto;
+		grid-column: 1 / -1;
+		grid-template-columns: subgrid;
 		align-items: center;
-		gap: 0.25rem 1rem;
+		row-gap: 0.25rem;
 	}
 
 	.label {
@@ -118,8 +121,8 @@ const max = Math.max(...rows.map((r) => r.value), 1);
 	}
 
 	@media (width < 40rem) {
-		li {
-			grid-template-columns: minmax(0, 1fr) auto;
+		.bars {
+			grid-template-columns: minmax(0, 1fr) max-content;
 		}
 
 		.track {

@@ -10,7 +10,6 @@
 import DownloadButtons from './DownloadButtons.astro';
 import HomePoster from './showcase/HomePoster.astro';
 import NoteCard from './showcase/NoteCard.astro';
-import Overview from './showcase/Overview.astro';
 import Presenting from './showcase/Presenting.astro';
 import ReleasePoster from './showcase/ReleasePoster.astro';
 import Stops from './showcase/Stops.astro';
@@ -32,7 +31,10 @@ const date = published
 		})
 	: undefined;
 const isLatest = release !== undefined && release === latestRelease?.tag;
-const stamp = showcase?.stamp ?? (isLatest ? 'Latest release' : undefined);
+// One stamp carries the release date, and says so when this is the newest release: "Latest
+// release since 15 October 2026". Older pages show the date (or the build's date range) alone.
+const when = showcase?.kicker ?? date;
+const stamp = showcase?.stamp ?? (isLatest ? (when ? `Latest release since ${when}` : 'Latest release') : when);
 const media = heroMedia ?? (titleVideo ? { video: titleVideo.src, poster: titleVideo.poster } : { placeholder: `${title} art` });
 const hasHighlights = showcase?.kind === 'release' && showcase.presenting !== undefined;
 ---
@@ -42,8 +44,7 @@ const hasHighlights = showcase?.kind === 'release' && showcase.presenting !== un
 		<HomePoster intro={showcase.intro} stamp={showcase.stamp} media={media} />
 	) : showcase ? (
 		<>
-			<ReleasePoster title={title} kicker={showcase.kicker ?? date} stamp={stamp} release={release} media={media} />
-			<Overview body={entry.body} tinted={!hasHighlights} />
+			<ReleasePoster title={title} stamp={stamp} release={release} media={media} />
 			{hasHighlights && showcase.presenting && (
 				<section class="highlights gr-bleed gr-tinted" aria-labelledby="highlights">
 					<Presenting id="highlights" {...showcase.presenting} />
@@ -77,7 +78,7 @@ const hasHighlights = showcase?.kind === 'release' && showcase.presenting !== un
 	.highlights {
 		display: grid;
 		gap: 3rem;
-		margin-top: 3rem;
+		margin-top: 0;
 		padding-block: 3.5rem 4.5rem;
 	}
 

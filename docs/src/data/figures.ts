@@ -22,3 +22,13 @@ export function countryName(code: string) {
 		return code;
 	}
 }
+
+// A round step for a chart's y axis that gives about four gridlines up to `max`.
+export function niceStep(max: number) {
+	const rough = Math.max(max, 1) / 4;
+	const power = 10 ** Math.floor(Math.log10(rough));
+	return [1, 2, 2.5, 5, 10].map((m) => m * power).find((s) => s >= rough)!;
+}
+
+// Axis labels: 400000 -> "400k".
+export const compact = (n: number) => (n >= 1e6 ? `${n / 1e6}M` : n >= 1e3 ? `${n / 1e3}k` : String(n));

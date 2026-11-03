@@ -9,6 +9,9 @@
 //   votes.json                               Roadmap votes per item, from the counter Worker
 //   views.json                               the site's page views per path, from the counter
 //                                            Worker (for the Metrics page)
+//   stars.json                               the repository's star count and the day each star
+//                                            was given, from GitHub (for the Metrics page; no
+//                                            user names are kept)
 //
 // GitHub keeps only a running download total per release file, with no dates, so the
 // chart has two parts:
@@ -76,6 +79,26 @@ async function fetchReleases() {
 				.sort((a, b) => FILE_ORDER.indexOf(a.key) - FILE_ORDER.indexOf(b.key)),
 		}))
 		.sort((a, b) => a.published.localeCompare(b.published));
+}
+
+// The day each of the repository's stars was given, oldest first, or null when GitHub can't
+// be read. The star+json media type adds `starred_at` to each stargazer; only that is kept.
+async function fetchStars() {
+	const headers = { Accept: 'application/vnd.github.star+json', 'User-Agent': 'grimlite-rev-docs' };
+	if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+	const dates = [];
+	try {
+		for (let url = `https://api.github.com/repos/${REPO}/stargazers?per_page=100`; url; ) {
+			const res = await fetch(url, { headers, signal: AbortSignal.timeout(TIMEOUT) });
+			if (!res.ok) throw new Error(`answered ${res.status}`);
+			for (const star of await res.json()) dates.push(day(star.starred_at));
+			url = res.headers.get('link')?.match(/<([^>]+)>;\s*rel="next"/)?.[1];
+		}
+	} catch (err) {
+		console.warn(`downloads-chart: GitHub's star list is unavailable (${err.message})`);
+		return null;
+	}
+	return dates.sort();
 }
 
 // Returns the stored history, null when none exists yet (first run), or throws when it
@@ -289,7 +312,9 @@ if (releases) {
 // Without GitHub's data no downloads.json is written, and the buttons fall back to
 // src/data/releases.json without counts.
 const worker = await fetchWorkerCounts();
+const stars = await fetchStars();
 await mkdir(OUT_DIR, { recursive: true });
+if (stars) await writeFile(new URL('stars.json', OUT_DIR), JSON.stringify({ updated: today, total: stars.length, dates: stars }, null, 2) + '\n');
 if (history) await writeFile(new URL('history.json', OUT_DIR), JSON.stringify(history, null, 2) + '\n');
 if (releases) {
 	const countries = {};

@@ -1,30 +1,31 @@
 ---
 // The poster at the top of a changelog page: the release name set large over the release's art,
-// with a stamp label, and the downloads and the version list on its right. The title is split
+// with a stamp for its date (and "Latest release since" on the newest), and the downloads and
+// the version list on its right, centred in the banner's height. The downloads sit on the
+// stamp's line. The title is split
 // so the version, the part people scan for, is the biggest thing on it.
 //
-// The hero is an art area, so it keeps the dark palette in both themes. The art shows at full
-// strength; the text and the downloads each sit on a dark patch (78% Base), which keeps white
-// text above 8:1 whatever the art is. The bottom edge fades into the page instead of ending in
-// a hard line.
+// The hero fills the first screen. It is an art area, so it keeps the dark palette in both
+// themes. The art is dimmed to 38% over Base, so the text and the downloads sit straight on it:
+// even over pure white art the ground is no lighter than #72757a, where white text stays above
+// 4.5:1.
 import DownloadButtons from '../DownloadButtons.astro';
 import HeroMedia from './HeroMedia.astro';
 import ReleasePicker from './ReleasePicker.astro';
 
 interface Props {
 	title: string;
-	kicker?: string;
 	stamp?: string;
 	release?: string;
 	media: { video?: string; image?: string; poster?: string; placeholder?: string };
 }
 
-const { title, kicker, stamp, release, media } = Astro.props;
+const { title, stamp, release, media } = Astro.props;
 const match = title.match(/^(.*?)\s+(v\d.*)$/);
 const name = match?.[1] ?? '';
 const version = match?.[2] ?? title;
 // Build names ("v1.3 Skymeister Build") are set smaller than a bare version so they stay on two
-// lines.
+// lines, at the size the older builds' posters had before the downloads column was added.
 const long = version.length > 8;
 ---
 
@@ -33,16 +34,19 @@ const long = version.length > 8;
 		<HeroMedia {...media} />
 	</div>
 	<div class="inner">
-		<div class="copy">
-			{kicker && <p class="kicker">{kicker}</p>}
-			<h1 id="_top">
-				{name && <span class="name">{name}</span>}
-				<span class:list={['version', { long }]}>{version}</span>
-			</h1>
-			{stamp && <p class="gr-stamp stamp">{stamp}</p>}
-		</div>
-		<div class="side">
-			{release && <DownloadButtons tag={release} layout="stack" />}
+		<h1 id="_top">
+			{name && <span class="name">{name}</span>}
+			<span class:list={['version', { long }]}>{version}</span>
+		</h1>
+		{stamp && <p class="gr-stamp stamp">{stamp}</p>}
+		{
+			release && (
+				<div class="downloads">
+					<DownloadButtons tag={release} layout="stack" />
+				</div>
+			)
+		}
+		<div class="versions">
 			<ReleasePicker />
 		</div>
 	</div>
@@ -52,19 +56,26 @@ const long = version.length > 8;
 	.poster {
 		position: relative;
 		display: flex;
-		align-items: flex-end;
-		min-height: clamp(28rem, 72vh, 44rem);
+		align-items: center;
+		min-height: calc(100svh - var(--sl-nav-height));
 		margin-top: -1.5rem;
-		padding-block: 6rem 7rem;
+		padding-block: 4rem;
 		color: var(--gr-text);
 	}
 
-	/* The art fills the hero and fades out over its last 7rem, into the page below. */
+	/* The art fills the first screen and ends on a straight edge; the next section starts right
+	   there. */
 	.art {
 		position: absolute;
 		inset: 0;
 		background: var(--gr-base);
-		mask: linear-gradient(to bottom, #000 calc(100% - 7rem), transparent);
+	}
+
+	/* Only the picture is dimmed: the banner's focus ring and the placeholder's label stay at full
+	   strength. */
+	.art :global(video),
+	.art :global(img) {
+		opacity: 0.38;
 	}
 
 	.inner {
@@ -76,24 +87,8 @@ const long = version.length > 8;
 		pointer-events: none;
 	}
 
-	.copy,
-	.side {
+	.inner > * {
 		pointer-events: auto;
-	}
-
-	.copy {
-		justify-self: start;
-		max-width: 100%;
-		padding: 1.5rem 1.75rem 2.25rem;
-		background: rgb(28 32 40 / 0.78);
-		mask: var(--gr-book-edge-bottom) bottom / 100% 1rem no-repeat,
-			linear-gradient(#000, #000) top / 100% calc(100% - 1rem) no-repeat;
-	}
-
-	.kicker {
-		margin: 0 0 0.5rem;
-		font-weight: 600;
-		color: var(--gr-text);
 	}
 
 	h1 {
@@ -112,34 +107,52 @@ const long = version.length > 8;
 	}
 
 	.version {
-		font-size: clamp(3rem, 11vw, 8.5rem);
+		font-size: clamp(3.5rem, 13vw, 9.5rem);
 		letter-spacing: -0.02em;
 		overflow-wrap: anywhere;
 	}
 
 	.version.long {
-		font-size: clamp(2.75rem, 6.5vw, 5.5rem);
-		line-height: 0.92;
+		font-size: clamp(2.5rem, 6vw, 4.5rem);
+		line-height: 0.95;
 	}
 
 	.stamp {
-		margin: 1.25rem 0 0;
+		position: relative;
+		justify-self: start;
+		margin: 0;
 		transform: rotate(-3deg);
 		transform-origin: left center;
 	}
 
-	.side {
-		display: grid;
-		gap: 0.75rem;
-		align-content: end;
-		padding: 1rem;
-		background: rgb(28 32 40 / 0.78);
-	}
-
+	/* Wide screens: the title on top, then the stamp and the downloads on one line, then the
+	   version link under the downloads. */
 	@media (min-width: 60rem) {
 		.inner {
-			grid-template-columns: minmax(0, 1fr) 17rem;
-			align-items: end;
+			grid-template-columns: minmax(0, 1fr) auto;
+			grid-template-areas:
+				'title .'
+				'stamp downloads'
+				'. versions';
+			align-items: center;
+			row-gap: 0.25rem;
+		}
+
+		h1 {
+			grid-area: title;
+			margin-bottom: 1rem;
+		}
+
+		.stamp {
+			grid-area: stamp;
+		}
+
+		.downloads {
+			grid-area: downloads;
+		}
+
+		.versions {
+			grid-area: versions;
 		}
 	}
 </style>

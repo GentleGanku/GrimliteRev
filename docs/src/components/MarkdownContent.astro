@@ -2,10 +2,11 @@
 // Replaces Starlight's MarkdownContent. On showcase changelog pages (`showcase.kind` release or
 // build) the Markdown is the full changelog: it runs at the full section width on the left,
 // with a sticky "On this page" list of its headings on the right that marks the section being
-// read. On narrower screens that list is hidden and the jump bar above the changelog, which
-// stays under the header while you scroll, is the navigation. Other pages render as Starlight's.
+// read. On narrower screens that list is hidden and the changelog just scrolls. Other pages
+// render as Starlight's. The "What changed" counts (Overview.astro) close the changelog, as its
+// summary.
 import '@astrojs/starlight/style/markdown.css';
-import JumpLinks from './showcase/JumpLinks.astro';
+import Overview from './showcase/Overview.astro';
 
 const { entry, headings } = Astro.locals.starlightRoute;
 const kind = entry.data.showcase?.kind;
@@ -19,28 +20,31 @@ const label = (text: string) => {
 
 {
 	isChangelog ? (
-		<div class="changelog">
-			<div class="main">
-				<JumpLinks headings={headings} />
-				<div class="sl-markdown-content">
-					<slot />
+		<>
+			<div class="changelog">
+				<div class="main">
+					<h2 id="full-changelog" class="title">Full changelog</h2>
+					<div class="sl-markdown-content">
+						<slot />
+					</div>
 				</div>
+				{toc.length > 1 && (
+					<aside class="toc" aria-labelledby="toc-title">
+						<h2 id="toc-title">On this page</h2>
+						<ul>
+							{toc.map((h) => (
+								<li class={`depth-${h.depth}`}>
+									<a href={`#${h.slug}`} data-toc-link={h.slug}>
+										{label(h.text)}
+									</a>
+								</li>
+							))}
+						</ul>
+					</aside>
+				)}
 			</div>
-			{toc.length > 1 && (
-				<aside class="toc" aria-labelledby="toc-title">
-					<h2 id="toc-title">On this page</h2>
-					<ul>
-						{toc.map((h) => (
-							<li class={`depth-${h.depth}`}>
-								<a href={`#${h.slug}`} data-toc-link={h.slug}>
-									{label(h.text)}
-								</a>
-							</li>
-						))}
-					</ul>
-				</aside>
-			)}
-		</div>
+			<Overview body={entry.body} />
+		</>
 	) : (
 		<div class="sl-markdown-content">
 			<slot />
@@ -49,8 +53,8 @@ const label = (text: string) => {
 }
 
 <script>
-	// Marks the heading most recently scrolled past (or the first one) in "On this page" and in
-	// the jump bar, in page order.
+	// Marks the heading most recently scrolled past (or the first one) in "On this page", in page
+	// order.
 	const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')];
 	const ids = [...new Set(links.map((a) => a.dataset.tocLink!))];
 	const targets = ids
@@ -82,6 +86,16 @@ const label = (text: string) => {
 
 	.main {
 		min-width: 0;
+	}
+
+	.title {
+		margin: 3.5rem 0 1.5rem;
+		padding-bottom: 0.75rem;
+		border-bottom: 3px solid var(--gr-text-strong);
+		font-size: clamp(2rem, 5vw, 3rem);
+		line-height: 1;
+		color: var(--gr-text-strong);
+		scroll-margin-top: calc(var(--sl-nav-height) + 1rem);
 	}
 
 	.toc {

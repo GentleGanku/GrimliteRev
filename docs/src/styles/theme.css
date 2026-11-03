@@ -210,3 +210,19 @@ html {
 	--gr-on-accent: #1c2028;
 	color-scheme: dark;
 }
+
+/* Something that opens from inside an art area (the version list) but should follow the theme
+   chosen in the header gets the page's own tokens back. Starlight always resolves "Auto" to
+   data-theme light or dark, so this covers all three choices; in dark, .gr-dark already
+   matches the page. */
+:root[data-theme='light'] .gr-themed {
+	--gr-base: #f1f3f6;
+	--gr-surface: #e3e7ee;
+	--gr-text: #1c2028;
+	--gr-text-strong: #0f1217;
+	--gr-muted: #535a67;
+	--gr-line: #c5cbd5;
+	--gr-accent: #c4122f;
+	--gr-on-accent: #ffffff;
+	color-scheme: light;
+}

@@ -4,10 +4,13 @@
 // section starts below the fold instead of peeking in. The files come from the release data, so
 // the buttons follow each new release without editing the page.
 //
-// Like the release posters it is an art area: dark in both themes, the art at full strength,
-// and the text on a dark patch. The bottom fades into the page.
+// The original layout: the name set large at the top, what Grimlite Rev is on the left and the
+// download on the right. Like the release posters it is an art area: dark in both themes, the
+// art dimmed to 38% so the text sits straight on it (white stays above 4.5:1 even over white
+// art), and it ends on a straight edge where the next section starts.
 import HeroMedia from './HeroMedia.astro';
 import { downloadUrl, latestRelease } from '../../data/metrics';
+import { downloadData } from '../../data/downloads';
 
 interface Props {
 	intro?: string;
@@ -45,7 +48,12 @@ const changelog = latestRelease ? `${base}/changelog/${latestRelease.tag.replace
 			{
 				latestRelease && x64 && (
 					<div class="get">
-						<a class="download" href={downloadUrl(latestRelease.tag, x64)} title={x64.name}>
+						<a
+							class="download"
+							href={downloadUrl(latestRelease.tag, x64)}
+							title={x64.name}
+							{...downloadData(latestRelease, x64)}
+						>
 							<svg viewBox="0 0 24 24" aria-hidden="true">
 								<path d="M12 3v12m0 0-5-5m5 5 5-5M5 20h14" />
 							</svg>
@@ -61,7 +69,7 @@ const changelog = latestRelease ? `${base}/changelog/${latestRelease.tag.replace
 						{x86 && (
 							<p class="alt">
 								Try x64 first. If Grimlite Rev shows an error, or the PC is old or slow, use the{' '}
-								<a href={downloadUrl(latestRelease.tag, x86)} title={x86.name}>
+								<a href={downloadUrl(latestRelease.tag, x86)} title={x86.name} {...downloadData(latestRelease, x86)}>
 									x86 (32-bit) build
 								</a>{' '}
 								({mb(x86.size)}).
@@ -78,19 +86,22 @@ const changelog = latestRelease ? `${base}/changelog/${latestRelease.tag.replace
 	.home-poster {
 		position: relative;
 		display: flex;
-		align-items: center;
 		min-height: calc(100svh - var(--sl-nav-height));
 		margin-top: -1.5rem;
-		padding-block: 3rem 7rem;
-		color: var(--gr-text);
+		padding-block: 4.5rem 4rem;
+		color: #fff;
 	}
 
-	/* The art fills the hero and fades out over its last 7rem, into the page below. */
+	/* The art fills the first screen and ends on a straight edge. */
 	.art {
 		position: absolute;
 		inset: 0;
 		background: var(--gr-base);
-		mask: linear-gradient(to bottom, #000 calc(100% - 7rem), transparent);
+	}
+
+	.art :global(video),
+	.art :global(img) {
+		opacity: 0.38;
 	}
 
 	.content {
@@ -109,15 +120,11 @@ const changelog = latestRelease ? `${base}/changelog/${latestRelease.tag.replace
 		position: relative;
 		display: inline-block;
 		max-width: 100%;
-		padding: 1rem 1.5rem 1.75rem;
-		background: rgb(28 32 40 / 0.78);
-		mask: var(--gr-book-edge-bottom) bottom / 100% 1rem no-repeat,
-			linear-gradient(#000, #000) top / 100% calc(100% - 1rem) no-repeat;
 	}
 
 	h1 {
 		margin: 0;
-		font-size: clamp(4rem, 16vw, 12.5rem);
+		font-size: clamp(3.5rem, 13vw, 10rem);
 		line-height: 0.82;
 		letter-spacing: -0.03em;
 		color: #fff;
@@ -127,8 +134,8 @@ const changelog = latestRelease ? `${base}/changelog/${latestRelease.tag.replace
 	/* The stamp sits on the title's top edge, like a label stuck onto the poster. */
 	.stamp {
 		position: absolute;
-		top: 0.25rem;
-		right: 0.5rem;
+		top: -1.75rem;
+		right: -0.5rem;
 		display: inline-flex;
 		align-items: center;
 		min-height: 44px;
@@ -143,23 +150,16 @@ const changelog = latestRelease ? `${base}/changelog/${latestRelease.tag.replace
 
 	.row {
 		display: grid;
-		gap: 1.5rem;
-		margin-top: 1.5rem;
-	}
-
-	.intro,
-	.get {
-		padding: 1.25rem 1.5rem;
-		background: rgb(28 32 40 / 0.78);
+		gap: 2rem;
+		margin-top: 2.5rem;
 	}
 
 	.intro {
-		justify-self: start;
 		max-width: 34ch;
 		margin: 0;
 		font-size: clamp(1.2rem, 2.1vw, 1.5rem);
 		line-height: 1.4;
-		color: var(--gr-text-strong);
+		color: #fff;
 	}
 
 	.get {
@@ -175,6 +175,11 @@ const changelog = latestRelease ? `${base}/changelog/${latestRelease.tag.replace
 		background: var(--gr-accent);
 		color: var(--gr-on-accent);
 		text-decoration: none;
+	}
+
+	.download:focus-visible {
+		outline: 2px solid #fff;
+		outline-offset: 2px;
 	}
 
 	.download:hover .action {
@@ -217,18 +222,18 @@ const changelog = latestRelease ? `${base}/changelog/${latestRelease.tag.replace
 		max-width: 38ch;
 		margin: 1rem 0 0;
 		font-size: var(--sl-text-sm);
-		color: var(--gr-text);
+		color: #fff;
 	}
 
 	.alt a {
 		color: #fff;
-		font-weight: 600;
+		font-weight: 700;
 	}
 
 	@media (min-width: 50rem) {
 		.row {
 			grid-template-columns: minmax(0, 1fr) auto;
-			align-items: end;
+			align-items: start;
 		}
 
 		.get {
@@ -239,7 +244,7 @@ const changelog = latestRelease ? `${base}/changelog/${latestRelease.tag.replace
 	@media (width < 50rem) {
 		.stamp {
 			position: static;
-			margin-top: 0.75rem;
+			margin-top: 1rem;
 		}
 	}
 </style>

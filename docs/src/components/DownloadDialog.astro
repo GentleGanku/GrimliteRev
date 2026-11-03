@@ -1,0 +1,230 @@
+---
+// The "Make sure…" popup. Clicking any download link (`data-download`, set by
+// src/data/downloads.ts) opens it while the file downloads: the click isn't stopped, so the
+// Worker link counts and redirects to the file as before, and the page stays because the file
+// arrives as an attachment. The popup says what was downloaded and what the app needs to run:
+// the requirements and setup steps from Home's "New here?", and the 64-bit/32-bit advice with a
+// link to the other build. Plugin files get the Plugins folder instead. It uses the page's
+// tokens, so it follows the theme picked in the header.
+import { latestRelease } from '../data/metrics';
+
+const hasDownloads = latestRelease !== undefined;
+---
+
+{
+	hasDownloads && (
+		<dialog class="download-dialog not-content" aria-labelledby="dl-title" data-download-dialog>
+			<div class="body">
+				<h2 id="dl-title" tabindex="-1">Make sure Grimlite Rev can run</h2>
+				<p class="started">
+					Your download has started: <code data-slot="file" /> (<span data-slot="size" />).
+				</p>
+
+				<div data-slot="app">
+					<h3>You'll need</h3>
+					<ul>
+						<li>
+							Windows with{' '}
+							<a href="https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48" target="_blank" rel="noopener">
+								.NET Framework 4.8<span class="sr-only"> (opens in a new tab)</span>
+							</a>
+						</li>
+						<li>
+							The{' '}
+							<a href="https://gitlab.com/cleanflash/installer/-/releases" target="_blank" rel="noopener">
+								Clean Flash plugin<span class="sr-only"> (opens in a new tab)</span>
+							</a>, ActiveX version
+						</li>
+					</ul>
+
+					<p class="alt" data-slot="alt-x64">
+						If Grimlite Rev shows an error, or the PC is old or slow, get the{' '}
+						<a data-slot="alt-link" href="#" target="_blank" rel="noopener">x86 (32-bit) build</a> (<span data-slot="alt-size" />) instead.
+					</p>
+					<p class="alt" data-slot="alt-x86">
+						Most PCs run the <a data-slot="alt-link" href="#" target="_blank" rel="noopener">x64 (64-bit) build</a> (<span data-slot="alt-size" />)
+						best. Keep x86 for old or slow ones.
+					</p>
+
+					<h3>Set it up</h3>
+					<ol>
+						<li>Extract the zip file.</li>
+						<li>
+							Open the <code>Grimlite Rev</code> folder and run <code>Grimoire.exe</code>.
+						</li>
+					</ol>
+				</div>
+
+				<div data-slot="plugins">
+					<h3>Set it up</h3>
+					<p>
+						Extract the zip and put its DLLs in the <code>Plugins</code> folder next to <code>Grimoire.exe</code>.
+					</p>
+				</div>
+			</div>
+
+			<div class="actions">
+				<p>
+					Didn't start? <a data-slot="again" href="#" target="_blank" rel="noopener">Download it again</a>
+				</p>
+				<form method="dialog">
+					<button type="submit" class="close">Close</button>
+				</form>
+			</div>
+		</dialog>
+	)
+}
+
+<script>
+	const dialog = document.querySelector<HTMLDialogElement>('[data-download-dialog]');
+	if (dialog) {
+		const slot = (name: string) => [...dialog.querySelectorAll<HTMLElement>(`[data-slot="${name}"]`)];
+		document.addEventListener('click', (event) => {
+			const link = (event.target as Element | null)?.closest<HTMLAnchorElement>('a[data-download]');
+			if (!link || event.button !== 0) return;
+			const { file = '', size = '', key = '', altHref, altSize } = link.dataset;
+			const plugin = /plugins$/.test(key);
+			for (const el of slot('file')) el.textContent = file;
+			for (const el of slot('size')) el.textContent = size;
+			for (const el of slot('app')) el.hidden = plugin;
+			for (const el of slot('plugins')) el.hidden = !plugin;
+			for (const el of slot('alt-x64')) el.hidden = !(key === 'x64' && altHref);
+			for (const el of slot('alt-x86')) el.hidden = !(key === 'x86' && altHref);
+			for (const el of slot('alt-size')) el.textContent = altSize ?? '';
+			for (const el of slot('alt-link')) (el as HTMLAnchorElement).href = altHref ?? '#';
+			const again = slot('again')[0] as HTMLAnchorElement | undefined;
+			if (again) again.href = link.href;
+			if (!dialog.open) dialog.showModal();
+			dialog.querySelector<HTMLElement>('#dl-title')?.focus();
+		});
+		// A click on the dimmed backdrop (outside the box) closes it, like Escape.
+		dialog.addEventListener('click', (event) => {
+			if (event.target === dialog) dialog.close();
+		});
+	}
+</script>
+
+<style>
+	.download-dialog {
+		width: min(34rem, calc(100vw - 2rem));
+		max-height: calc(100vh - 2rem);
+		margin: auto;
+		padding: 0;
+		overflow: auto;
+		border: 1px solid var(--gr-line);
+		border-radius: 0.375rem;
+		background: var(--gr-base);
+		color: var(--gr-text);
+	}
+
+	.download-dialog::backdrop {
+		background: rgb(15 18 23 / 0.6);
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.download-dialog[open],
+		.download-dialog[open]::backdrop {
+			animation: dl-fade 120ms ease-out;
+		}
+	}
+
+	@keyframes dl-fade {
+		from {
+			opacity: 0;
+		}
+	}
+
+	.body {
+		padding: 1.5rem 1.5rem 0.5rem;
+	}
+
+	h2 {
+		margin: 0 0 0.75rem;
+		font-size: var(--sl-text-3xl);
+		line-height: 1;
+		color: var(--gr-text-strong);
+		outline: none;
+	}
+
+	h3 {
+		margin: 1.25rem 0 0.5rem;
+		font-size: var(--sl-text-xl);
+		color: var(--gr-text-strong);
+	}
+
+	p,
+	ul,
+	ol {
+		margin: 0;
+		line-height: 1.5;
+	}
+
+	ul,
+	ol {
+		display: grid;
+		gap: 0.25rem;
+		padding-inline-start: 1.25rem;
+	}
+
+	.started code {
+		overflow-wrap: anywhere;
+	}
+
+	.alt {
+		margin-top: 0.75rem;
+		padding: 0.75rem 1rem;
+		background: var(--gr-surface);
+		font-size: var(--sl-text-sm);
+	}
+
+	a {
+		color: var(--gr-text-strong);
+		font-weight: 600;
+		text-decoration-color: var(--gr-accent);
+		text-underline-offset: 0.2em;
+	}
+
+	code {
+		font-size: 0.9em;
+	}
+
+	[hidden] {
+		display: none;
+	}
+
+	.actions {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem 1.5rem;
+		margin-top: 1.25rem;
+		padding: 0.75rem 1.5rem;
+		border-top: 1px solid var(--gr-line);
+		font-size: var(--sl-text-sm);
+	}
+
+	.actions a {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+	}
+
+	.close {
+		min-height: 44px;
+		padding: 0 1.25rem;
+		border: 0;
+		border-radius: 0.375rem;
+		background: var(--gr-accent);
+		color: var(--gr-on-accent);
+		font: inherit;
+		font-weight: 700;
+		cursor: pointer;
+	}
+
+	.close:hover,
+	.close:focus-visible {
+		outline: 2px solid var(--gr-text-strong);
+		outline-offset: 2px;
+	}
+</style>

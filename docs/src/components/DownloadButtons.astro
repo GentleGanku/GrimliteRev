@@ -1,52 +1,72 @@
 ---
-// Download buttons for one release's files: what the file is ("x64 (64-bit)"), its size and how
-// many times it was downloaded. The file name isn't shown, because people pick by build, not by
-// name; it stays in the link's tooltip. The files and counts are GitHub's, read at build time;
-// the links go through the counter Worker, which notes the visitor's country
-// (see src/data/metrics.ts). `stack` is the narrow column on the right of a showcase poster.
+// Download buttons for one release's files: what the file is, its size and how many times it
+// was downloaded. The file name isn't shown, because people pick by build, not by name; it stays
+// in the link's tooltip. The files and counts are GitHub's, read at build time; the links go
+// through the counter Worker, which notes the visitor's country (see src/data/metrics.ts).
+// Clicking one also opens the "Make sure…" popup (DownloadDialog.astro) while the file downloads.
+//
+// `row` is the full-width set in a page's content ("x64 (64-bit)", size and count). `stack` is
+// the poster's: a row of narrow buttons, the build on top ("64-bit") and the size and count
+// below.
 import { downloadUrl, findRelease } from '../data/metrics';
+import { downloadData, LABELS, size } from '../data/downloads';
 
 interface Props {
 	tag: string;
 	layout?: 'row' | 'stack';
 }
 
-const LABELS: Record<string, string> = {
-	x64: 'x64 (64-bit)',
-	x86: 'x86 (32-bit)',
-	plugins: 'Plugins',
-	main: 'Grimlite Rev',
-	amogus: 'Amogus',
-	ipplugins: 'IP Plugins',
-};
+const SHORT: Record<string, string> = { x64: '64-bit', x86: '32-bit' };
 
 const { tag, layout = 'row' } = Astro.props;
 const release = findRelease(tag);
 const files = release?.files ?? [];
-const size = (bytes: number) =>
-	bytes >= 1e6 ? `${(bytes / 1e6).toFixed(1)} MB` : `${Math.round(bytes / 1e3)} KB`;
-const count = (n: number) => `${n.toLocaleString('en-US')} download${n === 1 ? '' : 's'}`;
+const plural = (n: number) => `${n.toLocaleString('en-US')} download${n === 1 ? '' : 's'}`;
 ---
 
 {
 	release && files.length > 0 && (
 		<ul class:list={['downloads', 'not-content', layout]} aria-label={`Download ${release.label}`}>
-			{files.map((file, i) => (
-				<li>
-					<a class:list={['download', { primary: i === 0 }]} href={downloadUrl(release.tag, file)} title={file.name}>
-						<svg viewBox="0 0 24 24" aria-hidden="true">
-							<path d="M12 3v12m0 0-5-5m5 5 5-5M5 20h14" />
-						</svg>
-						<span class="text">
-							<span class="label">{LABELS[file.key] ?? file.name}</span>
-							<span class="meta">
-								<span>{size(file.size)}</span>
-								{file.downloads !== undefined && <span>{count(file.downloads)}</span>}
+			{files.map((file, i) => {
+				const label = LABELS[file.key] ?? file.name;
+				const counted = file.downloads !== undefined;
+				return (
+					<li>
+						<a
+							class:list={['download', { primary: i === 0 }]}
+							href={downloadUrl(release.tag, file)}
+							title={file.name}
+							aria-label={
+								layout === 'stack'
+									? `Download ${label}, ${size(file.size)}${counted ? `, ${plural(file.downloads!)}` : ''}`
+									: undefined
+							}
+							{...downloadData(release, file)}
+						>
+							<svg viewBox="0 0 24 24" aria-hidden="true">
+								<path d="M12 3v12m0 0-5-5m5 5 5-5M5 20h14" />
+							</svg>
+							<span class="text">
+								<span class="label">{layout === 'stack' ? (SHORT[file.key] ?? label) : label}</span>
+								<span class="meta">
+									<span>{size(file.size)}</span>
+									{counted &&
+										(layout === 'stack' ? (
+											<span class="count">
+												<svg viewBox="0 0 24 24" aria-hidden="true">
+													<path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14" />
+												</svg>
+												{file.downloads!.toLocaleString('en-US')}
+											</span>
+										) : (
+											<span>{plural(file.downloads!)}</span>
+										))}
+								</span>
 							</span>
-						</span>
-					</a>
-				</li>
-			))}
+						</a>
+					</li>
+				);
+			})}
 		</ul>
 	)
 }
@@ -64,15 +84,6 @@ const count = (n: number) => `${n.toLocaleString('en-US')} download${n === 1 ? 
 	.downloads li {
 		flex: 1 1 13rem;
 		min-width: 0;
-	}
-
-	.stack {
-		flex-direction: column;
-		gap: 0.5rem;
-	}
-
-	.stack li {
-		flex: none;
 	}
 
 	.download {
@@ -103,6 +114,12 @@ const count = (n: number) => `${n.toLocaleString('en-US')} download${n === 1 ? 
 		border-color: var(--gr-accent);
 		background: var(--gr-accent);
 		color: var(--gr-on-accent);
+	}
+
+	/* The accent focus ring would vanish on the accent fill. */
+	.download.primary:focus-visible {
+		outline: 2px solid var(--gr-text-strong);
+		outline-offset: 2px;
 	}
 
 	svg {
@@ -138,5 +155,53 @@ const count = (n: number) => `${n.toLocaleString('en-US')} download${n === 1 ? 
 
 	.primary .meta {
 		color: var(--gr-on-accent);
+	}
+
+	/* Poster: narrow buttons side by side, right-aligned in the hero's side column. */
+	.stack {
+		justify-content: flex-end;
+		gap: 0.5rem;
+	}
+
+	.stack li {
+		flex: none;
+	}
+
+	.stack .download {
+		gap: 0.5rem;
+		padding: 0.4rem 0.75rem 0.4rem 0.6rem;
+	}
+
+	.stack .download > svg {
+		width: 1.1rem;
+		height: 1.1rem;
+	}
+
+	.stack .label {
+		font-size: var(--sl-text-sm);
+		white-space: nowrap;
+	}
+
+	.stack .meta {
+		flex-wrap: nowrap;
+		gap: 0 0.5rem;
+		white-space: nowrap;
+	}
+
+	.count {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.15rem;
+	}
+
+	.count svg {
+		width: 0.8rem;
+		height: 0.8rem;
+	}
+
+	@media (width < 60rem) {
+		.stack {
+			justify-content: flex-start;
+		}
 	}
 </style>

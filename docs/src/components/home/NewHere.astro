@@ -43,12 +43,16 @@ const x86 = latestRelease?.files.find((f) => f.key === 'x86')?.name;
 		display: grid;
 		gap: 2rem;
 		margin-top: 5rem;
+		padding-top: 2rem;
+		border-top: 3px solid var(--gr-text-strong);
 	}
 
+	/* One word per line ("New" / "here?"), so the title takes a narrow column. */
 	h2 {
+		width: min-content;
 		margin: 0;
-		font-size: clamp(3rem, 9vw, 6rem);
-		line-height: 0.9;
+		font-size: clamp(2.25rem, 6vw, 3.75rem);
+		line-height: 1;
 		color: var(--gr-text-strong);
 	}
 

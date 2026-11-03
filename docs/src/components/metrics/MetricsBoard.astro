@@ -1,12 +1,13 @@
 ---
-// The Metrics page: downloads over time, downloads per release, where the site's downloads come
-// from, and site views. Every number is GitHub's release count or the counter Worker's record
+// The Metrics page: downloads over time, downloads per release, GitHub stars, where the site's
+// downloads come from, and site views. Every number is GitHub's count or the counter Worker's record
 // (src/data/metrics.ts); each block says which, and when it was read. A block without data says
 // so instead of showing zeros.
 import { getCollection } from 'astro:content';
 import DownloadsChart from './DownloadsChart.astro';
 import RankedBars from './RankedBars.astro';
-import { allReleases, countryTotals, downloadsUpdated, releaseDownloads, views } from '../../data/metrics';
+import StarsChart from './StarsChart.astro';
+import { allReleases, countryTotals, downloadsUpdated, releaseDownloads, stars, views } from '../../data/metrics';
 import { countryName, longDate, number } from '../../data/figures';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -73,6 +74,23 @@ const viewRows = Object.entries(views?.pages ?? {})
 			)
 		}
 		<p class="source">GitHub's download count for each release, all its files together.</p>
+	</section>
+
+	<section class="block lead mirror" aria-labelledby="m-stars">
+		<div class="figure">
+			<h2 id="m-stars">GitHub stars</h2>
+			{
+				stars && stars.total > 0 ? (
+					<p class="big">{number(stars.total)}</p>
+				) : (
+					<p class="empty">GitHub's star list couldn't be read for this build.</p>
+				)
+			}
+			<p class="source">
+				Stars on the GitHub repository, with the day each was given.{stars && ` Read ${longDate(stars.updated)}.`}
+			</p>
+		</div>
+		<StarsChart />
 	</section>
 
 	<div class="pair">
@@ -177,6 +195,16 @@ const viewRows = Object.entries(views?.pages ?? {})
 			grid-template-columns: minmax(18rem, 0.8fr) minmax(0, 1.6fr);
 			align-items: end;
 			column-gap: 3rem;
+		}
+
+		/* The stars block mirrors the downloads one, chart first, so the two big figures don't
+		   stack in the same column. */
+		.lead.mirror {
+			grid-template-columns: minmax(0, 1.6fr) minmax(18rem, 0.8fr);
+		}
+
+		.mirror .figure {
+			order: 2;
 		}
 
 		.pair {
