@@ -169,32 +169,74 @@ main:has(.poster, .home-poster) .content-panel + .content-panel {
 	border-top: 0;
 }
 
-/* Thin scrollbars in the site's colours: the thumb is a muted grey that turns red while it's
-   dragged or hovered, on the page colour, so the default bright system bar doesn't break the
-   dark theme. */
-html {
-	scrollbar-color: var(--gr-scroll-thumb) var(--gr-base);
-	scrollbar-width: thin;
+/* Scrollbars in the site's colours: an inset pill, a muted thumb floating in the page colour with
+   a gap around it, that turns red while it's hovered or dragged. Chromium and Safari draw it
+   from the ::-webkit-scrollbar rules; Chromium ignores those rules whenever the standard
+   scrollbar-color is set, so that is only given to browsers without them (Firefox, which gets
+   a thin bar in the same colours). */
+@supports not selector(::-webkit-scrollbar) {
+	html {
+		scrollbar-color: var(--gr-scroll-thumb) var(--gr-base);
+		scrollbar-width: thin;
+	}
 }
 
 ::-webkit-scrollbar {
-	width: 10px;
-	height: 10px;
+	width: 14px;
+	height: 14px;
 }
 
-::-webkit-scrollbar-track {
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
 	background: var(--gr-base);
 }
 
 ::-webkit-scrollbar-thumb {
-	border: 2px solid var(--gr-base);
-	border-radius: 5px;
-	background: var(--gr-scroll-thumb);
+	min-height: 3rem;
+	border: 4px solid transparent;
+	border-radius: 999px;
+	background: var(--gr-scroll-thumb) padding-box;
 }
 
 ::-webkit-scrollbar-thumb:hover,
 ::-webkit-scrollbar-thumb:active {
-	background: var(--gr-accent);
+	background: var(--gr-accent) padding-box;
+}
+
+/* An icon-only header control (theme, GitHub, Discord): no box, and on hover a line under the
+   icon, like the text links' underline. */
+.gr-icon-button {
+	position: relative;
+	display: inline-flex;
+	flex: none;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: var(--gr-text);
+	cursor: pointer;
+}
+
+.gr-icon-button::after {
+	content: '';
+	position: absolute;
+	left: 12px;
+	right: 12px;
+	bottom: 6px;
+	height: 2px;
+	background: currentColor;
+	opacity: 0;
+}
+
+.gr-icon-button:hover {
+	color: var(--gr-text-strong);
+}
+
+.gr-icon-button:hover::after {
+	opacity: 1;
 }
 
 /* Art areas (hero posters) stay dark in both themes, because the art behind them is dark and

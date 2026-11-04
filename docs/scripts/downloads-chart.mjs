@@ -12,6 +12,8 @@
 //   stars.json                               the repository's star count and the day each star
 //                                            was given, from GitHub (for the Metrics page; no
 //                                            user names are kept)
+//   suggestions.json                         the Roadmap's open visitor suggestions, from the
+//                                            counter Worker (empty until it serves them)
 //
 // GitHub keeps only a running download total per release file, with no dates, so the
 // chart has two parts:
@@ -333,6 +335,8 @@ if (worker) {
 	const pages = worker.pageviews ?? {};
 	const total = Object.values(pages).reduce((sum, n) => sum + n, 0);
 	await writeFile(new URL('views.json', OUT_DIR), JSON.stringify({ updated: today, total, pages }, null, 2) + '\n');
+	const suggestions = worker.suggestions ?? [];
+	await writeFile(new URL('suggestions.json', OUT_DIR), JSON.stringify({ updated: today, suggestions }, null, 2) + '\n');
 }
 for (const theme of Object.keys(THEMES)) {
 	const svg = history?.points.length

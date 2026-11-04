@@ -1,441 +1,834 @@
 ---
-// The Roadmap page: items from src/data/roadmap.json in three status sections, a version
-// filter, and an upvote button per item. Votes live in the counter Worker
-// (worker/src/index.js): one per visitor, and a second click takes it back. The build's
-// snapshot (public/metrics/votes.json) is shown first, then the Worker's live counts.
-import roadmap from '../data/roadmap.json';
-import { votes, WORKER } from '../data/metrics';
+// The Roadmap page (data and lanes in src/data/roadmap.ts). Features flow left to right through
+// Proposed, Up next, In progress and Released; Miscellaneous, what keeps it running well, sits
+// below in Now and Completed. Every feature can be upvoted. Visitors can add their own
+// suggestion to Proposed: it goes live at once through the counter Worker (worker/src/index.js),
+// up to 5 open per visitor, and the maintainer can take it down there.
+//
+// The build's snapshot (public/metrics/votes.json, suggestions.json) renders without
+// JavaScript; the script then swaps in the Worker's live votes and suggestions. Visitor text is
+// only ever set with textContent.
+import { LANES, isSample, roadmap, versionOf, type RoadmapItem } from '../data/roadmap';
+import { suggestions, votes, WORKER } from '../data/metrics';
+import Glyph from './Glyph.astro';
 
-const STATUSES = [
-  { id: 'planned', title: 'Planned', note: 'Lined up for its version', empty: 'Nothing planned' },
-  { id: 'in-progress', title: 'In progress', note: 'Being built now', empty: 'Nothing in progress' },
-  { id: 'done', title: 'Done', note: 'Built for its version', empty: 'Nothing done' },
-];
+interface Card {
+	id: string;
+	title: string;
+	description: string;
+	version?: string;
+	author?: string;
+	votes: number;
+}
 
-const items = roadmap.items
-  .map((item) => ({ ...item, votes: votes[item.id] ?? 0 }))
-  .sort((a, b) => b.votes - a.votes);
-const countFor = (version: string) => items.filter((i) => i.version === version).length;
-const voteLabel = (n: number) => `${n.toLocaleString('en-US')} vote${n === 1 ? '' : 's'}`;
+const byVotes = (a: Card, b: Card) => b.votes - a.votes;
+const toCard = (item: RoadmapItem): Card => ({
+	id: item.id,
+	title: item.title,
+	description: item.description,
+	version: versionOf(item),
+	votes: votes[item.id] ?? 0,
+});
+const cardsFor = (section: string, lane: string) =>
+	roadmap.items.filter((i) => i.section === section && i.lane === lane).map(toCard);
+
+const visitorCards: Card[] = suggestions.map((s) => ({
+	id: s.id,
+	title: s.title,
+	description: s.description,
+	author: s.author,
+	votes: votes[s.id] ?? 0,
+}));
+
+const lanes = {
+	features: LANES.features.map((lane) => ({
+		...lane,
+		cards: [...cardsFor('features', lane.id), ...(lane.id === 'proposed' ? visitorCards : [])].sort(byVotes),
+	})),
+	misc: LANES.misc.map((lane) => ({ ...lane, cards: cardsFor('misc', lane.id) })),
+};
+const count = (n: number) => n.toLocaleString('en-US');
 ---
 
-<div class="roadmap gr-bleed gr-tinted not-content" data-roadmap data-worker={WORKER}>
-  <div class="bar">
-    <fieldset class="filter">
-      <legend>Version</legend>
-      <div class="options">
-        <label>
-          <input type="radio" name="roadmap-version" value="" checked />
-          <span>All <span class="count">{items.length}</span></span>
-        </label>
-        {
-          roadmap.versions.map((version) => (
-            <label>
-              <input type="radio" name="roadmap-version" value={version} />
-              <span>
-                {version} <span class="count">{countFor(version)}</span>
-              </span>
-            </label>
-          ))
-        }
-      </div>
-    </fieldset>
-    <p class="status" role="status" data-vote-status></p>
-  </div>
+<div class="roadmap not-content" data-roadmap data-worker={WORKER}>
+	{isSample && <p class="sample-bar">Sample items for preview. Not on the live site.</p>}
+	<p class="status" role="status" data-status-line></p>
 
-  <div class="sections">
-    {
-      STATUSES.map((status) => {
-        const list = items.filter((i) => i.status === status.id);
-        return (
-          <section aria-labelledby={`status-${status.id}`} data-status={status.id}>
-            <h2 id={`status-${status.id}`}>
-              {status.title} <span class="count" data-section-count>{list.length}</span>
-            </h2>
-            <p class="note">{status.note}</p>
-            <ul>
-              {list.map((item) => (
-                <li id={`item-${item.id}`} data-version={item.version}>
-                  <span class="version">{item.version}</span>
-                  <h3>{item.title}</h3>
-                  <p>{item.description}</p>
-                  <button
-                    type="button"
-                    class="vote"
-                    aria-pressed="false"
-                    data-id={item.id}
-                    data-title={item.title}
-                    data-votes={item.votes}
-                  >
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M12 6 5 17h14z" />
-                    </svg>
-                    <span class="vote-text">Upvote</span>
-                    <span class="vote-count">{voteLabel(item.votes)}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-            <p class="empty" data-empty data-text={status.empty} hidden={list.length > 0}>
-              {status.empty} right now.
-            </p>
-          </section>
-        );
-      })
-    }
-  </div>
+	<section class="board features gr-bleed gr-tinted" aria-labelledby="rm-features">
+		<div class="head">
+			<h2 id="rm-features">Features</h2>
+			<p>From a proposal to a release, left to right. Vote for the ones you want most.</p>
+		</div>
+		<div class="lanes">
+			{
+				lanes.features.map((lane) => (
+					<details class="lane" open data-lane={lane.id}>
+						<summary>
+							<span class:list={['icon', `is-${lane.id}`]}>
+								<Glyph name={lane.id} />
+							</span>
+							<span class="lane-title">
+								<h3 id={`lane-${lane.id}`}>{lane.title}</h3>
+								<span class="count" data-lane-count>
+									{lane.cards.length}
+								</span>
+							</span>
+							<span class="note">{lane.note}</span>
+						</summary>
+						<div class="body">
+							{lane.id === 'proposed' && (
+								<button type="button" class="suggest-open" data-suggest-open>
+									Suggest a feature
+								</button>
+							)}
+							<ul aria-labelledby={`lane-${lane.id}`} data-cards>
+								{lane.cards.map((card) => (
+									<li class="card" id={`item-${card.id}`} tabindex="-1" data-suggestion={card.author ? '' : undefined}>
+										<h4>{card.title}</h4>
+										<p>{card.description}</p>
+										<p class="meta">
+											{card.version && <span class="tag">{card.version}</span>}
+											{card.author && <span class="by">Suggested by {card.author}</span>}
+										</p>
+										<button type="button" class="vote" aria-pressed="false" data-id={card.id} data-title={card.title}>
+											<svg viewBox="0 0 24 24" aria-hidden="true">
+												<path d="M12 6 5 17h14z" />
+											</svg>
+											<span class="vote-text sr-only">Upvote</span>
+											<span class="vote-count">{count(card.votes)}</span>
+											<span class="sr-only"> votes</span>
+										</button>
+									</li>
+								))}
+							</ul>
+							<p class="empty" data-empty hidden={lane.cards.length > 0}>
+								{lane.empty}
+							</p>
+						</div>
+					</details>
+				))
+			}
+		</div>
+	</section>
+
+	<section class="board misc" aria-labelledby="rm-misc">
+		<div class="head">
+			<h2 id="rm-misc">Miscellaneous</h2>
+			<p>What keeps Grimlite Rev running well: fixes after game updates, speed and stability.</p>
+		</div>
+		<div class="lanes">
+			{
+				lanes.misc.map((lane) => (
+					<details class="lane" open data-lane={lane.id}>
+						<summary>
+							<span class:list={['icon', `is-${lane.id}`]}>
+								<Glyph name={lane.id} />
+							</span>
+							<span class="lane-title">
+								<h3 id={`lane-${lane.id}`}>{lane.title}</h3>
+								<span class="count">{lane.cards.length}</span>
+							</span>
+							<span class="note">{lane.note}</span>
+						</summary>
+						<div class="body">
+							<ul aria-labelledby={`lane-${lane.id}`}>
+								{lane.cards.map((card) => (
+									<li class="card">
+										<h4>{card.title}</h4>
+										<p>{card.description}</p>
+										{card.version && (
+											<p class="meta">
+												<span class="tag">{card.version}</span>
+											</p>
+										)}
+									</li>
+								))}
+							</ul>
+							{lane.cards.length === 0 && <p class="empty">{lane.empty}</p>}
+						</div>
+					</details>
+				))
+			}
+		</div>
+	</section>
+
+	<template data-card-template>
+		<li class="card" tabindex="-1" data-suggestion>
+			<h4></h4>
+			<p></p>
+			<p class="meta"><span class="by"></span></p>
+			<button type="button" class="vote" aria-pressed="false">
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M12 6 5 17h14z"></path>
+				</svg>
+				<span class="vote-text sr-only">Upvote</span>
+				<span class="vote-count">0</span>
+				<span class="sr-only"> votes</span>
+			</button>
+		</li>
+	</template>
+
+	<dialog class="suggest" aria-labelledby="suggest-title" data-suggest-dialog>
+		<form method="dialog" data-suggest-form novalidate>
+			<h2 id="suggest-title">Suggest a feature</h2>
+			<p class="lead">
+				It goes under Proposed straight away, where everyone can vote for it. Keep it to one feature.
+			</p>
+			<label>
+				<span class="label">Feature name</span>
+				<input name="title" required minlength="3" maxlength="60" autocomplete="off" />
+				<span class="left" data-left="60"></span>
+			</label>
+			<label>
+				<span class="label">What it would let you do</span>
+				<textarea name="description" required minlength="10" maxlength="240" rows="3"></textarea>
+				<span class="left" data-left="240"></span>
+			</label>
+			<label>
+				<span class="label">Your name, shown with it</span>
+				<input name="author" maxlength="32" autocomplete="nickname" placeholder="A visitor" />
+			</label>
+			<p class="mine" data-mine></p>
+			<p class="error" role="alert" data-error></p>
+			<div class="actions">
+				<button type="button" class="cancel" data-suggest-cancel>Cancel</button>
+				<button type="submit" class="send" value="send">Send suggestion</button>
+			</div>
+		</form>
+	</dialog>
 </div>
 
 <script>
-  const root = document.querySelector<HTMLElement>('[data-roadmap]')!;
-  const worker = root.dataset.worker!;
-  const radios = [...root.querySelectorAll<HTMLInputElement>('input[name="roadmap-version"]')];
-  const sections = [...root.querySelectorAll<HTMLElement>('section[data-status]')];
-  const buttons = [...root.querySelectorAll<HTMLButtonElement>('button.vote')];
-  const status = root.querySelector<HTMLElement>('[data-vote-status]')!;
-  // Items this visitor has voted for, as the Worker reports them.
-  const mine = new Set<string>();
+	const root = document.querySelector<HTMLElement>('[data-roadmap]')!;
+	const worker = root.dataset.worker!;
+	const statusLine = root.querySelector<HTMLElement>('[data-status-line]')!;
+	const proposed = root.querySelector<HTMLElement>('[data-lane="proposed"]')!;
+	const proposedList = proposed.querySelector<HTMLUListElement>('[data-cards]')!;
+	const template = root.querySelector<HTMLTemplateElement>('[data-card-template]')!;
+	const dialog = root.querySelector<HTMLDialogElement>('[data-suggest-dialog]')!;
+	const form = root.querySelector<HTMLFormElement>('[data-suggest-form]')!;
+	const errorLine = form.querySelector<HTMLElement>('[data-error]')!;
+	const mineLine = form.querySelector<HTMLElement>('[data-mine]')!;
+	// Items this visitor has voted for, as the Worker reports them.
+	const voted = new Set<string>();
+	const counts: Record<string, number> = {};
+	let open = { mine: 0, limit: 5 };
 
-  function filter(version: string) {
-    for (const section of sections) {
-      let shown = 0;
-      for (const item of section.querySelectorAll<HTMLElement>('li[data-version]')) {
-        item.hidden = Boolean(version) && item.dataset.version !== version;
-        if (!item.hidden) shown++;
-      }
-      section.querySelector('[data-section-count]')!.textContent = String(shown);
-      const empty = section.querySelector<HTMLElement>('[data-empty]')!;
-      empty.hidden = shown > 0;
-      empty.textContent = `${empty.dataset.text}${version ? ` for ${version}` : ''} right now.`;
-    }
-  }
 
-  function render(button: HTMLButtonElement, count: number) {
-    const voted = mine.has(button.dataset.id!);
-    button.dataset.votes = String(count);
-    button.setAttribute('aria-pressed', String(voted));
-    button.querySelector('.vote-text')!.textContent = voted ? 'Voted' : 'Upvote';
-    button.querySelector('.vote-count')!.textContent = `${count.toLocaleString('en-US')} vote${count === 1 ? '' : 's'}`;
-  }
+	function render(button: HTMLButtonElement) {
+		const id = button.dataset.id!;
+		const on = voted.has(id);
+		button.setAttribute('aria-pressed', String(on));
+		button.querySelector('.vote-text')!.textContent = on ? 'Voted' : 'Upvote';
+		if (counts[id] !== undefined) button.querySelector('.vote-count')!.textContent = counts[id].toLocaleString('en-US');
+	}
 
-  const initial = new URLSearchParams(location.search).get('v') ?? '';
-  const selected = radios.find((r) => r.value === initial) ?? radios[0];
-  selected.checked = true;
-  filter(selected.value);
-  for (const radio of radios) {
-    radio.addEventListener('change', () => {
-      filter(radio.value);
-      const url = new URL(location.href);
-      if (radio.value) url.searchParams.set('v', radio.value);
-      else url.searchParams.delete('v');
-      history.replaceState(null, '', url);
-    });
-  }
+	function refreshLane() {
+		const n = proposedList.children.length;
+		proposed.querySelector('[data-lane-count]')!.textContent = String(n);
+		proposed.querySelector<HTMLElement>('[data-empty]')!.hidden = n > 0;
+	}
 
-  // A plain-text body keeps the request simple, so the browser sends it without a preflight.
-  for (const button of buttons) {
-    button.addEventListener('click', async () => {
-      if (button.getAttribute('aria-busy') === 'true') return;
-      const id = button.dataset.id!;
-      const add = !mine.has(id);
-      button.setAttribute('aria-busy', 'true');
-      try {
-        const res = await fetch(`${worker}/${add ? 'vote' : 'unvote'}`, { method: 'POST', body: id });
-        if (!res.ok) throw new Error(String(res.status));
-        const data: { count: number } = await res.json();
-        if (add) mine.add(id);
-        else mine.delete(id);
-        render(button, data.count);
-        status.textContent = add
-          ? `Thanks, your vote for ${button.dataset.title} is in. Click Voted to take it back.`
-          : `Your vote for ${button.dataset.title} was taken back.`;
-      } catch {
-        status.textContent = "Your vote couldn't be sent. Try again in a moment.";
-      } finally {
-        button.removeAttribute('aria-busy');
-      }
-    });
-  }
+	function card(s: { id: string; title: string; description: string; author: string }) {
+		const li = template.content.firstElementChild!.cloneNode(true) as HTMLLIElement;
+		li.id = `item-${s.id}`;
+		li.querySelector('h4')!.textContent = s.title;
+		li.querySelector('p')!.textContent = s.description;
+		li.querySelector('.by')!.textContent = `Suggested by ${s.author}`;
+		const button = li.querySelector<HTMLButtonElement>('.vote')!;
+		button.dataset.id = s.id;
+		button.dataset.title = s.title;
+		render(button);
+		return li;
+	}
 
-  // Live counts and this visitor's votes. If the Worker can't be reached, the build's
-  // snapshot stays and votes still try to send on click.
-  fetch(`${worker}/votes`)
-    .then((res) => (res.ok ? res.json() : Promise.reject(new Error(String(res.status)))))
-    .then((data: { counts: Record<string, number>; mine: string[] }) => {
-      for (const id of data.mine) mine.add(id);
-      for (const button of buttons) render(button, data.counts[button.dataset.id!] ?? 0);
-    })
-    .catch(() => {});
+	function showMine() {
+		mineLine.textContent = `You have ${open.mine} of ${open.limit} open suggestions.`;
+	}
+
+	// Votes: one per visitor and item; a second click takes it back. A plain-text body keeps the
+	// request simple, so the browser sends it without a preflight.
+	root.addEventListener('click', async (event) => {
+		const button = (event.target as Element).closest<HTMLButtonElement>('button.vote');
+		if (!button || button.getAttribute('aria-busy') === 'true') return;
+		const id = button.dataset.id!;
+		const add = !voted.has(id);
+		button.setAttribute('aria-busy', 'true');
+		try {
+			const res = await fetch(`${worker}/${add ? 'vote' : 'unvote'}`, { method: 'POST', body: id });
+			if (!res.ok) throw new Error(String(res.status));
+			const data: { count: number } = await res.json();
+			if (add) voted.add(id);
+			else voted.delete(id);
+			counts[id] = data.count;
+			render(button);
+			statusLine.textContent = add
+				? `Thanks, your vote for ${button.dataset.title} is in. Click Voted to take it back.`
+				: `Your vote for ${button.dataset.title} was taken back.`;
+		} catch {
+			statusLine.textContent = "Your vote couldn't be sent. Try again in a moment.";
+		} finally {
+			button.removeAttribute('aria-busy');
+		}
+	});
+
+	// The suggestion form: counters, plain errors, and the new card at the top of Proposed.
+	for (const field of form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('[maxlength]')) {
+		const left = field.parentElement!.querySelector<HTMLElement>('[data-left]');
+		if (!left) continue;
+		const update = () => (left.textContent = `${field.maxLength - field.value.length} characters left`);
+		field.addEventListener('input', update);
+		update();
+	}
+	for (const opener of root.querySelectorAll('[data-suggest-open]')) {
+		opener.addEventListener('click', () => {
+			errorLine.textContent = '';
+			showMine();
+			dialog.showModal();
+		});
+	}
+	root.querySelector('[data-suggest-cancel]')!.addEventListener('click', () => dialog.close());
+	dialog.addEventListener('click', (event) => {
+		if (event.target === dialog) dialog.close();
+	});
+	form.addEventListener('submit', async (event) => {
+		event.preventDefault();
+		const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
+		const title = data.title.trim();
+		const description = data.description.trim();
+		if (title.length < 3) return void (errorLine.textContent = 'Give the feature a name of at least 3 characters.');
+		if (description.length < 10) return void (errorLine.textContent = 'Say what it would let you do, in at least 10 characters.');
+		if (open.mine >= open.limit) return void (errorLine.textContent = `You already have ${open.limit} open suggestions.`);
+		const send = form.querySelector<HTMLButtonElement>('.send')!;
+		send.disabled = true;
+		errorLine.textContent = '';
+		try {
+			const res = await fetch(`${worker}/suggest`, {
+				method: 'POST',
+				body: JSON.stringify({ title, description, author: data.author.trim() }),
+			});
+			const body = await res.json().catch(() => ({}));
+			if (!res.ok) throw new Error(body.error ?? "The suggestion couldn't be sent. Try again in a moment.");
+			open = { mine: body.mine, limit: body.limit };
+			const li = card(body.suggestion);
+			proposedList.prepend(li);
+			refreshLane();
+			form.reset();
+			form.querySelectorAll<HTMLElement>('[maxlength]').forEach((f) => f.dispatchEvent(new Event('input')));
+			dialog.close();
+			proposed.open = true;
+			li.focus();
+			statusLine.textContent = `Your suggestion ${body.suggestion.title} is up under Proposed.`;
+		} catch (err) {
+			errorLine.textContent = err instanceof Error && err.message !== 'Failed to fetch' ? err.message : "The suggestion couldn't be sent. Try again in a moment.";
+		} finally {
+			send.disabled = false;
+		}
+	});
+
+	// Phones: the lanes stack, so the later ones start folded. Wide screens show every lane.
+	const wide = matchMedia('(min-width: 40rem)');
+	const lanes = [...root.querySelectorAll<HTMLDetailsElement>('details.lane')];
+	if (!wide.matches) {
+		for (const lane of lanes) if (!['proposed', 'up-next', 'now'].includes(lane.dataset.lane!)) lane.open = false;
+	}
+	for (const lane of lanes) {
+		const summary = lane.querySelector('summary')!;
+		const sync = () => (wide.matches ? summary.setAttribute('tabindex', '-1') : summary.removeAttribute('tabindex'));
+		summary.addEventListener('click', (event) => {
+			if (wide.matches) event.preventDefault();
+		});
+		wide.addEventListener('change', () => {
+			if (wide.matches) lane.open = true;
+			sync();
+		});
+		sync();
+	}
+
+	// Live data. If the Worker can't be reached, the build's snapshot stays.
+	fetch(`${worker}/votes`)
+		.then((res) => (res.ok ? res.json() : Promise.reject(new Error(String(res.status)))))
+		.then((data: { counts: Record<string, number>; mine: string[] }) => {
+			for (const id of data.mine) voted.add(id);
+			Object.assign(counts, data.counts);
+			for (const button of root.querySelectorAll<HTMLButtonElement>('button.vote')) {
+				counts[button.dataset.id!] ??= 0;
+				render(button);
+			}
+		})
+		.catch(() => {});
+	fetch(`${worker}/suggestions`)
+		.then((res) => (res.ok ? res.json() : Promise.reject(new Error(String(res.status)))))
+		.then((data: { suggestions: { id: string; title: string; description: string; author: string }[]; mine: number; limit: number }) => {
+			open = { mine: data.mine, limit: data.limit };
+			for (const old of proposedList.querySelectorAll('[data-suggestion]')) old.remove();
+			for (const s of data.suggestions) proposedList.append(card(s));
+			refreshLane();
+		})
+		.catch(() => {});
 </script>
 
 <style>
-  /* The board sits on the showcase tint, like the release highlights, so the Roadmap reads as
-     part of the same site. */
-  .roadmap {
-    margin-top: 3rem;
-    padding-block: 1.5rem 4rem;
-  }
+	.roadmap {
+		margin-top: 2rem;
+	}
 
-  /* The version filter stays under the header while the sections scroll past it. A main pane
-     that hides horizontal overflow becomes a scroll container and stops sticky positioning;
-     clip hides the same overflow without that. */
-  :global(.main-pane:has([data-roadmap])) {
-    overflow-x: clip;
-  }
+	.sample-bar {
+		margin: 0 0 1.5rem;
+		padding: 0.75rem 1rem;
+		border: 2px dashed var(--gr-accent);
+		color: var(--gr-text-strong);
+		font-weight: 700;
+	}
 
-  .bar {
-    position: sticky;
-    top: var(--sl-nav-height);
-    z-index: 2;
-    padding: 0.75rem 0;
-    background: var(--gr-tint);
-  }
+	.status {
+		margin: 0 0 1rem;
+		font-size: var(--sl-text-sm);
+		color: var(--gr-text);
+	}
 
-  .filter {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.75rem;
-    margin: 0;
-    padding: 0;
-    border: 0;
-  }
+	.status:empty {
+		display: none;
+	}
 
-  .filter legend {
-    float: left;
-    margin-inline-end: 0.75rem;
-    font-weight: 600;
-    color: var(--sl-color-white);
-  }
+	.board {
+		display: grid;
+		gap: 2rem;
+	}
 
-  .options {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
+	.features {
+		padding-block: 3rem 4rem;
+	}
 
-  .options label {
-    position: relative;
-    flex: none;
-  }
+	.misc {
+		margin-top: 4rem;
+	}
 
-  /* On phones the sticky bar stays one row tall: the options scroll sideways, and the
-     legend is kept for screen readers only. */
-  @media (width < 50rem) {
-    .filter legend {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-      clip-path: inset(50%);
-      white-space: nowrap;
-    }
+	.head {
+		display: grid;
+		gap: 0.5rem;
+	}
 
-    .filter,
-    .options {
-      flex-wrap: nowrap;
-      min-width: 0;
-    }
+	.head h2 {
+		margin: 0;
+		font-size: clamp(2.25rem, 6vw, 3.75rem);
+		line-height: 1;
+		color: var(--gr-text-strong);
+	}
 
-    /* The padding keeps the focus outline inside the scrolling row. */
-    .options {
-      overflow-x: auto;
-      scrollbar-width: none;
-      padding: 4px;
-      margin: -4px;
-    }
+	.head p {
+		margin: 0;
+		color: var(--gr-text);
+	}
 
-    .options label > span {
-      padding: 0 0.875rem;
-    }
-  }
+	.lanes {
+		display: grid;
+		gap: 1.5rem;
+		align-items: start;
+	}
 
-  .options input {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    margin: 0;
-    cursor: pointer;
-  }
+	.lane {
+		min-width: 0;
+	}
 
-  .options label > span {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    min-height: 44px;
-    padding: 0 1.125rem;
-    border: 1px solid var(--sl-color-gray-5);
-    border-radius: 0.75rem;
-    font-weight: 600;
-    color: var(--sl-color-white);
-    background: var(--sl-color-black);
-  }
+	.body {
+		display: grid;
+		gap: 0.75rem;
+		padding-top: 0.75rem;
+	}
 
-  .options label:hover > span {
-    border-color: var(--sl-color-gray-3);
-  }
+	/* Each lane's header: an icon for its stage, its name and count, and one line on what it
+	   means. */
+	summary {
+		display: grid;
+		grid-template-columns: auto minmax(0, 1fr) auto;
+		column-gap: 0.75rem;
+		align-items: center;
+		min-height: 44px;
+		padding-bottom: 0.75rem;
+		border-bottom: 3px solid var(--gr-text-strong);
+		list-style: none;
+		cursor: pointer;
+	}
 
-  .options input:checked + span {
-    border-color: var(--sl-color-accent);
-    background: var(--sl-color-accent);
-    color: var(--roadmap-on-accent);
-  }
+	summary::-webkit-details-marker {
+		display: none;
+	}
 
-  .options input:focus-visible + span {
-    outline: 2px solid var(--sl-color-white);
-    outline-offset: 2px;
-  }
+	/* Phones: lanes fold, so each header shows a chevron that turns when it's open. */
+	summary::after {
+		content: '';
+		grid-column: 3;
+		grid-row: 1 / span 2;
+		width: 0.6rem;
+		height: 0.6rem;
+		border-right: 2px solid var(--gr-text-strong);
+		border-bottom: 2px solid var(--gr-text-strong);
+		transform: rotate(45deg);
+	}
 
-  .count {
-    font-weight: 400;
-    font-variant-numeric: tabular-nums;
-  }
+	.lane[open] > summary::after {
+		transform: rotate(-135deg);
+	}
 
-  .status {
-    margin: 0.5rem 0 0;
-    font-size: var(--sl-text-sm);
-    color: var(--sl-color-gray-2);
-  }
+	/* The stage icon, in the site's red, centred on the header's two lines. The tick on done
+	   lanes is cut out in the section's own background. */
+	.icon {
+		grid-row: 1 / span 2;
+		align-self: center;
+		display: grid;
+		place-items: center;
+		width: 2rem;
+		height: 2rem;
+		color: var(--gr-accent);
+	}
 
-  .status:empty {
-    display: none;
-  }
+	.icon :global(svg) {
+		width: 1.6rem;
+		height: 1.6rem;
+	}
 
-  .sections {
-    display: grid;
-    gap: 2rem;
-    margin-top: 1rem;
-  }
+	.features .icon :global(.cut) {
+		stroke: var(--gr-tint);
+	}
 
-  @media (min-width: 50rem) {
-    .sections {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1.25rem;
-      align-items: start;
-    }
-  }
+	.misc .icon :global(.cut) {
+		stroke: var(--gr-base);
+	}
 
-  h2 {
-    margin: 0;
-    font-size: var(--sl-text-xl);
-    color: var(--sl-color-white);
-  }
+	.lane-title,
+	.note {
+		grid-column: 2;
+		min-width: 0;
+	}
 
-  h2 .count {
-    margin-inline-start: 0.25rem;
-    color: var(--sl-color-gray-3);
-  }
+	.lane-title {
+		display: flex;
+		align-items: baseline;
+		gap: 0.5rem;
+	}
 
-  .note {
-    margin: 0.125rem 0 0.75rem;
-    font-size: var(--sl-text-sm);
-    color: var(--sl-color-gray-3);
-  }
+	h3 {
+		margin: 0;
+		font-size: var(--sl-text-2xl);
+		line-height: 1.05;
+		color: var(--gr-text-strong);
+	}
 
-  ul {
-    display: grid;
-    gap: 0.75rem;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
+	.count {
+		font-weight: 600;
+		color: var(--gr-muted);
+		font-variant-numeric: tabular-nums;
+	}
 
-  li {
-    display: grid;
-    gap: 0.375rem;
-    padding: 1rem;
-    border: 1px solid var(--sl-color-gray-5);
-    border-radius: 0.75rem;
-    background: var(--sl-color-black);
-  }
+	/* One line, always. */
+	.note {
+		overflow: hidden;
+		font-size: var(--sl-text-sm);
+		line-height: 1.3;
+		color: var(--gr-text);
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
 
-  li[hidden] {
-    display: none;
-  }
+	ul {
+		display: grid;
+		align-content: start;
+		gap: 0.75rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
 
-  .version {
-    justify-self: start;
-    padding: 0.125rem 0.5rem;
-    border: 1px solid var(--sl-color-gray-5);
-    border-radius: 0.375rem;
-    font-size: var(--sl-text-xs);
-    font-weight: 600;
-    color: var(--sl-color-gray-2);
-  }
+	ul:empty {
+		display: none;
+	}
 
-  h3 {
-    margin: 0;
-    font-size: var(--sl-text-base);
-    line-height: 1.35;
-    color: var(--sl-color-white);
-  }
+	/* Each item is a slip of the logo's book page: paper with the page's wavy bottom edge, the
+	   name in the display face, and the vote as a stamp-style tab on its top-right corner. */
+	.card {
+		position: relative;
+		display: grid;
+		gap: 0.5rem;
+		padding: 1rem 1rem 1.6rem;
+		background: var(--gr-paper);
+		color: var(--gr-paper-ink);
+		mask:
+			var(--gr-book-edge-bottom) bottom / 100% 0.6rem no-repeat,
+			linear-gradient(#000, #000) top / 100% calc(100% - 0.6rem + 1px) no-repeat;
+	}
 
-  li p {
-    margin: 0;
-    font-size: var(--sl-text-sm);
-    line-height: 1.5;
-    color: var(--sl-color-gray-2);
-  }
+	.card:focus-visible {
+		outline: 3px solid var(--gr-paper-accent);
+		outline-offset: -3px;
+	}
 
-  .vote {
-    justify-self: start;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    min-height: 44px;
-    margin-top: 0.375rem;
-    padding: 0 0.875rem;
-    border: 1px solid var(--sl-color-gray-5);
-    border-radius: 0.5rem;
-    background: transparent;
-    font: inherit;
-    font-size: var(--sl-text-sm);
-    font-weight: 600;
-    color: var(--sl-color-white);
-    cursor: pointer;
-  }
+	h4 {
+		margin: 0;
+		font-family: var(--gr-font-display);
+		font-stretch: var(--gr-display-stretch);
+		font-weight: 850;
+		font-size: var(--sl-text-xl);
+		line-height: 1.1;
+		color: var(--gr-paper-ink);
+		overflow-wrap: anywhere;
+	}
 
-  .vote:hover {
-    border-color: var(--sl-color-gray-3);
-  }
+	.card:has(.vote) h4 {
+		padding-right: 4.5rem;
+	}
 
-  .vote:focus-visible {
-    outline: 2px solid var(--sl-color-accent);
-    outline-offset: 2px;
-  }
+	.card p {
+		margin: 0;
+		font-size: var(--sl-text-sm);
+		line-height: 1.5;
+		overflow-wrap: anywhere;
+	}
 
-  .vote svg {
-    width: 1rem;
-    height: 1rem;
-    fill: currentColor;
-  }
+	.meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.25rem 0.75rem;
+		align-items: center;
+		color: #4d4a42;
+	}
 
-  .vote-count {
-    font-weight: 400;
-    font-variant-numeric: tabular-nums;
-    color: var(--sl-color-gray-2);
-  }
+	.meta:empty {
+		display: none;
+	}
 
-  /* Your own votes are the second place the accent appears. Clicking one takes it back. */
-  .vote[aria-pressed='true'] {
-    border-color: var(--sl-color-accent);
-    color: var(--sl-color-accent-high);
-  }
+	.tag {
+		padding: 0.05rem 0.45rem;
+		border: 1px solid var(--gr-paper-ink);
+		color: var(--gr-paper-ink);
+		font-weight: 700;
+	}
 
-  .vote[aria-busy='true'] {
-    cursor: progress;
-  }
+	.vote {
+		position: absolute;
+		top: 0;
+		right: 0;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.3rem;
+		min-width: 44px;
+		min-height: 44px;
+		padding: 0 0.7rem;
+		border: 0;
+		border-bottom: 2px solid var(--gr-paper-ink);
+		border-left: 2px solid var(--gr-paper-ink);
+		background: transparent;
+		color: var(--gr-paper-ink);
+		font-family: var(--gr-font-display);
+		font-stretch: var(--gr-display-stretch);
+		font-weight: 850;
+		font-size: var(--sl-text-lg);
+		cursor: pointer;
+	}
 
-  .empty {
-    margin: 0;
-    padding: 1rem;
-    border: 1px dashed var(--sl-color-gray-5);
-    border-radius: 0.75rem;
-    font-size: var(--sl-text-sm);
-    color: var(--sl-color-gray-2);
-  }
+	.vote:hover {
+		background: rgb(28 32 40 / 0.08);
+	}
 
-  .empty[hidden] {
-    display: none;
-  }
+	.vote:focus-visible {
+		outline: 2px solid var(--gr-paper-accent);
+		outline-offset: -4px;
+	}
+
+	.vote svg {
+		width: 0.8rem;
+		height: 0.8rem;
+		fill: currentColor;
+	}
+
+	.vote[aria-pressed='true'] {
+		border-color: var(--gr-paper-accent);
+		background: var(--gr-paper-accent);
+		color: #fff;
+	}
+
+	.vote[aria-pressed='true']:focus-visible {
+		outline-color: #fff;
+	}
+
+	.vote[aria-busy='true'] {
+		opacity: 0.6;
+		cursor: progress;
+	}
+
+	.suggest-open {
+		min-height: 44px;
+		padding: 0 1rem;
+		border: 2px solid var(--gr-text-strong);
+		background: transparent;
+		color: var(--gr-text-strong);
+		font: inherit;
+		font-weight: 700;
+		cursor: pointer;
+	}
+
+	.suggest-open:hover {
+		background: var(--gr-text-strong);
+		color: var(--gr-base);
+	}
+
+	.empty {
+		margin: 0;
+		padding: 1rem;
+		border: 1px dashed var(--gr-line);
+		font-size: var(--sl-text-sm);
+		color: var(--gr-text);
+	}
+
+	/* The suggestion form, in the page's theme. */
+	.suggest {
+		width: min(32rem, calc(100vw - 2rem));
+		max-height: calc(100vh - 2rem);
+		margin: auto;
+		padding: 0;
+		overflow: auto;
+		border: 1px solid var(--gr-line);
+		background: var(--gr-base);
+		color: var(--gr-text);
+	}
+
+	.suggest::backdrop {
+		background: rgb(15 18 23 / 0.6);
+	}
+
+	form {
+		display: grid;
+		gap: 1rem;
+		padding: 1.5rem;
+	}
+
+	form h2 {
+		margin: 0;
+		font-size: var(--sl-text-3xl);
+		line-height: 1;
+		color: var(--gr-text-strong);
+	}
+
+	form p {
+		margin: 0;
+	}
+
+	.lead {
+		font-size: var(--sl-text-sm);
+	}
+
+	label {
+		display: grid;
+		gap: 0.35rem;
+	}
+
+	.label {
+		font-weight: 700;
+		color: var(--gr-text-strong);
+	}
+
+	input,
+	textarea {
+		min-height: 44px;
+		padding: 0.6rem 0.75rem;
+		border: 1px solid var(--gr-line);
+		background: var(--gr-surface);
+		color: var(--gr-text-strong);
+		font: inherit;
+	}
+
+	textarea {
+		resize: vertical;
+	}
+
+	input:focus-visible,
+	textarea:focus-visible {
+		outline: 2px solid var(--gr-accent);
+		outline-offset: 1px;
+	}
+
+	input::placeholder {
+		color: var(--gr-muted);
+	}
+
+	.left,
+	.mine {
+		font-size: var(--sl-text-xs);
+		color: var(--gr-muted);
+	}
+
+	.error {
+		color: var(--gr-text-strong);
+		font-weight: 700;
+	}
+
+	.error:empty {
+		display: none;
+	}
+
+	.actions {
+		display: flex;
+		justify-content: flex-end;
+		gap: 0.75rem;
+	}
+
+	.cancel,
+	.send {
+		min-height: 44px;
+		padding: 0 1.25rem;
+		border: 1px solid var(--gr-line);
+		background: transparent;
+		color: var(--gr-text-strong);
+		font: inherit;
+		font-weight: 700;
+		cursor: pointer;
+	}
+
+	.send {
+		border-color: var(--gr-accent);
+		background: var(--gr-accent);
+		color: var(--gr-on-accent);
+	}
+
+	.send:focus-visible {
+		outline: 2px solid var(--gr-text-strong);
+		outline-offset: 2px;
+	}
+
+	.send:disabled {
+		opacity: 0.6;
+		cursor: progress;
+	}
+
+	@media (min-width: 40rem) {
+		.lanes {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		/* A long lane scrolls on its own, up to about one screen, with no visible bar. */
+		ul {
+			max-height: calc(100vh - var(--sl-nav-height) - 8rem);
+			overflow-y: auto;
+			scrollbar-width: none;
+		}
+
+		ul::-webkit-scrollbar {
+			display: none;
+		}
+
+		summary {
+			cursor: default;
+		}
+
+		summary::after {
+			display: none;
+		}
+	}
+
+	@media (min-width: 72rem) {
+		.features .lanes {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+		}
+	}
 </style>

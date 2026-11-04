@@ -1,22 +1,14 @@
 ---
-// Home: what's coming in the next version, from the Roadmap data (src/data/roadmap.json).
-// Features already in progress are listed before planned ones.
-import roadmap from '../../data/roadmap.json';
-
-interface Item {
-	id: string;
-	version: string;
-	status: string;
-	title: string;
-	description: string;
-}
+// Home: what's coming in the next version, from the Roadmap data (src/data/roadmap.ts): the
+// features being built, then the ones up next.
+import { roadmap } from '../../data/roadmap';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const next = roadmap.versions[0];
-const rank: Record<string, number> = { 'in-progress': 0, planned: 1 };
-const items = (roadmap.items as Item[])
-	.filter((i) => i.version === next && i.status in rank)
-	.sort((a, b) => rank[a.status] - rank[b.status]);
+const next = roadmap.next;
+const rank: Record<string, number> = { 'in-progress': 0, 'up-next': 1 };
+const items = roadmap.items
+	.filter((i) => i.section === 'features' && i.lane in rank)
+	.sort((a, b) => rank[a.lane] - rank[b.lane]);
 const shown = items.slice(0, 4);
 ---
 
@@ -27,7 +19,7 @@ const shown = items.slice(0, 4);
 			<ul>
 				{shown.map((item) => (
 					<li>
-						<p class="status">{item.status === 'in-progress' ? 'In progress' : 'Planned'}</p>
+						<p class="status">{item.lane === 'in-progress' ? 'In progress' : 'Up next'}</p>
 						<h3>{item.title}</h3>
 						<p>{item.description}</p>
 					</li>

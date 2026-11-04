@@ -94,3 +94,45 @@ export interface Stars {
 }
 
 export const stars: Stars | null = readMetrics('stars.json');
+
+// The Roadmap's open visitor suggestions as of the build (scripts/downloads-chart.mjs); the page
+// swaps in the Worker's live list.
+export interface Suggestion {
+	id: string;
+	title: string;
+	description: string;
+	author: string;
+	created: string;
+}
+
+export const suggestions: Suggestion[] = readMetrics('suggestions.json')?.suggestions ?? [];
+
+// Downloads since the latest release came out, from the recorded history (GitHub keeps no
+// download dates). The baseline is the total at the release: the first recording when the
+// release is no newer than it (exact for v1.4.0, released the day recording began), otherwise
+// the last monthly point before the release's month. Split into the latest release and the
+// older ones, per release (now minus its count at the baseline). Null without the data.
+export function downloadsSinceLatest() {
+	if (!history || !latestRelease) return null;
+	// A release without files (v1.1) has no count; it adds nothing.
+	const counted = allReleases.filter((r) => r.files.length > 0).map((r) => releaseDownloads(r));
+	if (counted.length === 0 || counted.some((n) => n === undefined)) return null;
+	const nowTotal = counted.reduce((sum: number, n) => sum + n!, 0);
+	const published = latestRelease.published;
+	const { recordedFrom, releases: baseline } = history.baseline;
+	const beforeMonth = history.points.filter((p) => p.date < `${published.slice(0, 7)}-01`).at(-1);
+	const fromBaseline = published <= recordedFrom || !beforeMonth;
+	const baseTotal = fromBaseline ? baseline.reduce((sum, r) => sum + r.downloads, 0) : beforeMonth!.total;
+	const baseDate = fromBaseline ? recordedFrom : beforeMonth!.date;
+	const latestBefore = fromBaseline ? (baseline.find((r) => r.tag === latestRelease!.tag)?.downloads ?? 0) : 0;
+	const total = nowTotal - baseTotal;
+	const latest = releaseDownloads(latestRelease)! - latestBefore;
+	return {
+		total,
+		latest,
+		older: total - latest,
+		label: latestRelease.label,
+		month: new Date(`${published}T00:00:00Z`).toLocaleDateString('en-GB', { month: 'short', year: 'numeric', timeZone: 'UTC' }),
+		from: baseDate,
+	};
+}

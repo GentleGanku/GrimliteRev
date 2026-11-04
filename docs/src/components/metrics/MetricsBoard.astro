@@ -7,7 +7,7 @@ import { getCollection } from 'astro:content';
 import DownloadsChart from './DownloadsChart.astro';
 import RankedBars from './RankedBars.astro';
 import StarsChart from './StarsChart.astro';
-import { allReleases, countryTotals, downloadsUpdated, releaseDownloads, stars, views } from '../../data/metrics';
+import { allReleases, countryTotals, downloadsSinceLatest, downloadsUpdated, releaseDownloads, stars, views } from '../../data/metrics';
 import { countryName, longDate, number } from '../../data/figures';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -33,6 +33,7 @@ const perRelease = allReleases
 		};
 	});
 const total = perRelease.reduce((sum, r) => sum + r.value, 0);
+const since = downloadsSinceLatest();
 
 const countries = Object.entries(countryTotals)
 	.sort((a, b) => b[1] - a[1])
@@ -60,6 +61,18 @@ const viewRows = Object.entries(views?.pages ?? {})
 			<p class="source">
 				Every release file on GitHub, all time.{downloadsUpdated && ` Read ${longDate(downloadsUpdated)}.`}
 			</p>
+			{
+				since && (
+					<div class="since">
+						<h3>Downloads since {since.month}</h3>
+						<p class="since-n">{number(since.total)}</p>
+						<p class="source">
+							Since {since.label} came out: {number(since.latest)} of {since.label}, {number(since.older)} of older
+							releases. Counted from the site's recording on {longDate(since.from)}.
+						</p>
+					</div>
+				)
+			}
 		</div>
 		<DownloadsChart />
 	</section>
@@ -183,6 +196,31 @@ const viewRows = Object.entries(views?.pages ?? {})
 	.figure {
 		display: grid;
 		gap: 0.75rem;
+	}
+
+	/* Downloads since the latest release: the second figure under the all-time total. */
+	.since {
+		display: grid;
+		gap: 0.5rem;
+		margin-top: 1rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--gr-line);
+	}
+
+	.since h3 {
+		margin: 0;
+		font-size: var(--sl-text-xl);
+		color: var(--gr-text-strong);
+	}
+
+	.since-n {
+		margin: 0;
+		font-family: var(--gr-font-display);
+		font-stretch: var(--gr-display-stretch);
+		font-weight: 850;
+		font-size: clamp(2.5rem, 5vw, 3.5rem);
+		line-height: 0.9;
+		color: var(--gr-text-strong);
 	}
 
 	.pair {

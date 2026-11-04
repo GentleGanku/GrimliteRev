@@ -1,12 +1,14 @@
 ---
-// Replaces Starlight's Header. Destinations are written out as text links instead of an icon
-// row, so a first-time visitor can read where each one goes. On phones the links move to a
-// second row under the logo and search, because Starlight's mobile menu only exists on pages
-// with a sidebar, and Home and the showcase pages have none. The colour theme is an icon
-// button beside the title (ThemeToggle.astro). Links that leave the site (GitHub, Discord, Ko-fi)
-// open in a new tab, and say so to screen readers.
+// Replaces Starlight's Header. The site's own pages are written out as text links, so a
+// first-time visitor can read where each one goes. On phones those links move to a second row
+// under the logo and search, because Starlight's mobile menu only exists on pages with a
+// sidebar, and Home and the showcase pages have none. Beside the title sit icon buttons: the
+// colour theme (ThemeToggle.astro), then GitHub and Discord, whose marks people know on sight.
+// Links that leave the site (GitHub, Discord, Ko-fi) open in a new tab, and say so to screen
+// readers.
 import Search from 'virtual:starlight/components/Search';
 import SiteTitle from 'virtual:starlight/components/SiteTitle';
+import Glyph from './Glyph.astro';
 import ThemeToggle from './ThemeToggle.astro';
 import { changelogLinks } from '../data/changelogs';
 
@@ -20,8 +22,6 @@ const links = [
 	{ label: 'Changelogs', href: latestChangelog, current: path.startsWith(`${base}/changelog/`) },
 	{ label: 'Roadmap', href: `${base}/roadmap/`, current: path.startsWith(`${base}/roadmap/`) },
 	{ label: 'Metrics', href: `${base}/metrics/`, current: path.startsWith(`${base}/metrics/`) },
-	{ label: 'GitHub', href: 'https://github.com/GentleGanku/GrimliteRev', current: false, external: true },
-	{ label: 'Discord', href: 'https://discord.gg/NZ6vmDTu44', current: false, external: true },
 ];
 ---
 
@@ -29,6 +29,12 @@ const links = [
 	<div class="title-wrapper">
 		<SiteTitle />
 		<ThemeToggle />
+		<a class="gr-icon-button" href="https://github.com/GentleGanku/GrimliteRev" target="_blank" rel="noopener" aria-label="GitHub (opens in a new tab)">
+			<Glyph name="github" />
+		</a>
+		<a class="gr-icon-button" href="https://discord.gg/NZ6vmDTu44" target="_blank" rel="noopener" aria-label="Discord (opens in a new tab)">
+			<Glyph name="discord" />
+		</a>
 	</div>
 	<div class="search print:hidden">
 		<Search />

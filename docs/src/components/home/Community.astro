@@ -1,5 +1,6 @@
 ---
 // Home: where to report bugs and get help, and how to support the project.
+import Glyph from '../Glyph.astro';
 import NoteCard from '../showcase/NoteCard.astro';
 ---
 
@@ -8,15 +9,24 @@ import NoteCard from '../showcase/NoteCard.astro';
 		<h2 id="community">Help and source</h2>
 		<ul>
 			<li>
-				<a href="https://discord.gg/NZ6vmDTu44">Discord server</a>
+				<a href="https://discord.gg/NZ6vmDTu44">
+					<Glyph name="discord" />
+					Discord server
+				</a>
 				<span>Questions, help and bug reports</span>
 			</li>
 			<li>
-				<a href="https://github.com/GentleGanku/GrimliteRev">GitHub repository</a>
+				<a href="https://github.com/GentleGanku/GrimliteRev">
+					<Glyph name="github" />
+					GitHub repository
+				</a>
 				<span>Source code, issues and every release</span>
 			</li>
 			<li>
-				<a href="https://ko-fi.com/gentleganku">Ko-fi</a>
+				<a href="https://ko-fi.com/gentleganku">
+					<Glyph name="kofi" />
+					Ko-fi
+				</a>
 				<span>Tip the developer to support the project</span>
 			</li>
 		</ul>
@@ -63,6 +73,7 @@ import NoteCard from '../showcase/NoteCard.astro';
 	li a {
 		display: inline-flex;
 		align-items: center;
+		gap: 0.6rem;
 		min-height: 44px;
 		color: var(--gr-text-strong);
 		font-family: var(--gr-font-display);
@@ -70,6 +81,12 @@ import NoteCard from '../showcase/NoteCard.astro';
 		font-weight: 850;
 		font-size: var(--sl-text-2xl);
 		text-decoration: none;
+	}
+
+	/* Each place's own mark, before its name. */
+	li a :global(svg) {
+		width: 1.4rem;
+		height: 1.4rem;
 	}
 
 	li a:hover {

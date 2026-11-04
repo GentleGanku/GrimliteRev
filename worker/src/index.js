@@ -1,13 +1,23 @@
 // Grimlite Rev's counter, a Cloudflare Worker with a D1 database. GitHub Pages is static, so
-// this records what GitHub doesn't: where the site's downloads come from, the site's page views
-// and the Roadmap's votes. Download totals are GitHub's own.
+// this records what GitHub doesn't: where the site's downloads come from, the site's page views,
+// the Roadmap's votes and its visitor suggestions. Download totals are GitHub's own.
 //
 //   GET  /download/<tag>/<file>  counts one download with the visitor's country, then redirects
 //                                to the GitHub release file. The site's download buttons point here.
 //   POST /hit                    counts one page view; the body is the page path (text/plain).
 //   GET  /votes                  vote counts per Roadmap item, and the items this visitor voted for.
 //   POST /vote, POST /unvote     adds or takes back this visitor's vote; the body is the item id.
-//   GET  /counts                 every count, read by docs/scripts/metrics.mjs at build time.
+//   GET  /suggestions            the Roadmap's open visitor suggestions, and how many of them are
+//                                this visitor's.
+//   POST /suggest                adds a suggestion under Proposed; the body is JSON text
+//                                {title, description, author}. Up to 5 open per visitor.
+//   GET  /counts                 every count and the open suggestions, read by
+//                                docs/scripts/downloads-chart.mjs at build time.
+//
+// Suggestions go live at once. To take one down, or to mark one adopted after copying it into
+// docs/src/data/roadmap.json under the same id (so its votes carry over), run in worker/:
+//   npx wrangler d1 execute grimliterev --remote --command "UPDATE suggestions SET state = 'removed' WHERE id = 's-…'"
+//   npx wrangler d1 execute grimliterev --remote --command "UPDATE suggestions SET state = 'adopted' WHERE id = 's-…'"
 //
 // Visitors are told apart by a SHA-256 hash of their IP and the secret IP_SALT. IPs are never
 // stored. POST bodies are text/plain so browsers send them without a CORS preflight.
@@ -33,6 +43,8 @@ export default {
 			if (route === 'GET /votes') return withCors(request, env, await listVotes(request, env));
 			if (route === 'POST /vote') return withCors(request, env, await vote(request, env, true));
 			if (route === 'POST /unvote') return withCors(request, env, await vote(request, env, false));
+			if (route === 'GET /suggestions') return withCors(request, env, await listSuggestions(request, env));
+			if (route === 'POST /suggest') return withCors(request, env, await suggest(request, env));
 			if (route === 'GET /counts') return withCors(request, env, await counts(env));
 			return withCors(request, env, json({ error: 'Not found' }, 404));
 		} catch (err) {
@@ -98,11 +110,58 @@ async function vote(request, env, add) {
 	return json({ item, count: count.results[0].n, voted: add });
 }
 
+const OPEN_LIMIT = 5;
+const LIMITS = { title: [3, 60], description: [10, 240], author: [0, 32] };
+const OPEN_SUGGESTIONS = "SELECT id, title, description, author, created FROM suggestions WHERE state = 'open' ORDER BY created DESC";
+const OPEN_BY_VOTER = "SELECT COUNT(*) AS n FROM suggestions WHERE voter = ?1 AND state = 'open'";
+
+// Plain text only: control characters and runs of whitespace fold to single spaces. The site
+// renders suggestions as text, never as HTML.
+const clean = (value) =>
+	String(value ?? '')
+		.replace(/[\u0000-\u001f\u007f]+/g, ' ')
+		.replace(/\s+/g, ' ')
+		.trim();
+
+async function listSuggestions(request, env) {
+	const voter = await visitor(request, env);
+	const [open, mine] = await env.DB.batch([env.DB.prepare(OPEN_SUGGESTIONS), env.DB.prepare(OPEN_BY_VOTER).bind(voter)]);
+	return json({ suggestions: open.results, mine: mine.results[0].n, limit: OPEN_LIMIT });
+}
+
+async function suggest(request, env) {
+	let body;
+	try {
+		body = JSON.parse(await request.text());
+	} catch {
+		return json({ error: "The suggestion couldn't be read." }, 400);
+	}
+	const fields = {};
+	for (const [name, [min, max]] of Object.entries(LIMITS)) {
+		const value = clean(body?.[name]);
+		if (value.length < min || value.length > max) {
+			return json({ error: `The ${name} must be ${min} to ${max} characters.`, field: name }, 400);
+		}
+		fields[name] = value;
+	}
+	fields.author ||= 'A visitor';
+	const voter = await visitor(request, env);
+	const open = await env.DB.prepare(OPEN_BY_VOTER).bind(voter).first('n');
+	if (open >= OPEN_LIMIT) return json({ error: `You already have ${OPEN_LIMIT} open suggestions.` }, 429);
+	const id = `s-${[...crypto.getRandomValues(new Uint8Array(5))].map((b) => b.toString(16).padStart(2, '0')).join('')}`;
+	const created = new Date().toISOString();
+	await env.DB.prepare('INSERT INTO suggestions (id, title, description, author, voter, created) VALUES (?1, ?2, ?3, ?4, ?5, ?6)')
+		.bind(id, fields.title, fields.description, fields.author, voter, created)
+		.run();
+	return json({ suggestion: { id, ...fields, created }, mine: open + 1, limit: OPEN_LIMIT }, 201);
+}
+
 async function counts(env) {
-	const [downloads, pageviews, votes] = await env.DB.batch([
+	const [downloads, pageviews, votes, suggestions] = await env.DB.batch([
 		env.DB.prepare('SELECT tag, file, country, count FROM downloads'),
 		env.DB.prepare('SELECT path, SUM(count) AS n FROM pageviews GROUP BY path'),
 		env.DB.prepare('SELECT item, COUNT(*) AS n FROM votes GROUP BY item'),
+		env.DB.prepare(OPEN_SUGGESTIONS),
 	]);
 	const files = {};
 	for (const { tag, file, country, count } of downloads.results) {
@@ -114,6 +173,7 @@ async function counts(env) {
 		downloads: files,
 		pageviews: Object.fromEntries(pageviews.results.map((r) => [r.path, r.n])),
 		votes: Object.fromEntries(votes.results.map((r) => [r.item, r.n])),
+		suggestions: suggestions.results,
 	});
 }
 
