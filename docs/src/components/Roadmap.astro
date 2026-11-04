@@ -3,13 +3,14 @@
 // Proposed, Up next, In progress and Released; Miscellaneous, what keeps it running well, sits
 // below in Now and Completed. Every feature can be upvoted. Visitors can add their own
 // suggestion to Proposed: it goes live at once through the counter Worker (worker/src/index.js),
-// up to 5 open per visitor, and the maintainer can take it down there. Each section has its own
+// up to 5 open per visitor, and the maintainer can take it down there. Ready items leave the
+// board once their version is out, for its changelog page. Each section has its own
 // Version filter (shown once a card in it has a version), which narrows every lane but Proposed.
 //
 // The build's snapshot (public/metrics/votes.json, suggestions.json) renders without
 // JavaScript; the script then swaps in the Worker's live votes and suggestions. Visitor text is
 // only ever set with textContent.
-import { LANES, isSample, roadmap, versionOf, type RoadmapItem } from '../data/roadmap';
+import { LANES, boardItems, isSample, versionOf, type RoadmapItem } from '../data/roadmap';
 import { suggestions, votes, WORKER } from '../data/metrics';
 import Glyph from './Glyph.astro';
 
@@ -33,8 +34,10 @@ const toCard = (item: RoadmapItem): Card => ({
 	author: item.author,
 	votes: votes[item.id] ?? 0,
 });
+// Ready items of a released version have moved to its changelog page (see roadmap.ts).
+const items = await boardItems();
 const cardsFor = (section: string, lane: string) =>
-	roadmap.items.filter((i) => i.section === section && i.lane === lane).map(toCard);
+	items.filter((i) => i.section === section && i.lane === lane).map(toCard);
 
 const visitorCards: Card[] = suggestions.map((s) => ({
 	id: s.id,

@@ -1,4 +1,803 @@
 {
 	"next": "v1.4.1",
-	"items": []
+	"items": [
+		{
+			"id": "interface-color-themes",
+			"section": "features",
+			"lane": "up-next",
+			"version": "v1.4.1",
+			"title": "Interface color themes",
+			"description": "Pick the color theme of Grimlite Rev's own windows and menus, in Main Menu → Settings."
+		},
+		{
+			"id": "custom-game-background",
+			"section": "features",
+			"lane": "up-next",
+			"version": "v1.4.1",
+			"title": "Custom game background",
+			"description": "Choose the background the game shows on the Login and Loading screens.",
+			"review": "Where the setting lives."
+		},
+		{
+			"id": "more-bot-commands",
+			"section": "features",
+			"lane": "up-next",
+			"version": "v1.4.1",
+			"title": "More bot commands",
+			"description": "New commands to use in your bots, in Bot Manager.",
+			"review": "Which commands."
+		},
+		{
+			"id": "anonymous-mode",
+			"section": "features",
+			"lane": "up-next",
+			"version": "v1.4.1",
+			"title": "Anonymous mode",
+			"description": "Blanks out your player profile in the game interface, so people watching your screen can't see who you are. In Main Menu → Settings."
+		},
+		{
+			"id": "aura-conditions",
+			"section": "features",
+			"lane": "up-next",
+			"version": "v1.4.1",
+			"title": "Aura conditions",
+			"description": "New Bot Manager conditions that check auras, so a bot can act on them."
+		},
+		{
+			"id": "packets-interceptor",
+			"section": "features",
+			"lane": "up-next",
+			"version": "v1.4.1",
+			"title": "Packets Interceptor",
+			"description": "Packets gets a revamp and becomes Packets Interceptor.",
+			"review": "The draft only has the title (\"Revamped Packets -> Packets Interceptor\"): what changes and where it is."
+		},
+		{
+			"id": "saved-manipulation-options",
+			"section": "features",
+			"lane": "released",
+			"version": "v1.4.1",
+			"title": "Manipulation Options that stay on",
+			"description": "Your Manipulation Options are saved and come back on at every login, including the first one after you start the app.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed Manipulation Options not being kept. They're saved and come back on at every login, including the first one after starting the app."
+				]
+			}
+		},
+		{
+			"id": "steadier-relogin",
+			"section": "features",
+			"lane": "released",
+			"version": "v1.4.1",
+			"title": "Steadier auto-relogin",
+			"description": "When your saved server is gone or nearly full, auto-relogin picks the busiest online server with room. After a temporary kick, it waits for the kick to end.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed auto-relogin ending the bot when your saved server is gone or nearly full. It uses the saved server when it has room, or else the busiest online server that does.",
+					"Fixed auto-relogin trying again during a temporary kick. It now waits for the kick to end first."
+				]
+			}
+		},
+		{
+			"id": "grouped-grabber-lists",
+			"section": "features",
+			"lane": "released",
+			"version": "v1.4.1",
+			"title": "Grabbed items by category",
+			"description": "Grabbed Inventory, Temporary Inventory and Bank items are grouped by category in Loaders and Grabbers, with the number of items in each.",
+			"changelog": {
+				"ADDITIONS": [
+					"Added category groups to grabbed Inventory, Temporary Inventory and Bank items, with the number of items in each."
+				]
+			}
+		},
+		{
+			"id": "show-game-ids",
+			"section": "features",
+			"lane": "up-next",
+			"version": "v1.4.2",
+			"title": "Show quest, monster and shop IDs",
+			"description": "An option that shows the IDs of quests, monsters, shops and similar things right in the game.",
+			"review": "Where the option lives, and what \"similar things\" covers."
+		},
+		{
+			"id": "maid",
+			"section": "features",
+			"lane": "up-next",
+			"version": "v1.4.2",
+			"title": "Maid",
+			"description": "A new Maid tab in Main Menu: your character follows a player you pick and carries out actions you set."
+		},
+		{
+			"id": "even-more-bot-commands",
+			"section": "features",
+			"lane": "up-next",
+			"version": "v1.4.2",
+			"title": "Even more bot commands",
+			"description": "Another set of new commands for Bot Manager.",
+			"review": "Which commands."
+		},
+		{
+			"id": "bot-about-rework",
+			"section": "features",
+			"lane": "up-next",
+			"version": "v1.4.2",
+			"title": "Reworked bot About",
+			"description": "The About section of .gbot files gets a rework.",
+			"review": "What changes."
+		},
+		{
+			"id": "custom-travels-rework",
+			"section": "features",
+			"lane": "up-next",
+			"version": "v1.4.2",
+			"title": "Reworked custom travels",
+			"description": "Custom travels, your saved travel shortcuts, get a rework.",
+			"review": "What changes, and where in the app."
+		},
+		{
+			"id": "buy-back",
+			"section": "features",
+			"lane": "up-next",
+			"version": "v1.4.2",
+			"title": "Buy-back",
+			"description": "Buy-back, which hasn't worked for a long time, works again.",
+			"review": "Read from \"5.1\" in the Features v1.4.2 list, which the draft lists as the Buy-back known issue. Check that the plan is to fix it."
+		},
+		{
+			"id": "improved-cosmetics-panel",
+			"section": "features",
+			"lane": "up-next",
+			"version": "v1.4.2",
+			"title": "Improved Cosmetics Panel",
+			"description": "The Cosmetics Panel gets improvements.",
+			"review": "The draft only has the title: what improves."
+		},
+		{
+			"id": "keyboard-shortcuts-revamp",
+			"section": "features",
+			"lane": "up-next",
+			"version": "v1.4.2",
+			"title": "Revamped Keyboard Shortcuts",
+			"description": "Keyboard Shortcuts in Main Menu → Tools gets a revamp.",
+			"review": "The draft only has the title: what changes."
+		},
+		{
+			"id": "travel-shortcuts",
+			"section": "features",
+			"lane": "up-next",
+			"version": "v1.4.2",
+			"title": "Travel Shortcuts",
+			"description": "Fast Travels is improved and becomes Travel Shortcuts.",
+			"review": "The draft only has the title (\"Improved Fast Travels -> Travel Shortcuts\"): what improves."
+		},
+		{
+			"id": "logs-revamp",
+			"section": "features",
+			"lane": "up-next",
+			"version": "v1.4.2",
+			"title": "Revamped Logs",
+			"description": "The Logs window gets a revamp.",
+			"review": "The draft only has the title: what changes."
+		},
+		{
+			"id": "unified-flash-packaging",
+			"section": "features",
+			"lane": "up-next",
+			"version": "v1.4.2",
+			"title": "Unified Flash packaging",
+			"description": "How Grimlite Rev packages Flash is unified.",
+			"review": "The draft only has the title: what it means for players."
+		},
+		{
+			"id": "ruffle-engine",
+			"section": "features",
+			"lane": "up-next",
+			"version": "v1.4.3",
+			"title": "Ruffle instead of Flash",
+			"description": "The game runs on the Ruffle engine instead of the Flash player, which should greatly improve its performance."
+		},
+		{
+			"id": "virustotal-check",
+			"section": "features",
+			"lane": "up-next",
+			"version": "v1.4.3",
+			"title": "VirusTotal check for new bots",
+			"description": "The first time you open a .gbot file you haven't used before, it's checked with VirusTotal. On by default."
+		},
+		{
+			"id": "bot-commands-revamp",
+			"section": "features",
+			"lane": "up-next",
+			"version": "v1.4.3",
+			"title": "Bot commands revamp",
+			"description": "The bot commands in Bot Manager get an overhaul.",
+			"review": "What changes."
+		},
+		{
+			"id": "in-game-loader",
+			"section": "features",
+			"lane": "up-next",
+			"version": "v1.4.3",
+			"title": "In-game Loader",
+			"description": "Loaders and Grabbers gets a revamp and becomes the In-game Loader.",
+			"review": "The draft only has the title (\"Revamped Loaders & Grabbers -> In-game Loader\"): what changes."
+		},
+		{
+			"id": "bot-functions",
+			"section": "features",
+			"lane": "up-next",
+			"version": "v1.4.3",
+			"title": "Bot Functions",
+			"description": "A new Bot Functions feature for bots.",
+			"review": "The draft only has the title: what it does."
+		},
+		{
+			"id": "unified-bot-overview",
+			"section": "features",
+			"lane": "up-next",
+			"version": "v1.4.3",
+			"title": "Unified Bot Overview",
+			"description": "One overview of your bot.",
+			"review": "The draft only has the title: what it shows and where."
+		},
+		{
+			"id": "menu-search",
+			"section": "features",
+			"lane": "up-next",
+			"version": "v1.4.3",
+			"title": "Menu Search",
+			"description": "A search for the client's menus.",
+			"review": "The draft only has the title: what it searches and where."
+		},
+		{
+			"id": "auto-kill",
+			"section": "features",
+			"lane": "up-next",
+			"version": "v1.4.3",
+			"title": "Auto-Kill",
+			"description": "A new Auto-Kill feature.",
+			"review": "The draft only has the title: what it does."
+		},
+		{
+			"id": "launcher-user-agent",
+			"section": "misc",
+			"lane": "now",
+			"version": "v1.4.1",
+			"title": "Launcher User Agent",
+			"description": "Grimlite Rev identifies itself to the game with the same User Agent as the official Artix Launcher. On by default."
+		},
+		{
+			"id": "one-click-ping-monitor",
+			"section": "misc",
+			"lane": "now",
+			"version": "v1.4.1",
+			"title": "One-click Ping Monitor",
+			"description": "Clicking Ping Monitor in Main Menu → Settings turns it on or off right away, without a save dialog."
+		},
+		{
+			"id": "early-server-list",
+			"section": "misc",
+			"lane": "now",
+			"version": "v1.4.1",
+			"title": "Server list ready at login",
+			"description": "The server list loads while the game is loading, so it's there when you log in."
+		},
+		{
+			"id": "config-rework",
+			"section": "misc",
+			"lane": "now",
+			"version": "v1.4.1",
+			"title": "Reworked configuration",
+			"description": "The way Grimlite Rev keeps its Settings and Bot Options is reworked.",
+			"review": "Merges \"Reworked Grimoire config\" and \"Reworked configuration mechanism for Settings and Bot Options\": what changes, and whether it's done (Now or Completed)."
+		},
+		{
+			"id": "bot-reliability",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Bots that stop cleanly",
+			"description": "A bot that hits an error stops and tells you which command it stopped at. Stop and Pause end a Kill command right away, and dying on the first command no longer breaks a bot.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed bots showing as running while doing nothing after an error. A bot that hits an error now stops and tells you which command it stopped at.",
+					"Fixed bots breaking when you die on the first command while \"Restart upon death\" is off.",
+					"Fixed Stop and Pause not ending a Kill command right away. Skills no longer keep casting after you stop, or pile up when a bot loops.",
+					"Fixed quest and boost checks running twice after a quick Stop and Start."
+				]
+			}
+		},
+		{
+			"id": "bot-commands-fixes",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Bot commands that work",
+			"description": "Equip Set, Index, Restart and Load bot do what they say, and the Drop Delay setting and packet spam delay apply.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed the Equip Set command not working. It finds the set file by name or path, equips each item by ID, skips items you don't have, and gives up on an item after 5 tries.",
+					"Fixed the Index command (jump up or down) moving the bot when the target command doesn't exist.",
+					"Fixed the Restart bot command skipping the first command. It now starts again from the first one.",
+					"Fixed the Load bot command not finding a bot saved with a relative path after you've opened a file from another folder.",
+					"Fixed bots with a Clear Quest list command failing to load their quests when they start.",
+					"Fixed the Drop Delay setting not applying to the running bot.",
+					"Fixed packet spam not waiting the delay you set between packets."
+				]
+			}
+		},
+		{
+			"id": "bot-conditions",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Conditions that give the right answer",
+			"description": "Item list, monster count, drop and aura conditions check what they say. Some always passed or always counted 0 before.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed the \"All in Item List is in inventory\" condition always passing. It now checks your item list.",
+					"Fixed the \"Available monster count\" and \"Visible monster count\" conditions always counting 0.",
+					"Fixed \"Has dropped\" and \"Has not dropped\" giving different answers when checked twice in a row. An item the game puts straight into your inventory counts as dropped until a Get drop for it, or until the bot starts again.",
+					"Fixed the Aura \"Greater\" and \"Less\" conditions not comparing numbers. Before, 9 counted as greater than 10."
+				],
+				"OTHERS": [
+					"Renamed the \"Int is greater than\" condition to \"Int is greater than or equal to\", which is what it always did. Bots that use it keep working."
+				]
+			}
+		},
+		{
+			"id": "bot-files-names",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Bot files and names that match",
+			"description": "Plain bot descriptions and files missing a setting load again, and names with curly apostrophes or quotes, such as ones copied from the Wiki, match the game's.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed plain bot descriptions such as \"Farm\" being mistaken for compressed ones and failing to load.",
+					"Fixed bot files that are missing a number setting, such as the relogin delay, showing an error. They now load, and the setting gets the lowest value its box allows.",
+					"Fixed the client crashing on Start when two skill-set labels share a name. The first one is used, and the Log says so.",
+					"Fixed monster and item names with curly apostrophes or quotes, such as \"Dage’s\" copied from the Wiki, not matching the game's names. Bot Manager's name boxes and lists, and the names in a loaded bot, switch to straight ones (' and \").",
+					"Fixed drop, inventory, bank, shop and monster checks treating curly and straight apostrophes and quotes as different."
+				]
+			}
+		},
+		{
+			"id": "bot-manager-editing",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Bot Manager editing",
+			"description": "Bot Manager tells you when an edit turns a command into invalid text, and Start can only be clicked when the list has commands.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed edits that turned a command into invalid text being silently dropped. Bot Manager now tells you.",
+					"Fixed Start doing nothing with an empty command list. Start, in Bot Manager and in Main Menu -> Bot tab, can only be clicked when the list has commands.",
+					"Fixed long items in Bot Manager -> Viable Log References showing bits of a second line. They stay on one line and end in \"…\"."
+				]
+			}
+		},
+		{
+			"id": "bank-start-stop",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Bank on start and stop",
+			"description": "Unbank on start waits between transfers so none are rejected, and Bank on stop no longer crashes the client.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed Unbank on start sending transfers too quickly, so the server rejected some of them. It now waits between transfers.",
+					"Fixed Bank on stop crashing the client."
+				]
+			}
+		},
+		{
+			"id": "afk-option",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "AFK option",
+			"description": "The AFK option works, and turning it on no longer stops other packet handlers and plugins.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed the AFK option not working. Turning it on no longer stops other packet handlers and plugins from running."
+				]
+			}
+		},
+		{
+			"id": "separate-options",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Menu and bot options kept apart",
+			"description": "Manipulation Options in Main Menu → Settings and in Bot Manager no longer tick each other, and a bot's own apply only while it runs. Loading a bot file sets Pick up AC-tagged items and Provoke monsters in cell from the file.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed the Manipulation Options in Main Menu -> Settings tab and in Bot Manager ticking each other. The menu's apply whenever you're in game. Bot Manager's belong to the bot and apply only while it runs, and when it stops, the menu's choices are back.",
+					"Fixed loading a bot file not setting Pick up AC-tagged items and Provoke monsters in cell from the file. Both used to stay as they were."
+				]
+			}
+		},
+		{
+			"id": "provoke-monsters",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Provoke monsters in cell",
+			"description": "Provoke monsters in cell makes the monsters attack you, from Main Menu, Bot Manager and the provoke command, without needing a bot running.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed Provoke monsters in cell sending an empty list of monsters. It now makes the monsters attack you, from Main Menu, Bot Manager and the provoke command.",
+					"Fixed Provoke monsters in cell from Main Menu needing a bot to be running.",
+					"Fixed the app getting an empty list of the map's monsters from the game. It now gets every monster in the map, with each monster's cell and live health. The empty list was also what broke the monster count conditions."
+				]
+			}
+		},
+		{
+			"id": "ac-tagged-items",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "AC-tagged items",
+			"description": "Pick up AC-tagged items recognizes AC-tagged drops, and the member-only, temporary and house marks on items are read correctly too.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed Pick up AC-tagged items never recognizing an AC-tagged drop. The game marks them true where the app expected 1. The same fix applies to the member-only, temporary and house marks on items."
+				]
+			}
+		},
+		{
+			"id": "drop-rejection",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Drop rejection fixes",
+			"description": "Drop rejection keeps every whitelisted item and rejects the rest, even when several drops arrive at once, and follows the running bot's setting. /rejectdrop NAME rejects only that drop.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed drop rejection skipping a drop when several arrive together. It keeps every whitelisted item and rejects all others, the same way with the classic drop popups and with Custom Drops UI. An empty whitelist rejects every drop in both.",
+					"Fixed Reject items not on the Drop list only working when it was on at Start, and stopping for good the first time a loaded bot had it off. It follows the running bot's setting, so a bot loaded with Load bot can turn it on or off. Pause and Resume no longer start it twice.",
+					"Fixed /rejectdrop NAME not doing what its help text says. It now rejects that drop only.",
+					"Fixed the app trying to reopen the Custom Drops menu every 100 ms. It can now tell when the menu is open."
+				]
+			}
+		},
+		{
+			"id": "packet-tools",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Packet tools that work",
+			"description": "{ROOM_ID} becomes your room number, and the Packet Spammer, Sniffer and Tamperer buttons only respond when there's something to act on.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed {ROOM_ID} in packet commands, the Packet Spammer and the Packet Tamperer being sent as is and rejected. It's now replaced with your room number.",
+					"Fixed the Packet Spammer buttons responding when there's nothing to act on. Remove and Send Once need a packet selected in the list, and Send Once sends that packet. Clear, Start and Save need packets in the list.",
+					"Fixed the Packet Sniffer buttons the same way. Clear and Copy need captured text, and Stop is only available while sniffing.",
+					"Fixed the Packet Tamperer's Clear Captured button the same way. It needs captured packets.",
+					"Fixed names and text with < or & in them breaking calls to the game, for example a drop whitelist with \"&\" in an item name.",
+					"Fixed a chat line that happens to contain \"[Sending]: \" or \", (len: \" arriving cut off in the Packet Logger and in bot checks. It now arrives whole."
+				]
+			}
+		},
+		{
+			"id": "keyboard-shortcuts",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Keyboard Shortcuts fixes",
+			"description": "Hotkeys is now Keyboard Shortcuts, in Main Menu → Tools. Travel shortcuts no longer crash the client, and your saved shortcuts keep working.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed travel hotkeys crashing the client.",
+					"Fixed Remove being clickable with no shortcut selected."
+				],
+				"OTHERS": [
+					"Renamed Hotkeys to Keyboard Shortcuts in Main Menu -> Tools tab, its window and the Travel window. Your saved shortcuts keep working."
+				]
+			}
+		},
+		{
+			"id": "plugin-loading",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Plugin loading",
+			"description": "Other files in the Plugins folder no longer stop plugins from loading, and Plugin Manager lists each plugin once.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed a non-plugin file in the Plugins folder (a readme, a .pdb) stopping the plugins after it from loading. A missing Plugins folder is created.",
+					"Fixed startup plugins being listed more than once in Plugin Manager, so selecting or unloading one picked the wrong plugin.",
+					"Fixed clicking a plugin that's already loaded loading it a second time. It's now selected in Plugin Manager's list instead."
+				]
+			}
+		},
+		{
+			"id": "saved-settings",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Saved settings",
+			"description": "Settings with \"=\" in their value, such as custom travels and links, are saved in full, and a damaged settings line is skipped.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed settings whose value contains \"=\", such as custom travels and links, not being saved and loaded in full.",
+					"Fixed a damaged config line breaking the app. It's now skipped."
+				]
+			}
+		},
+		{
+			"id": "no-more-crashes",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Errors without crashes",
+			"description": "Errors go to the Log window's Debug tab instead of closing the client, and serious ones show a message. Invalid input shows a message too.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed errors crashing the client or vanishing without a trace. They're written to the Log window's Debug tab, and serious ones show a message, one at a time.",
+					"Fixed invalid input, such as /shop abc or letters in the quest ID box, crashing the client. It shows a message instead.",
+					"Fixed Log commands freezing the bot, and opening the Log window's Script tab crashing the client. Both happened when a bot wrote to the Log window before you had opened it.",
+					"Fixed the chat log replacing your own name with \"You\" inside other words. It only replaces whole words now."
+				],
+				"OTHERS": [
+					"Shortened the file paths in error details to start at the project folder (GrimliteRev\\app\\...) instead of the drive."
+				]
+			}
+		},
+		{
+			"id": "grabber-drop-names",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Wiki drop names",
+			"description": "Monster drop names read from the Wiki in Loaders and Grabbers no longer contain line breaks.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed monster drop names read from the Wiki containing line breaks."
+				]
+			}
+		},
+		{
+			"id": "tidier-grabbers",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Tidier Loaders and Grabbers",
+			"description": "Quest IDs, items and drop rates are one option, Search on Wiki uses the Wiki's full-name search, and every option is capitalized.",
+			"changelog": {
+				"OTHERS": [
+					"Merged \"Quest IDs\" and \"Quest items, drop rates\" into one option, \"Quests (ID, Items, Drop Rates)\".",
+					"Changed \"Search on Wiki\" to use the Wiki's full-name search.",
+					"Hid the ID box when Armor Customizer is chosen, since it doesn't use it.",
+					"Capitalized every option in both lists, and renamed \"Temp inventory items\" to \"Temporary Inventory Items\"."
+				]
+			}
+		},
+		{
+			"id": "menu-layout",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Menu layout",
+			"description": "Main Menu → Bot reads Load, Start, Stop, Manager and Logs. The Log window's tabs are Chat, Drops, Bot, Debug and Script, and Cosmetics is now Cosmetics Panel.",
+			"changelog": {
+				"OTHERS": [
+					"Changed Main Menu -> Bot tab to read Load, Start, Stop, Manager and Logs. Logs moved there from the Tools tab, and \"Load Bot\" is now \"Load\".",
+					"Renamed the Log window's tabs to Chat, Drops, Bot, Debug and Script.",
+					"Renamed Cosmetics to Cosmetics Panel."
+				]
+			}
+		},
+		{
+			"id": "settings-menu",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Everything in Settings",
+			"description": "Ping Monitor, Quick Login, FPS Limiter and Manipulation Options moved into Main Menu → Settings, and your choices there are saved.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed Quick Login logging in again when you're already on the chosen server. \"Automatic upon App Startup\" logs you in to the saved server once the game has loaded.",
+					"Fixed FPS Limiter not being kept. It's saved, and applied once the game has loaded."
+				],
+				"OTHERS": [
+					"Moved Ping Monitor, Quick Login, FPS Limiter and Manipulation Options into Main Menu -> Settings tab, from the Tools tab and the old Options tab. The Settings tab now reads Camouflage, Ping Monitor, Quick Login, FPS Limiter and Manipulation Options.",
+					"Renamed Immediate Login to Quick Login, and Set FPS to FPS Limiter."
+				]
+			}
+		},
+		{
+			"id": "camouflage-fixes",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Camouflage fixes",
+			"description": "With Camouflage on, the chat commands introduction no longer shows after login, and Ctrl+F12 shows and hides the menu.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed Camouflage not disabling the chat commands introduction after you log in. The chat commands still work.",
+					"Fixed the Camouflage shortcut. Ctrl+F12 now shows and hides the menu while Camouflage is on, also while the game screen has focus. The old Ctrl+Shift+M didn't work on PCs that switch keyboard layouts with Ctrl+Shift."
+				]
+			}
+		},
+		{
+			"id": "retired-tools",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Retired tools",
+			"description": "Bank Items, Eye Dropper, Notepad and the Bank tab are gone from Main Menu.",
+			"changelog": {
+				"OTHERS": [
+					"Removed Main Menu -> Tools tab -> Bank Items, Eye Dropper and Notepad, and the \"Show Notepad\" keyboard shortcut.",
+					"Removed Main Menu -> Bank tab (Bank and Reload)."
+				]
+			}
+		},
+		{
+			"id": "retired-options",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Retired options",
+			"description": "Hide Players, Disable Skill Animations, Untarget Self and a few related options are gone. Bot files that still have them load normally.",
+			"changelog": {
+				"OTHERS": [
+					"Removed the Hide Players, Disable Skill Animations and Untarget Self options from Main Menu -> Options tab and Bot Manager. Bot files that still have them load normally.",
+					"Removed Hide Players in Yulgar, \"Enable options without starting\" and the \"Toggle Options\" keyboard shortcut.",
+					"The bundled ActionClient plugin's own Hide Players option no longer works."
+				]
+			}
+		},
+		{
+			"id": "safe-bot-files",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Safe bot files and links",
+			"description": "A shared .gbot can only hold bot commands and their data, links only open web pages, and only the game's own hosts can control the client.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed bot files, and commands pasted into Bot Manager, being able to hold more than bot commands and their data. A shared .gbot can no longer run other code on your computer.",
+					"Fixed links in bot descriptions, and links the game asks to open, opening more than web pages. They only open http and https links now.",
+					"Fixed any file the game loaded being able to control the client. Only the game's own aq.com hosts can."
+				]
+			}
+		},
+		{
+			"id": "long-sessions",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Smoother long sessions",
+			"description": "Long sessions no longer get choppy over time. The Packet Logger, Packet Tamperer and Log window keep a size limit, and loops no longer pile up after relogs.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed the command list leaking drawing resources, which slowly made long sessions choppy.",
+					"Fixed option loops and map and login waits piling up after relogs.",
+					"Fixed the shop list keeping one entry per visit. It keeps one entry per shop now.",
+					"Fixed random errors when the game added drops while a bot read the drop list."
+				],
+				"OTHERS": [
+					"Limited the Packet Logger, Packet Tamperer and Log window, which drop their oldest lines past a limit.",
+					"Changed each packet to be read once instead of twice before it reaches the app."
+				]
+			}
+		},
+		{
+			"id": "loading-login",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Loading and login that don't get stuck",
+			"description": "When the game can't be downloaded you get a message instead of endless loading, and special characters in a password or name no longer break login.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed an endless loading screen when the game version or game files can't be downloaded. You get an error message instead.",
+					"Fixed a password, name or server label with \" or \\ in it breaking login, relogin or that label.",
+					"Fixed auto-connect from character select trying forever when the server list never loads. It gives up after a minute.",
+					"Fixed an unexpected value in the server list breaking the login screen."
+				]
+			}
+		},
+		{
+			"id": "combat-fixes",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Combat fixes",
+			"description": "Attacking a monster by name skips dead ones, and there are fewer errors with no target or an empty skill slot.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed attacking a monster by name picking dead ones, so the bot waited at a corpse. Dead monsters are skipped.",
+					"Fixed errors while there's no target, no shop or bank loaded, or an empty skill slot. There are fewer of them now."
+				]
+			}
+		},
+		{
+			"id": "stuck-map-reload",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Stuck map reload",
+			"description": "When a map stays stuck at \"Loading Map... 100%\", the client reloads it.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed maps staying stuck at \"Loading Map... 100%\". The client detects it once the game shows its Back button, and reloads the map."
+				]
+			}
+		},
+		{
+			"id": "game-options-restored",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Game options restored after a bot",
+			"description": "Starting and stopping a bot puts your Untarget Dead, Reaccept Quest and Decline Warning options back the way you had them, and bots leave Untarget Self alone.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed starting and stopping a bot not putting your Untarget Dead, Reaccept Quest and Decline Warning options back the way you had them. This holds even if the client crashes mid-bot.",
+					"Fixed bots changing your Untarget Self option. It's no longer changed."
+				]
+			}
+		},
+		{
+			"id": "cosmetics-panel",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Cosmetics Panel refresh",
+			"description": "Refreshing the player list in the Cosmetics Panel works again.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed refreshing the player list in the Cosmetics Panel showing an error."
+				]
+			}
+		},
+		{
+			"id": "death-ads",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Death ads",
+			"description": "The option to turn off the ads shown when you die works.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed disabling death ads never doing anything."
+				]
+			}
+		},
+		{
+			"id": "chat-commands",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Chat commands are back",
+			"description": ".ct custom travel shortcuts and the bot's / chat commands work again, and the bot's own commands no longer reach the game.",
+			"changelog": {
+				"PATCHES": [
+					"Fixed .ct custom travel shortcuts and the bot's / chat commands not working. The bot's own commands no longer reach the game as well, while the game's commands, like /join, still do."
+				],
+				"OTHERS": [
+					"/join map-1e99 gives you a random room from 1001 to 99999."
+				]
+			}
+		},
+		{
+			"id": "various-fixes",
+			"section": "misc",
+			"lane": "completed",
+			"version": "v1.4.1",
+			"title": "Other fixes",
+			"description": "Various other bug fixes and performance patches.",
+			"changelog": {
+				"OTHERS": [
+					"Various other bug fixes and performance patches."
+				]
+			}
+		}
+	]
 }

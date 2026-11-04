@@ -1,13 +1,14 @@
 ---
 // Home: what's coming in the next version, from the Roadmap data (src/data/roadmap.ts): the
-// features being built, then the ones up next.
-import { roadmap } from '../../data/roadmap';
+// features being built, then the ones up next, for `next` only (Up next also holds later
+// versions).
+import { roadmap, versionOf } from '../../data/roadmap';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const next = roadmap.next;
 const rank: Record<string, number> = { 'in-progress': 0, 'up-next': 1 };
 const items = roadmap.items
-	.filter((i) => i.section === 'features' && i.lane in rank)
+	.filter((i) => i.section === 'features' && i.lane in rank && versionOf(i) === next)
 	.sort((a, b) => rank[a.lane] - rank[b.lane]);
 const shown = items.slice(0, 4);
 ---

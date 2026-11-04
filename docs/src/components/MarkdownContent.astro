@@ -5,12 +5,23 @@
 // read. On narrower screens that list is hidden and the changelog just scrolls. Other pages
 // render as Starlight's. The "What changed" counts (Overview.astro) close the changelog, as its
 // summary.
+//
+// Once a version is out, its Ready Roadmap items join its changelog: their lines are added under
+// ADDITIONS, PATCHES and OTHERS after the page's own (src/data/changelog-lines.ts), a feature's
+// final vote count after its last line, and they count in the overview.
 import '@astrojs/starlight/style/markdown.css';
 import Overview from './showcase/Overview.astro';
+import { addChangelogLines } from '../data/changelog-lines';
+import { CHANGELOG_HEADINGS, roadmapChangelog } from '../data/roadmap';
 
 const { entry, headings } = Astro.locals.starlightRoute;
 const kind = entry.data.showcase?.kind;
 const isChangelog = kind === 'release' || kind === 'build';
+
+const fromRoadmap = isChangelog && entry.data.release ? await roadmapChangelog(entry.data.release) : undefined;
+const added = fromRoadmap ? CHANGELOG_HEADINGS.flatMap((h) => fromRoadmap[h]) : [];
+const html = fromRoadmap && added.length > 0 ? addChangelogLines(await Astro.slots.render('default'), fromRoadmap) : undefined;
+const body = added.length > 0 ? `${entry.body ?? ''}\n${added.map((line) => `- ${line.text}`).join('\n')}\n` : entry.body;
 const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 const label = (text: string) => {
 	const clean = text.replace(/:$/, '');
@@ -25,7 +36,7 @@ const label = (text: string) => {
 				<div class="main">
 					<h2 id="full-changelog" class="title">Full changelog</h2>
 					<div class="sl-markdown-content">
-						<slot />
+						{html !== undefined ? <Fragment set:html={html} /> : <slot />}
 					</div>
 				</div>
 				{toc.length > 1 && (
@@ -43,7 +54,7 @@ const label = (text: string) => {
 					</aside>
 				)}
 			</div>
-			<Overview body={entry.body} />
+			<Overview body={body} />
 		</>
 	) : (
 		<div class="sl-markdown-content">
@@ -79,6 +90,30 @@ const label = (text: string) => {
 </script>
 
 <style>
+	/* A Roadmap feature's final votes after its changelog line: the Roadmap's "^ 12" vote, muted
+	   and kept on one line. */
+	.changelog :global(.gr-roadmap-votes) {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.2rem;
+		margin-inline-start: 0.35rem;
+		color: var(--gr-muted);
+		font-size: var(--sl-text-sm);
+		font-weight: 700;
+		font-variant-numeric: tabular-nums;
+		white-space: nowrap;
+	}
+
+	.changelog :global(.gr-roadmap-votes svg) {
+		width: 0.9rem;
+		height: 0.9rem;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 2.5;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+
 	.changelog {
 		display: grid;
 		gap: 2rem 3.5rem;
