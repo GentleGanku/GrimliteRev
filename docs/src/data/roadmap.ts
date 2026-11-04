@@ -39,7 +39,7 @@ export const roadmap: RoadmapData = sample ?? (live as RoadmapData);
 export const LANES: Record<Section, { id: Lane; title: string; note: string; empty: string }[]> = {
 	features: [
 		{ id: 'proposed', title: 'Proposed', note: 'Ideas, sorted by votes.', empty: 'No proposals yet. Suggest the first one.' },
-		{ id: 'up-next', title: 'Up next', note: `Planned for ${roadmap.next}.`, empty: `Nothing is planned for ${roadmap.next} yet.` },
+		{ id: 'up-next', title: 'Up next', note: `Planned for the next release.`, empty: `Nothing is planned for the next release yet.` },
 		{ id: 'in-progress', title: 'In progress', note: 'Currently being built!', empty: 'Nothing is being built right now.' },
 		{ id: 'released', title: 'Released', note: 'Done, ready to go!', empty: 'Nothing is ready for release yet.' },
 	],
