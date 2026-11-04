@@ -18,6 +18,8 @@ interface Card {
 	description: string;
 	version?: string;
 	author?: string;
+	// A visitor's suggestion from the Worker; the script replaces these with the live list.
+	visitor?: boolean;
 	votes: number;
 }
 
@@ -27,6 +29,7 @@ const toCard = (item: RoadmapItem): Card => ({
 	title: item.title,
 	description: item.description,
 	version: versionOf(item),
+	author: item.author,
 	votes: votes[item.id] ?? 0,
 });
 const cardsFor = (section: string, lane: string) =>
@@ -37,6 +40,7 @@ const visitorCards: Card[] = suggestions.map((s) => ({
 	title: s.title,
 	description: s.description,
 	author: s.author,
+	visitor: true,
 	votes: votes[s.id] ?? 0,
 }));
 
@@ -83,21 +87,27 @@ const count = (n: number) => n.toLocaleString('en-US');
 							)}
 							<ul aria-labelledby={`lane-${lane.id}`} data-cards>
 								{lane.cards.map((card) => (
-									<li class="card" id={`item-${card.id}`} tabindex="-1" data-suggestion={card.author ? '' : undefined}>
+									<li class="card" id={`item-${card.id}`} tabindex="-1" data-suggestion={card.visitor ? '' : undefined}>
 										<h4>{card.title}</h4>
-										<p>{card.description}</p>
-										<p class="meta">
+										<p class="desc">{card.description}</p>
+										{card.author && (
+											<p class="by">
+												<span aria-hidden="true">– </span>
+												<span class="sr-only">Suggested by </span>
+												<span data-author>{card.author}</span>
+											</p>
+										)}
+										<div class="foot">
 											{card.version && <span class="tag">{card.version}</span>}
-											{card.author && <span class="by">Suggested by {card.author}</span>}
-										</p>
-										<button type="button" class="vote" aria-pressed="false" data-id={card.id} data-title={card.title}>
-											<svg viewBox="0 0 24 24" aria-hidden="true">
-												<path d="M12 6 5 17h14z" />
-											</svg>
-											<span class="vote-text sr-only">Upvote</span>
-											<span class="vote-count">{count(card.votes)}</span>
-											<span class="sr-only"> votes</span>
-										</button>
+											<button type="button" class="vote" aria-pressed="false" data-id={card.id} data-title={card.title}>
+												<svg viewBox="0 0 24 24" aria-hidden="true">
+													<path d="m6 15 6-6 6 6" />
+												</svg>
+												<span class="vote-text sr-only">Upvote</span>
+												<span class="vote-count">{count(card.votes)}</span>
+												<span class="sr-only"> votes</span>
+											</button>
+										</div>
 									</li>
 								))}
 							</ul>
@@ -135,11 +145,11 @@ const count = (n: number) => n.toLocaleString('en-US');
 								{lane.cards.map((card) => (
 									<li class="card">
 										<h4>{card.title}</h4>
-										<p>{card.description}</p>
+										<p class="desc">{card.description}</p>
 										{card.version && (
-											<p class="meta">
+											<div class="foot">
 												<span class="tag">{card.version}</span>
-											</p>
+											</div>
 										)}
 									</li>
 								))}
@@ -155,16 +165,22 @@ const count = (n: number) => n.toLocaleString('en-US');
 	<template data-card-template>
 		<li class="card" tabindex="-1" data-suggestion>
 			<h4></h4>
-			<p></p>
-			<p class="meta"><span class="by"></span></p>
-			<button type="button" class="vote" aria-pressed="false">
-				<svg viewBox="0 0 24 24" aria-hidden="true">
-					<path d="M12 6 5 17h14z"></path>
-				</svg>
-				<span class="vote-text sr-only">Upvote</span>
-				<span class="vote-count">0</span>
-				<span class="sr-only"> votes</span>
-			</button>
+			<p class="desc"></p>
+			<p class="by">
+				<span aria-hidden="true">– </span>
+				<span class="sr-only">Suggested by </span>
+				<span data-author></span>
+			</p>
+			<div class="foot">
+				<button type="button" class="vote" aria-pressed="false">
+					<svg viewBox="0 0 24 24" aria-hidden="true">
+						<path d="m6 15 6-6 6 6"></path>
+					</svg>
+					<span class="vote-text sr-only">Upvote</span>
+					<span class="vote-count">0</span>
+					<span class="sr-only"> votes</span>
+				</button>
+			</div>
 		</li>
 	</template>
 
@@ -233,8 +249,8 @@ const count = (n: number) => n.toLocaleString('en-US');
 		const li = template.content.firstElementChild!.cloneNode(true) as HTMLLIElement;
 		li.id = `item-${s.id}`;
 		li.querySelector('h4')!.textContent = s.title;
-		li.querySelector('p')!.textContent = s.description;
-		li.querySelector('.by')!.textContent = `Suggested by ${s.author}`;
+		li.querySelector('.desc')!.textContent = s.description;
+		li.querySelector('[data-author]')!.textContent = s.author;
 		const button = li.querySelector<HTMLButtonElement>('.vote')!;
 		button.dataset.id = s.id;
 		button.dataset.title = s.title;
@@ -544,38 +560,37 @@ const count = (n: number) => n.toLocaleString('en-US');
 		display: none;
 	}
 
-	/* Each item is a slip of the logo's book page: paper with the page's wavy bottom edge, the
-	   name in the display face, and the vote as a stamp-style tab on its top-right corner. */
+	/* Each item is a plain card on the page colour: the name, what it does and who suggested it,
+	   then one row with the version on the left and the vote on the right. */
 	.card {
-		position: relative;
 		display: grid;
 		gap: 0.5rem;
-		padding: 1rem 1rem 1.6rem;
-		background: var(--gr-paper);
-		color: var(--gr-paper-ink);
-		mask:
-			var(--gr-book-edge-bottom) bottom / 100% 0.6rem no-repeat,
-			linear-gradient(#000, #000) top / 100% calc(100% - 0.6rem + 1px) no-repeat;
+		padding: 1rem;
+		border: 1px solid var(--gr-line);
+		background: var(--gr-base);
 	}
 
 	.card:focus-visible {
-		outline: 3px solid var(--gr-paper-accent);
-		outline-offset: -3px;
+		outline: 2px solid var(--gr-accent);
+		outline-offset: 2px;
+	}
+
+	/* The vote keeps a 44px target; the row tucks into the card's bottom padding so it doesn't
+	   look tall. */
+	.foot {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem;
+		margin: 0 -0.35rem -0.5rem 0;
 	}
 
 	h4 {
 		margin: 0;
-		font-family: var(--gr-font-display);
-		font-stretch: var(--gr-display-stretch);
-		font-weight: 850;
-		font-size: var(--sl-text-xl);
-		line-height: 1.1;
-		color: var(--gr-paper-ink);
+		font-size: var(--sl-text-lg);
+		line-height: 1.25;
+		color: var(--gr-text-strong);
 		overflow-wrap: anywhere;
-	}
-
-	.card:has(.vote) h4 {
-		padding-right: 4.5rem;
 	}
 
 	.card p {
@@ -585,71 +600,58 @@ const count = (n: number) => n.toLocaleString('en-US');
 		overflow-wrap: anywhere;
 	}
 
-	.meta {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.25rem 0.75rem;
-		align-items: center;
-		color: #4d4a42;
-	}
-
-	.meta:empty {
-		display: none;
+	.by {
+		color: var(--gr-muted);
 	}
 
 	.tag {
-		padding: 0.05rem 0.45rem;
-		border: 1px solid var(--gr-paper-ink);
-		color: var(--gr-paper-ink);
+		font-size: var(--sl-text-sm);
 		font-weight: 700;
+		color: var(--gr-text-strong);
 	}
 
+	/* The vote, "^ 12": muted at rest; on hover it brightens on a light Surface ground; voted, it
+	   turns the site's red. */
 	.vote {
-		position: absolute;
-		top: 0;
-		right: 0;
+		position: relative;
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
 		gap: 0.3rem;
 		min-width: 44px;
 		min-height: 44px;
-		padding: 0 0.7rem;
+		margin-left: auto;
+		padding: 0 0.6rem;
 		border: 0;
-		border-bottom: 2px solid var(--gr-paper-ink);
-		border-left: 2px solid var(--gr-paper-ink);
 		background: transparent;
-		color: var(--gr-paper-ink);
-		font-family: var(--gr-font-display);
-		font-stretch: var(--gr-display-stretch);
-		font-weight: 850;
-		font-size: var(--sl-text-lg);
+		color: var(--gr-muted);
+		font: inherit;
+		font-size: var(--sl-text-sm);
+		font-weight: 700;
 		cursor: pointer;
 	}
 
 	.vote:hover {
-		background: rgb(28 32 40 / 0.08);
-	}
-
-	.vote:focus-visible {
-		outline: 2px solid var(--gr-paper-accent);
-		outline-offset: -4px;
+		background: var(--gr-surface);
+		color: var(--gr-text-strong);
 	}
 
 	.vote svg {
-		width: 0.8rem;
-		height: 0.8rem;
-		fill: currentColor;
+		width: 1rem;
+		height: 1rem;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 2.5;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+
+	.vote-count {
+		font-variant-numeric: tabular-nums;
 	}
 
 	.vote[aria-pressed='true'] {
-		border-color: var(--gr-paper-accent);
-		background: var(--gr-paper-accent);
-		color: #fff;
-	}
-
-	.vote[aria-pressed='true']:focus-visible {
-		outline-color: #fff;
+		color: var(--gr-accent);
 	}
 
 	.vote[aria-busy='true'] {

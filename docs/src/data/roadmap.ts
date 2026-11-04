@@ -20,6 +20,8 @@ export interface RoadmapItem {
 	section: Section;
 	lane: Lane;
 	version?: string;
+	// Who suggested it, kept when a visitor's suggestion is adopted; shown as "Suggested by".
+	author?: string;
 	review?: string;
 }
 

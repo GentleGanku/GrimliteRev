@@ -1,8 +1,8 @@
 ---
-// Home: four figures from the Metrics page (all-time downloads, the most downloaded release,
-// GitHub stars and page views) and a link to the page. Only real counts; a figure without data is left out,
-// and with none at all the section says the numbers are on their way.
-import { allReleases, releaseDownloads, stars, views } from '../../data/metrics';
+// Home: four figures from the Metrics page (all-time downloads, the current release's downloads,
+// GitHub stars and page views) and a link to the page. Only real counts; a figure without data is
+// left out, and with none at all the section says the numbers are on their way.
+import { allReleases, latestRelease, releaseDownloads, stars, views } from '../../data/metrics';
 import { number } from '../../data/figures';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -10,11 +10,11 @@ const counted = allReleases
 	.map((r) => ({ label: r.label, value: releaseDownloads(r) }))
 	.filter((r): r is { label: string; value: number } => r.value !== undefined);
 const total = counted.reduce((sum, r) => sum + r.value, 0);
-const top = [...counted].sort((a, b) => b.value - a.value)[0];
+const current = latestRelease ? releaseDownloads(latestRelease) : undefined;
 
 const figures = [
 	total > 0 && { value: number(total), label: 'downloads, all releases' },
-	top && { value: top.label, label: `most downloaded, ${number(top.value)} times` },
+	current !== undefined && latestRelease && { value: number(current), label: `downloads of ${latestRelease.label}` },
 	stars && stars.total > 0 && { value: number(stars.total), label: 'stars on GitHub' },
 	views && views.total > 0 && { value: number(views.total), label: 'page views on this site' },
 ].filter(Boolean) as { value: string; label: string }[];
