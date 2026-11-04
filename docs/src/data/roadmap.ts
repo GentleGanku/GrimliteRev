@@ -40,12 +40,12 @@ export const LANES: Record<Section, { id: Lane; title: string; note: string; emp
 	features: [
 		{ id: 'proposed', title: 'Proposed', note: 'Ideas, sorted by votes.', empty: 'No proposals yet. Suggest the first one.' },
 		{ id: 'up-next', title: 'Up next', note: `Planned for ${roadmap.next}.`, empty: `Nothing is planned for ${roadmap.next} yet.` },
-		{ id: 'in-progress', title: 'In progress', note: 'Being built now.', empty: 'Nothing is being built right now.' },
-		{ id: 'released', title: 'Released', note: 'Done, ready to ship.', empty: 'Nothing is ready for release yet.' },
+		{ id: 'in-progress', title: 'In progress', note: 'Currently being built!', empty: 'Nothing is being built right now.' },
+		{ id: 'released', title: 'Released', note: 'Done, ready to go!', empty: 'Nothing is ready for release yet.' },
 	],
 	misc: [
-		{ id: 'now', title: 'Now', note: 'Being worked on.', empty: 'Nothing is being worked on right now.' },
-		{ id: 'completed', title: 'Completed', note: 'Finished.', empty: 'Nothing is finished yet.' },
+		{ id: 'now', title: 'Now', note: 'Currently being built!', empty: 'Nothing is being worked on right now.' },
+		{ id: 'completed', title: 'Completed', note: 'Finished, ready to go!', empty: 'Nothing is finished yet.' },
 	],
 };
 
