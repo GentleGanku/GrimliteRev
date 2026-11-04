@@ -1,0 +1,16 @@
+Grimlite Rev website counter
+Copyright (c) 2021-2026 GentleGanku. All rights reserved.
+
+This folder (worker/) holds the counter service of the Grimlite Rev
+website. It is part of the website and is under the same terms: see
+docs/LICENSE. You may view this source, but you may not copy, modify,
+deploy or redistribute it without written permission from GentleGanku.
+
+Wrangler and the other packages listed in package.json keep their own
+licences.
+
+Versions of this folder published before 4 November 2026 were dedicated
+to the public domain under CC0 1.0 Universal, and those copies stay under
+CC0.
+
+THIS SOURCE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.

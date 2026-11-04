@@ -1,6 +1,6 @@
 ---
 // Replaces Starlight's Footer: its own parts first (pagination, where a page has it), then a
-// one-line bar on every page, the bottom counterpart of the header: the name, the licence and a
+// one-line bar on every page, the bottom counterpart of the header: the name, the licence links and a
 // not-affiliated note, and who made it. The "Make sure…" download popup is rendered here too, so
 // every page with a download link has it once.
 import Default from '@astrojs/starlight/components/Footer.astro';
@@ -17,7 +17,16 @@ const { siteTitleHref } = Astro.locals.starlightRoute;
 			<img alt="" src={logo.src} width={logo.width} height={logo.height} />
 			<span translate="no">Grimlite Rev</span>
 		</a>
-		<p class="note">Free and open source under CC0. Not affiliated with Artix Entertainment.</p>
+		<p class="note">
+			Grimlite Rev is free and <a
+				href="https://github.com/GentleGanku/GrimliteRev/blob/main/LICENSE"
+				target="_blank"
+				rel="noopener">open source<span class="sr-only"> (licence, opens in a new tab)</span></a>. <a
+				href="https://github.com/GentleGanku/GrimliteRev/blob/main/docs/LICENSE"
+				target="_blank"
+				rel="noopener">Site © 2021-2026 GentleGanku<span class="sr-only"> (opens in a new tab)</span></a>.
+			Not affiliated with Artix Entertainment.
+		</p>
 		<p class="by">
 			Made by @{''}
 			<a href="https://github.com/GentleGanku" target="_blank" rel="noopener">
@@ -79,6 +88,16 @@ const { siteTitleHref } = Astro.locals.starlightRoute;
 	.note {
 		flex: 1;
 		min-width: min(100%, 18rem);
+	}
+
+	/* The licence links sit in running text, so they keep the text's size and an underline. */
+	.note a {
+		color: var(--gr-text);
+		text-underline-offset: 0.2em;
+	}
+
+	.note a:hover {
+		color: var(--gr-text-strong);
 	}
 
 	.by a {

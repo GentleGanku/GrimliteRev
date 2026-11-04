@@ -87,4 +87,4 @@ In `docs/`, run `npm install`, then `npm run dev`. `npm run build` needs intern
 
 ## License
 
-Grimlite Rev is released under CC0 1.0 Universal. See [LICENSE](LICENSE).
+Grimlite Rev is licensed under [CC BY 4.0](LICENSE): you may share and adapt it as long as you credit Grimlite Rev and GentleGanku. The website in `docs/` and its counter service in `worker/` are all rights reserved (see [docs/LICENSE](docs/LICENSE)). Everything published before 4 November 2026, including releases v1.1 to v1.4.0, stays under CC0 1.0 Universal.

@@ -1,0 +1,29 @@
+Grimlite Rev website
+Copyright (c) 2021-2026 GentleGanku. All rights reserved.
+
+This folder (docs/) holds the source of the Grimlite Rev website,
+https://gentleganku.github.io/GrimliteRev/: its design, layout, code, text,
+logo, images and videos.
+
+You may read the site and view this source. You may not copy, modify,
+publish or redistribute the site or any part of it, including its design,
+under any name or at any address, without written permission from
+GentleGanku. Forking this repository on GitHub, as GitHub's Terms of
+Service allow, grants no other right.
+
+To ask for permission, open an issue at
+https://github.com/GentleGanku/GrimliteRev/issues.
+
+Not covered by this notice, and kept under their own licences:
+
+- Astro, Starlight and the other packages listed in package.json.
+- The Archivo font (SIL Open Font License 1.1).
+- AdventureQuest Worlds names and art, which belong to Artix
+  Entertainment. Grimlite Rev is not affiliated with Artix Entertainment.
+
+Versions of this folder published before 4 November 2026 were dedicated
+to the public domain under CC0 1.0 Universal, and those copies stay under
+CC0.
+
+THE SITE AND ITS SOURCE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
+KIND.
