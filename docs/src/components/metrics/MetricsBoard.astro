@@ -59,7 +59,7 @@ const viewRows = Object.entries(views?.pages ?? {})
 				)
 			}
 			<p class="source">
-				Every release file on GitHub, all time.{downloadsUpdated && ` Read ${longDate(downloadsUpdated)}.`}
+				Every release file on GitHub, all time.
 			</p>
 			{
 				since && (
@@ -68,7 +68,7 @@ const viewRows = Object.entries(views?.pages ?? {})
 						<p class="since-n">{number(since.total)}</p>
 						<p class="source">
 							Since {since.label} came out: {number(since.latest)} of {since.label}, {number(since.older)} of older
-							releases. Counted from the site's recording on {longDate(since.from)}.
+							releases.
 						</p>
 					</div>
 				)
@@ -100,7 +100,7 @@ const viewRows = Object.entries(views?.pages ?? {})
 				)
 			}
 			<p class="source">
-				Stars on the GitHub repository, with the day each was given.{stars && ` Read ${longDate(stars.updated)}.`}
+				Stars on the GitHub repository, with the date included.
 			</p>
 		</div>
 		<StarsChart />
@@ -117,8 +117,7 @@ const viewRows = Object.entries(views?.pages ?? {})
 				)
 			}
 			<p class="source">
-				{countryTotal > 0 ? `${number(countryTotal)} downloads made through this site's buttons. ` : ''}
-				Recorded by the site's own counter, not by GitHub.
+				{countryTotal > 0 ? `${number(countryTotal)} downloads recorded by the site's own counter.` : ''}
 			</p>
 		</section>
 
@@ -135,7 +134,7 @@ const viewRows = Object.entries(views?.pages ?? {})
 				)
 			}
 			<p class="source">
-				Page views on this site, counted by the site's own counter.{views && ` Read ${longDate(views.updated)}.`}
+				Page views on this site, counted by the site's own counter.
 			</p>
 		</section>
 	</div>
