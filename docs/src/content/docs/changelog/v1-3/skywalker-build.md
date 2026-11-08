@@ -11,7 +11,8 @@ template: splash
 prev: false
 next: false
 heroMedia:
-  placeholder: this build's login background
+  video: /videos/v1-3-x.mp4
+  poster: /videos/v1-3-x-poster.webp
 ---
 
 ## 1 February 2022:

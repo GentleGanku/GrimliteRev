@@ -1,6 +1,6 @@
 ---
 // Home: the newest major release's highlights in short, taken from that release's changelog
-// page (its `showcase` frontmatter), next to the release art, or next to the hero video when it
+// page (its `showcase` frontmatter), next to its overview illustration or poster, or next to the hero video when it
 // follows the reader.
 import { getCollection } from 'astro:content';
 import Presenting from '../showcase/Presenting.astro';
@@ -14,7 +14,8 @@ const page =
 	pages.find((p) => p.data.release === latestRelease?.tag && p.data.showcase?.kind === 'release') ??
 	pages.find((p) => p.data.showcase?.kind === 'release');
 const showcase = page?.data.showcase;
-const art = page?.data.titleVideo?.poster;
+const poster = page?.data.titleVideo?.poster;
+const picture = showcase?.overview ?? (poster ? { art: poster, alt: '' } : undefined);
 // When the hero video follows the reader, it takes the art's place: an empty sticky slot that
 // HomePoster.astro moves the video into.
 const follows = await heroFollows();
@@ -32,9 +33,9 @@ const follows = await heroFollows();
 			</div>
 			{follows ? (
 				<div class="art slot" data-follow-slot="spotlight" aria-hidden="true" />
-			) : art && (
+			) : picture && (
 				<figure class="art">
-					<img src={`${base}${art}`} alt="" loading="lazy" decoding="async" />
+					<img class:list={[{ overview: showcase?.overview }]} src={`${base}${picture.art}`} alt={picture.alt} loading="lazy" decoding="async" />
 				</figure>
 			)}
 		</section>
@@ -88,6 +89,11 @@ const follows = await heroFollows();
 		/* Centred on the character at the left of the release art. */
 		object-position: 10% 40%;
 		transform: rotate(1.5deg);
+	}
+
+	/* Drawn for this slot, so it needs no framing on a character. */
+	.overview {
+		object-position: center;
 	}
 
 	.slot {

@@ -7,8 +7,11 @@
 // The same layout as the changelog posters: the name set large, then on one line the tagline
 // stamp and the newest release's download, with the 32-bit advice under the download, all
 // centred in the banner's height. Like the release posters it is an art area: dark in both themes, the
-// art dimmed to 38% so the text sits straight on it (white stays above 4.5:1 even over white
-// art), and it ends on a straight edge where the next section starts.
+// art dimmed to 45% so the text sits straight on it, and it ends on a straight edge where the
+// next section starts.
+//
+// The download starts as x64, which also serves visitors without JavaScript. The script below
+// swaps it to x86 on a 32-bit PC, so the button already says what it will fetch.
 import HeroMedia from './HeroMedia.astro';
 import { downloadUrl, latestRelease } from '../../data/metrics';
 import { downloadData } from '../../data/downloads';
@@ -39,6 +42,13 @@ const mb = (bytes: number) => `${(bytes / 1e6).toFixed(1)} MB`;
 					href={downloadUrl(latestRelease.tag, x64)}
 					title={x64.name}
 					{...downloadData(latestRelease, x64)}
+					data-home-download
+					{...(x86 && {
+						'data-x86-href': downloadUrl(latestRelease.tag, x86),
+						'data-x86-name': x86.name,
+						'data-x86-size': downloadData(latestRelease, x86)['data-size'],
+						'data-x86-detail': `${latestRelease.label} • 32-bit • ${mb(x86.size)}`,
+					})}
 				>
 					<svg viewBox="0 0 24 24" aria-hidden="true">
 						<path d="M12 3v12m0 0-5-5m5 5 5-5M5 20h14" />
@@ -54,7 +64,7 @@ const mb = (bytes: number) => `${(bytes / 1e6).toFixed(1)} MB`;
 		}
 		{
 			latestRelease && x86 && (
-				<p class="alt">
+				<p class="alt" data-home-x86-note>
 					If Grimlite Rev shows an error or the PC is old and slow, use the{' '}
 					<a href={downloadUrl(latestRelease.tag, x86)} title={x86.name} {...downloadData(latestRelease, x86)}>
 						32-bit build
@@ -65,6 +75,46 @@ const mb = (bytes: number) => `${(bytes / 1e6).toFixed(1)} MB`;
 		}
 	</div>
 </header>
+
+<script>
+	// Matches Home's download to the visitor's PC. Chromium reports the PC through client hints
+	// (`wow64` marks a 32-bit browser on a 64-bit PC, which should still get x64), and its user
+	// agent no longer says. Other browsers still report it in the user agent. Anything that can't
+	// be read, and every non-Windows visitor, stays on x64.
+	type Hints = {
+		platform: string;
+		getHighEntropyValues(hints: string[]): Promise<{ bitness?: string; wow64?: boolean }>;
+	};
+
+	async function isThirtyTwoBit() {
+		const hints = (navigator as Navigator & { userAgentData?: Hints }).userAgentData;
+		if (hints) {
+			if (hints.platform !== 'Windows') return false;
+			const { bitness, wow64 } = await hints.getHighEntropyValues(['bitness', 'wow64']);
+			return bitness === '32' && !wow64;
+		}
+		const agent = navigator.userAgent;
+		return /Windows NT/.test(agent) && !/Win64|x64|WOW64|ARM64/i.test(agent);
+	}
+
+	const download = document.querySelector<HTMLAnchorElement>('[data-home-download]');
+	if (download?.dataset.x86Href) {
+		isThirtyTwoBit()
+			.then((thirtyTwo) => {
+				if (!thirtyTwo) return;
+				const { x86Href, x86Name = '', x86Size = '', x86Detail = '' } = download.dataset;
+				download.href = x86Href!;
+				download.title = x86Name;
+				Object.assign(download.dataset, { file: x86Name, size: x86Size, key: 'x86' });
+				delete download.dataset.altHref;
+				delete download.dataset.altLabel;
+				delete download.dataset.altSize;
+				download.querySelector('.file')!.textContent = x86Detail;
+				document.querySelector<HTMLElement>('[data-home-x86-note]')?.setAttribute('hidden', '');
+			})
+			.catch(() => {});
+	}
+</script>
 
 <script>
 	// The hero art follows the reader on wide screens (see FollowRail.astro): it starts as the
@@ -107,7 +157,7 @@ const mb = (bytes: number) => `${(bytes / 1e6).toFixed(1)} MB`;
 				toRail > 0
 					? mix(spot.getBoundingClientRect(), rail.getBoundingClientRect(), toRail)
 					: mix(hero.getBoundingClientRect(), spot.getBoundingClientRect(), toSpot);
-			const dim = toRail > 0 ? 1 : 0.38 + 0.62 * toSpot;
+			const dim = toRail > 0 ? 1 : 0.45 + 0.55 * toSpot;
 			Object.assign(art.style, {
 				position: 'fixed',
 				inset: 'auto',
@@ -154,7 +204,7 @@ const mb = (bytes: number) => `${(bytes / 1e6).toFixed(1)} MB`;
 
 	.art :global(video),
 	.art :global(img) {
-		opacity: var(--dim, 0.38);
+		opacity: var(--dim, 0.45);
 	}
 
 	/* Following the reader (script below): the art is placed over its slot, at full strength,

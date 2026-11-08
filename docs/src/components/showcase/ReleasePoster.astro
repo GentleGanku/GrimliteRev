@@ -6,9 +6,7 @@
 // so the version, the part people scan for, is the biggest thing on it.
 //
 // The hero fills the first screen. It is an art area, so it keeps the dark palette in both
-// themes. The art is dimmed to 38% over Base, so the text and the downloads sit straight on it:
-// even over pure white art the ground is no lighter than #72757a, where white text stays above
-// 4.5:1.
+// themes. The art is dimmed to 45% over Base, so the text and the downloads sit straight on it.
 import DownloadButtons from '../DownloadButtons.astro';
 import HeroMedia from './HeroMedia.astro';
 import ReleasePicker from './ReleasePicker.astro';
@@ -75,7 +73,7 @@ const long = version.length > 8;
 	   strength. */
 	.art :global(video),
 	.art :global(img) {
-		opacity: 0.38;
+		opacity: 0.45;
 	}
 
 	.inner {

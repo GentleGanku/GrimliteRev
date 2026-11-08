@@ -12,6 +12,10 @@ const stop = z.object({
 	blurb: z.string(),
 	// What the image will show. Until the art exists, this is written on the placeholder.
 	image: z.string(),
+	// The art itself, relative to public/ and without the site base, with its alternative text.
+	// Without it, the stop shows the labelled placeholder.
+	art: z.string().optional(),
+	alt: z.string().optional(),
 	// Set while the wording still has to be checked by the maintainer. Not rendered.
 	review: z.boolean().optional(),
 });
@@ -60,7 +64,10 @@ export const collections = {
 								review: z.boolean().optional(),
 							})
 							.optional(),
-						stops: z.array(stop).optional(),
+						// The illustration beside Home's Presenting while this is the newest release.
+							// Without it, Home shows the release's poster there.
+							overview: z.object({ art: z.string(), alt: z.string() }).optional(),
+							stops: z.array(stop).optional(),
 						note: z
 							.object({
 								tag: z.string(),

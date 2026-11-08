@@ -2,6 +2,11 @@
 // A release's headline features as numbered stops on a dashed line. The order is a tour of
 // the app, from the Main Menu to the Bot Manager, which is why the stops are numbered.
 // `compact` drops the images and keeps the line on the left, for the home page spotlight.
+// The art's real size goes on the <img>, so the page doesn't shift as it loads and swapping a
+// file only needs a new path. It's read through a buffer because sharp keeps a file it opens by
+// path locked on Windows, which would stop the art being replaced while the dev server runs.
+import { readFile } from 'node:fs/promises';
+import sharp from 'sharp';
 import Placeholder from './Placeholder.astro';
 
 interface Stop {
@@ -9,6 +14,8 @@ interface Stop {
 	where: string;
 	blurb: string;
 	image: string;
+	art?: string;
+	alt?: string;
 }
 
 interface Props {
@@ -17,6 +24,8 @@ interface Props {
 }
 
 const { stops, compact = false } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const sizes = compact ? [] : await Promise.all(stops.map(async (stop) => (stop.art ? sharp(await readFile(`public${stop.art}`)).metadata() : undefined)));
 ---
 
 <ol class:list={['stops', { compact }]}>
@@ -28,7 +37,13 @@ const { stops, compact = false } = Astro.props;
 				</span>
 				{!compact && (
 					<div class="media">
-						<Placeholder label={stop.image} />
+						{stop.art ? (
+							<span class="frame">
+								<img src={`${base}${stop.art}`} alt={stop.alt ?? ''} width={sizes[i]?.width} height={sizes[i]?.height} loading="lazy" decoding="async" />
+							</span>
+						) : (
+							<Placeholder label={stop.image} />
+						)}
 					</div>
 				)}
 				<div class="text">
@@ -84,6 +99,35 @@ const { stops, compact = false } = Astro.props;
 	.media,
 	.text {
 		grid-column: 2;
+	}
+
+	/* A hard ink shadow, the same one the stamps have inside the art, so the frame and the art
+	   read as one printed piece. The margin gives the shadow its own room. */
+	.frame {
+		--offset: 0.5rem;
+		position: relative;
+		display: block;
+		margin: 0 var(--offset) var(--offset) 0;
+	}
+
+	.frame::before {
+		content: '';
+		position: absolute;
+		inset: var(--offset) calc(var(--offset) * -1) calc(var(--offset) * -1) var(--offset);
+		background: #14171d;
+	}
+
+	@media (min-width: 60rem) {
+		.frame {
+			--offset: 0.75rem;
+		}
+	}
+
+	.media img {
+		position: relative;
+		display: block;
+		width: 100%;
+		height: auto;
 	}
 
 	.where {
