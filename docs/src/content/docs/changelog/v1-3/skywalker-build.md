@@ -1,7 +1,7 @@
 ---
 title: Grimlite Rev v1.3 Skywalker Build
 sidebar:
-  label: Skywalker Build
+  label: v1.3 (Skywalker Build)
 release: v1.3-Skywalker
 showcase:
   kind: build

@@ -46,6 +46,7 @@ export default defineConfig({
 								'changelog/v1-3/skyguard-build',
 							],
 						},
+						'changelog/v1-2',
 					],
 				},
 			],

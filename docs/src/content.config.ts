@@ -42,6 +42,8 @@ export const collections = {
 						// Home only: the art follows the reader down the page (FollowRail.astro).
 						// On by default for a video; set it on a placeholder that stands in for one.
 						follow: z.boolean().optional(),
+						// A release with no art at all: a shorter solid banner, with no placeholder.
+						plain: z.boolean().optional(),
 					})
 					.optional(),
 				// Release tag whose files get download buttons under the title, from
@@ -65,9 +67,9 @@ export const collections = {
 							})
 							.optional(),
 						// The illustration beside Home's Presenting while this is the newest release.
-							// Without it, Home shows the release's poster there.
-							overview: z.object({ art: z.string(), alt: z.string() }).optional(),
-							stops: z.array(stop).optional(),
+						// Without it, Home shows the release's poster there.
+						overview: z.object({ art: z.string(), alt: z.string() }).optional(),
+						stops: z.array(stop).optional(),
 						note: z
 							.object({
 								tag: z.string(),

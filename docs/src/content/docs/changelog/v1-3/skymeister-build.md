@@ -1,7 +1,7 @@
 ---
 title: Grimlite Rev v1.3 Skymeister Build
 sidebar:
-  label: Skymeister Build
+  label: v1.3 (Skymeister Build)
 release: v1.3-Skymeister
 showcase:
   kind: build

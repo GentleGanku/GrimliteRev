@@ -15,7 +15,7 @@ interface Props {
 	title: string;
 	stamp?: string;
 	release?: string;
-	media: { video?: string; image?: string; poster?: string; placeholder?: string };
+	media: { video?: string; image?: string; poster?: string; placeholder?: string; plain?: boolean };
 }
 
 const { title, stamp, release, media } = Astro.props;
@@ -27,10 +27,14 @@ const version = match?.[2] ?? title;
 const long = version.length > 8;
 ---
 
-<header class="poster gr-bleed gr-dark">
-	<div class="art">
-		<HeroMedia {...media} />
-	</div>
+<header class:list={['poster gr-bleed gr-dark', { plain: media.plain }]}>
+	{
+		!media.plain && (
+			<div class="art">
+				<HeroMedia {...media} />
+			</div>
+		)
+	}
 	<div class="inner">
 		<h1 id="_top">
 			{name && <span class="name">{name}</span>}
@@ -74,6 +78,13 @@ const long = version.length > 8;
 	.art :global(video),
 	.art :global(img) {
 		opacity: 0.45;
+	}
+
+	/* A release with no art: with nothing to look at, half a screen is enough, so the changes
+	   start sooner. */
+	.poster.plain {
+		min-height: 50svh;
+		background: var(--gr-surface);
 	}
 
 	.inner {
